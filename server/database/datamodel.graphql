@@ -13,5 +13,16 @@ type User {
   email: String! @unique
   password: String!
   name: String!
+  firstname: String!
+  lastname: String!
+  type: Usertype!
   posts: [Post!]!
+}
+
+enum Usertype{
+  Student
+  Lecturer
+  Admin
+  Editor
+  Super
 }
