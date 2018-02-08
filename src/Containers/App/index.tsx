@@ -1,22 +1,23 @@
 import * as React from 'react';
-import './style.css';
+import { Route, Router, Switch } from 'react-router-dom';
+import createBrowserHistory from 'history/createBrowserHistory';
+import PublicHome from '../Home';
+import NotFound from '../NotFound';
 
-const logo = require('./logo.svg');
+const customHistory = createBrowserHistory();
 
-class App extends React.Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
-}
+const App = () => (
+  <Router history={customHistory}>
+    <Switch>
+      <Route component={PublicHome} path="/" />
+      <Route component={NotFound} path="/not-found" />
+    </Switch>
+  </Router>
+);
+
+/*<Route exact path="/" render={() =>(
+          loggedin ? ( <Route  component={ValidUser} />)
+          : (<Route component={InValidUser} />)
+        )} />*/
 
 export default App;
