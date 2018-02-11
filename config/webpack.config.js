@@ -58,6 +58,16 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx', '.json'],
+    modules: ['src', 'node_modules'],
+    alias: {
+      '@': resolve('src'),
+      'components': path.resolve(__dirname, '../src/Components'),
+      'containers': path.resolve(__dirname, '../src/Containers'),
+      'assets': path.resolve(__dirname, '../src/Assets'),
+      'reduxApp': path.resolve(__dirname, '../src/Redux'),
+      'theme': path.resolve(__dirname, '../src/Theme'),
+      'utils': path.resolve(__dirname, '../src/Utils')
+    }
   },
   module: {
     loaders: [{
