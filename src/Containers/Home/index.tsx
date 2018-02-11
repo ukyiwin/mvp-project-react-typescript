@@ -1,7 +1,7 @@
 import * as React from 'react';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 // import Divider from 'material-ui/Divider';
-import Paper from 'material-ui/Paper';
+// import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import InboxIcon from 'material-ui-icons/Inbox';
 import DraftsIcon from 'material-ui-icons/Drafts';
@@ -15,6 +15,22 @@ class Home extends React.Component {
     return (
       <div className="App">
         <Grid container={true} spacing={24} alignContent={'space-between'}>
+          <Grid item={true} xs={3}>
+              <List component="nav">
+                <ListItem button={true}>
+                  <ListItemIcon>
+                    <InboxIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Inbox" />
+                </ListItem>
+                <ListItem button={true}>
+                  <ListItemIcon>
+                    <DraftsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Drafts" />
+                </ListItem>
+              </List>
+          </Grid>
           <Grid item={true} xs={6}>
             <List component="nav">
               <ListItem button={true}>
@@ -29,15 +45,147 @@ class Home extends React.Component {
                 </ListItemIcon>
                 <ListItemText primary="Drafts" />
               </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Inbox" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Drafts" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Inbox" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Drafts" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Inbox" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Drafts" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Inbox" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Drafts" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Inbox" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Drafts" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Inbox" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Drafts" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Inbox" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Drafts" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Inbox" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Drafts" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Inbox" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Drafts" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Inbox" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Drafts" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Inbox" />
+              </ListItem>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Drafts" />
+              </ListItem>
             </List>
           </Grid>
-          <Grid item={true} xs={4}>
-            <Paper>
+          <Grid item={true} xs={3}>
+            <div>
               Hi im rex gsahv hsv hvhdvsjdvsdghsvdj shv dsjdhvs hjdvshv
               hjhjhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhjhjhjhj
               hjhjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjhjhjhjh
               hjhgghf ghfhgf ghfgf hfghcghcghcghfhgf hgfhgfghfhfgh
-            </Paper>
+            </div>
           </Grid>
         </Grid>
         <Footer />

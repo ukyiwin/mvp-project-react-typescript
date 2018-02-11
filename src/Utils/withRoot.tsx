@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import purple from 'material-ui/colors/purple';
-import green from 'material-ui/colors/green';
+import deepOrange from 'material-ui/colors/deepOrange';
 import red from 'material-ui/colors/red';
 import Reboot from 'material-ui/Reboot';
 
@@ -9,9 +8,13 @@ import Reboot from 'material-ui/Reboot';
 // It's optional.
 const theme = createMuiTheme({
   palette: {
-    primary: purple,
-    secondary: green,
+    primary: {
+      main: '#ffffff',
+      dark: '#151E29'
+    },
+    secondary: deepOrange,
     error: red,
+    type: 'light',
     // contrastThreshold: 3,
     // tonalOffset: 0.2,
   },
@@ -31,18 +34,29 @@ const theme = createMuiTheme({
     },
   },
 });
+type Prop= {
+  pageContext?: object,
+  reduxServerState?: object,
+  url?: object,
+};
 
 function withRoot(Component: React.ComponentType) {
-  function WithRoot(props: object) {
+  class WithRoot extends React.Component<Prop> {
     // MuiThemeProvider makes the theme available down the React tree
-    // thanks to React context.
-    return (
-      <MuiThemeProvider theme={theme}>
-        {/* Reboot kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <Reboot />
-        <Component {...props} />
-      </MuiThemeProvider>
-    );
+    // thanks to React context
+
+    render() {
+      // const { pageContext } = this.props;
+
+      return (
+        <MuiThemeProvider theme={theme}>
+          {/* Reboot kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <Reboot />
+          <Component {...this.props} />
+        </MuiThemeProvider>
+      );
+    }
+    
   }
 
   return WithRoot;
