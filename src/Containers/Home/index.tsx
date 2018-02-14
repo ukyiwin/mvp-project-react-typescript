@@ -5,8 +5,9 @@ import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Grid from 'material-ui/Grid';
 import InboxIcon from 'material-ui-icons/Inbox';
 import DraftsIcon from 'material-ui-icons/Drafts';
-import withRoot from '../../Utils/withRoot';
-import Footer from '../../Components/Layouts/Footer';
+import withRoot from 'Utils/withRoot';
+import Footer from 'Components/Layouts/Footer';
+// import Editor from 'Components/Editor';
 
 import './style.css';
 

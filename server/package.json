@@ -7,7 +7,8 @@
     "dev": "npm-run-all --parallel start playground",
     "debug": "dotenv -- nodemon -e ts,graphql -x ts-node --inspect src/index.ts",
     "playground": "graphql playground",
-    "build": "rimraf dist && tsc"
+    "build": "rimraf dist && tsc",
+    "push": "git push origin && now && now alias uniserver.now.sh"
   },
   "dependencies": {
     "bcryptjs": "2.4.3",

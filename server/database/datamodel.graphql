@@ -8,15 +8,28 @@ type Post {
   author: User!
 }
 
+type Article {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isPublished: Boolean! @default(value: "false")
+  title: String!
+  body: String!
+  type: Arcticletype
+  author: User!
+}
+
 type User {
   id: ID! @unique
   email: String! @unique
+  username: String! @unique
   password: String!
   name: String!
   firstname: String!
   lastname: String!
   type: Usertype!
   posts: [Post!]!
+  author: User!
 }
 
 enum Usertype{
@@ -25,4 +38,9 @@ enum Usertype{
   Admin
   Editor
   Super
+}
+
+enum Arcticletype{
+  External
+  Internal
 }

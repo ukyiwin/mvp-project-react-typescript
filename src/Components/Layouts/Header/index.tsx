@@ -1,8 +1,10 @@
 import * as React from 'react';
+// import PropTypes from 'prop-types';
 import { withStyles, StyleRulesCallback } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
+import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import Home from 'material-ui-icons/Home';
@@ -10,6 +12,7 @@ import Hidden from 'material-ui/Hidden';
 import Explore from 'material-ui-icons/Explore';
 import ChatBubble from 'material-ui-icons/Chat';
 import Notifications from 'material-ui-icons/Notifications';
+import { Link, LinkProps } from 'react-router-dom';
 // import Popover from 'material-ui/Popover';
 import Forum from 'material-ui-icons/Forum';
 import UserAvatar from '../../UserAvatar';
@@ -42,7 +45,7 @@ type Props = {
 };
 
 // tslint:disable-next-line:no-any
-class PublicHeader extends React.Component<Props & WithStyles<classNames>> {
+class PublicHeader extends React.Component<Props & WithStyles<classNames> & LinkProps> {
 
   // tslint:disable-next-line:no-any
   [x: string]: any;
@@ -56,6 +59,7 @@ class PublicHeader extends React.Component<Props & WithStyles<classNames>> {
     positionTop: 200, // Just so the popover can be spotted more easily
     positionLeft: 400, // Same as above
     anchorReference: 'anchorEl',
+    loggedIn: false,
   };
 
   handleChange = key => (event, value) => {
@@ -83,6 +87,86 @@ class PublicHeader extends React.Component<Props & WithStyles<classNames>> {
     });
   }
 
+  authMenu = (props) => {
+    let { classes } =  props;
+    return (
+      <AppBar position="fixed" color="default" >
+        <Toolbar>
+          <Hidden mdUp={true}>
+            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+              <MenuIcon />
+            </IconButton>
+          </Hidden>
+          <Typography variant="title" color="inherit" align="left" className={classes.flex}>
+            UNIZONN
+          </Typography>
+          <SearchBar />
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <Home />
+          </IconButton>
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <Explore />
+          </IconButton>
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <ChatBubble />
+          </IconButton>
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <Forum />
+          </IconButton>
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <Notifications />
+          </IconButton>
+          <IconButton 
+            className={classes.menuButton}
+            color="inherit" 
+            aria-label="Menu"
+            onClick={this.handleClickButton}
+          >
+            <UserAvatar fullName={'Rex Raphael'} fileName={'http://i44.tinypic.com/2i6chmq.jpg'} />
+          </IconButton>
+          <Button size={'small'}>Ask Question</Button>
+        </Toolbar>
+      </AppBar>
+    );
+  }
+
+  unAuthMenu = (props) => {
+    let { classes } =  props;
+    return (
+      <AppBar position="sticky" color="default" >
+        <Toolbar>
+          <Hidden mdUp={true}>
+            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+              <MenuIcon />
+            </IconButton>
+          </Hidden>
+          <Typography variant="title" color="inherit" align="left" className={classes.flex}>
+            UNIZONN
+          </Typography>
+          <SearchBar />
+          <Button 
+            size={'small'} 
+            // tslint:disable-next-line:no-any jsx-alignment
+            component={Link} {...{to: 'login'} as any} 
+            // tslint:disable-next-line:jsx-alignment
+            to={'/login'} color={'default'} 
+          >
+            Login
+          </Button>
+          <Button
+            size={'small'} 
+            // tslint:disable-next-line:no-any jsx-alignment
+            component={Link} {...{to: 'login'} as any} 
+            // tslint:disable-next-line:jsx-alignment
+            to={'/signup'} color={'default'}
+          >
+            Register
+          </Button>
+        </Toolbar>
+      </AppBar>
+    );
+  }
+
   render() {
     const { classes } = this.props;
     /* const {
@@ -96,44 +180,11 @@ class PublicHeader extends React.Component<Props & WithStyles<classNames>> {
       positionLeft,
       anchorReference,
     } = this.state; */
+    let menu = this.state.loggedIn ? this.authMenu(this.props) : this.unAuthMenu(this.props);
+
     return (
       <div className={classes.root}>
-        <AppBar position="fixed" color="default" >
-          <Toolbar>
-            <Hidden mdUp={true}>
-              <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-                <MenuIcon />
-              </IconButton>
-            </Hidden>
-            <Typography variant="title" color="inherit" align="left" className={classes.flex}>
-              UNIZONN
-            </Typography>
-            <SearchBar />
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <Home />
-            </IconButton>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <Explore />
-            </IconButton>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <ChatBubble />
-            </IconButton>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <Forum />
-            </IconButton>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <Notifications />
-            </IconButton>
-            <IconButton 
-              className={classes.menuButton}
-              color="inherit" 
-              aria-label="Menu"
-              onClick={this.handleClickButton}
-            >
-              <UserAvatar fullName={'Rex Raphael'} fileName={'http://i44.tinypic.com/2i6chmq.jpg'} />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
+        {menu}
       </div>
     );
   }
