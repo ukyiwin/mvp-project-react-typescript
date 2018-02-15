@@ -133,7 +133,7 @@ class PublicHeader extends React.Component<Props & WithStyles<classNames> & Link
   unAuthMenu = (props) => {
     let { classes } =  props;
     return (
-      <AppBar position="sticky" color="default" >
+      <AppBar position="fixed" color="default" >
         <Toolbar>
           <Hidden mdUp={true}>
             <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">

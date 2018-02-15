@@ -66,7 +66,8 @@ module.exports = {
       'Assets': path.resolve(__dirname, '../src/Assets'),
       'ReduxApp': path.resolve(__dirname, '../src/Redux'),
       'Theme': path.resolve(__dirname, '../src/Theme'),
-      'Utils': path.resolve(__dirname, '../src/Utils')
+      'Utils': path.resolve(__dirname, '../src/Utils'),
+      jquery: "jquery/src/jquery"
     }
   },
   module: {
@@ -127,6 +128,10 @@ module.exports = {
   target: 'web',
   plugins: [
 
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
+    }),
     /** common plugins */
     new ProgressBarPlugin({
       format: `  :bar ${chalk.green.bold(':percent')} (:etas remaining) ${chalk.gray(':msg...')}`,
