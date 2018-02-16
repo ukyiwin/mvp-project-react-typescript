@@ -30,8 +30,27 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Unizonn</title>
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('#fullpage').fullpage({
+          anchors: ['First', 'Second', 'Third'],
+          sectionsColor: ['teal', 'purple', 'orange'],
+          fitToSection: true,
+          interlockedSlides: false,
+          dragAndMove: true,
+          offsetSections: true,
+          parallax: true,
+          parallaxOptions: {type: 'reveal', percentage: 62, property: 'translate'},
+          lazyLoading: true,
+          navigation: true,
+          navigationPosition: 'right',
+          navigationTooltips: ['First', 'Second', 'Third']
+        });
+      });
+    </script>
   </head>
-  <bodys>
+  <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>

@@ -69,43 +69,15 @@ class HomePublic extends React.Component<Props & WithStyles<classNames>> {
   }
 
   componentDidMount() {
-    $('#fullpage').fullpage({
-      anchors: ['First', 'Second', 'Third'],
-      sectionsColor: ['teal', 'purple', 'orange'],
-      fitToSection: true,
-      interlockedSlides: false,
-      dragAndMove: true,
-      offsetSections: true,
-      parallax: true,
-      parallaxOptions: {type: 'reveal', percentage: 62, property: 'translate'},
-      lazyLoading: true,
-      navigation: true,
-      navigationPosition: 'right',
-      navigationTooltips: ['First', 'Second', 'Third']
-    });
+    // ghghg
   }
 
   componentWillUnmount() {
-    $('#fullpage').fullpage({
-      navigation: false,
-    });
+    // hjh
   }
   // tslint:disable-next-line:typedef
   componentDidUpdate(prevProps, prevState, prevContext) {
-    $('#fullpage').fullpage({
-      anchors: ['First', 'Second', 'Third'],
-      sectionsColor: ['teal', 'purple', 'orange'],
-      fitToSection: true,
-      interlockedSlides: false,
-      dragAndMove: true,
-      offsetSections: true,
-      parallax: true,
-      parallaxOptions: {type: 'reveal', percentage: 62, property: 'translate'},
-      lazyLoading: true,
-      navigation: true,
-      navigationPosition: 'right',
-      navigationTooltips: ['First', 'Second', 'Third']
-    });
+    // jkjkk
   }
   render() {
     const { classes } = this.props;
