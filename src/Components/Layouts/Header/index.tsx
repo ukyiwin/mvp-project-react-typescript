@@ -3,7 +3,6 @@ import * as React from 'react';
 import { withStyles, StyleRulesCallback } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
@@ -18,10 +17,11 @@ import Forum from 'material-ui-icons/Forum';
 import UserAvatar from '../../UserAvatar';
 import SearchBar from '../../SearchBar';
 import withRoot from '../../../Utils/withRoot';
+import * as Logo from 'Assets/logo.png';
 import { findDOMNode } from 'react-dom';
 import { WithStyles } from 'material-ui';
 
-type classNames = 'flex' | 'left' | 'root'| 'menuButton';
+type classNames = 'flex' | 'left' | 'root'| 'menuButton'| 'label'| 'logo';
 
 const styles: StyleRulesCallback<classNames> = theme => ({
   root: {
@@ -38,6 +38,14 @@ const styles: StyleRulesCallback<classNames> = theme => ({
     marginLeft: -12,
     marginRight: 20,
   },
+  label: {
+    color: '#ffffff'
+  },
+  logo: {
+    width: 64,
+    height: 64,
+    marginRight: 40
+  }
 });
 
 type Props = {
@@ -90,30 +98,63 @@ class PublicHeader extends React.Component<Props & WithStyles<classNames> & Link
   authMenu = (props) => {
     let { classes } =  props;
     return (
-      <AppBar position="fixed" color="default" >
+      <AppBar position="fixed" color="inherit" >
         <Toolbar>
           <Hidden mdUp={true}>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
+          <IconButton 
+            className={classes.menuButton} 
+            color="inherit" 
+            aria-label="Menu"
+          >
+            <MenuIcon />
+          </IconButton>
           </Hidden>
-          <Typography variant="title" color="inherit" align="left" className={classes.flex}>
-            UNIZONN
-          </Typography>
+          <img src={Logo} className={classes.logo} />
           <SearchBar />
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+          <div className={classes.flex} />
+          <IconButton 
+            className={classes.menuButton} 
+            color="inherit" 
+            aria-label="Menu"
+            // tslint:disable-next-line:no-any jsx-alignment
+            component={Link} {...{to: '/'} as any} 
+          >
             <Home />
           </IconButton>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+          <IconButton 
+            className={classes.menuButton} 
+            color="inherit" 
+            aria-label="Menu"
+            // tslint:disable-next-line:no-any jsx-alignment
+            component={Link} {...{to: 'library'} as any} 
+          >
             <Explore />
           </IconButton>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+          <IconButton 
+            className={classes.menuButton} 
+            color="inherit" 
+            aria-label="Menu"
+            // tslint:disable-next-line:no-any jsx-alignment
+            component={Link} {...{to: 'message'} as any} 
+          >
             <ChatBubble />
           </IconButton>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+          <IconButton 
+            className={classes.menuButton} 
+            color="inherit" 
+            aria-label="Menu"
+            // tslint:disable-next-line:no-any jsx-alignment
+            component={Link} {...{to: 'forum'} as any} 
+          >
             <Forum />
           </IconButton>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+          <IconButton 
+            className={classes.menuButton} 
+            color="inherit" 
+            aria-label="Menu"
+            // tslint:disable-next-line:no-any jsx-alignment
+            component={Link} {...{to: 'notification'} as any} 
+          >
             <Notifications />
           </IconButton>
           <IconButton 
@@ -124,7 +165,7 @@ class PublicHeader extends React.Component<Props & WithStyles<classNames> & Link
           >
             <UserAvatar fullName={'Rex Raphael'} fileName={'http://i44.tinypic.com/2i6chmq.jpg'} />
           </IconButton>
-          <Button size={'small'}>Ask Question</Button>
+          <Button size={'small'} variant={'raised'} color={'secondary'}>Ask Question</Button>
         </Toolbar>
       </AppBar>
     );
@@ -133,34 +174,41 @@ class PublicHeader extends React.Component<Props & WithStyles<classNames> & Link
   unAuthMenu = (props) => {
     let { classes } =  props;
     return (
-      <AppBar position="fixed" color="default" >
+      <AppBar position="fixed" style={{backgroundColor: 'transparent' }} >
         <Toolbar>
           <Hidden mdUp={true}>
             <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
               <MenuIcon />
             </IconButton>
           </Hidden>
-          <Typography variant="title" color="inherit" align="left" className={classes.flex}>
-            UNIZONN
-          </Typography>
+          <img src={Logo} className={classes.logo} />
           <SearchBar />
+          <div className={classes.flex} />
           <Button 
             size={'small'} 
+            variant="raised"
+            color={'primary'}
             // tslint:disable-next-line:no-any jsx-alignment
             component={Link} {...{to: 'login'} as any} 
             // tslint:disable-next-line:jsx-alignment
-            to={'/login'} color={'default'} 
+            to={'/login'}
           >
             Login
           </Button>
           <Button
             size={'small'} 
+            variant="raised"
+            classes={{
+              label: classes.label
+            }}
+            style={{ backgroundColor: 'teal'}}
+            color={'primary'}
             // tslint:disable-next-line:no-any jsx-alignment
             component={Link} {...{to: 'login'} as any} 
             // tslint:disable-next-line:jsx-alignment
-            to={'/signup'} color={'default'}
+            to={'/signup'}
           >
-            Register
+            Sign up
           </Button>
         </Toolbar>
       </AppBar>

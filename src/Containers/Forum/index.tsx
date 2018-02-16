@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './style.css';
 
-export default class Message extends React.Component {
+export default class Forum extends React.Component {
   render() {
     return (
       <div className="App">

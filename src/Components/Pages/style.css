@@ -1,0 +1,17 @@
+h1{
+  font-weight: 900;
+  font-size: 8em;
+  color: #FFF;
+  -webkit-text-shadow: 0 .3rem .9rem rgba(0,0,0,.4);
+  text-shadow: 0 0.3rem 0.9rem rgba(0,0,0,.4);
+  letter-spacing: -3px;
+}
+
+h5{
+  font-weight: 900;
+  font-size: 8em;
+  color: #FFF;
+  -webkit-text-shadow: 0 .3rem .9rem rgba(0,0,0,.4);
+  text-shadow: 0 0.3rem 0.9rem rgba(0,0,0,.4);
+  letter-spacing: -3px;
+}

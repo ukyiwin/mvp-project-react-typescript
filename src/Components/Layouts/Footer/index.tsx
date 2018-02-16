@@ -8,8 +8,8 @@ import Hidden from 'material-ui/Hidden';
 
 const styles = (theme: Theme) => ({
   root: {
-    width: 500,
-  },
+    width: '100%',
+  }
 });
 
 type Props = {

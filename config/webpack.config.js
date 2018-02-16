@@ -118,6 +118,17 @@ module.exports = {
       query: {
         name: 'static/media/[name].[hash:8].[ext]',
       },
+    }, {
+      test: /\.(png|jpg|gif)$/,
+      use: [
+        {
+          loader: 'url-loader',
+          options: {
+            limit: 8120,
+            fallback: 'responsive-loader'
+          }
+        }
+      ]
     }],
   },
   devServer: {
