@@ -5,7 +5,6 @@ type Post {
   isPublished: Boolean! @default(value: "false")
   title: String!
   text: String!
-  author: User!
 }
 
 type Article {
@@ -19,6 +18,47 @@ type Article {
   author: User!
 }
 
+type Country {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  name: String!
+}
+
+type Institutions {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  type: InstitutionsType!
+  Country: Country!
+}
+
+type School {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  Country: Country!
+}
+
+type Faculty {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  school: School!
+}
+
+type Department {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  Country: Country!
+}
+
 type User {
   id: ID! @unique
   email: String! @unique
@@ -27,8 +67,10 @@ type User {
   name: String!
   firstname: String!
   lastname: String!
+  followedBy: [User!]! @relation(name: 'FollowedBy')
+  following: [User!]! @relation(name: 'Following')
   type: Usertype!
-  posts: [Post!]!
+  articles: [Article!]!
   author: User!
 }
 
@@ -38,6 +80,11 @@ enum Usertype{
   Admin
   Editor
   Super
+}
+
+enum InstitutionTYpe{
+  University
+  College
 }
 
 enum Arcticletype{
