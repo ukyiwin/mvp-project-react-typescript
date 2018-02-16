@@ -40,7 +40,7 @@
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "deploy": "now -e REACT_APP_SECRET_CODE=secretcode",
-    "push": "git push origin && now && now alias unizonn.now.sh"
+    "push": "git push origin && now --public && now alias unizonn.now.sh"
   },
   "devDependencies": {
     "@types/jest": "^22.1.1",
