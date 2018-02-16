@@ -6,6 +6,17 @@
     "lib": [
       "esnext", "dom", "es6", "esnext.asynciterable"
     ],
+    "typeRoots": ["node_modules/@types", "src/CustomTypings"],
+    "baseUrl": "./src",
+    "paths": {
+        "@": ["src"],
+        "Components": ["./src/Components"],
+        "Containers": ["./src/Components/Containers"],
+        "Assets": ["./src/Assets"],
+        "ReduxApp": ["./src/Redux"],
+        "Theme": ["./src/Theme"],
+        "Utils": ["./src/Utils"]
+    },
     "skipLibCheck": true,
     "sourceMap": true,
     "allowJs": true,

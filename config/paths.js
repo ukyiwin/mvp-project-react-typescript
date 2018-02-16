@@ -9,6 +9,7 @@ module.exports = {
   appPublic: resolvePath('public'),
   template: resolvePath('src/index.html'),
   assets: resolvePath('src/assets'),
+  utils: path.resolve('src/Utils'),
   packageJson: resolvePath('./package.json'),
   yarnLockFile: resolvePath('yarn.lock'),
   dist: resolvePath('dist'),

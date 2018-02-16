@@ -58,6 +58,17 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx', '.json'],
+    modules: ['src', 'node_modules'],
+    alias: {
+      '@': resolve('src'),
+      'Components': path.resolve(__dirname, '../src/Components'),
+      'Containers': path.resolve(__dirname, '../src/Containers'),
+      'Assets': path.resolve(__dirname, '../src/Assets'),
+      'ReduxApp': path.resolve(__dirname, '../src/Redux'),
+      'Theme': path.resolve(__dirname, '../src/Theme'),
+      'Utils': path.resolve(__dirname, '../src/Utils'),
+      jquery: "jquery/src/jquery"
+    }
   },
   module: {
     loaders: [{
@@ -107,6 +118,17 @@ module.exports = {
       query: {
         name: 'static/media/[name].[hash:8].[ext]',
       },
+    }, {
+      test: /\.(png|jpg|gif)$/,
+      use: [
+        {
+          loader: 'url-loader',
+          options: {
+            limit: 8120,
+            fallback: 'responsive-loader'
+          }
+        }
+      ]
     }],
   },
   devServer: {
@@ -117,6 +139,10 @@ module.exports = {
   target: 'web',
   plugins: [
 
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
+    }),
     /** common plugins */
     new ProgressBarPlugin({
       format: `  :bar ${chalk.green.bold(':percent')} (:etas remaining) ${chalk.gray(':msg...')}`,
