@@ -240,23 +240,3 @@ class PublicHeader extends React.Component<Props & WithStyles<classNames> & Link
 }
 
 export default withRoot(withStyles(styles)(PublicHeader));
-
-/*
-<Popover
-              open={this.state.open}
-              anchorEl={anchorEl}
-              anchorReference={anchorReference}
-              anchorPosition={{ top: positionTop, left: positionLeft }}
-              onClose={this.handleClose}
-              anchorOrigin={{
-                vertical: anchorOriginVertical,
-                horizontal: anchorOriginHorizontal,
-              }}
-              transformOrigin={{
-                vertical: transformOriginVertical,
-                horizontal: transformOriginHorizontal,
-              }}
-            >
-              <Typography>The content of the Popover.</Typography>
-            </Popover>
-*/
