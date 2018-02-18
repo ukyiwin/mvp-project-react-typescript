@@ -1,0 +1,12 @@
+$global-primary-background: #09d35d !default;
+$navbar-nav-item-height: 55px !default;
+$navbar-background: #212121 !default;
+
+@import 'uikit/src/scss/variables.scss';
+@import 'uikit/src/scss/mixins.scss';
+
+@import 'uikit/src/scss/uikit.scss';
+
+button {
+  border-radius: 67rem
+}

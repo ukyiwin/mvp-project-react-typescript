@@ -1,61 +1,14 @@
 import * as React from 'react';
 // import * as $ from 'jquery';
-import { PageOne, BigH1 } from 'Components/Pages';
-import { Button, TextField, withStyles } from 'material-ui';
-import { WithStyles } from 'material-ui';
-import { StyleRulesCallback } from 'material-ui/styles';
+// import LoginSignupForm from 'Components/LoginSignupForm';
 import './style.css';
-import { purple } from 'material-ui/colors';
-import withRoot from 'Utils/withRoot';
-
-type classNames = 'container' | 'formControl' | 'inputLabelFocused' 
-| 'inputInkbar'| 'textFieldRoot'| 'textFieldInput'| 'textFieldFormLabel';
-
-const styles: StyleRulesCallback<classNames> = theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap'
-  },
-  formControl: {
-    margin: theme.spacing.unit,
-  },
-  inputLabelFocused: {
-    color: purple[500],
-  },
-  inputInkbar: {
-    '&:after': {
-      backgroundColor: purple[500],
-    },
-  },
-  textFieldRoot: {
-    padding: 0,
-    'label + &': {
-      marginTop: theme.spacing.unit * 3,
-    },
-  },
-  textFieldInput: {
-    borderRadius: 4,
-    backgroundColor: theme.palette.common.white,
-    border: '1px solid #ced4da',
-    fontSize: 16,
-    padding: '10px 12px',
-    width: 'calc(100% - 14px)',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    '&:focus': {
-      borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-    },
-  },
-  textFieldFormLabel: {
-    fontSize: 18,
-  },
-});
+// import { purple } from 'material-ui/colors';
 
 type Props = {
   classes?: object,
 };
 
-class HomePublic extends React.Component<Props & WithStyles<classNames>> {
+class HomePublic extends React.Component<Props> {
 
   offsetTarget: number;
   state = {
@@ -69,75 +22,78 @@ class HomePublic extends React.Component<Props & WithStyles<classNames>> {
   }
 
   componentDidMount() {
-    // ghghg
+    // kjk
   }
 
   componentWillUnmount() {
     // hjh
   }
-  // tslint:disable-next-line:typedef
-  componentDidUpdate(prevProps, prevState, prevContext) {
-    // jkjkk
-  }
+  
   render() {
-    const { classes } = this.props;
+    // const { classes } = this.props;
 
     return(
-      <div id="fullpage">
-        <div className="section " id="section0">
-          <div className="intro">
-            <h1><BigH1 style={{textAlign: 'center'}}>THIS IS UNIZONN</BigH1></h1>
-            <h2 
-              style={{ fontFamily: 'brandon-grotesque', fontSize: 20, 
-              textAlign: 'center',
-              marginBottom: 20}}
-            >
-              Join a thriving and fun community of students 
-              <br/>
-              and academia worldwide, get started today
-            </h2>
-            <TextField
-              placeholder="Email"
-              InputProps={{
-                disableUnderline: true,
-                classes: {
-                  root: classes.textFieldRoot,
-                  input: classes.textFieldInput,
-                },
-              }}
-              InputLabelProps={{
-                shrink: true,
-                className: classes.textFieldFormLabel,
-              }}
-            />
-            <ul style={{justifyContent: 'space-between', alignContent: 'space-between', marginTop: 20}}>
-              <li>
-                <Button variant={'raised'} className="section-1-button" color={'secondary'}>
-                  Get started
-                </Button>
-              </li>
-            </ul>
-          </div>
+      <div className="uk-width-expand">
+
+        <div className="uk-section uk-section-muted" uk-height-viewport="expand: true">      
+          <div className="uk-container uk-container-expand">
+              <h3>Section Muted</h3>
+              <div className="uk-grid-match uk-child-width-1-3@m" uk-grid={true}>
+                <div>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                </div>
+                <div>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                </div>
+                <div>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                </div>
+              </div>
+            </div>
         </div>
-        <div className="section" id="section1">
-          <div className="slide" id="slide1">
-            <div className="intro">
-            <h1>Slide 1</h1>
+
+        <div className="uk-section uk-section-primary uk-light uk-height-1-1">
+          <div className="uk-container">
+            <h3>Section Primary</h3>
+            <div className="uk-grid-match uk-child-width-1-3@m" uk-grid={true}>
+              <div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+              </div>
+              <div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+              </div>
+              <div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+              </div>
             </div>
           </div>
-      
-            <div className="slide" id="slide2">
-            <h1>Slide 2</h1>
+        </div>
+
+        <div className="uk-section-default">
+          <div 
+            className="uk-section uk-light uk-background-cover" 
+            style={{backgroundImage: 'url(../docs/images/dark.jpg)'}}
+          >
+            <div className="uk-container">
+              <h3>Section with Images</h3>
+              <div className="uk-grid-match uk-child-width-1-3@m" uk-grid={true}>
+                <div>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                </div>
+                <div>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                </div>
+                <div>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="section" id="section2">
-          <div className="intro">
-            <PageOne />
-          </div>
-        </div>
+
       </div>
     );
   }
 }
 
-export default withRoot(withStyles(styles)(HomePublic));
+export default HomePublic;
