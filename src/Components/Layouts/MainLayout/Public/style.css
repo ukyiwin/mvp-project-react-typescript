@@ -3546,7 +3546,7 @@ ul.uk-nav-sub {
  * Nav items
  */
 .uk-navbar-nav > li > a {
-  color: #999; }
+  color: #ffffff; }
 
 /*
  * Hover
@@ -3555,16 +3555,16 @@ ul.uk-nav-sub {
 .uk-navbar-nav > li:hover > a,
 .uk-navbar-nav > li > a:focus,
 .uk-navbar-nav > li > a.uk-open {
-  color: #666;
+  color: #ffffff;
   outline: none; }
 
 /* OnClick */
 .uk-navbar-nav > li > a:active {
-  color: #333; }
+  color: #ffffff; }
 
 /* Active */
 .uk-navbar-nav > li.uk-active > a {
-  color: #333; }
+  color: #ffffff; }
 
 /* Item
  ========================================================================== */

@@ -1,6 +1,10 @@
 $global-primary-background: #09d35d !default;
 $navbar-nav-item-height: 55px !default;
 $navbar-background: #212121 !default;
+$navbar-nav-item-active-color: #ffffff !default;
+$navbar-nav-item-color: #ffffff !default;
+$navbar-nav-item-hover-color:  #ffffff !default;
+$navbar-nav-item-onclick-color: #ffffff !default;
 
 @import 'uikit/src/scss/variables.scss';
 @import 'uikit/src/scss/mixins.scss';

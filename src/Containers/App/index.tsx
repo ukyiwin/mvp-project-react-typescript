@@ -41,6 +41,7 @@ const App = () => (
             )} 
           // tslint:disable-next-line:jsx-alignment
         />
+        <PrivateLayout component={Home} path="/home" />
         <EmptyLayout component={Login} path="/login" />
         <SignupLayout component={SignupStepOne} path="/signup" />
         <SignupLayout component={SignupStepOne} path="/signups/1/:id" />

@@ -23,6 +23,7 @@ const PublicLayout: React.SFC<DefaultProps> = (props) => {
         <PublicHeader />
         <div className="uk-flex">
           <Component {...matctProps} />
+          
         </div>
         <FooterPublic />
       </div>
