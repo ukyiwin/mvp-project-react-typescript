@@ -62,6 +62,7 @@ module.exports = {
     alias: {
       '@': resolve('src'),
       'Components': path.resolve(__dirname, '../src/Components'),
+      'Graphql': path.resolve(__dirname, '../src/Graphql'),
       'Containers': path.resolve(__dirname, '../src/Containers'),
       'Assets': path.resolve(__dirname, '../src/Assets'),
       'ReduxApp': path.resolve(__dirname, '../src/Redux'),
@@ -129,6 +130,9 @@ module.exports = {
           }
         }
       ]
+    }, { 
+      test: /vendor\/.+\.(jsx|js|tsx|ts)$/,
+      loader: 'imports?jQuery=jquery,$=jquery,this=>window'
     }],
   },
   devServer: {

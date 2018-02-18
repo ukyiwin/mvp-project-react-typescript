@@ -40,12 +40,12 @@ const PageOne = () => {
   return (
       <SharedDiv>
         <Grid container={true} spacing={24} direction={'row'}>
-            <Grid item={true} xs={6} alignContent={'center'}>
+            <Grid item={true} xs={12} sm={12} md={6} lg={6} alignContent={'center'}>
               <YouTube
                 videoId="a_ONcLi8tfY"
               />
             </Grid>
-            <Grid item={true} xs={6}>
+            <Grid item={true} xs={12} sm={12} md={6} lg={6}>
               <BigH1>What is unizonn</BigH1>
               <h5 style={{textAlign: 'left', fontFamily: 'brandon-grotesque', fontSize: 20}}>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut, 

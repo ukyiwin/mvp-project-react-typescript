@@ -1,7 +1,7 @@
 import * as React from 'react';
 import glamorous from 'glamorous';
-import { Grid } from 'material-ui';
-import './style.css';
+// import { Grid } from 'material-ui';
+// import './style.css';
 
 // var winWidth = $(window).width();
 // var winHeight = $(window).height();
@@ -14,18 +14,6 @@ import './style.css';
   }
 };*/
 
-const SharedDiv = glamorous.div({
-  textAlign: 'center',
-  position: 'absolute',
-  width: '100%', 
-  height: '60px',
-  bottom: 0,
-  left: 0,
-  paddingBottom: 50,
-  justifyContent: 'center',
-  alignContent: 'center',
-});
-
 const A = glamorous.a({
   fontFamily: 'brandon-grotesque',
   color: '#ffffff'
@@ -33,27 +21,42 @@ const A = glamorous.a({
 
 const FooterPublic = () => {
   return (
-    <Grid item={true} xs={12}>
-      <SharedDiv id={'footerMenu'}>
-        <ul>
-          <li>
-            <A href="#">Terms</A>
-          </li>
-          <li>
-            <A href="#">Privacy</A>
-          </li>
-          <li>
-            <A href="#">Jobs</A>
-          </li>
-          <li>
-            <A href="#">About</A>
-          </li>
-          <li>
-            <A href="#">Support</A>
-          </li>
-        </ul>
-      </SharedDiv>
-    </Grid>
+    <div className="uk-section uk-section-secondary uk-light">
+      <div className="uk-container">
+        <h3>Section Secondary</h3>
+        <div className="uk-grid-match uk-child-width-1-1@s" uk-grid={true}>
+          <div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+          </div>
+          <div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+          </div>
+          <div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+          </div>
+        </div>
+        <div className="uk-grid-match  uk-child-width-1-3@m" uk-grid={true} id="footerMenu">
+            <ul>
+              <li>
+                <A href="#">Terms</A>
+              </li>
+              <li>
+                <A href="#">Privacy</A>
+              </li>
+              <li>
+                <A href="#">Jobs</A>
+              </li>
+              <li>
+                <A href="#">About</A>
+              </li>
+              <li>
+                <A href="#">Support</A>
+              </li>
+            </ul>
+        </div>
+        
+      </div>
+    </div>
   );
 };
 
