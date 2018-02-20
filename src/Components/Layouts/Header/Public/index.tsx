@@ -1,6 +1,6 @@
 import * as React from 'react';
 // import UIkit from 'uikit/src/js/uikit';
-// import { Link, LinkProps } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import * as Logo from 'Assets/logo.png';
 
 type Props = {
@@ -27,7 +27,13 @@ class PublicHeader extends React.Component<Props> {
           style={{ position: 'relative', zIndex: 980, elevation: 1}}
         >
           <div className="uk-navbar-left">
-            <a className="uk-navbar-toggle" uk-navbar-toggle-icon={true} href=""/>
+            <button
+              className="uk-navbar-toggle uk-hidden@m"
+              type="button" 
+              uk-navbar-toggle-icon={true} 
+              uk-toggle="target: #offcanvas-nav"
+              uk-icon="icon: menu; ratio: 1.5"
+            />
             <a className="uk-navbar-item uk-logo" href="#">
             <img 
               src="https://getuikit.com/docs/images/avatar.jpg"
@@ -36,18 +42,17 @@ class PublicHeader extends React.Component<Props> {
               height="40" 
             />  Unizonn
             </a>
-            <ul className="uk-navbar-nav">
-              <li><a href="#" className="uk-light">Articles</a></li>
-              <li><a href="#">Stories</a></li>
-              <li><a href="#">Trending</a></li>
-              <li><a href="#">Forums</a></li>
+            <ul className="uk-navbar-nav uk-visible@m">
+              <li><Link to="/home" className="uk-light">Articles</Link></li>
+              <li><Link to="/home" className="uk-light">Stories</Link></li>
+              <li><Link to="/forum" className="uk-light">Forums</Link></li>
+              <li><Link to="/library" className="uk-light">Library</Link></li>
             </ul>
             <div className="uk-navbar-right uk-visible@s">
               <ul className="uk-iconnav">
-                  <li><a href="#" uk-icon="icon: location; ratio: 1.5"/></li>
-                  <li><a href="#" uk-icon="icon: calendar; ratio: 1.5"/></li>
-                  <li><a href="#" uk-icon="icon: mail; ratio: 1.5"/></li>
-                  <li><a href="#" uk-icon="icon: bell; ratio: 1.5"/></li>
+                <li><a href="#" uk-icon="icon: calendar; ratio: 1.5"/></li>
+                <li><a href="#" uk-icon="icon: mail; ratio: 1.5"/></li>
+                <li><a href="#" uk-icon="icon: bell; ratio: 1.5"/></li>
               </ul>
               <ul className="uk-navbar-nav">
                 <li>
@@ -74,10 +79,10 @@ class PublicHeader extends React.Component<Props> {
                 </li>
               </ul>
               <div className="uk-navbar-nav uk-padding-small">
-                <button className="uk-button uk-button-primary uk-button-small">Ask question</button>
+                <Link to="/ask" className="uk-button uk-button-primary uk-button-small">Ask question</Link>
               </div>
               <div className="uk-navbar-nav uk-padding-small">
-                <button className="uk-button uk-button-default uk-button-small">Login / Register</button>
+                <Link to="/login" className="uk-button uk-button-default uk-button-small">Login / Register</Link>
               </div>
             </div>
             <div className="uk-navbar-right uk-hidden@s">

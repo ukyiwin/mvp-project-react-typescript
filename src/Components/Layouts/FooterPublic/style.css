@@ -2,7 +2,7 @@
   color: #fff;
 }
 
-ol,ul {
+#footerMenu ol,ul {
   list-style: none;
   margin:0;
   padding:0;
@@ -22,22 +22,22 @@ ol,ul {
 	background: rgba(0,0,0, 0.5);
 	color: #fff;
 }
-li a{
+#footerMenu li a{
 	text-decoration:none;
 	color: #000;
 }
-li.active a:hover{
+#footerMenu li.active a:hover{
 	color: #000;
 }
-li:hover{
+#footerMenu li:hover{
 	background: rgba(255,255,255, 0.8);
 }
-li a,
+#footerMenu li a,
 li.active a{
 	padding: 9px 18px;
 	display:block;
 }
-li.active a{
+#footerMenu li.active a{
 	color: #fff;
 }
 #menu{
@@ -70,10 +70,10 @@ li.active a{
 	display: block;
 	margin: 0 22px 0 0;
 }
-li a:hover{
+#footerMenu li a:hover{
 	text-decoration:underline;
 }
-li{
+#footerMenu li{
 	display:inline-block;
 	position:relative;
 }

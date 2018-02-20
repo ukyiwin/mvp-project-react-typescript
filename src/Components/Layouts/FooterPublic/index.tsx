@@ -1,7 +1,7 @@
 import * as React from 'react';
 import glamorous from 'glamorous';
 // import { Grid } from 'material-ui';
-// import './style.css';
+import './style.css';
 
 // var winWidth = $(window).width();
 // var winHeight = $(window).height();
