@@ -30,7 +30,7 @@ const App = () => (
   <BrowserRouter
     forceRefresh={!supportsHistory}
   >
-    <div className={'app'}>
+    <div className="app uk-height-1-1" >
       <Switch>
         <Route 
           exact={true}

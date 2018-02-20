@@ -22,10 +22,10 @@ const EmptyLayout: React.SFC<DefaultProps> = (props) => {
       exact={true}
       render={matctProps =>
         isAuthenticated ?
-          ( <div className="uk-offcanvas-content uk-background-muted">
+          ( <div className="uk-offcanvas-content uk-background-muted uk-height-1-1 ">
             {isAuthenticated ? <PrivateHeader /> : <PublicHeader />}
-            <div className="uk-flex">
-              <div className="uk-width-expand">
+            <div className="uk-flex uk-height-1-1 ">
+              <div className="uk-width-expand  uk-height-1-1 ">
                 <Component {...matctProps} />
               </div>
             </div>

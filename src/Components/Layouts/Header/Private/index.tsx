@@ -44,9 +44,9 @@ class PrivateHeader extends React.Component<Props> {
             </a>
             <ul className="uk-navbar-nav uk-visible@m">
               <li><Link to="/home" className="uk-light">Articles</Link></li>
-              <li><Link to="/home" className="uk-light">Stories</Link></li>
               <li><Link to="/forum" className="uk-light">Forums</Link></li>
               <li><Link to="/library" className="uk-light">Library</Link></li>
+              <li><Link to="/home" className="uk-light">Network</Link></li>
             </ul>
             <div className="uk-navbar-right uk-visible@s">
               <ul className="uk-iconnav">
