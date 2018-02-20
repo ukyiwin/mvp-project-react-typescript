@@ -62,11 +62,12 @@ type Department {
 type User {
   id: ID! @unique
   email: String! @unique
-  username: String! @unique
+  username: String @unique
   password: String!
-  name: String!
+  name: String
   firstname: String!
   lastname: String!
+  gender: String!
   followedBy: [User!]! @relation(name: 'FollowedBy')
   following: [User!]! @relation(name: 'Following')
   type: Usertype!
@@ -90,4 +91,9 @@ enum InstitutionTYpe{
 enum Arcticletype{
   External
   Internal
+}
+
+enum Gender{
+  Male
+  Female
 }

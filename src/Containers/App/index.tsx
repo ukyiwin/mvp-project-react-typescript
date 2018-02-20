@@ -3,7 +3,7 @@ import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import Home from '../Home';
 import PublicHome from '../HomePublic';
 import NotFound from '../NotFound';
-import { PublicLayout, PrivateLayout, SignupLayout, EmptyLayout } from 'Components/Layouts/MainLayout';
+import { PublicLayout, PrivateLayout, EmptyLayout } from 'Components/Layouts/MainLayout';
 import Maps from 'Containers/Maps';
 import Forum from 'Containers/Forum';
 import Message from 'Containers/Message';
@@ -23,7 +23,7 @@ import Login from 'Containers/Auth/Login';
   paddingRight: '70px',
 }); */
 
-let isAUthenticated = false;
+let isAuthenticated = true;
 const supportsHistory = 'pushState' in window.history;
 
 const App = () => (
@@ -37,19 +37,20 @@ const App = () => (
           path="/" 
           render={
             () => ( 
-              isAUthenticated ? ( <PrivateLayout component={Home} />) : (<PublicLayout component={PublicHome} />)
+              isAuthenticated ? ( <PrivateLayout component={Home} isAuthenticated={isAuthenticated} />)
+               : (<PublicLayout component={PublicHome} isAuthenticated={isAuthenticated}/>)
             )} 
           // tslint:disable-next-line:jsx-alignment
         />
-        <PrivateLayout component={Home} path="/home" />
-        <EmptyLayout component={Login} path="/login" />
-        <SignupLayout component={SignupStepOne} path="/signup" />
-        <SignupLayout component={SignupStepOne} path="/signups/1/:id" />
-        <SignupLayout component={SignupStepTwo} path="/signup/2/:id" />
-        <SignupLayout component={SignupStepFinal} path="/signup/3/:id" />
-        <PrivateLayout component={Maps} path="/library" />
-        <PrivateLayout component={Message} path="/message" />
-        <PrivateLayout component={Forum} path="/Forum" />
+        <PrivateLayout component={Home} path="/home" isAuthenticated={isAuthenticated} />
+        <EmptyLayout component={Login} path="/login" isAuthenticated={isAuthenticated}  />
+        <PublicLayout component={SignupStepOne} path="/signup" isAuthenticated={isAuthenticated} />
+        <PublicLayout component={SignupStepOne} path="/signups/1/:id" isAuthenticated={isAuthenticated} />
+        <PublicLayout component={SignupStepTwo} path="/signup/2/:id" isAuthenticated={isAuthenticated}/>
+        <PublicLayout component={SignupStepFinal} path="/signup/3/:id" isAuthenticated={isAuthenticated} />
+        <EmptyLayout component={Maps} path="/library" isAuthenticated={isAuthenticated} />
+        <EmptyLayout component={Message} path="/message" isAuthenticated={isAuthenticated} />
+        <PrivateLayout component={Forum} path="/Forum" isAuthenticated={isAuthenticated} />
         <Route component={NotFound} path="*" />
       </Switch>
     </div>

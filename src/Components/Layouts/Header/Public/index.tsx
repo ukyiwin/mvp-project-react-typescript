@@ -27,7 +27,13 @@ class PublicHeader extends React.Component<Props> {
           style={{ position: 'relative', zIndex: 980, elevation: 1}}
         >
           <div className="uk-navbar-left">
-            <a className="uk-navbar-toggle" uk-navbar-toggle-icon={true} href=""/>
+            <button
+              className="uk-navbar-toggle uk-hidden@m"
+              type="button" 
+              uk-navbar-toggle-icon={true} 
+              uk-toggle="target: #offcanvas-nav"
+              uk-icon="icon: menu; ratio: 1.5"
+            />
             <a className="uk-navbar-item uk-logo" href="#">
             <img 
               src="https://getuikit.com/docs/images/avatar.jpg"
@@ -36,7 +42,7 @@ class PublicHeader extends React.Component<Props> {
               height="40" 
             />  Unizonn
             </a>
-            <ul className="uk-navbar-nav">
+            <ul className="uk-navbar-nav uk-visible@m">
               <li><Link to="/home" className="uk-light">Articles</Link></li>
               <li><Link to="/home" className="uk-light">Stories</Link></li>
               <li><Link to="/forum" className="uk-light">Forums</Link></li>
