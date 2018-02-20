@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Editor from 'Components/Editor';
 // import UIkit from 'uikit/src/js/uikit';
 // import { Link } from 'react-router-dom';
 
@@ -42,18 +43,25 @@ class WriteModal extends React.Component<Props> {
           </a>
         </div>
         
-        <div id="modal-close-default" data-uk-modal={true}>
-            <div className="uk-modal-dialog uk-modal-body">
+        <div id="modal-close-default"data-uk-modal={true}>
+            <div  
+              style={{maxWidth: 800}} 
+              className="uk-modal-dialog uk-modal-body
+               uk-overflow-hidden uk-article uk-padding"
+            >
                 <button className="uk-modal-close-default" type="button" data-uk-close={true} />
-                <h2 className="uk-modal-title">Default</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
-                  enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                   nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
-                   in reprehenderit in voluptate velit esse cillum dolore eu fugiat 
-                   nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-                   culpa qui officia deserunt mollit anim id est laborum.
-                </p>
+                <textarea className="uk-article-title" placeholder="Write your title" />
+                <Editor />
+                
+                <input 
+                  className="uk-article-meta" 
+                  placeholder="Tags"  
+                  style={{marginTop: 70, marginBottom: 10}}
+                />
+                <div className="uk-width-1-1">
+                  <button className="uk-button uk-button-default" type="button">Save Draft</button>
+                  <button className="uk-button uk-button-primary uk-align-right" type="button">Publish</button>
+                </div>
             </div>
         </div>
       </div>
