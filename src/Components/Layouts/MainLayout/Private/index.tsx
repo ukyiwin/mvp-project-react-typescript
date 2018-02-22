@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { PrivateHeader, PublicHeader } from 'Components/Layouts/Header';
+import { PrivateHeader } from 'Components/Layouts/Header';
 // import { FooterPublic } from 'Components/Layouts/FooterPublic';
 import './style.css';
 import SideBar from 'Components/Layouts/SideBar';
@@ -24,7 +24,7 @@ const PublicLayout: React.SFC<DefaultProps> = (props) => {
       render={matctProps =>
         isAuthenticated ?
           ( <div className="uk-offcanvas-content uk-background-muted">
-            {isAuthenticated ? <PrivateHeader /> : <PublicHeader />}
+            <PrivateHeader isAuthenticated={isAuthenticated} />
             <div className="uk-flex uk-padding-large uk-padding-remove-vertical">
               <div className="uk-width-1-5 uk-margin-right uk-visible@m">
                 <div className="uk-card uk-card-default uk-card-body uk-width-1-1">
@@ -52,7 +52,7 @@ const PublicLayout: React.SFC<DefaultProps> = (props) => {
             </div>
             <SideBar />
           </div>)
-          : ( <Redirect to={{ pathname: '/home' }} /> )
+          : ( <Redirect to={{ pathname: '/' }} /> )
       }
     />
   );

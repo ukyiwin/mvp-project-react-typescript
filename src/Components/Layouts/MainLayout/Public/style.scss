@@ -1,6 +1,6 @@
 $global-primary-background: #09d35d !default;
 $navbar-nav-item-height: 55px !default;
-$navbar-background: #212121 !default;
+$navbar-color-mode: "dark";
 $navbar-nav-item-active-color: #09d35d !default;
 $navbar-nav-item-color: #d6d3d3 !default;
 $navbar-nav-item-hover-color:  #ffffff !default;
@@ -46,3 +46,5 @@ button {
 @import "spectre.css/src/_autocomplete";
 @import "spectre.css/src/_avatars";
 @import "spectre.css/src/_calendars";
+@import "spectre.css/src/_buttons";
+@import "spectre.css/src/_forms";

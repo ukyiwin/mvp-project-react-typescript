@@ -15,15 +15,15 @@ type Article {
   title: String!
   body: String!
   type: Arcticletype
-  author: User!
+  author: User! @relation(name: "ArticleOwner")
 }
 
 type Country {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
-  title: String!
-  name: String!
+  shortName: String! @unique
+  name: String! @unique
 }
 
 type Institutions {
@@ -31,7 +31,7 @@ type Institutions {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
-  type: InstitutionsType!
+  type: InstitutionType!
   Country: Country!
 }
 
@@ -40,7 +40,7 @@ type School {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
-  Country: Country!
+  institution: Institutions!
 }
 
 type Faculty {
@@ -61,6 +61,8 @@ type Department {
 
 type User {
   id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
   email: String! @unique
   username: String @unique
   password: String!
@@ -68,11 +70,55 @@ type User {
   firstname: String!
   lastname: String!
   gender: String!
-  followedBy: [User!]! @relation(name: 'FollowedBy')
-  following: [User!]! @relation(name: 'Following')
+  favourites: [Discussion!]! @relation(name: "UserFavDiscussion")
+  myDiscussions: Discussion! @relation(name: "DiscussionOnUser")
+  connectTo: [Connect!]! @relation(name: "ConectTo")
+  ConectFrom: [Connect!]! @relation(name: "ConectFrom")
   type: Usertype!
-  articles: [Article!]!
+  articles: [Article!]!  @relation(name: "ArticleOwner")
+  opinions: [Opinions!]!
+}
+
+type Connect {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  to: User! @relation(name: "ConectTo")
+  from: User! @relation(name: "ConectFrom")
+  accepted: Boolean! @default(value: "false")
+}
+
+type Forum {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  slug: String
   author: User!
+  private: Boolean! @default(value: "false")
+}
+
+type Discussion {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  slug: String
+  content: String!
+  tags: [String!]!
+  favourites: [User!]! @relation(name: "UserFavDiscussion")
+  author: User! @relation(name: "DiscussionOnUser")
+  private: Boolean! @default(value: "false")
+  opinions: [Opinions!]!
+}
+
+type Opinions {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  content: String!
+  author: User!
+  discussion: Discussion!
 }
 
 enum Usertype{
@@ -83,7 +129,7 @@ enum Usertype{
   Super
 }
 
-enum InstitutionTYpe{
+enum InstitutionType{
   University
   College
 }

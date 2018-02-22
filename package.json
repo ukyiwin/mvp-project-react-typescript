@@ -52,7 +52,6 @@
     "recompose": "^0.26.0",
     "spectre.css": "^0.5.1",
     "subscriptions-transport-ws": "^0.9.5",
-    "tachyons": "^4.9.1",
     "uikit": "^3.0.0-beta.40"
   },
   "scripts": {
@@ -65,7 +64,8 @@
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "deploy": "now -e REACT_APP_SECRET_CODE=secretcode",
-    "push": "git push origin && now --public && now alias unizonn.now.sh"
+    "push": "git push origin && now --public && now alias unizonn.now.sh",
+    "generate-schema": "ts-node generate-schema"
   },
   "devDependencies": {
     "@types/jest": "^22.1.1",

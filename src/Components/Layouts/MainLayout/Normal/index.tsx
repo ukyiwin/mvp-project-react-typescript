@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { PrivateHeader, PublicHeader } from 'Components/Layouts/Header';
+import { PrivateHeader } from 'Components/Layouts/Header';
 // import { FooterPublic } from 'Components/Layouts/FooterPublic';
 import './style.css';
 import SideBar from 'Components/Layouts/SideBar';
@@ -21,9 +21,9 @@ const EmptyLayout: React.SFC<DefaultProps> = (props) => {
       {...rest} 
       exact={true}
       render={matctProps =>
-        isAuthenticated ?
+        !isAuthenticated ?
           ( <div className="uk-offcanvas-content uk-background-muted uk-height-1-1 ">
-            {isAuthenticated ? <PrivateHeader /> : <PublicHeader />}
+            <PrivateHeader isAuthenticated={isAuthenticated} />
             <div className="uk-flex uk-height-1-1 ">
               <div className="uk-width-expand  uk-height-1-1 ">
                 <Component {...matctProps} />

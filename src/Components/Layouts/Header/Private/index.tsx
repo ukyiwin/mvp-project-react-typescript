@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 type Props = {
   classes?: object,
+  isAuthenticated: boolean
 };
 
 // tslint:disable-next-line:no-any
@@ -49,6 +50,7 @@ class PrivateHeader extends React.Component<Props> {
               <li><Link to="/home" className="uk-light">Network</Link></li>
             </ul>
             <div className="uk-navbar-right uk-visible@s">
+              {this.props.isAuthenticated ? <React.Fragment>
               <ul className="uk-iconnav">
                 <li><Link to="/message" uk-icon="icon: calendar; ratio: 1.5"/></li>
                 <li><Link to="/message" uk-icon="icon: mail; ratio: 1.5"/></li>
@@ -78,23 +80,26 @@ class PrivateHeader extends React.Component<Props> {
                 </li>
               </ul>
               <div className="uk-navbar-nav uk-padding-small">
-                <Link to="/ask" className="uk-button uk-button-primary uk-button-small">Ask question</Link>
-              </div>
+                <Link to="/ask" className="uk-button uk-button-primary uk-button-small">Write</Link>
+              </div> </React.Fragment> :
               <div className="uk-navbar-nav uk-padding-small">
                 <Link to="/login" className="uk-button uk-button-default uk-light uk-button-small">
-                Login / Register
+                Get started
                 </Link>
-              </div>
+              </div>}
             </div>
             <div className="uk-navbar-right uk-hidden@s">
+            {this.props.isAuthenticated ? 
               <div className="uk-navbar-nav uk-padding-small">
                 <button className="uk-button uk-button-primary uk-button-small">Ask</button>
               </div>
+              :
               <div className="uk-navbar-nav uk-padding-small">
                 <button className="uk-button uk-button-default uk-light uk-button-small uk-border-rounded">
                   Login
                 </button>
               </div>
+            }
             </div>
           </div>
         </nav>

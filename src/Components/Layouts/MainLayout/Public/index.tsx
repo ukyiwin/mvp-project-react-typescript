@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { PublicHeader, PrivateHeader } from 'Components/Layouts/Header';
+import { PrivateHeader } from 'Components/Layouts/Header';
 import { FooterPublic } from 'Components/Layouts/FooterPublic';
 // import { Grid } from 'material-ui';
 import './style.css';
@@ -22,16 +22,16 @@ const PublicLayout: React.SFC<DefaultProps> = (props) => {
       {...rest} 
       exact={true}
       render={matctProps =>
-        isAuthenticated === true ?
-          ( <div>
-            {isAuthenticated ? <PrivateHeader /> : <PublicHeader />}
-            <div className="uk-flex">
-              <Component {...matctProps} />
-            </div>
-            <FooterPublic />
+        isAuthenticated !== true ?
+          ( <div className="uk-flex-stretch">
             <SideBar />
+            <PrivateHeader isAuthenticated={isAuthenticated} />
+            <Component {...matctProps} />
+            <div style={{bottom: 0}}>
+            <FooterPublic />
+            </div>
           </div>)
-          : ( <Redirect to={{ pathname: '/login' }} /> )
+          : ( <Redirect to={{ pathname: '/home' }} /> )
       }
     />
   );

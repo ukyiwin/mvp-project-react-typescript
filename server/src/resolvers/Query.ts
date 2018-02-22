@@ -26,4 +26,26 @@ export const Query = {
     const id = getUserId(ctx)
     return ctx.db.query.user({ where: { id } }, info)
   },
+
+  async userExist(parent, { email }, ctx: Context, info) {
+    const user = await ctx.db.exists.User({email: email})
+
+    if (user) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  articles(parent, args, ctx: Context, info) {
+    return ctx.db.query.articles({ where: { 
+        isPublished: true, 
+        AND: {
+          author:{
+            fol
+          }
+        } 
+      } 
+    }, info)
+  },
 }
