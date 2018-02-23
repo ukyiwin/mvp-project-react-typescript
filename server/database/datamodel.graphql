@@ -70,10 +70,10 @@ type User {
   lastname: String!
   gender: String!
   favourites: [Discussion!]! @relation(name: "UserFavDiscussion")
-  myDiscussions: Discussion! @relation(name: "DiscussionOnUser")
+  myDiscussions: Discussion @relation(name: "DiscussionOnUser")
   connectTo: [Connect!]! @relation(name: "ConectTo")
   ConectFrom: [Connect!]! @relation(name: "ConectFrom")
-  type: String!
+  type: String @default(value: "Student")
   articles: [Article!]!  @relation(name: "ArticleOwner")
   opinions: [Opinions!]!
 }

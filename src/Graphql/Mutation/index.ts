@@ -7,7 +7,7 @@ export const SIGNUP_USER = gql`
   mutation signupUser($email: String!, $password: String!, $firstname: String!,
    $lastname: String!, $userType: String!, $gender: String! ){
     signup( email: $email, password: $password, firstname: $firstname,
-      lastname: $lastname, userType: $userType, gender: $gender) {
+      lastname: $lastname, type: $userType, gender: $gender) {
       token,
       user{
         ...userFragment

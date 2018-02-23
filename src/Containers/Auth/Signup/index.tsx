@@ -195,6 +195,8 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
                 />
               </div>
             </div>
+            {this.state.gender}
+            {this.state.userType}
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="lastname">Lastname</label>
               <div className="uk-form-controls">

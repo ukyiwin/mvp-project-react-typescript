@@ -123,10 +123,10 @@ type User implements Node {
   lastname: String!
   gender: String!
   favourites(where: DiscussionWhereInput, orderBy: DiscussionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Discussion!]
-  myDiscussions(where: DiscussionWhereInput): Discussion!
+  myDiscussions(where: DiscussionWhereInput): Discussion
   connectTo(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect!]
   ConectFrom(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect!]
-  type: String!
+  type: String
   articles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article!]
   opinions(where: OpinionsWhereInput, orderBy: OpinionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Opinions!]
 }
@@ -2148,9 +2148,9 @@ input UserCreateInput {
   firstname: String!
   lastname: String!
   gender: String!
-  type: String!
+  type: String
   favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput!
+  myDiscussions: DiscussionCreateOneWithoutAuthorInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
@@ -2199,9 +2199,9 @@ input UserCreateWithoutArticlesInput {
   firstname: String!
   lastname: String!
   gender: String!
-  type: String!
+  type: String
   favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput!
+  myDiscussions: DiscussionCreateOneWithoutAuthorInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   opinions: OpinionsCreateManyWithoutAuthorInput
@@ -2214,9 +2214,9 @@ input UserCreateWithoutConectFromInput {
   firstname: String!
   lastname: String!
   gender: String!
-  type: String!
+  type: String
   favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput!
+  myDiscussions: DiscussionCreateOneWithoutAuthorInput
   connectTo: ConnectCreateManyWithoutToInput
   articles: ArticleCreateManyWithoutAuthorInput
   opinions: OpinionsCreateManyWithoutAuthorInput
@@ -2229,9 +2229,9 @@ input UserCreateWithoutConnectToInput {
   firstname: String!
   lastname: String!
   gender: String!
-  type: String!
+  type: String
   favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput!
+  myDiscussions: DiscussionCreateOneWithoutAuthorInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
   opinions: OpinionsCreateManyWithoutAuthorInput
@@ -2244,8 +2244,8 @@ input UserCreateWithoutFavouritesInput {
   firstname: String!
   lastname: String!
   gender: String!
-  type: String!
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput!
+  type: String
+  myDiscussions: DiscussionCreateOneWithoutAuthorInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
@@ -2259,7 +2259,7 @@ input UserCreateWithoutMyDiscussionsInput {
   firstname: String!
   lastname: String!
   gender: String!
-  type: String!
+  type: String
   favourites: DiscussionCreateManyWithoutFavouritesInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
@@ -2274,9 +2274,9 @@ input UserCreateWithoutOpinionsInput {
   firstname: String!
   lastname: String!
   gender: String!
-  type: String!
+  type: String
   favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput!
+  myDiscussions: DiscussionCreateOneWithoutAuthorInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
@@ -2320,7 +2320,7 @@ type UserPreviousValues {
   firstname: String!
   lastname: String!
   gender: String!
-  type: String!
+  type: String
 }
 
 type UserSubscriptionPayload {
@@ -3015,7 +3015,7 @@ export interface UserCreateWithoutMyDiscussionsInput {
   firstname: String
   lastname: String
   gender: String
-  type: String
+  type?: String
   favourites?: DiscussionCreateManyWithoutFavouritesInput
   connectTo?: ConnectCreateManyWithoutToInput
   ConectFrom?: ConnectCreateManyWithoutFromInput
@@ -3112,9 +3112,9 @@ export interface UserCreateWithoutConectFromInput {
   firstname: String
   lastname: String
   gender: String
-  type: String
+  type?: String
   favourites?: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
   connectTo?: ConnectCreateManyWithoutToInput
   articles?: ArticleCreateManyWithoutAuthorInput
   opinions?: OpinionsCreateManyWithoutAuthorInput
@@ -3410,8 +3410,8 @@ export interface UserCreateWithoutFavouritesInput {
   firstname: String
   lastname: String
   gender: String
-  type: String
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  type?: String
+  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
   connectTo?: ConnectCreateManyWithoutToInput
   ConectFrom?: ConnectCreateManyWithoutFromInput
   articles?: ArticleCreateManyWithoutAuthorInput
@@ -3520,9 +3520,9 @@ export interface UserCreateWithoutConnectToInput {
   firstname: String
   lastname: String
   gender: String
-  type: String
+  type?: String
   favourites?: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
   ConectFrom?: ConnectCreateManyWithoutFromInput
   articles?: ArticleCreateManyWithoutAuthorInput
   opinions?: OpinionsCreateManyWithoutAuthorInput
@@ -3655,9 +3655,9 @@ export interface UserCreateWithoutOpinionsInput {
   firstname: String
   lastname: String
   gender: String
-  type: String
+  type?: String
   favourites?: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
   connectTo?: ConnectCreateManyWithoutToInput
   ConectFrom?: ConnectCreateManyWithoutFromInput
   articles?: ArticleCreateManyWithoutAuthorInput
@@ -3765,9 +3765,9 @@ export interface UserCreateInput {
   firstname: String
   lastname: String
   gender: String
-  type: String
+  type?: String
   favourites?: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
   connectTo?: ConnectCreateManyWithoutToInput
   ConectFrom?: ConnectCreateManyWithoutFromInput
   articles?: ArticleCreateManyWithoutAuthorInput
@@ -3873,9 +3873,9 @@ export interface UserCreateWithoutArticlesInput {
   firstname: String
   lastname: String
   gender: String
-  type: String
+  type?: String
   favourites?: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
   connectTo?: ConnectCreateManyWithoutToInput
   ConectFrom?: ConnectCreateManyWithoutFromInput
   opinions?: OpinionsCreateManyWithoutAuthorInput
@@ -4880,10 +4880,10 @@ export interface User extends Node {
   lastname: String
   gender: String
   favourites?: Discussion[]
-  myDiscussions: Discussion
+  myDiscussions?: Discussion
   connectTo?: Connect[]
   ConectFrom?: Connect[]
-  type: String
+  type?: String
   articles?: Article[]
   opinions?: Opinions[]
 }
@@ -5263,7 +5263,7 @@ export interface UserPreviousValues {
   firstname: String
   lastname: String
   gender: String
-  type: String
+  type?: String
 }
 
 export interface ConnectEdge {
