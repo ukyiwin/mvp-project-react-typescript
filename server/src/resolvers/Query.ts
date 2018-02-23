@@ -39,13 +39,8 @@ export const Query = {
 
   articles(parent, args, ctx: Context, info) {
     return ctx.db.query.articles({ where: { 
-        isPublished: true, 
-        AND: {
-          author:{
-            fol
-          }
-        } 
+        isPublished: true
       } 
-    }, info)
+    }, info);
   },
-}
+};

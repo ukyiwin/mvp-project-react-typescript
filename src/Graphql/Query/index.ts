@@ -35,7 +35,7 @@ export const LOGIN_USER = gql`
  * @description check if user exist by email
  */
 export const USER_EXIST = gql`
-  mutation userExist($email: String!){
+  query userExist($email: String!){
     userExist( email: $email)
   }
 `;

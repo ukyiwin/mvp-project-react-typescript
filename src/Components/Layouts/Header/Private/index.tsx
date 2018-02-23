@@ -18,20 +18,20 @@ class PrivateHeader extends React.Component<Props> {
   render() {
     return (
       <div 
-        data-uk-sticky="animation: uk-animation-slide-top; 
-        sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky: 
-        cls-inactive: uk-navbar-transparent uk-light; top: 200"
+        data-uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky"
       >
         <nav 
           className="uk-navbar-container uk-margin uk-background-secondary" 
-          uk-navbar={true}
+          // tslint:disable-next-line:jsx-boolean-value
+          uk-navbar
           style={{ position: 'relative', zIndex: 980, elevation: 1}}
         >
           <div className="uk-navbar-left">
             <button
               className="uk-navbar-toggle uk-hidden@m"
               type="button" 
-              uk-navbar-toggle-icon={true} 
+              // tslint:disable-next-line:jsx-boolean-value
+              uk-navbar-toggle-icon
               uk-toggle="target: #offcanvas-nav"
               uk-icon="icon: menu; ratio: 1.5"
             />
@@ -50,6 +50,20 @@ class PrivateHeader extends React.Component<Props> {
               <li><Link to="/home" className="uk-light">Network</Link></li>
             </ul>
             <div className="uk-navbar-right uk-visible@s">
+              <form 
+                style={{maxWidth: 250}}
+                className="uk-search uk-search-navbar"
+              >
+                <span 
+                  // tslint:disable-next-line:jsx-boolean-value
+                  data-uk-search-icon 
+                />
+                <input 
+                  className="uk-search-input" 
+                  type="search" 
+                  placeholder="Search unizonn..."
+                />
+              </form>
               {this.props.isAuthenticated ? <React.Fragment>
               <ul className="uk-iconnav">
                 <li><Link to="/message" uk-icon="icon: calendar; ratio: 1.5"/></li>

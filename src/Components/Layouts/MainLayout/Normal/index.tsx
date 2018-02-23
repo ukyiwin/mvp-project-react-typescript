@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, withRouter } from 'react-router-dom';
 import { PrivateHeader } from 'Components/Layouts/Header';
 // import { FooterPublic } from 'Components/Layouts/FooterPublic';
 import './style.css';
@@ -11,6 +11,9 @@ interface DefaultProps {
   path?: string;
   exact?: boolean;
   isAuthenticated: boolean;
+  match: object;
+  location: object;
+  history: object;
 }
 
 const EmptyLayout: React.SFC<DefaultProps> = (props) => {
@@ -37,4 +40,4 @@ const EmptyLayout: React.SFC<DefaultProps> = (props) => {
   );
 };
 
-export default EmptyLayout;
+export default withRouter(EmptyLayout);

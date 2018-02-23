@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, withRouter } from 'react-router-dom';
 import { PrivateHeader } from 'Components/Layouts/Header';
 // import { FooterPublic } from 'Components/Layouts/FooterPublic';
 import './style.css';
@@ -12,6 +12,9 @@ interface DefaultProps {
   path?: string;
   exact?: boolean;
   isAuthenticated: boolean;
+  match: object;
+  location: object;
+  history: object;
 }
 
 const PublicLayout: React.SFC<DefaultProps> = (props) => {
@@ -58,4 +61,4 @@ const PublicLayout: React.SFC<DefaultProps> = (props) => {
   );
 };
 
-export default PublicLayout;
+export default withRouter(PublicLayout);

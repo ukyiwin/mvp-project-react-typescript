@@ -2,6 +2,7 @@
 
 type Query {
   feed: [Post!]!
+  articles: [Article!]!
   drafts: [Post!]!
   post(id: ID!): Post!
   me: User

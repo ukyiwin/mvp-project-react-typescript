@@ -21,7 +21,7 @@ const AUTH_TOKEN = 'token';
 
 // const queueLink = new QueueLink();
 
-const httpLink = new HttpLink({ uri: 'http://uniserver.now.sh/' });
+const httpLink = new HttpLink({ uri: 'http://localhost:4000' });
 
 const defaults = { appState: 'INITIAL' };
 

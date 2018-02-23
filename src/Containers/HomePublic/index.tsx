@@ -7,6 +7,7 @@ import InputBoxLogin from 'Components/InputBoxLogin';
 
 type Props = {
   classes?: object,
+  history: object,
 };
 
 class HomePublic extends React.Component<Props> {
@@ -38,12 +39,12 @@ class HomePublic extends React.Component<Props> {
         <div 
           id="bg1"
           className="uk-flex uk-width-1-1 uk-flex-stretch uk-height-large backgroundOne"
-          style={{height: '100vh', padding: '5% 0;'}}
+          style={{height: '100vh'}}
         >
             <div 
               className="uk-container uk-container-expand uk-position-center-left uk-flex uk-width-1-1"
             >
-              <InputBoxLogin />  
+              <InputBoxLogin hisory={this.props.history} />  
             </div>
         </div>
         <div 

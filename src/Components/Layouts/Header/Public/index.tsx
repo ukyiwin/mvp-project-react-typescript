@@ -23,14 +23,16 @@ class PublicHeader extends React.Component<Props> {
       >
         <nav 
           className="uk-navbar-container uk-margin uk-background-secondary" 
-          uk-navbar={true}
+          // tslint:disable-next-line:jsx-boolean-value
+          uk-navbar
           style={{ zIndex: 980, elevation: 1}}
         >
           <div className="uk-navbar-left">
             <button
               className="uk-navbar-toggle uk-hidden@m"
               type="button" 
-              uk-navbar-toggle-icon={true} 
+              // tslint:disable-next-line:jsx-boolean-value
+              uk-navbar-toggle-icon 
               uk-toggle="target: #offcanvas-nav"
               uk-icon="icon: menu; ratio: 1.5"
             />

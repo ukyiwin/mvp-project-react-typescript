@@ -7,7 +7,7 @@ import { PublicLayout, PrivateLayout, EmptyLayout } from 'Components/Layouts/Mai
 import Maps from 'Containers/Maps';
 import Forum from 'Containers/Forum';
 import Message from 'Containers/Message';
-// import Signup from 'Containers/Auth/Signup';
+import Signup from 'Containers/Auth/Signup';
 import SignupStepOne from 'Containers/Auth/Signup/SignupStepOne';
 import SignupStepTwo from 'Containers/Auth/Signup/SignupStepTwo';
 import SignupStepFinal from 'Containers/Auth/Signup/SignupStepThree';
@@ -48,10 +48,23 @@ class App extends React.Component {
       }
     }
     if (window.addEventListener) {
-      window.addEventListener('storage', this.onStorage, false);
+      // window.addEventListener('storage', this.onStorage, false);
     } else {
       // window.attachEvent('onstorage', this.onStorage);
     }
+  }
+
+  refreshToken(token: string) {
+    /*this.setState({
+      token : token,
+    });
+
+    if (token !== '' && token !== null) {
+      this.setState({
+        isAuthenticated : true,
+      });
+    }*/
+    alert('hjhjhjhjhj');
   }
 
   componentDidMount() {
@@ -68,12 +81,15 @@ class App extends React.Component {
   }
 
   render() {
-    const { isAuthenticated } = this.state;
+    const { isAuthenticated, token } = this.state;
+    const userAuthed = token ? true : false;
+
     return (
       <BrowserRouter
         forceRefresh={!supportsHistory}
       >
         <div className="ui-flex-stretch">
+          {userAuthed}
           <Switch>
             <Route 
               exact={true}
@@ -86,8 +102,18 @@ class App extends React.Component {
               // tslint:disable-next-line:jsx-alignment
             />
             <PrivateLayout component={Home} path="/home" isAuthenticated={isAuthenticated} />
-            <EmptyLayout component={Login} path="/login" isAuthenticated={isAuthenticated}  />
-            <PublicLayout component={SignupStepOne} path="/signup" isAuthenticated={isAuthenticated} />
+            <PublicLayout 
+              component={Login}
+              refreshToken={this.refreshToken}
+              path="/login" 
+              isAuthenticated={isAuthenticated}  
+            />
+            <PublicLayout 
+              component={Signup}
+              refreshToken={this.refreshToken}
+              path="/signup" 
+              isAuthenticated={isAuthenticated}  
+            />
             <PublicLayout component={SignupStepOne} path="/signups/1/:id" isAuthenticated={isAuthenticated} />
             <PublicLayout component={SignupStepTwo} path="/signup/2/:id" isAuthenticated={isAuthenticated}/>
             <PublicLayout component={SignupStepFinal} path="/signup/3/:id" isAuthenticated={isAuthenticated} />
