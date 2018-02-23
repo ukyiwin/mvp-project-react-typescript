@@ -115,7 +115,6 @@ type User implements Node {
   email: String!
   username: String
   password: String!
-  name: String
   firstname: String!
   lastname: String!
   gender: String!
@@ -123,7 +122,7 @@ type User implements Node {
   myDiscussions(where: DiscussionWhereInput): Discussion!
   connectTo(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect!]
   ConectFrom(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect!]
-  type: Usertype!
+  type: String!
   articles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article!]
   opinions(where: OpinionsWhereInput, orderBy: OpinionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Opinions!]
 }
@@ -2142,11 +2141,10 @@ input UserCreateInput {
   email: String!
   username: String
   password: String!
-  name: String
   firstname: String!
   lastname: String!
   gender: String!
-  type: Usertype!
+  type: String!
   favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput!
   connectTo: ConnectCreateManyWithoutToInput
@@ -2194,11 +2192,10 @@ input UserCreateWithoutArticlesInput {
   email: String!
   username: String
   password: String!
-  name: String
   firstname: String!
   lastname: String!
   gender: String!
-  type: Usertype!
+  type: String!
   favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput!
   connectTo: ConnectCreateManyWithoutToInput
@@ -2210,11 +2207,10 @@ input UserCreateWithoutConectFromInput {
   email: String!
   username: String
   password: String!
-  name: String
   firstname: String!
   lastname: String!
   gender: String!
-  type: Usertype!
+  type: String!
   favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput!
   connectTo: ConnectCreateManyWithoutToInput
@@ -2226,11 +2222,10 @@ input UserCreateWithoutConnectToInput {
   email: String!
   username: String
   password: String!
-  name: String
   firstname: String!
   lastname: String!
   gender: String!
-  type: Usertype!
+  type: String!
   favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput!
   ConectFrom: ConnectCreateManyWithoutFromInput
@@ -2242,11 +2237,10 @@ input UserCreateWithoutFavouritesInput {
   email: String!
   username: String
   password: String!
-  name: String
   firstname: String!
   lastname: String!
   gender: String!
-  type: Usertype!
+  type: String!
   myDiscussions: DiscussionCreateOneWithoutAuthorInput!
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
@@ -2258,11 +2252,10 @@ input UserCreateWithoutMyDiscussionsInput {
   email: String!
   username: String
   password: String!
-  name: String
   firstname: String!
   lastname: String!
   gender: String!
-  type: Usertype!
+  type: String!
   favourites: DiscussionCreateManyWithoutFavouritesInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
@@ -2274,11 +2267,10 @@ input UserCreateWithoutOpinionsInput {
   email: String!
   username: String
   password: String!
-  name: String
   firstname: String!
   lastname: String!
   gender: String!
-  type: Usertype!
+  type: String!
   favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput!
   connectTo: ConnectCreateManyWithoutToInput
@@ -2304,8 +2296,6 @@ enum UserOrderByInput {
   username_DESC
   password_ASC
   password_DESC
-  name_ASC
-  name_DESC
   firstname_ASC
   firstname_DESC
   lastname_ASC
@@ -2323,11 +2313,10 @@ type UserPreviousValues {
   email: String!
   username: String
   password: String!
-  name: String
   firstname: String!
   lastname: String!
   gender: String!
-  type: Usertype!
+  type: String!
 }
 
 type UserSubscriptionPayload {
@@ -2347,23 +2336,14 @@ input UserSubscriptionWhereInput {
   node: UserWhereInput
 }
 
-enum Usertype {
-  Student
-  Lecturer
-  Admin
-  Editor
-  Super
-}
-
 input UserUpdateDataInput {
   email: String
   username: String
   password: String
-  name: String
   firstname: String
   lastname: String
   gender: String
-  type: Usertype
+  type: String
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
   connectTo: ConnectUpdateManyWithoutToInput
@@ -2376,11 +2356,10 @@ input UserUpdateInput {
   email: String
   username: String
   password: String
-  name: String
   firstname: String
   lastname: String
   gender: String
-  type: Usertype
+  type: String
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
   connectTo: ConnectUpdateManyWithoutToInput
@@ -2461,11 +2440,10 @@ input UserUpdateWithoutArticlesDataInput {
   email: String
   username: String
   password: String
-  name: String
   firstname: String
   lastname: String
   gender: String
-  type: Usertype
+  type: String
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
   connectTo: ConnectUpdateManyWithoutToInput
@@ -2482,11 +2460,10 @@ input UserUpdateWithoutConectFromDataInput {
   email: String
   username: String
   password: String
-  name: String
   firstname: String
   lastname: String
   gender: String
-  type: Usertype
+  type: String
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
   connectTo: ConnectUpdateManyWithoutToInput
@@ -2503,11 +2480,10 @@ input UserUpdateWithoutConnectToDataInput {
   email: String
   username: String
   password: String
-  name: String
   firstname: String
   lastname: String
   gender: String
-  type: Usertype
+  type: String
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
@@ -2524,11 +2500,10 @@ input UserUpdateWithoutFavouritesDataInput {
   email: String
   username: String
   password: String
-  name: String
   firstname: String
   lastname: String
   gender: String
-  type: Usertype
+  type: String
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
   connectTo: ConnectUpdateManyWithoutToInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
@@ -2545,11 +2520,10 @@ input UserUpdateWithoutMyDiscussionsDataInput {
   email: String
   username: String
   password: String
-  name: String
   firstname: String
   lastname: String
   gender: String
-  type: Usertype
+  type: String
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   connectTo: ConnectUpdateManyWithoutToInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
@@ -2566,11 +2540,10 @@ input UserUpdateWithoutOpinionsDataInput {
   email: String
   username: String
   password: String
-  name: String
   firstname: String
   lastname: String
   gender: String
-  type: Usertype
+  type: String
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
   connectTo: ConnectUpdateManyWithoutToInput
@@ -2700,20 +2673,6 @@ input UserWhereInput {
   password_not_starts_with: String
   password_ends_with: String
   password_not_ends_with: String
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
   firstname: String
   firstname_not: String
   firstname_in: [String!]
@@ -2756,10 +2715,20 @@ input UserWhereInput {
   gender_not_starts_with: String
   gender_ends_with: String
   gender_not_ends_with: String
-  type: Usertype
-  type_not: Usertype
-  type_in: [Usertype!]
-  type_not_in: [Usertype!]
+  type: String
+  type_not: String
+  type_in: [String!]
+  type_not_in: [String!]
+  type_lt: String
+  type_lte: String
+  type_gt: String
+  type_gte: String
+  type_contains: String
+  type_not_contains: String
+  type_starts_with: String
+  type_not_starts_with: String
+  type_ends_with: String
+  type_not_ends_with: String
   favourites_every: DiscussionWhereInput
   favourites_some: DiscussionWhereInput
   favourites_none: DiscussionWhereInput

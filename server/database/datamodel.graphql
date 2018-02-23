@@ -66,7 +66,6 @@ type User {
   email: String! @unique
   username: String @unique
   password: String!
-  name: String
   firstname: String!
   lastname: String!
   gender: String!
@@ -74,7 +73,7 @@ type User {
   myDiscussions: Discussion! @relation(name: "DiscussionOnUser")
   connectTo: [Connect!]! @relation(name: "ConectTo")
   ConectFrom: [Connect!]! @relation(name: "ConectFrom")
-  type: Usertype!
+  type: String!
   articles: [Article!]!  @relation(name: "ArticleOwner")
   opinions: [Opinions!]!
 }

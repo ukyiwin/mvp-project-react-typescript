@@ -37,6 +37,7 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
     everFocusedEmail: false,
     everFocusedPassword: false,
     inFocus: '',
+    loading: false
   };
 
   handleEmailChange = (evt) => {
@@ -52,6 +53,7 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
     if (!this.canBeSubmitted()) {
       return;
     }
+    this.setState({loading: true});
     const { email, password } = this.state;
     this.props.login({
       variables: {
@@ -62,9 +64,11 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
       localStorage.setItem(AUTH_TOKEN, result.data.login.token);
       localStorage.setItem(CURRENT_USER, result.data.login.user);
       this.props.refreshToken(result.data.login.token);
+      this.setState({loading: false});
       this.props.history.replace('/');
     }).catch( err => {
-      UIkit.notification(`Error: ${err.message}`, 'error');
+      this.setState({loading: false});
+      UIkit.notification(`Error: ${err.message}`, {status: 'danger', pos: 'top-right'});
     });
   }
   
@@ -78,7 +82,8 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
 
     const errors = validateLogin(this.state.email, this.state.password);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
-    
+    // tslint:disable-next-line:no-console
+    console.log(this.props);
     return(
       <div 
         className="uk-flex uk-flex-stretch" 
@@ -125,18 +130,28 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
                 </div>
             </div>
             <div className="uk-margin">
-                <a 
-                  className={`uk-button uk-button-text}`}
-                >
-                Forgot password?
-                </a>
-                <button 
-                  className={`uk-button uk-button-primary uk-width-1-1
-                   uk-align-right ${isDisabled ? 'disabled' : 'disabled'}`}
-                  type="submit"
-                >
-                LOGIN
-                </button>
+              <a 
+                className={`uk-button uk-button-text}`}
+              >
+              Forgot password?
+              </a>
+            </div>
+            <div className="uk-margin">
+                {
+                  this.state.loading ? 
+                  <div
+                    className="uk-spinner uk-icon"
+                    data-uk-spinner="ratio: 1"
+                    style={{color: 'green'}}
+                  /> :
+                  <button 
+                    className={`uk-button uk-button-primary uk-width-1-1
+                    uk-align-right ${isDisabled ? 'disabled' : 'disabled'}`}
+                    type="submit"
+                  >
+                  LOGIN
+                  </button>
+                }
             </div>
             <br/>
             <hr className="uk-divider-icon" />

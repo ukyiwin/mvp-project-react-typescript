@@ -46,6 +46,7 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
     everFocusedEmail: false,
     everFocusedPassword: false,
     inFocus: '',
+    loading: false
   };
 
   handleEmailChange = (evt) => {
@@ -81,6 +82,7 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
     if (!this.canBeSubmitted()) {
       return;
     }
+    this.setState({loading: true});
     const { email, password, firstname, lastname, gender, userType } = this.state;
     this.props.signup({
       variables: {
@@ -95,10 +97,11 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
       localStorage.setItem(AUTH_TOKEN, result.data.login.token);
       localStorage.setItem(CURRENT_USER, result.data.login.user);
       this.props.refreshToken(result.data.login.token);
+      this.setState({loading: false});
       this.props.history.replace('/');
     }).catch( err => {
-      alert(err);
-      UIkit.notification(`Error: ${err.message}`, 'error');
+      this.setState({loading: false}); 
+      UIkit.notification(`Error: ${err.message}`, {status: 'danger', pos: 'top-right'});
     });
   }
   
@@ -254,8 +257,8 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
                   onChange={this.handleGenderChange}
                 >
                   <option value="">Select sex</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
                 </select>
               </div>
             </div>
@@ -269,21 +272,25 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
                   onChange={this.handleUserTypeChange}
                 >
                   <option value="">Select one</option>
-                  <option value="student">Student</option>
-                  <option value="lecturer">Lecturer</option>
+                  <option value="Student">Student</option>
+                  <option value="Lecturer">Lecturer</option>
                 </select>
               </div>
             </div>
             <div className="uk-margin">
-              <button 
-                className={`uk-button uk-button-primary uk-width-1-1
-                 uk-align-right ${isDisabled ? 'disabled' : 'disabled'}`}
-                type="submit"
-              >
-              Sign Up
-              </button>
+              { this.state.loading ? 
+                <div
+                  data-uk-spinner="ratio: 1"
+                />
+              :
+                <button 
+                  className={`uk-button uk-button-primary uk-width-1-1 ${isDisabled ? 'disabled' : 'disabled'}`}
+                  type="submit"
+                >
+                Sign Up
+                </button>
+              }
             </div>
-            <br/>
             <hr className="uk-divider-icon" />
             <div className="uk-margin">
               <p 
