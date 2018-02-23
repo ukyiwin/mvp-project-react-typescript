@@ -9,9 +9,6 @@ export const post = {
           title,
           text,
           isPublished: false,
-          author: {
-            connect: { id: userId },
-          },
         },
       },
       info
@@ -22,7 +19,6 @@ export const post = {
     const userId = getUserId(ctx)
     const postExists = await ctx.db.exists.Post({
       id,
-      author: { id: userId },
     })
     if (!postExists) {
       throw new Error(`Post not found or you're not the author`)
@@ -41,7 +37,6 @@ export const post = {
     const userId = getUserId(ctx)
     const postExists = await ctx.db.exists.Post({
       id,
-      author: { id: userId },
     })
     if (!postExists) {
       throw new Error(`Post not found or you're not the author`)
