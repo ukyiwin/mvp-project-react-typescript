@@ -3,7 +3,7 @@ import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import Home from '../Home';
 import PublicHome from '../HomePublic';
 import NotFound from '../NotFound';
-import { PublicLayout, PrivateLayout, EmptyLayout } from 'Components/Layouts/MainLayout';
+import { PublicLayout, PrivateLayout, EmptyLayout, ProfileLayout } from 'Components/Layouts/MainLayout';
 import Maps from 'Containers/Maps';
 import Forum from 'Containers/Forum';
 import Message from 'Containers/Message';
@@ -21,6 +21,7 @@ import Compose from 'Containers/ComposeArticle';
 import { User } from 'CustomTypings/schema';
 import { ME } from 'Graphql/Query';
 import { withApollo, graphql, compose } from 'react-apollo';
+import Profile from 'Containers/Profile';
 // const customHistory = createBrowserHistory();
 
 /* const AppWrapper = glamorous('div')({
@@ -152,6 +153,8 @@ class App extends React.Component<Response> {
             <EmptyLayout component={Message} path="/message" isAuthenticated={isAuthenticated} />
             <PrivateLayout component={Forum} path="/Forum" isAuthenticated={isAuthenticated} />
             <EmptyLayout component={Compose} path="/write" isAuthenticated={isAuthenticated} />
+            <ProfileLayout component={Profile} path="/profile" isAuthenticated={isAuthenticated}/>
+            <ProfileLayout component={Profile} path="/profile/:id" isAuthenticated={isAuthenticated}/>
             <Route component={NotFound} path="*" />
             <PrivateLayout 
               path="/logout"

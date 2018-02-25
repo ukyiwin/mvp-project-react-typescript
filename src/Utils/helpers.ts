@@ -21,3 +21,12 @@ export function validateSignup(email: string, password: string, confirmPassword:
     firstname: firstname.length === 0,
   };
 }
+
+export function validateProfile(country: string, institution: string, department: string) {
+  // true means invalid, so our conditions got reversed
+  return {
+    country: country.length === 0,
+    institution: institution.length === 0,
+    department: department.length === 0,
+  };
+}

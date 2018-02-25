@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
-// import { FooterPublic } from 'Components/Layouts/FooterPublic';
 import Calendar from 'Components/Calender';
-import { withApollo, graphql, compose } from 'react-apollo';
 import './style.css';
 
 interface DefaultProps {

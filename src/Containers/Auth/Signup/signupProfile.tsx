@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { compose, withApollo } from 'react-apollo';
 // import { ChildProps } from 'react-apollo/types';
 // import { SIGNUP_USER } from 'Graphql/Mutation';
 // import { User } from 'CustomTypings/schema';
-import { validateSignup } from 'Utils/helpers';
-import * as UIkit from 'uikit';
+import { validateProfile } from 'Utils/helpers';
+// import * as UIkit from 'uikit';
 
-import { AUTH_TOKEN, CURRENT_USER } from '../../../constants';
 import './style.css';
 
 type Props = {
@@ -22,79 +21,40 @@ type Props = {
 class SignupProfile extends React.Component<RouteComponentProps & Props> {
   state = { 
     show: false,
-    email: '',
-    password: '',
-    confirmPassword: '',
-    gender: '',
-    userType: '',
-    firstname: '',
-    lastname: '',
+    country: '',
+    faculty: '',
+    institution: '',
+    school: '',
+    department: '',
     everFocusedEmail: false,
     everFocusedPassword: false,
     inFocus: '',
     loading: false
   };
 
-  handleEmailChange = (evt) => {
-    this.setState({ email: evt.target.value });
+  handleInstChange = (evt) => {
+    this.setState({ institution: evt.target.value });
   }
   
-  handlePasswordChange = (evt) => {
-    this.setState({ password: evt.target.value });
+  handleDeptChange = (evt) => {
+    this.setState({ department: evt.target.value });
   }
   
-  handleConPasswordChange = (evt) => {
-    this.setState({ confirmPassword: evt.target.value });
+  handleCountryChange = (evt) => {
+    this.setState({ country: evt.target.value });
   }
 
-  handleFnameChange = (evt) => {
-    this.setState({ firstname: evt.target.value });
-  }
-  
-  handleLnameChange = (evt) => {
-    this.setState({ lastname: evt.target.value });
-  }
-
-  handleUserTypeChange = (evt) => {
-    this.setState({ userType: evt.target.value });
-  }
-  
-  handleGenderChange = (evt) => {
-    this.setState({ gender: evt.target.value });
-  }
-  
   handleSubmit = (evt) => {
     evt.preventDefault();
     if (!this.canBeSubmitted()) {
       return;
     }
     this.setState({loading: true});
-    const { email, password, firstname, lastname, gender, userType } = this.state;
-    this.props.signup({
-      variables: {
-        email,
-        password,
-        firstname,
-        lastname,
-        userType,
-        gender
-      }
-    }).then( result => {
-      localStorage.setItem(AUTH_TOKEN, result.data.login.token);
-      localStorage.setItem(CURRENT_USER, result.data.login.user);
-      this.props.refreshToken(result.data.login.token);
-      this.setState({loading: false});
-      this.props.history.replace('/');
-    }).catch( err => {
-      this.setState({loading: false}); 
-      UIkit.notification(`Error: ${err.message}`, {status: 'danger', pos: 'top-right'});
-    });
   }
   
   canBeSubmitted() {
-    const errors =  validateSignup(
-      this.state.email, this.state.password, this.state.confirmPassword, 
-      this.state.firstname, this.state.lastname, this.state.gender, this.state.userType);
+    const errors =  validateProfile(
+      this.state.country, this.state.institution, this.state.department);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
     return !isDisabled;
   }
@@ -108,11 +68,10 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
   
   render() {
 
-    const errors = validateSignup(
-      this.state.email, this.state.password, this.state.confirmPassword, 
-      this.state.firstname, this.state.lastname, this.state.gender, this.state.userType);
+    const errors =  validateProfile(
+      this.state.country, this.state.institution, this.state.department);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
-    
+
     return(
       <div 
         className="uk-flex uk-flex-stretch" 
@@ -216,36 +175,6 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
               </div>
             </div>
             <div className="uk-margin">
-              <label className="uk-form-label" htmlFor="form-horizontal-text">Gender</label>
-              <div className="uk-form-controls">
-                <select 
-                  className="uk-select"
-                  value={this.state.gender}
-                  required={true}
-                  onChange={this.handleGenderChange}
-                >
-                  <option value="">Select sex</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-              </div>
-            </div>
-            <div className="uk-margin">
-              <label className="uk-form-label" htmlFor="form-horizontal-text">I am a</label>
-              <div className="uk-form-controls">
-                <select 
-                  className="uk-select"
-                  value={this.state.userType}
-                  required={true}
-                  onChange={this.handleUserTypeChange}
-                >
-                  <option value="">Select one</option>
-                  <option value="Student">Student</option>
-                  <option value="Lecturer">Lecturer</option>
-                </select>
-              </div>
-            </div>
-            <div className="uk-margin">
               { this.state.loading ? 
                 <div
                   data-uk-spinner="ratio: 1"
@@ -260,20 +189,6 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
               }
             </div>
             <hr className="uk-divider-icon" />
-            <div className="uk-margin">
-              <p 
-                className={`uk-button uk-button-text}`}
-              >
-              Already have an account?
-              </p>
-              <Link 
-                className={`uk-button uk-button-secondary
-                 uk-align-right`}
-                to="/login"
-              >
-              Login now
-              </Link>
-            </div>
           </form>
         </div>
       </div>

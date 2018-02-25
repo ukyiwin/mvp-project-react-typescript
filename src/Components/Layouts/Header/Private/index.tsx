@@ -101,7 +101,7 @@ class PrivateHeader extends React.Component<Props> {
                   </a>
                   <div data-uk-dropdown="mode: click">
                     <ul className="uk-nav uk-dropdown-nav">
-                        <li><Link to="/message" className="uk-text-bold">Profile</Link></li>
+                        <li><Link to="/profile" className="uk-text-bold">Profile</Link></li>
                         <li><Link to="/message" className="uk-text-bold">Reading Score</Link></li>
                         <li><Link to="/message" className="uk-text-bold">Privacy</Link></li>
                         <li className="uk-nav-divider" />
