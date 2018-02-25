@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { PrivateHeader, PublicHeader } from 'Components/Layouts/Header';
+import { Route, Redirect, withRouter } from 'react-router-dom';
 // import { FooterPublic } from 'Components/Layouts/FooterPublic';
 import './style.css';
-import SideBar from 'Components/Layouts/SideBar';
 
 interface DefaultProps {
   // tslint:disable-next-line:no-any
@@ -11,6 +9,9 @@ interface DefaultProps {
   path?: string;
   exact?: boolean;
   isAuthenticated: boolean;
+  match: object;
+  location: object;
+  history: object;
 }
 
 const EmptyLayout: React.SFC<DefaultProps> = (props) => {
@@ -22,19 +23,16 @@ const EmptyLayout: React.SFC<DefaultProps> = (props) => {
       exact={true}
       render={matctProps =>
         isAuthenticated ?
-          ( <div className="uk-offcanvas-content uk-background-muted uk-height-1-1 ">
-            {isAuthenticated ? <PrivateHeader /> : <PublicHeader />}
+          ( 
             <div className="uk-flex uk-height-1-1 ">
               <div className="uk-width-expand  uk-height-1-1 ">
                 <Component {...matctProps} />
               </div>
-            </div>
-            <SideBar />
-          </div>)
-          : ( <Redirect to={{ pathname: '/home' }} /> )
+            </div>)
+          : ( <Redirect to={{ pathname: '/' }} /> )
       }
     />
   );
 };
 
-export default EmptyLayout;
+export default withRouter(EmptyLayout);

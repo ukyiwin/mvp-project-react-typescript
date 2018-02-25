@@ -30,3 +30,80 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+/**
+ * @description check if user exist by email
+ */
+export const USER_EXIST = gql`
+  query userExist($email: String!){
+    userExist( email: $email)
+  }
+`;
+
+/**
+ * @description check if current user article
+ */
+export const ARTICLES = gql`
+  query articles {
+    articles{
+      id
+      title
+      body
+      type
+      isPublished
+      createdAt
+      updatedAt
+      author{
+        email
+        id
+        firstname
+        lastname
+      }
+    }
+  }
+`;
+
+/**
+ * @description check if current user article
+ */
+export const ME = gql`
+  query me {
+    me{
+      id
+      email
+      username
+      password
+      firstname
+      lastname
+      gender
+      favourites{
+        id
+        title
+        content
+        slug
+      }
+      connectTo{
+        to{
+          email
+          id
+          firstname
+          lastname
+          username
+        }
+        from{
+          email
+          id
+          firstname
+          lastname
+          username
+        }
+      }
+      type
+      articles{
+        id
+        title
+        body
+      }
+    }
+  }
+`;

@@ -1,3 +1,14 @@
+type File {
+  id: ID! @unique
+  name: String!
+  size: Int!
+  secret: String! @unique
+  contentType: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  url: String! @unique
+}
+
 type Post {
   id: ID! @unique
   createdAt: DateTime!
@@ -15,15 +26,16 @@ type Article {
   title: String!
   body: String!
   type: Arcticletype
-  author: User!
+  author: User! @relation(name: "ArticleOwner")
 }
 
 type Country {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
-  title: String!
-  name: String!
+  shortName: String! @unique
+  name: String! @unique
+  users: [User!]! @relation(name: "UserCountry")
 }
 
 type Institutions {
@@ -31,8 +43,9 @@ type Institutions {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
-  type: InstitutionsType!
+  type: InstitutionType!
   Country: Country!
+  users: [User!]! @relation(name: "UserInstitution")
 }
 
 type School {
@@ -40,7 +53,8 @@ type School {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
-  Country: Country!
+  institution: Institutions!
+  users: [User!]! @relation(name: "UserSchool")
 }
 
 type Faculty {
@@ -49,6 +63,7 @@ type Faculty {
   updatedAt: DateTime!
   name: String!
   school: School!
+  users: [User!]! @relation(name: "UserFaculty")
 }
 
 type Department {
@@ -56,23 +71,90 @@ type Department {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  Country: Country!
+  falculty: Faculty!
+  users: [User!]! @relation(name: "UserDepartment")
+}
+
+type Interest {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  avatar: String!
+  users: [User!]! @relation(name: "UserInterest")
 }
 
 type User {
   id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
   email: String! @unique
   username: String @unique
   password: String!
-  name: String
   firstname: String!
   lastname: String!
   gender: String!
-  followedBy: [User!]! @relation(name: 'FollowedBy')
-  following: [User!]! @relation(name: 'Following')
-  type: Usertype!
-  articles: [Article!]!
+  country: Country @relation(name: "UserCountry")
+  institution: Institutions @relation(name: "UserInstitution")
+  school: School @relation(name: "UserSchool")
+  falculty: Faculty @relation(name: "UserFaculty")
+  department: Department @relation(name: "UserDepartment")
+  interest: Interest @relation(name: "UserInterest")
+  favourites: [Discussion!]! @relation(name: "UserFavDiscussion")
+  myDiscussions: Discussion @relation(name: "DiscussionOnUser")
+  connectTo: [Connect!]! @relation(name: "ConectTo")
+  ConectFrom: [Connect!]! @relation(name: "ConectFrom")
+  type: String @default(value: "Student")
+  userType: String
+  articles: [Article!]!  @relation(name: "ArticleOwner")
+  opinions: [Opinions!]!
+  newConnectNot: Boolean @default(value: true)
+  newCommentNot: Boolean @default(value: true)
+  newMessageNot: Boolean @default(value: true)
+  newProfileNot: Boolean @default(value: true)
+  completedProfile: Int @default(value: 1)
+}
+
+type Connect {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  to: User! @relation(name: "ConectTo")
+  from: User! @relation(name: "ConectFrom")
+  accepted: Boolean! @default(value: "false")
+}
+
+type Forum {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  slug: String
   author: User!
+  private: Boolean! @default(value: "false")
+}
+
+type Discussion {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  slug: String
+  content: String!
+  tags: [String!]!
+  favourites: [User!]! @relation(name: "UserFavDiscussion")
+  author: User! @relation(name: "DiscussionOnUser")
+  private: Boolean! @default(value: "false")
+  opinions: [Opinions!]!
+}
+
+type Opinions {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  content: String!
+  author: User!
+  discussion: Discussion!
 }
 
 enum Usertype{
@@ -83,7 +165,7 @@ enum Usertype{
   Super
 }
 
-enum InstitutionTYpe{
+enum InstitutionType{
   University
   College
 }

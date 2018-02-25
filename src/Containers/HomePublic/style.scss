@@ -1,0 +1,52 @@
+
+section{
+  text-align:center;
+  overflow: hidden;
+}
+
+p, a {
+	font-family: "freight-text-pro",sans-serif;
+	font-size: 1em;
+	font-style: normal;
+	font-weight: 500;
+	letter-spacing: 1px;
+	line-height: 1.25em;
+	margin-bottom: 0;
+}
+.fp-tableCell {
+  display: table-cell;
+  vertical-align: middle;
+  width:100%;
+  height:100%
+}
+
+.btn-main {
+  border-radius: 4;
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  font-size: 16;
+  padding: '10px 12px';
+  width: calc(100% - 24px);
+  display: 'flex';
+  flex-wrap: 'wrap';
+}
+
+.backgroundOne {
+  background:
+    url('../../Assets/bg8.svg'),
+    url('../../Assets/bg4.svg'),
+    url('../../Assets/bg2.svg') 40px;
+  background-position: right bottom, right top, bottom right;
+  background-repeat: no-repeat, no-repeat, repeat-x;
+  
+  background-size: auto, auto, 60%;
+}
+
+.backgroundTwo {
+  background:
+    url('../../Assets/bg9.svg');
+  background-position: bottom center;
+  background-repeat: repeat-x;
+  background-position-y: 250px;
+  background-size: 50%;
+}

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './Containers/App';
-import 'tachyons';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 // import { setContext } from 'apollo-link-context';
@@ -22,7 +21,7 @@ const AUTH_TOKEN = 'token';
 
 // const queueLink = new QueueLink();
 
-const httpLink = new HttpLink({ uri: 'http://uniserver.now.sh/' });
+const httpLink = new HttpLink({ uri: 'https://uniserver.now.sh/' });
 
 const defaults = { appState: 'INITIAL' };
 
@@ -61,7 +60,7 @@ const cache = new InMemoryCache();
 const httpLinkAuth = middlewareLink.concat(httpLink);
 
 const wsLink = new WebSocketLink({
-  uri: `wss://uniserver.now.sh/`,
+  uri: `wss://eu1.prisma.sh/rex-raphael-d760a5/unizonn/dev`,
   options: {
     reconnect: true,
     connectionParams: {

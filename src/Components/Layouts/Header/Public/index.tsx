@@ -19,18 +19,20 @@ class PublicHeader extends React.Component<Props> {
       <div 
         data-uk-sticky="animation: uk-animation-slide-top; 
         sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky: 
-        cls-inactive: uk-navbar-transparent uk-light; top: 200"
+        cls-inactive: uk-navbar-transparent; top: 100;"
       >
         <nav 
           className="uk-navbar-container uk-margin uk-background-secondary" 
-          uk-navbar={true}
-          style={{ position: 'relative', zIndex: 980, elevation: 1}}
+          // tslint:disable-next-line:jsx-boolean-value
+          uk-navbar
+          style={{ zIndex: 980, elevation: 1}}
         >
           <div className="uk-navbar-left">
             <button
               className="uk-navbar-toggle uk-hidden@m"
               type="button" 
-              uk-navbar-toggle-icon={true} 
+              // tslint:disable-next-line:jsx-boolean-value
+              uk-navbar-toggle-icon 
               uk-toggle="target: #offcanvas-nav"
               uk-icon="icon: menu; ratio: 1.5"
             />

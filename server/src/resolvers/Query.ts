@@ -26,4 +26,48 @@ export const Query = {
     const id = getUserId(ctx)
     return ctx.db.query.user({ where: { id } }, info)
   },
-}
+
+  async userExist(parent, { email }, ctx: Context, info) {
+    const user = await ctx.db.exists.User({email: email})
+
+    if (user) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  articles(parent, args, ctx: Context, info) {
+    return ctx.db.query.articles({ where: { 
+        isPublished: true
+      } 
+    }, info);
+  },
+
+  getSchools(parent, { idInstitutions }, ctx: Context, info) {
+    return ctx.db.query.schools({ where: {
+      institution: {
+        id: idInstitutions
+      }
+    }}, info)
+  },
+  getDepartment(parent, { idFaculty }, ctx: Context, info) {
+    return ctx.db.query.departments({ where: {
+      falculty: {
+        id: idFaculty
+      }
+    }}, info)
+  },
+  getInstitution(parent, { idCountry }, ctx: Context, info) {
+    return ctx.db.query.institutionses({ where: {
+      Country: {
+        id: idCountry
+      }
+    }}, info)
+  },
+
+  getCountry(parent, args, ctx: Context, info) {
+    return ctx.db.query.institutionses({}, info)
+  },
+
+};

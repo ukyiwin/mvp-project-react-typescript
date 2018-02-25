@@ -22,20 +22,68 @@ const A = glamorous.a({
 const FooterPublic = () => {
   return (
     <div className="uk-section uk-section-secondary uk-light">
-      <div className="uk-container">
-        <h3>Section Secondary</h3>
-        <div className="uk-grid-match uk-child-width-1-1@s" uk-grid={true}>
+      <div className="uk-container ">
+        <h3 style={{marginBottom: 10}}>Unizonn</h3>
+        <div className="uk-column-1-3">
           <div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+            <ul>
+              <li>
+                <A href="#">Terms</A>
+              </li>
+              <li>
+                <A href="#">Privacy</A>
+              </li>
+              <li>
+                <A href="#">Jobs</A>
+              </li>
+              <li>
+                <A href="#">About</A>
+              </li>
+              <li>
+                <A href="#">Support</A>
+              </li>
+            </ul>
           </div>
           <div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+            <ul>
+              <li>
+                <A href="#">Terms</A>
+              </li>
+              <li>
+                <A href="#">Privacy</A>
+              </li>
+              <li>
+                <A href="#">Jobs</A>
+              </li>
+              <li>
+                <A href="#">About</A>
+              </li>
+              <li>
+                <A href="#">Support</A>
+              </li>
+            </ul>
           </div>
           <div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+            <ul>
+              <li>
+                <A href="#">Terms</A>
+              </li>
+              <li>
+                <A href="#">Privacy</A>
+              </li>
+              <li>
+                <A href="#">Jobs</A>
+              </li>
+              <li>
+                <A href="#">About</A>
+              </li>
+              <li>
+                <A href="#">Support</A>
+              </li>
+            </ul>
           </div>
         </div>
-        <div className="uk-grid-match  uk-child-width-1-3@m" uk-grid={true} id="footerMenu">
+        <div className="uk-width-1-1" id="footerList">
             <ul>
               <li>
                 <A href="#">Terms</A>
