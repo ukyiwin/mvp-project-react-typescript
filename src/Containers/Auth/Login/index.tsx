@@ -14,9 +14,9 @@ type Props = {
   // tslint:disable-next-line:no-any
   login: any,
   // tslint:disable-next-line:no-any
-  refreshToken?: any
+  refreshToken?: any,
   // tslint:disable-next-line:no-any
-  client?: any
+  client?: any,
 };
 
 type InputProps = {
@@ -48,6 +48,13 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
     this.setState({ password: evt.target.value });
   }
   
+  componentWillMount() {
+    const email = this.props.location.email;
+    if (email) {
+      this.setState({email: email});
+    }
+  }
+
   handleSubmit = (evt) => {
     evt.preventDefault();
     if (!this.canBeSubmitted()) {
@@ -61,9 +68,10 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
         password
       }
     }).then( result => {
-      localStorage.setItem(AUTH_TOKEN, result.data.login.token);
+      const token = result.data.login.token;
+      localStorage.setItem(AUTH_TOKEN, token);
       localStorage.setItem(CURRENT_USER, result.data.login.user);
-      this.props.refreshToken(result.data.login.token);
+      this.props.refreshToken(token);
       this.setState({loading: false});
       this.props.history.replace('/');
     }).catch( err => {
@@ -82,8 +90,7 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
 
     const errors = validateLogin(this.state.email, this.state.password);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
-    // tslint:disable-next-line:no-console
-    console.log(this.props);
+
     return(
       <div 
         className="uk-flex uk-flex-stretch" 

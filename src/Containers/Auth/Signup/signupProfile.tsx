@@ -19,7 +19,7 @@ type Props = {
   client?: any
 };
 
-class Signup extends React.Component<RouteComponentProps & Props> {
+class SignupProfile extends React.Component<RouteComponentProps & Props> {
   state = { 
     show: false,
     email: '',
@@ -173,71 +173,46 @@ class Signup extends React.Component<RouteComponentProps & Props> {
             onSubmit={this.handleSubmit}
           >
             <div className="uk-margin">
-              <h3 className="uk-heading-primary uk-align-center">Signup </h3>
+              <h3 className="uk-heading-primary uk-align-center">We want to know you more </h3>
             </div>
             <div className="uk-margin">
-              <label className="uk-form-label" htmlFor="firstname">Firstname</label>
+              <label className="uk-form-label" htmlFor="firstname">Country</label>
               <div className="uk-form-controls">
-                <input 
-                  id="firstname"
-                  className={`uk-input ${errors.firstname ? 'uk-form-danger' : ''} `} 
-                  type="text"
-                  value={this.state.firstname}
+                <select 
+                  className="uk-select"
+                  value={this.state.country}
                   required={true}
-                  onChange={this.handleFnameChange}
-                />
+                  onChange={this.handleCountryChange}
+                >
+                  <option value="">Select country</option>
+                  <option value="uk">United Kingdom</option>
+                </select>
               </div>
             </div>
             <div className="uk-margin">
-              <label className="uk-form-label" htmlFor="lastname">Lastname</label>
+              <label className="uk-form-label" htmlFor="lastname">Institution</label>
               <div className="uk-form-controls">
-                <input 
-                  id="lastname"
-                  className={`uk-input ${errors.lastname ? 'uk-form-danger' : ''} `} 
-                  type="text"
-                  value={this.state.lastname}
+                <select 
+                  className="uk-select"
+                  value={this.state.institution}
                   required={true}
-                  onChange={this.handleLnameChange}
-                />
+                  onChange={this.handleInstChange}
+                >
+                  <option value="">Select institution</option>
+                </select>
               </div>
             </div>
             <div className="uk-margin">
-              <label className="uk-form-label" htmlFor="email">Email</label>
+              <label className="uk-form-label" htmlFor="email">Course</label>
               <div className="uk-form-controls">
-                <input 
-                  id="email"
-                  className={`uk-input ${errors.email ? 'uk-form-danger' : ''} `} 
-                  type="email"
-                  value={this.state.email}
+                <select 
+                  className="uk-select"
+                  value={this.state.department}
                   required={true}
-                  onChange={this.handleEmailChange}
-                />
-              </div>
-            </div>
-            <div className="uk-margin">
-              <label className="uk-form-label" htmlFor="form-horizontal-text">Password</label>
-              <div className="uk-form-controls">
-                <input 
-                  className={`uk-input ${errors.password ? 'uk-form-danger' : ''} `} 
-                  type="password" 
-                  id="password"
-                  value={this.state.password}
-                  required={true}
-                  onChange={this.handlePasswordChange}
-                />
-              </div>
-            </div>
-            <div className="uk-margin">
-              <label className="uk-form-label" htmlFor="confirmPassword">Confirm Password</label>
-              <div className="uk-form-controls">
-                <input 
-                  className={`uk-input ${errors.confirmPassword ? 'uk-form-danger' : ''} `} 
-                  type="password" 
-                  id="confirmPassword"
-                  value={this.state.confirmPassword}
-                  required={true}
-                  onChange={this.handleConPasswordChange}
-                />
+                  onChange={this.handleDeptChange}
+                >
+                  <option value="">Select course</option>
+                </select>
               </div>
             </div>
             <div className="uk-margin">
@@ -308,4 +283,4 @@ class Signup extends React.Component<RouteComponentProps & Props> {
 
 export default withRouter(compose(
   withApollo
-)(Signup));
+)(SignupProfile));

@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
-import { PrivateHeader } from 'Components/Layouts/Header';
 import { FooterPublic } from 'Components/Layouts/FooterPublic';
-// import { Grid } from 'material-ui';
 import './style.css';
-import SideBar from 'Components/Layouts/SideBar';
 
 interface DefaultProps {
   // tslint:disable-next-line:no-any
@@ -20,22 +17,20 @@ interface DefaultProps {
 }
 
 const PublicLayout: React.SFC<DefaultProps> = (props) => {
-  const { component: Component, isAuthenticated, refreshToken, ...rest } = props;
+  const { component: Component, isAuthenticated, exact, refreshToken, ...rest } = props;
 
   return (
     <Route 
       {...rest} 
-      exact={true}
+      exact={exact !== null ? exact : true}
       render={matchProps =>
         isAuthenticated !== true ?
-          ( <div className="uk-flex-stretch">
-            <SideBar />
-            <PrivateHeader isAuthenticated={isAuthenticated} />
-            <Component {...matchProps} refreshToken={() => refreshToken()}/>
+          (<React.Fragment>
+            <Component {...matchProps} refreshToken={refreshToken}/>
             <div style={{bottom: 0}}>
-            <FooterPublic />
+              <FooterPublic />
             </div>
-          </div>)
+          </React.Fragment>)
           : ( <Redirect to={{ pathname: '/home' }} /> )
       }
     />

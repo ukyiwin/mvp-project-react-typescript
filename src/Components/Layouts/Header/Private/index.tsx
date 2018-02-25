@@ -1,6 +1,7 @@
 import * as React from 'react';
 // import UIkit from 'uikit/src/js/uikit';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { AUTH_TOKEN } from '../../../../constants';
 // import * as Logo from 'Assets/logo.png';
 
 type Props = {
@@ -15,16 +16,25 @@ class PrivateHeader extends React.Component<Props> {
     // UIkit.notification('MyMessage', 'danger');
   }
 
+  _logout = () => {
+    // tslint:disable-next-line:no-console
+    console.log('here again its calling');
+    localStorage.removeItem(AUTH_TOKEN);
+    return (
+      <Redirect to="/" />
+    );
+  }
+
   render() {
     return (
-      <div 
+      <div
         data-uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky"
       >
         <nav 
           className="uk-navbar-container uk-margin uk-background-secondary" 
           // tslint:disable-next-line:jsx-boolean-value
           uk-navbar
-          style={{ position: 'relative', zIndex: 980, elevation: 1}}
+          style={{elevation: 5, borderBottomWidth: 1, borderBottomColor: '#212121'}}
         >
           <div className="uk-navbar-left">
             <button
@@ -66,20 +76,28 @@ class PrivateHeader extends React.Component<Props> {
               </form>
               {this.props.isAuthenticated ? <React.Fragment>
               <ul className="uk-iconnav">
-                <li><Link to="/message" uk-icon="icon: calendar; ratio: 1.5"/></li>
-                <li><Link to="/message" uk-icon="icon: mail; ratio: 1.5"/></li>
-                <li><Link to="/message" uk-icon="icon: bell; ratio: 1.5"/></li>
+                <li className="uk-animation-toggle">
+                  <Link className="uk-animation-shake" to="/message" uk-icon="icon: calendar; ratio: 1.5"/>
+                </li>
+                <li className="uk-animation-toggle">
+                  <Link className="uk-animation-shake" to="/message" uk-icon="icon: mail; ratio: 1.5"/>
+                </li>
+                <li className="uk-animation-toggle">
+                  <Link className="uk-animation-shake" to="/message" uk-icon="icon: bell; ratio: 1.5"/>
+                </li>
               </ul>
               <ul className="uk-navbar-nav">
                 <li>
                   <a href="#">
+                    <div className="uk-animation-toggle">
                     <img 
-                      className="uk-border-circle" 
+                      className="uk-border-circle uk-animation-kenburns uk-animation-fast" 
                       src="https://getuikit.com/docs/images/avatar.jpg" 
                       width="40" 
                       height="40" 
                       alt="Border circle"
                     />
+                    </div>
                   </a>
                   <div data-uk-dropdown="mode: click">
                     <ul className="uk-nav uk-dropdown-nav">
@@ -88,16 +106,16 @@ class PrivateHeader extends React.Component<Props> {
                         <li><Link to="/message" className="uk-text-bold">Privacy</Link></li>
                         <li className="uk-nav-divider" />
                         <li><Link to="/message" className="uk-text-bold">Support</Link></li>
-                        <li><Link to="/message" className="uk-text-bold">Logout</Link></li>
+                        <li><a onClick={this._logout} className="uk-text-bold">Logout</a></li>
                     </ul>
                 </div>
                 </li>
               </ul>
               <div className="uk-navbar-nav uk-padding-small">
-                <Link to="/ask" className="uk-button uk-button-primary uk-button-small">Write</Link>
+                <Link to="/write" className="uk-button uk-button-primary uk-button-small">Write</Link>
               </div> </React.Fragment> :
               <div className="uk-navbar-nav uk-padding-small">
-                <Link to="/login" className="uk-button uk-button-default uk-light uk-button-small">
+                <Link to="/login" className="uk-button uk-button-default uk-dark uk-button-small">
                 Get started
                 </Link>
               </div>}
@@ -105,13 +123,13 @@ class PrivateHeader extends React.Component<Props> {
             <div className="uk-navbar-right uk-hidden@s">
             {this.props.isAuthenticated ? 
               <div className="uk-navbar-nav uk-padding-small">
-                <button className="uk-button uk-button-primary uk-button-small">Ask</button>
+                <Link to="/write" className="uk-button uk-button-primary uk-button-small">Write</Link>
               </div>
               :
               <div className="uk-navbar-nav uk-padding-small">
-                <button className="uk-button uk-button-default uk-light uk-button-small uk-border-rounded">
+                <Link to="/login" className="uk-button uk-button-default uk-dark uk-button-small uk-border-rounded">
                   Login
-                </button>
+                </Link>
               </div>
             }
             </div>

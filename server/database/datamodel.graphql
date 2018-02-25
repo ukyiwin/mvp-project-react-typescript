@@ -1,3 +1,14 @@
+type File {
+  id: ID! @unique
+  name: String!
+  size: Int!
+  secret: String! @unique
+  contentType: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  url: String! @unique
+}
+
 type Post {
   id: ID! @unique
   createdAt: DateTime!
@@ -24,6 +35,7 @@ type Country {
   updatedAt: DateTime!
   shortName: String! @unique
   name: String! @unique
+  users: [User!]! @relation(name: "UserCountry")
 }
 
 type Institutions {
@@ -33,6 +45,7 @@ type Institutions {
   title: String!
   type: InstitutionType!
   Country: Country!
+  users: [User!]! @relation(name: "UserInstitution")
 }
 
 type School {
@@ -41,6 +54,7 @@ type School {
   updatedAt: DateTime!
   title: String!
   institution: Institutions!
+  users: [User!]! @relation(name: "UserSchool")
 }
 
 type Faculty {
@@ -49,6 +63,7 @@ type Faculty {
   updatedAt: DateTime!
   name: String!
   school: School!
+  users: [User!]! @relation(name: "UserFaculty")
 }
 
 type Department {
@@ -56,7 +71,17 @@ type Department {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  Country: Country!
+  falculty: Faculty!
+  users: [User!]! @relation(name: "UserDepartment")
+}
+
+type Interest {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  avatar: String!
+  users: [User!]! @relation(name: "UserInterest")
 }
 
 type User {
@@ -69,13 +94,25 @@ type User {
   firstname: String!
   lastname: String!
   gender: String!
+  country: Country @relation(name: "UserCountry")
+  institution: Institutions @relation(name: "UserInstitution")
+  school: School @relation(name: "UserSchool")
+  falculty: Faculty @relation(name: "UserFaculty")
+  department: Department @relation(name: "UserDepartment")
+  interest: Interest @relation(name: "UserInterest")
   favourites: [Discussion!]! @relation(name: "UserFavDiscussion")
   myDiscussions: Discussion @relation(name: "DiscussionOnUser")
   connectTo: [Connect!]! @relation(name: "ConectTo")
   ConectFrom: [Connect!]! @relation(name: "ConectFrom")
   type: String @default(value: "Student")
+  userType: String
   articles: [Article!]!  @relation(name: "ArticleOwner")
   opinions: [Opinions!]!
+  newConnectNot: Boolean @default(value: true)
+  newCommentNot: Boolean @default(value: true)
+  newMessageNot: Boolean @default(value: true)
+  newProfileNot: Boolean @default(value: true)
+  completedProfile: Int @default(value: 1)
 }
 
 type Connect {

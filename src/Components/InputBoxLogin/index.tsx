@@ -20,26 +20,36 @@ type InputProps = {
 // tslint:disable-next-line:no-any
 class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildProps<boolean, InputProps>, {}> {
   state = {
-    text: ''
+    text: '',
+    loading: false
   };
 
   checkUser = (e) => {
     e.preventDefault();
+    this.setState({loading: true});
     this.props.client.query({
       query: USER_EXIST,
       variables: {
         email: this.state.text
       }
     }).then(({ data }) => {
-      // tslint:disable-next-line:no-console
-      this.props.history.push({pathname: '/login'});
+      data.userExist ? 
+        this.props.history.push({
+          pathname: '/login',
+          email: this.state.text
+        }) : 
+        this.props.history.push({
+          pathname: '/signup',
+          email: this.state.text
+        });
+      this.setState({loading: false});
     }).catch((error) => {
-        // console.log('there was an error sending the query', error);
+      this.setState({loading: false});
     });
   }
 
   render() {
-    const { loading } = this.props.userExist;
+    const { loading } = this.state;
     return (
       <div className="">
         <h1 className="uk-heading-primary uk-text-bold uk-text-uppercase">Welcome <br/>to unizonn</h1>
@@ -66,7 +76,11 @@ class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildP
                   placeholder="Enter email to signin or signup"
                 />
               </div>
-            { loading ? <div data-uk-spinner={true}/> :
+            { loading ? 
+              <div 
+                data-uk-spinner="ratio: 1"
+                style={{ marginLeft: 15, color: 'green'}}
+              /> :
               <button 
                 className="uk-button uk-button-primary uk-button-large"
                 type="submit"

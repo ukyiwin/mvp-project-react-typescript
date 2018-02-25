@@ -1,39 +1,34 @@
 import * as React from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
-import ArticleItem from 'Components/ArticleItem';
 import WriteModal from 'Components/WriteModal';
 
 import './style.css';
+import { User } from 'CustomTypings/schema';
+// import ArcticleListComponent from 'Components/ArticleList';
+type Props = {
+  me?: User
+};
 
-class Home extends React.Component {
+class Home extends React.Component<Props> {
 
   tracks: { id: number; }[];
   // tslint:disable-next-line:typedef
   constructor(props) {
     super(props);
-    this.tracks = [{id: 1}, {id: 2}, {id: 3}];
+  }
+
+  componentDidMount() {
+    if (this.props.me) {
+      // if (this.props.me.)
+    }
   }
 
   render() {
 
-    // tslint:disable-next-line:no-any
-    var items: any[] = [];
-    this.tracks.map((track, i) => {
-      items.push(
-        <ArticleItem />
-      );
-    });
     return (
       <div className="uk-width-1-1">
         <WriteModal />
         <div className="uk-flex">
-        <InfiniteScroll
-          pageStart={0}
-          hasMore={true || false}
-          loader={<div className="loader" key={0}>Loading ...</div>}
-        >
-          {items}
-        </InfiniteScroll>
+        jkhjh
         </div>
       </div>
     );

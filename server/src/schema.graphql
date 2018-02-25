@@ -7,6 +7,11 @@ type Query {
   post(id: ID!): Post!
   me: User
   userExist(email: String!): Boolean!
+  getCountry: Country!
+  getInstitution(id: ID!): Institutions!
+  getSchools(idInstitution: ID!): School!
+  getFaculty(idSchool: ID!): Faculty!
+  getDepartment(idFaculty: ID!): Department!
 }
 
 type Mutation {

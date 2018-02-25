@@ -240,6 +240,25 @@ export type ArticleOrderByInput = (
     "type_DESC"
 );
 
+export type ConnectOrderByInput = (
+
+    "id_ASC" |
+
+    "id_DESC" |
+
+    "createdAt_ASC" |
+
+    "createdAt_DESC" |
+
+    "updatedAt_ASC" |
+
+    "updatedAt_DESC" |
+
+    "accepted_ASC" |
+
+    "accepted_DESC"
+);
+
 export type CountryOrderByInput = (
 
     "id_ASC" |
@@ -254,9 +273,9 @@ export type CountryOrderByInput = (
 
     "updatedAt_DESC" |
 
-    "title_ASC" |
+    "shortName_ASC" |
 
-    "title_DESC" |
+    "shortName_DESC" |
 
     "name_ASC" |
 
@@ -282,6 +301,37 @@ export type DepartmentOrderByInput = (
     "name_DESC"
 );
 
+export type DiscussionOrderByInput = (
+
+    "id_ASC" |
+
+    "id_DESC" |
+
+    "createdAt_ASC" |
+
+    "createdAt_DESC" |
+
+    "updatedAt_ASC" |
+
+    "updatedAt_DESC" |
+
+    "title_ASC" |
+
+    "title_DESC" |
+
+    "slug_ASC" |
+
+    "slug_DESC" |
+
+    "content_ASC" |
+
+    "content_DESC" |
+
+    "private_ASC" |
+
+    "private_DESC"
+);
+
 export type FacultyOrderByInput = (
 
     "id_ASC" |
@@ -299,6 +349,68 @@ export type FacultyOrderByInput = (
     "name_ASC" |
 
     "name_DESC"
+);
+
+export type FileOrderByInput = (
+
+    "id_ASC" |
+
+    "id_DESC" |
+
+    "name_ASC" |
+
+    "name_DESC" |
+
+    "size_ASC" |
+
+    "size_DESC" |
+
+    "secret_ASC" |
+
+    "secret_DESC" |
+
+    "contentType_ASC" |
+
+    "contentType_DESC" |
+
+    "createdAt_ASC" |
+
+    "createdAt_DESC" |
+
+    "updatedAt_ASC" |
+
+    "updatedAt_DESC" |
+
+    "url_ASC" |
+
+    "url_DESC"
+);
+
+export type ForumOrderByInput = (
+
+    "id_ASC" |
+
+    "id_DESC" |
+
+    "createdAt_ASC" |
+
+    "createdAt_DESC" |
+
+    "updatedAt_ASC" |
+
+    "updatedAt_DESC" |
+
+    "title_ASC" |
+
+    "title_DESC" |
+
+    "slug_ASC" |
+
+    "slug_DESC" |
+
+    "private_ASC" |
+
+    "private_DESC"
 );
 
 export type InstitutionsOrderByInput = (
@@ -331,6 +443,29 @@ export type InstitutionType = (
     "College"
 );
 
+export type InterestOrderByInput = (
+
+    "id_ASC" |
+
+    "id_DESC" |
+
+    "createdAt_ASC" |
+
+    "createdAt_DESC" |
+
+    "updatedAt_ASC" |
+
+    "updatedAt_DESC" |
+
+    "name_ASC" |
+
+    "name_DESC" |
+
+    "avatar_ASC" |
+
+    "avatar_DESC"
+);
+
 export type MutationType = (
 
     "CREATED" |
@@ -338,6 +473,25 @@ export type MutationType = (
     "UPDATED" |
 
     "DELETED"
+);
+
+export type OpinionsOrderByInput = (
+
+    "id_ASC" |
+
+    "id_DESC" |
+
+    "createdAt_ASC" |
+
+    "createdAt_DESC" |
+
+    "updatedAt_ASC" |
+
+    "updatedAt_DESC" |
+
+    "content_ASC" |
+
+    "content_DESC"
 );
 
 export type PostOrderByInput = (
@@ -392,6 +546,14 @@ export type UserOrderByInput = (
 
     "id_DESC" |
 
+    "createdAt_ASC" |
+
+    "createdAt_DESC" |
+
+    "updatedAt_ASC" |
+
+    "updatedAt_DESC" |
+
     "email_ASC" |
 
     "email_DESC" |
@@ -403,10 +565,6 @@ export type UserOrderByInput = (
     "password_ASC" |
 
     "password_DESC" |
-
-    "name_ASC" |
-
-    "name_DESC" |
 
     "firstname_ASC" |
 
@@ -424,26 +582,29 @@ export type UserOrderByInput = (
 
     "type_DESC" |
 
-    "updatedAt_ASC" |
+    "userType_ASC" |
 
-    "updatedAt_DESC" |
+    "userType_DESC" |
 
-    "createdAt_ASC" |
+    "newConnectNot_ASC" |
 
-    "createdAt_DESC"
-);
+    "newConnectNot_DESC" |
 
-export type Usertype = (
+    "newCommentNot_ASC" |
 
-    "Student" |
+    "newCommentNot_DESC" |
 
-    "Lecturer" |
+    "newMessageNot_ASC" |
 
-    "Admin" |
+    "newMessageNot_DESC" |
 
-    "Editor" |
+    "newProfileNot_ASC" |
 
-    "Super"
+    "newProfileNot_DESC" |
+
+    "completedProfile_ASC" |
+
+    "completedProfile_DESC"
 );
 
 /**
@@ -617,6 +778,11 @@ export interface AggregateArticle {
     count: NonNull<Int>;
 }
 
+export interface AggregateConnect {
+
+    count: NonNull<Int>;
+}
+
 export interface AggregateCountry {
 
     count: NonNull<Int>;
@@ -627,12 +793,37 @@ export interface AggregateDepartment {
     count: NonNull<Int>;
 }
 
+export interface AggregateDiscussion {
+
+    count: NonNull<Int>;
+}
+
 export interface AggregateFaculty {
 
     count: NonNull<Int>;
 }
 
+export interface AggregateFile {
+
+    count: NonNull<Int>;
+}
+
+export interface AggregateForum {
+
+    count: NonNull<Int>;
+}
+
 export interface AggregateInstitutions {
+
+    count: NonNull<Int>;
+}
+
+export interface AggregateInterest {
+
+    count: NonNull<Int>;
+}
+
+export interface AggregateOpinions {
 
     count: NonNull<Int>;
 }
@@ -741,6 +932,77 @@ export interface BatchPayload {
     count: NonNull<Long>;
 }
 
+export interface Connect extends Node {
+
+    id: NonNull<ID>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
+    to: NonNull<User>;
+
+    from: NonNull<User>;
+
+    accepted: NonNull<Boolean>;
+}
+
+/**
+ * A connection to a list of items.
+ */
+export interface ConnectConnection {
+
+    /**
+     * Information to aid in pagination.
+     */
+    pageInfo: NonNull<PageInfo>;
+
+    /**
+     * A list of edges.
+     */
+    edges: NonNull<List<Optional<ConnectEdge>>>;
+
+    aggregate: NonNull<AggregateConnect>;
+}
+
+/**
+ * An edge in a connection.
+ */
+export interface ConnectEdge {
+
+    /**
+     * The item at the end of the edge.
+     */
+    node: NonNull<Connect>;
+
+    /**
+     * A cursor for use in pagination.
+     */
+    cursor: NonNull<String>;
+}
+
+export interface ConnectPreviousValues {
+
+    id: NonNull<ID>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
+    accepted: NonNull<Boolean>;
+}
+
+export interface ConnectSubscriptionPayload {
+
+    mutation: NonNull<MutationType>;
+
+    node?: Optional<Connect>;
+
+    updatedFields?: List<NonNull<String>>;
+
+    previousValues?: Optional<ConnectPreviousValues>;
+}
+
 export interface Country extends Node {
 
     id: NonNull<ID>;
@@ -749,9 +1011,11 @@ export interface Country extends Node {
 
     updatedAt: NonNull<DateTime>;
 
-    title: NonNull<String>;
+    shortName: NonNull<String>;
 
     name: NonNull<String>;
+
+    users?: List<NonNull<User>>;
 }
 
 /**
@@ -796,7 +1060,7 @@ export interface CountryPreviousValues {
 
     updatedAt: NonNull<DateTime>;
 
-    title: NonNull<String>;
+    shortName: NonNull<String>;
 
     name: NonNull<String>;
 }
@@ -822,7 +1086,9 @@ export interface Department extends Node {
 
     name: NonNull<String>;
 
-    Country: NonNull<Country>;
+    falculty: NonNull<Faculty>;
+
+    users?: List<NonNull<User>>;
 }
 
 /**
@@ -881,6 +1147,95 @@ export interface DepartmentSubscriptionPayload {
     previousValues?: Optional<DepartmentPreviousValues>;
 }
 
+export interface Discussion extends Node {
+
+    id: NonNull<ID>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
+    title: NonNull<String>;
+
+    slug?: Optional<String>;
+
+    content: NonNull<String>;
+
+    tags?: List<NonNull<String>>;
+
+    favourites?: List<NonNull<User>>;
+
+    author: NonNull<User>;
+
+    private: NonNull<Boolean>;
+
+    opinions?: List<NonNull<Opinions>>;
+}
+
+/**
+ * A connection to a list of items.
+ */
+export interface DiscussionConnection {
+
+    /**
+     * Information to aid in pagination.
+     */
+    pageInfo: NonNull<PageInfo>;
+
+    /**
+     * A list of edges.
+     */
+    edges: NonNull<List<Optional<DiscussionEdge>>>;
+
+    aggregate: NonNull<AggregateDiscussion>;
+}
+
+/**
+ * An edge in a connection.
+ */
+export interface DiscussionEdge {
+
+    /**
+     * The item at the end of the edge.
+     */
+    node: NonNull<Discussion>;
+
+    /**
+     * A cursor for use in pagination.
+     */
+    cursor: NonNull<String>;
+}
+
+export interface DiscussionPreviousValues {
+
+    id: NonNull<ID>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
+    title: NonNull<String>;
+
+    slug?: Optional<String>;
+
+    content: NonNull<String>;
+
+    tags?: List<NonNull<String>>;
+
+    private: NonNull<Boolean>;
+}
+
+export interface DiscussionSubscriptionPayload {
+
+    mutation: NonNull<MutationType>;
+
+    node?: Optional<Discussion>;
+
+    updatedFields?: List<NonNull<String>>;
+
+    previousValues?: Optional<DiscussionPreviousValues>;
+}
+
 export interface Faculty extends Node {
 
     id: NonNull<ID>;
@@ -892,6 +1247,8 @@ export interface Faculty extends Node {
     name: NonNull<String>;
 
     school: NonNull<School>;
+
+    users?: List<NonNull<User>>;
 }
 
 /**
@@ -950,6 +1307,166 @@ export interface FacultySubscriptionPayload {
     previousValues?: Optional<FacultyPreviousValues>;
 }
 
+export interface File extends Node {
+
+    id: NonNull<ID>;
+
+    name: NonNull<String>;
+
+    size: NonNull<Int>;
+
+    secret: NonNull<String>;
+
+    contentType: NonNull<String>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
+    url: NonNull<String>;
+}
+
+/**
+ * A connection to a list of items.
+ */
+export interface FileConnection {
+
+    /**
+     * Information to aid in pagination.
+     */
+    pageInfo: NonNull<PageInfo>;
+
+    /**
+     * A list of edges.
+     */
+    edges: NonNull<List<Optional<FileEdge>>>;
+
+    aggregate: NonNull<AggregateFile>;
+}
+
+/**
+ * An edge in a connection.
+ */
+export interface FileEdge {
+
+    /**
+     * The item at the end of the edge.
+     */
+    node: NonNull<File>;
+
+    /**
+     * A cursor for use in pagination.
+     */
+    cursor: NonNull<String>;
+}
+
+export interface FilePreviousValues {
+
+    id: NonNull<ID>;
+
+    name: NonNull<String>;
+
+    size: NonNull<Int>;
+
+    secret: NonNull<String>;
+
+    contentType: NonNull<String>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
+    url: NonNull<String>;
+}
+
+export interface FileSubscriptionPayload {
+
+    mutation: NonNull<MutationType>;
+
+    node?: Optional<File>;
+
+    updatedFields?: List<NonNull<String>>;
+
+    previousValues?: Optional<FilePreviousValues>;
+}
+
+export interface Forum extends Node {
+
+    id: NonNull<ID>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
+    title: NonNull<String>;
+
+    slug?: Optional<String>;
+
+    author: NonNull<User>;
+
+    private: NonNull<Boolean>;
+}
+
+/**
+ * A connection to a list of items.
+ */
+export interface ForumConnection {
+
+    /**
+     * Information to aid in pagination.
+     */
+    pageInfo: NonNull<PageInfo>;
+
+    /**
+     * A list of edges.
+     */
+    edges: NonNull<List<Optional<ForumEdge>>>;
+
+    aggregate: NonNull<AggregateForum>;
+}
+
+/**
+ * An edge in a connection.
+ */
+export interface ForumEdge {
+
+    /**
+     * The item at the end of the edge.
+     */
+    node: NonNull<Forum>;
+
+    /**
+     * A cursor for use in pagination.
+     */
+    cursor: NonNull<String>;
+}
+
+export interface ForumPreviousValues {
+
+    id: NonNull<ID>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
+    title: NonNull<String>;
+
+    slug?: Optional<String>;
+
+    private: NonNull<Boolean>;
+}
+
+export interface ForumSubscriptionPayload {
+
+    mutation: NonNull<MutationType>;
+
+    node?: Optional<Forum>;
+
+    updatedFields?: List<NonNull<String>>;
+
+    previousValues?: Optional<ForumPreviousValues>;
+}
+
 export interface Institutions extends Node {
 
     id: NonNull<ID>;
@@ -963,6 +1480,8 @@ export interface Institutions extends Node {
     type: NonNull<InstitutionType>;
 
     Country: NonNull<Country>;
+
+    users?: List<NonNull<User>>;
 }
 
 /**
@@ -1023,7 +1542,82 @@ export interface InstitutionsSubscriptionPayload {
     previousValues?: Optional<InstitutionsPreviousValues>;
 }
 
+export interface Interest extends Node {
+
+    id: NonNull<ID>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
+    name: NonNull<String>;
+
+    avatar: NonNull<String>;
+
+    users?: List<NonNull<User>>;
+}
+
+/**
+ * A connection to a list of items.
+ */
+export interface InterestConnection {
+
+    /**
+     * Information to aid in pagination.
+     */
+    pageInfo: NonNull<PageInfo>;
+
+    /**
+     * A list of edges.
+     */
+    edges: NonNull<List<Optional<InterestEdge>>>;
+
+    aggregate: NonNull<AggregateInterest>;
+}
+
+/**
+ * An edge in a connection.
+ */
+export interface InterestEdge {
+
+    /**
+     * The item at the end of the edge.
+     */
+    node: NonNull<Interest>;
+
+    /**
+     * A cursor for use in pagination.
+     */
+    cursor: NonNull<String>;
+}
+
+export interface InterestPreviousValues {
+
+    id: NonNull<ID>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
+    name: NonNull<String>;
+
+    avatar: NonNull<String>;
+}
+
+export interface InterestSubscriptionPayload {
+
+    mutation: NonNull<MutationType>;
+
+    node?: Optional<Interest>;
+
+    updatedFields?: List<NonNull<String>>;
+
+    previousValues?: Optional<InterestPreviousValues>;
+}
+
 export interface Mutation {
+
+    createFile: NonNull<File>;
 
     createPost: NonNull<Post>;
 
@@ -1039,7 +1633,19 @@ export interface Mutation {
 
     createDepartment: NonNull<Department>;
 
+    createInterest: NonNull<Interest>;
+
     createUser: NonNull<User>;
+
+    createConnect: NonNull<Connect>;
+
+    createForum: NonNull<Forum>;
+
+    createDiscussion: NonNull<Discussion>;
+
+    createOpinions: NonNull<Opinions>;
+
+    updateFile?: Optional<File>;
 
     updatePost?: Optional<Post>;
 
@@ -1055,7 +1661,19 @@ export interface Mutation {
 
     updateDepartment?: Optional<Department>;
 
+    updateInterest?: Optional<Interest>;
+
     updateUser?: Optional<User>;
+
+    updateConnect?: Optional<Connect>;
+
+    updateForum?: Optional<Forum>;
+
+    updateDiscussion?: Optional<Discussion>;
+
+    updateOpinions?: Optional<Opinions>;
+
+    deleteFile?: Optional<File>;
 
     deletePost?: Optional<Post>;
 
@@ -1071,7 +1689,19 @@ export interface Mutation {
 
     deleteDepartment?: Optional<Department>;
 
+    deleteInterest?: Optional<Interest>;
+
     deleteUser?: Optional<User>;
+
+    deleteConnect?: Optional<Connect>;
+
+    deleteForum?: Optional<Forum>;
+
+    deleteDiscussion?: Optional<Discussion>;
+
+    deleteOpinions?: Optional<Opinions>;
+
+    upsertFile: NonNull<File>;
 
     upsertPost: NonNull<Post>;
 
@@ -1087,7 +1717,19 @@ export interface Mutation {
 
     upsertDepartment: NonNull<Department>;
 
+    upsertInterest: NonNull<Interest>;
+
     upsertUser: NonNull<User>;
+
+    upsertConnect: NonNull<Connect>;
+
+    upsertForum: NonNull<Forum>;
+
+    upsertDiscussion: NonNull<Discussion>;
+
+    upsertOpinions: NonNull<Opinions>;
+
+    updateManyFiles: NonNull<BatchPayload>;
 
     updateManyPosts: NonNull<BatchPayload>;
 
@@ -1103,7 +1745,19 @@ export interface Mutation {
 
     updateManyDepartments: NonNull<BatchPayload>;
 
+    updateManyInterests: NonNull<BatchPayload>;
+
     updateManyUsers: NonNull<BatchPayload>;
+
+    updateManyConnects: NonNull<BatchPayload>;
+
+    updateManyForums: NonNull<BatchPayload>;
+
+    updateManyDiscussions: NonNull<BatchPayload>;
+
+    updateManyOpinionses: NonNull<BatchPayload>;
+
+    deleteManyFiles: NonNull<BatchPayload>;
 
     deleteManyPosts: NonNull<BatchPayload>;
 
@@ -1119,7 +1773,88 @@ export interface Mutation {
 
     deleteManyDepartments: NonNull<BatchPayload>;
 
+    deleteManyInterests: NonNull<BatchPayload>;
+
     deleteManyUsers: NonNull<BatchPayload>;
+
+    deleteManyConnects: NonNull<BatchPayload>;
+
+    deleteManyForums: NonNull<BatchPayload>;
+
+    deleteManyDiscussions: NonNull<BatchPayload>;
+
+    deleteManyOpinionses: NonNull<BatchPayload>;
+}
+
+export interface Opinions extends Node {
+
+    id: NonNull<ID>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
+    content: NonNull<String>;
+
+    author: NonNull<User>;
+
+    discussion: NonNull<Discussion>;
+}
+
+/**
+ * A connection to a list of items.
+ */
+export interface OpinionsConnection {
+
+    /**
+     * Information to aid in pagination.
+     */
+    pageInfo: NonNull<PageInfo>;
+
+    /**
+     * A list of edges.
+     */
+    edges: NonNull<List<Optional<OpinionsEdge>>>;
+
+    aggregate: NonNull<AggregateOpinions>;
+}
+
+/**
+ * An edge in a connection.
+ */
+export interface OpinionsEdge {
+
+    /**
+     * The item at the end of the edge.
+     */
+    node: NonNull<Opinions>;
+
+    /**
+     * A cursor for use in pagination.
+     */
+    cursor: NonNull<String>;
+}
+
+export interface OpinionsPreviousValues {
+
+    id: NonNull<ID>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
+    content: NonNull<String>;
+}
+
+export interface OpinionsSubscriptionPayload {
+
+    mutation: NonNull<MutationType>;
+
+    node?: Optional<Opinions>;
+
+    updatedFields?: List<NonNull<String>>;
+
+    previousValues?: Optional<OpinionsPreviousValues>;
 }
 
 /**
@@ -1225,6 +1960,8 @@ export interface PostSubscriptionPayload {
 
 export interface Query {
 
+    files: NonNull<List<Optional<File>>>;
+
     posts: NonNull<List<Optional<Post>>>;
 
     articles: NonNull<List<Optional<Article>>>;
@@ -1239,7 +1976,19 @@ export interface Query {
 
     departments: NonNull<List<Optional<Department>>>;
 
+    interests: NonNull<List<Optional<Interest>>>;
+
     users: NonNull<List<Optional<User>>>;
+
+    connects: NonNull<List<Optional<Connect>>>;
+
+    forums: NonNull<List<Optional<Forum>>>;
+
+    discussions: NonNull<List<Optional<Discussion>>>;
+
+    opinionses: NonNull<List<Optional<Opinions>>>;
+
+    file?: Optional<File>;
 
     post?: Optional<Post>;
 
@@ -1255,7 +2004,19 @@ export interface Query {
 
     department?: Optional<Department>;
 
+    interest?: Optional<Interest>;
+
     user?: Optional<User>;
+
+    connect?: Optional<Connect>;
+
+    forum?: Optional<Forum>;
+
+    discussion?: Optional<Discussion>;
+
+    opinions?: Optional<Opinions>;
+
+    filesConnection: NonNull<FileConnection>;
 
     postsConnection: NonNull<PostConnection>;
 
@@ -1271,7 +2032,17 @@ export interface Query {
 
     departmentsConnection: NonNull<DepartmentConnection>;
 
+    interestsConnection: NonNull<InterestConnection>;
+
     usersConnection: NonNull<UserConnection>;
+
+    connectsConnection: NonNull<ConnectConnection>;
+
+    forumsConnection: NonNull<ForumConnection>;
+
+    discussionsConnection: NonNull<DiscussionConnection>;
+
+    opinionsesConnection: NonNull<OpinionsConnection>;
 
     /**
      * Fetches an object given its ID
@@ -1289,7 +2060,9 @@ export interface School extends Node {
 
     title: NonNull<String>;
 
-    Country: NonNull<Country>;
+    institution: NonNull<Institutions>;
+
+    users?: List<NonNull<User>>;
 }
 
 /**
@@ -1350,6 +2123,8 @@ export interface SchoolSubscriptionPayload {
 
 export interface Subscription {
 
+    file?: Optional<FileSubscriptionPayload>;
+
     post?: Optional<PostSubscriptionPayload>;
 
     article?: Optional<ArticleSubscriptionPayload>;
@@ -1364,12 +2139,26 @@ export interface Subscription {
 
     department?: Optional<DepartmentSubscriptionPayload>;
 
+    interest?: Optional<InterestSubscriptionPayload>;
+
     user?: Optional<UserSubscriptionPayload>;
+
+    connect?: Optional<ConnectSubscriptionPayload>;
+
+    forum?: Optional<ForumSubscriptionPayload>;
+
+    discussion?: Optional<DiscussionSubscriptionPayload>;
+
+    opinions?: Optional<OpinionsSubscriptionPayload>;
 }
 
 export interface User extends Node {
 
     id: NonNull<ID>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
 
     email: NonNull<String>;
 
@@ -1377,21 +2166,49 @@ export interface User extends Node {
 
     password: NonNull<String>;
 
-    name?: Optional<String>;
-
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
 
     gender: NonNull<String>;
 
-    followedBy?: List<NonNull<User>>;
+    country?: Optional<Country>;
 
-    following?: List<NonNull<User>>;
+    institution?: Optional<Institutions>;
 
-    type: NonNull<Usertype>;
+    school?: Optional<School>;
+
+    falculty?: Optional<Faculty>;
+
+    department?: Optional<Department>;
+
+    interest?: Optional<Interest>;
+
+    favourites?: List<NonNull<Discussion>>;
+
+    myDiscussions?: Optional<Discussion>;
+
+    connectTo?: List<NonNull<Connect>>;
+
+    ConectFrom?: List<NonNull<Connect>>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
 
     articles?: List<NonNull<Article>>;
+
+    opinions?: List<NonNull<Opinions>>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
 }
 
 /**
@@ -1432,13 +2249,15 @@ export interface UserPreviousValues {
 
     id: NonNull<ID>;
 
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
     email: NonNull<String>;
 
     username?: Optional<String>;
 
     password: NonNull<String>;
-
-    name?: Optional<String>;
 
     firstname: NonNull<String>;
 
@@ -1446,7 +2265,19 @@ export interface UserPreviousValues {
 
     gender: NonNull<String>;
 
-    type: NonNull<Usertype>;
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
 }
 
 export interface UserSubscriptionPayload {
@@ -1903,11 +2734,343 @@ export interface ArticleWhereUniqueInput {
     id?: Optional<ID>;
 }
 
+export interface ConnectCreateInput {
+
+    accepted?: Optional<Boolean>;
+
+    to: NonNull<UserCreateOneWithoutConnectToInput>;
+
+    from: NonNull<UserCreateOneWithoutConectFromInput>;
+}
+
+export interface ConnectCreateManyWithoutFromInput {
+
+    create?: List<NonNull<ConnectCreateWithoutFromInput>>;
+
+    connect?: List<NonNull<ConnectWhereUniqueInput>>;
+}
+
+export interface ConnectCreateManyWithoutToInput {
+
+    create?: List<NonNull<ConnectCreateWithoutToInput>>;
+
+    connect?: List<NonNull<ConnectWhereUniqueInput>>;
+}
+
+export interface ConnectCreateWithoutFromInput {
+
+    accepted?: Optional<Boolean>;
+
+    to: NonNull<UserCreateOneWithoutConnectToInput>;
+}
+
+export interface ConnectCreateWithoutToInput {
+
+    accepted?: Optional<Boolean>;
+
+    from: NonNull<UserCreateOneWithoutConectFromInput>;
+}
+
+export interface ConnectSubscriptionWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<ConnectSubscriptionWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<ConnectSubscriptionWhereInput>>;
+
+    /**
+     * The subscription event gets dispatched when it's listed in mutation_in
+     */
+    mutation_in?: List<NonNull<MutationType>>;
+
+    /**
+     * The subscription event gets only dispatched when one of the updated fields names 
+     * is included in this list
+     */
+    updatedFields_contains?: Optional<String>;
+
+    /**
+     * The subscription event gets only dispatched when all of the field names included 
+     * in this list have been updated
+     */
+    updatedFields_contains_every?: List<NonNull<String>>;
+
+    /**
+     * The subscription event gets only dispatched when some of the field names 
+     * included in this list have been updated
+     */
+    updatedFields_contains_some?: List<NonNull<String>>;
+
+    node?: Optional<ConnectWhereInput>;
+}
+
+export interface ConnectUpdateInput {
+
+    accepted?: Optional<Boolean>;
+
+    to?: Optional<UserUpdateOneWithoutConnectToInput>;
+
+    from?: Optional<UserUpdateOneWithoutConectFromInput>;
+}
+
+export interface ConnectUpdateManyWithoutFromInput {
+
+    create?: List<NonNull<ConnectCreateWithoutFromInput>>;
+
+    connect?: List<NonNull<ConnectWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<ConnectWhereUniqueInput>>;
+
+    delete?: List<NonNull<ConnectWhereUniqueInput>>;
+
+    update?: List<NonNull<ConnectUpdateWithoutFromInput>>;
+
+    upsert?: List<NonNull<ConnectUpsertWithoutFromInput>>;
+}
+
+export interface ConnectUpdateManyWithoutToInput {
+
+    create?: List<NonNull<ConnectCreateWithoutToInput>>;
+
+    connect?: List<NonNull<ConnectWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<ConnectWhereUniqueInput>>;
+
+    delete?: List<NonNull<ConnectWhereUniqueInput>>;
+
+    update?: List<NonNull<ConnectUpdateWithoutToInput>>;
+
+    upsert?: List<NonNull<ConnectUpsertWithoutToInput>>;
+}
+
+export interface ConnectUpdateWithoutFromDataInput {
+
+    accepted?: Optional<Boolean>;
+
+    to?: Optional<UserUpdateOneWithoutConnectToInput>;
+}
+
+export interface ConnectUpdateWithoutFromInput {
+
+    where: NonNull<ConnectWhereUniqueInput>;
+
+    data: NonNull<ConnectUpdateWithoutFromDataInput>;
+}
+
+export interface ConnectUpdateWithoutToDataInput {
+
+    accepted?: Optional<Boolean>;
+
+    from?: Optional<UserUpdateOneWithoutConectFromInput>;
+}
+
+export interface ConnectUpdateWithoutToInput {
+
+    where: NonNull<ConnectWhereUniqueInput>;
+
+    data: NonNull<ConnectUpdateWithoutToDataInput>;
+}
+
+export interface ConnectUpsertWithoutFromInput {
+
+    where: NonNull<ConnectWhereUniqueInput>;
+
+    update: NonNull<ConnectUpdateWithoutFromDataInput>;
+
+    create: NonNull<ConnectCreateWithoutFromInput>;
+}
+
+export interface ConnectUpsertWithoutToInput {
+
+    where: NonNull<ConnectWhereUniqueInput>;
+
+    update: NonNull<ConnectUpdateWithoutToDataInput>;
+
+    create: NonNull<ConnectCreateWithoutToInput>;
+}
+
+export interface ConnectWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<ConnectWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<ConnectWhereInput>>;
+
+    id?: Optional<ID>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    id_not?: Optional<ID>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    id_in?: List<NonNull<ID>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    id_not_in?: List<NonNull<ID>>;
+
+    /**
+     * All values less than the given value.
+     */
+    id_lt?: Optional<ID>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    id_lte?: Optional<ID>;
+
+    /**
+     * All values greater than the given value.
+     */
+    id_gt?: Optional<ID>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    id_gte?: Optional<ID>;
+
+    /**
+     * All values containing the given string.
+     */
+    id_contains?: Optional<ID>;
+
+    /**
+     * All values not containing the given string.
+     */
+    id_not_contains?: Optional<ID>;
+
+    /**
+     * All values starting with the given string.
+     */
+    id_starts_with?: Optional<ID>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    id_not_starts_with?: Optional<ID>;
+
+    /**
+     * All values ending with the given string.
+     */
+    id_ends_with?: Optional<ID>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    id_not_ends_with?: Optional<ID>;
+
+    createdAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    createdAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    createdAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    createdAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    createdAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    createdAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    createdAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    createdAt_gte?: Optional<DateTime>;
+
+    updatedAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    updatedAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    updatedAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    updatedAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    updatedAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    updatedAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    updatedAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    updatedAt_gte?: Optional<DateTime>;
+
+    accepted?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    accepted_not?: Optional<Boolean>;
+
+    to?: Optional<UserWhereInput>;
+
+    from?: Optional<UserWhereInput>;
+}
+
+export interface ConnectWhereUniqueInput {
+
+    id?: Optional<ID>;
+}
+
 export interface CountryCreateInput {
 
-    title: NonNull<String>;
+    shortName: NonNull<String>;
 
     name: NonNull<String>;
+
+    users?: Optional<UserCreateManyWithoutCountryInput>;
 }
 
 export interface CountryCreateOneInput {
@@ -1915,6 +3078,20 @@ export interface CountryCreateOneInput {
     create?: Optional<CountryCreateInput>;
 
     connect?: Optional<CountryWhereUniqueInput>;
+}
+
+export interface CountryCreateOneWithoutUsersInput {
+
+    create?: Optional<CountryCreateWithoutUsersInput>;
+
+    connect?: Optional<CountryWhereUniqueInput>;
+}
+
+export interface CountryCreateWithoutUsersInput {
+
+    shortName: NonNull<String>;
+
+    name: NonNull<String>;
 }
 
 export interface CountrySubscriptionWhereInput {
@@ -1957,16 +3134,20 @@ export interface CountrySubscriptionWhereInput {
 
 export interface CountryUpdateDataInput {
 
-    title?: Optional<String>;
+    shortName?: Optional<String>;
 
     name?: Optional<String>;
+
+    users?: Optional<UserUpdateManyWithoutCountryInput>;
 }
 
 export interface CountryUpdateInput {
 
-    title?: Optional<String>;
+    shortName?: Optional<String>;
 
     name?: Optional<String>;
+
+    users?: Optional<UserUpdateManyWithoutCountryInput>;
 }
 
 export interface CountryUpdateNestedInput {
@@ -1991,6 +3172,35 @@ export interface CountryUpdateOneInput {
     upsert?: Optional<CountryUpsertNestedInput>;
 }
 
+export interface CountryUpdateOneWithoutUsersInput {
+
+    create?: Optional<CountryCreateWithoutUsersInput>;
+
+    connect?: Optional<CountryWhereUniqueInput>;
+
+    disconnect?: Optional<CountryWhereUniqueInput>;
+
+    delete?: Optional<CountryWhereUniqueInput>;
+
+    update?: Optional<CountryUpdateWithoutUsersInput>;
+
+    upsert?: Optional<CountryUpsertWithoutUsersInput>;
+}
+
+export interface CountryUpdateWithoutUsersDataInput {
+
+    shortName?: Optional<String>;
+
+    name?: Optional<String>;
+}
+
+export interface CountryUpdateWithoutUsersInput {
+
+    where: NonNull<CountryWhereUniqueInput>;
+
+    data: NonNull<CountryUpdateWithoutUsersDataInput>;
+}
+
 export interface CountryUpsertNestedInput {
 
     where: NonNull<CountryWhereUniqueInput>;
@@ -1998,6 +3208,15 @@ export interface CountryUpsertNestedInput {
     update: NonNull<CountryUpdateDataInput>;
 
     create: NonNull<CountryCreateInput>;
+}
+
+export interface CountryUpsertWithoutUsersInput {
+
+    where: NonNull<CountryWhereUniqueInput>;
+
+    update: NonNull<CountryUpdateWithoutUsersDataInput>;
+
+    create: NonNull<CountryCreateWithoutUsersInput>;
 }
 
 export interface CountryWhereInput {
@@ -2153,72 +3372,72 @@ export interface CountryWhereInput {
      */
     updatedAt_gte?: Optional<DateTime>;
 
-    title?: Optional<String>;
+    shortName?: Optional<String>;
 
     /**
      * All values that are not equal to given value.
      */
-    title_not?: Optional<String>;
+    shortName_not?: Optional<String>;
 
     /**
      * All values that are contained in given list.
      */
-    title_in?: List<NonNull<String>>;
+    shortName_in?: List<NonNull<String>>;
 
     /**
      * All values that are not contained in given list.
      */
-    title_not_in?: List<NonNull<String>>;
+    shortName_not_in?: List<NonNull<String>>;
 
     /**
      * All values less than the given value.
      */
-    title_lt?: Optional<String>;
+    shortName_lt?: Optional<String>;
 
     /**
      * All values less than or equal the given value.
      */
-    title_lte?: Optional<String>;
+    shortName_lte?: Optional<String>;
 
     /**
      * All values greater than the given value.
      */
-    title_gt?: Optional<String>;
+    shortName_gt?: Optional<String>;
 
     /**
      * All values greater than or equal the given value.
      */
-    title_gte?: Optional<String>;
+    shortName_gte?: Optional<String>;
 
     /**
      * All values containing the given string.
      */
-    title_contains?: Optional<String>;
+    shortName_contains?: Optional<String>;
 
     /**
      * All values not containing the given string.
      */
-    title_not_contains?: Optional<String>;
+    shortName_not_contains?: Optional<String>;
 
     /**
      * All values starting with the given string.
      */
-    title_starts_with?: Optional<String>;
+    shortName_starts_with?: Optional<String>;
 
     /**
      * All values not starting with the given string.
      */
-    title_not_starts_with?: Optional<String>;
+    shortName_not_starts_with?: Optional<String>;
 
     /**
      * All values ending with the given string.
      */
-    title_ends_with?: Optional<String>;
+    shortName_ends_with?: Optional<String>;
 
     /**
      * All values not ending with the given string.
      */
-    title_not_ends_with?: Optional<String>;
+    shortName_not_ends_with?: Optional<String>;
 
     name?: Optional<String>;
 
@@ -2286,18 +3505,44 @@ export interface CountryWhereInput {
      * All values not ending with the given string.
      */
     name_not_ends_with?: Optional<String>;
+
+    users_every?: Optional<UserWhereInput>;
+
+    users_some?: Optional<UserWhereInput>;
+
+    users_none?: Optional<UserWhereInput>;
 }
 
 export interface CountryWhereUniqueInput {
 
     id?: Optional<ID>;
+
+    shortName?: Optional<String>;
+
+    name?: Optional<String>;
 }
 
 export interface DepartmentCreateInput {
 
     name: NonNull<String>;
 
-    Country: NonNull<CountryCreateOneInput>;
+    falculty: NonNull<FacultyCreateOneInput>;
+
+    users?: Optional<UserCreateManyWithoutDepartmentInput>;
+}
+
+export interface DepartmentCreateOneWithoutUsersInput {
+
+    create?: Optional<DepartmentCreateWithoutUsersInput>;
+
+    connect?: Optional<DepartmentWhereUniqueInput>;
+}
+
+export interface DepartmentCreateWithoutUsersInput {
+
+    name: NonNull<String>;
+
+    falculty: NonNull<FacultyCreateOneInput>;
 }
 
 export interface DepartmentSubscriptionWhereInput {
@@ -2342,7 +3587,47 @@ export interface DepartmentUpdateInput {
 
     name?: Optional<String>;
 
-    Country?: Optional<CountryUpdateOneInput>;
+    falculty?: Optional<FacultyUpdateOneInput>;
+
+    users?: Optional<UserUpdateManyWithoutDepartmentInput>;
+}
+
+export interface DepartmentUpdateOneWithoutUsersInput {
+
+    create?: Optional<DepartmentCreateWithoutUsersInput>;
+
+    connect?: Optional<DepartmentWhereUniqueInput>;
+
+    disconnect?: Optional<DepartmentWhereUniqueInput>;
+
+    delete?: Optional<DepartmentWhereUniqueInput>;
+
+    update?: Optional<DepartmentUpdateWithoutUsersInput>;
+
+    upsert?: Optional<DepartmentUpsertWithoutUsersInput>;
+}
+
+export interface DepartmentUpdateWithoutUsersDataInput {
+
+    name?: Optional<String>;
+
+    falculty?: Optional<FacultyUpdateOneInput>;
+}
+
+export interface DepartmentUpdateWithoutUsersInput {
+
+    where: NonNull<DepartmentWhereUniqueInput>;
+
+    data: NonNull<DepartmentUpdateWithoutUsersDataInput>;
+}
+
+export interface DepartmentUpsertWithoutUsersInput {
+
+    where: NonNull<DepartmentWhereUniqueInput>;
+
+    update: NonNull<DepartmentUpdateWithoutUsersDataInput>;
+
+    create: NonNull<DepartmentCreateWithoutUsersInput>;
 }
 
 export interface DepartmentWhereInput {
@@ -2565,7 +3850,13 @@ export interface DepartmentWhereInput {
      */
     name_not_ends_with?: Optional<String>;
 
-    Country?: Optional<CountryWhereInput>;
+    falculty?: Optional<FacultyWhereInput>;
+
+    users_every?: Optional<UserWhereInput>;
+
+    users_some?: Optional<UserWhereInput>;
+
+    users_none?: Optional<UserWhereInput>;
 }
 
 export interface DepartmentWhereUniqueInput {
@@ -2573,7 +3864,713 @@ export interface DepartmentWhereUniqueInput {
     id?: Optional<ID>;
 }
 
+export interface DiscussionCreateInput {
+
+    title: NonNull<String>;
+
+    slug?: Optional<String>;
+
+    content: NonNull<String>;
+
+    private?: Optional<Boolean>;
+
+    tags?: Optional<DiscussionCreatetagsInput>;
+
+    favourites?: Optional<UserCreateManyWithoutFavouritesInput>;
+
+    author: NonNull<UserCreateOneWithoutMyDiscussionsInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutDiscussionInput>;
+}
+
+export interface DiscussionCreateManyWithoutFavouritesInput {
+
+    create?: List<NonNull<DiscussionCreateWithoutFavouritesInput>>;
+
+    connect?: List<NonNull<DiscussionWhereUniqueInput>>;
+}
+
+export interface DiscussionCreateOneWithoutAuthorInput {
+
+    create?: Optional<DiscussionCreateWithoutAuthorInput>;
+
+    connect?: Optional<DiscussionWhereUniqueInput>;
+}
+
+export interface DiscussionCreateOneWithoutOpinionsInput {
+
+    create?: Optional<DiscussionCreateWithoutOpinionsInput>;
+
+    connect?: Optional<DiscussionWhereUniqueInput>;
+}
+
+export interface DiscussionCreatetagsInput {
+
+    set?: List<NonNull<String>>;
+}
+
+export interface DiscussionCreateWithoutAuthorInput {
+
+    title: NonNull<String>;
+
+    slug?: Optional<String>;
+
+    content: NonNull<String>;
+
+    private?: Optional<Boolean>;
+
+    tags?: Optional<DiscussionCreatetagsInput>;
+
+    favourites?: Optional<UserCreateManyWithoutFavouritesInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutDiscussionInput>;
+}
+
+export interface DiscussionCreateWithoutFavouritesInput {
+
+    title: NonNull<String>;
+
+    slug?: Optional<String>;
+
+    content: NonNull<String>;
+
+    private?: Optional<Boolean>;
+
+    tags?: Optional<DiscussionCreatetagsInput>;
+
+    author: NonNull<UserCreateOneWithoutMyDiscussionsInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutDiscussionInput>;
+}
+
+export interface DiscussionCreateWithoutOpinionsInput {
+
+    title: NonNull<String>;
+
+    slug?: Optional<String>;
+
+    content: NonNull<String>;
+
+    private?: Optional<Boolean>;
+
+    tags?: Optional<DiscussionCreatetagsInput>;
+
+    favourites?: Optional<UserCreateManyWithoutFavouritesInput>;
+
+    author: NonNull<UserCreateOneWithoutMyDiscussionsInput>;
+}
+
+export interface DiscussionSubscriptionWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<DiscussionSubscriptionWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<DiscussionSubscriptionWhereInput>>;
+
+    /**
+     * The subscription event gets dispatched when it's listed in mutation_in
+     */
+    mutation_in?: List<NonNull<MutationType>>;
+
+    /**
+     * The subscription event gets only dispatched when one of the updated fields names 
+     * is included in this list
+     */
+    updatedFields_contains?: Optional<String>;
+
+    /**
+     * The subscription event gets only dispatched when all of the field names included 
+     * in this list have been updated
+     */
+    updatedFields_contains_every?: List<NonNull<String>>;
+
+    /**
+     * The subscription event gets only dispatched when some of the field names 
+     * included in this list have been updated
+     */
+    updatedFields_contains_some?: List<NonNull<String>>;
+
+    node?: Optional<DiscussionWhereInput>;
+}
+
+export interface DiscussionUpdateInput {
+
+    title?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    content?: Optional<String>;
+
+    private?: Optional<Boolean>;
+
+    tags?: Optional<DiscussionUpdatetagsInput>;
+
+    favourites?: Optional<UserUpdateManyWithoutFavouritesInput>;
+
+    author?: Optional<UserUpdateOneWithoutMyDiscussionsInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutDiscussionInput>;
+}
+
+export interface DiscussionUpdateManyWithoutFavouritesInput {
+
+    create?: List<NonNull<DiscussionCreateWithoutFavouritesInput>>;
+
+    connect?: List<NonNull<DiscussionWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<DiscussionWhereUniqueInput>>;
+
+    delete?: List<NonNull<DiscussionWhereUniqueInput>>;
+
+    update?: List<NonNull<DiscussionUpdateWithoutFavouritesInput>>;
+
+    upsert?: List<NonNull<DiscussionUpsertWithoutFavouritesInput>>;
+}
+
+export interface DiscussionUpdateOneWithoutAuthorInput {
+
+    create?: Optional<DiscussionCreateWithoutAuthorInput>;
+
+    connect?: Optional<DiscussionWhereUniqueInput>;
+
+    disconnect?: Optional<DiscussionWhereUniqueInput>;
+
+    delete?: Optional<DiscussionWhereUniqueInput>;
+
+    update?: Optional<DiscussionUpdateWithoutAuthorInput>;
+
+    upsert?: Optional<DiscussionUpsertWithoutAuthorInput>;
+}
+
+export interface DiscussionUpdateOneWithoutOpinionsInput {
+
+    create?: Optional<DiscussionCreateWithoutOpinionsInput>;
+
+    connect?: Optional<DiscussionWhereUniqueInput>;
+
+    disconnect?: Optional<DiscussionWhereUniqueInput>;
+
+    delete?: Optional<DiscussionWhereUniqueInput>;
+
+    update?: Optional<DiscussionUpdateWithoutOpinionsInput>;
+
+    upsert?: Optional<DiscussionUpsertWithoutOpinionsInput>;
+}
+
+export interface DiscussionUpdatetagsInput {
+
+    set?: List<NonNull<String>>;
+}
+
+export interface DiscussionUpdateWithoutAuthorDataInput {
+
+    title?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    content?: Optional<String>;
+
+    private?: Optional<Boolean>;
+
+    tags?: Optional<DiscussionUpdatetagsInput>;
+
+    favourites?: Optional<UserUpdateManyWithoutFavouritesInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutDiscussionInput>;
+}
+
+export interface DiscussionUpdateWithoutAuthorInput {
+
+    where: NonNull<DiscussionWhereUniqueInput>;
+
+    data: NonNull<DiscussionUpdateWithoutAuthorDataInput>;
+}
+
+export interface DiscussionUpdateWithoutFavouritesDataInput {
+
+    title?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    content?: Optional<String>;
+
+    private?: Optional<Boolean>;
+
+    tags?: Optional<DiscussionUpdatetagsInput>;
+
+    author?: Optional<UserUpdateOneWithoutMyDiscussionsInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutDiscussionInput>;
+}
+
+export interface DiscussionUpdateWithoutFavouritesInput {
+
+    where: NonNull<DiscussionWhereUniqueInput>;
+
+    data: NonNull<DiscussionUpdateWithoutFavouritesDataInput>;
+}
+
+export interface DiscussionUpdateWithoutOpinionsDataInput {
+
+    title?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    content?: Optional<String>;
+
+    private?: Optional<Boolean>;
+
+    tags?: Optional<DiscussionUpdatetagsInput>;
+
+    favourites?: Optional<UserUpdateManyWithoutFavouritesInput>;
+
+    author?: Optional<UserUpdateOneWithoutMyDiscussionsInput>;
+}
+
+export interface DiscussionUpdateWithoutOpinionsInput {
+
+    where: NonNull<DiscussionWhereUniqueInput>;
+
+    data: NonNull<DiscussionUpdateWithoutOpinionsDataInput>;
+}
+
+export interface DiscussionUpsertWithoutAuthorInput {
+
+    where: NonNull<DiscussionWhereUniqueInput>;
+
+    update: NonNull<DiscussionUpdateWithoutAuthorDataInput>;
+
+    create: NonNull<DiscussionCreateWithoutAuthorInput>;
+}
+
+export interface DiscussionUpsertWithoutFavouritesInput {
+
+    where: NonNull<DiscussionWhereUniqueInput>;
+
+    update: NonNull<DiscussionUpdateWithoutFavouritesDataInput>;
+
+    create: NonNull<DiscussionCreateWithoutFavouritesInput>;
+}
+
+export interface DiscussionUpsertWithoutOpinionsInput {
+
+    where: NonNull<DiscussionWhereUniqueInput>;
+
+    update: NonNull<DiscussionUpdateWithoutOpinionsDataInput>;
+
+    create: NonNull<DiscussionCreateWithoutOpinionsInput>;
+}
+
+export interface DiscussionWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<DiscussionWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<DiscussionWhereInput>>;
+
+    id?: Optional<ID>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    id_not?: Optional<ID>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    id_in?: List<NonNull<ID>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    id_not_in?: List<NonNull<ID>>;
+
+    /**
+     * All values less than the given value.
+     */
+    id_lt?: Optional<ID>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    id_lte?: Optional<ID>;
+
+    /**
+     * All values greater than the given value.
+     */
+    id_gt?: Optional<ID>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    id_gte?: Optional<ID>;
+
+    /**
+     * All values containing the given string.
+     */
+    id_contains?: Optional<ID>;
+
+    /**
+     * All values not containing the given string.
+     */
+    id_not_contains?: Optional<ID>;
+
+    /**
+     * All values starting with the given string.
+     */
+    id_starts_with?: Optional<ID>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    id_not_starts_with?: Optional<ID>;
+
+    /**
+     * All values ending with the given string.
+     */
+    id_ends_with?: Optional<ID>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    id_not_ends_with?: Optional<ID>;
+
+    createdAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    createdAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    createdAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    createdAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    createdAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    createdAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    createdAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    createdAt_gte?: Optional<DateTime>;
+
+    updatedAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    updatedAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    updatedAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    updatedAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    updatedAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    updatedAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    updatedAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    updatedAt_gte?: Optional<DateTime>;
+
+    title?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    title_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    title_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    title_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    title_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    title_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    title_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    title_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    title_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    title_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    title_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    title_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    title_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    title_not_ends_with?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    slug_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    slug_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    slug_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    slug_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    slug_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    slug_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    slug_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    slug_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    slug_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    slug_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    slug_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    slug_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    slug_not_ends_with?: Optional<String>;
+
+    content?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    content_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    content_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    content_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    content_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    content_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    content_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    content_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    content_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    content_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    content_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    content_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    content_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    content_not_ends_with?: Optional<String>;
+
+    private?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    private_not?: Optional<Boolean>;
+
+    favourites_every?: Optional<UserWhereInput>;
+
+    favourites_some?: Optional<UserWhereInput>;
+
+    favourites_none?: Optional<UserWhereInput>;
+
+    author?: Optional<UserWhereInput>;
+
+    opinions_every?: Optional<OpinionsWhereInput>;
+
+    opinions_some?: Optional<OpinionsWhereInput>;
+
+    opinions_none?: Optional<OpinionsWhereInput>;
+}
+
+export interface DiscussionWhereUniqueInput {
+
+    id?: Optional<ID>;
+}
+
 export interface FacultyCreateInput {
+
+    name: NonNull<String>;
+
+    school: NonNull<SchoolCreateOneInput>;
+
+    users?: Optional<UserCreateManyWithoutFalcultyInput>;
+}
+
+export interface FacultyCreateOneInput {
+
+    create?: Optional<FacultyCreateInput>;
+
+    connect?: Optional<FacultyWhereUniqueInput>;
+}
+
+export interface FacultyCreateOneWithoutUsersInput {
+
+    create?: Optional<FacultyCreateWithoutUsersInput>;
+
+    connect?: Optional<FacultyWhereUniqueInput>;
+}
+
+export interface FacultyCreateWithoutUsersInput {
 
     name: NonNull<String>;
 
@@ -2618,11 +4615,91 @@ export interface FacultySubscriptionWhereInput {
     node?: Optional<FacultyWhereInput>;
 }
 
+export interface FacultyUpdateDataInput {
+
+    name?: Optional<String>;
+
+    school?: Optional<SchoolUpdateOneInput>;
+
+    users?: Optional<UserUpdateManyWithoutFalcultyInput>;
+}
+
 export interface FacultyUpdateInput {
 
     name?: Optional<String>;
 
     school?: Optional<SchoolUpdateOneInput>;
+
+    users?: Optional<UserUpdateManyWithoutFalcultyInput>;
+}
+
+export interface FacultyUpdateNestedInput {
+
+    where: NonNull<FacultyWhereUniqueInput>;
+
+    data: NonNull<FacultyUpdateDataInput>;
+}
+
+export interface FacultyUpdateOneInput {
+
+    create?: Optional<FacultyCreateInput>;
+
+    connect?: Optional<FacultyWhereUniqueInput>;
+
+    disconnect?: Optional<FacultyWhereUniqueInput>;
+
+    delete?: Optional<FacultyWhereUniqueInput>;
+
+    update?: Optional<FacultyUpdateNestedInput>;
+
+    upsert?: Optional<FacultyUpsertNestedInput>;
+}
+
+export interface FacultyUpdateOneWithoutUsersInput {
+
+    create?: Optional<FacultyCreateWithoutUsersInput>;
+
+    connect?: Optional<FacultyWhereUniqueInput>;
+
+    disconnect?: Optional<FacultyWhereUniqueInput>;
+
+    delete?: Optional<FacultyWhereUniqueInput>;
+
+    update?: Optional<FacultyUpdateWithoutUsersInput>;
+
+    upsert?: Optional<FacultyUpsertWithoutUsersInput>;
+}
+
+export interface FacultyUpdateWithoutUsersDataInput {
+
+    name?: Optional<String>;
+
+    school?: Optional<SchoolUpdateOneInput>;
+}
+
+export interface FacultyUpdateWithoutUsersInput {
+
+    where: NonNull<FacultyWhereUniqueInput>;
+
+    data: NonNull<FacultyUpdateWithoutUsersDataInput>;
+}
+
+export interface FacultyUpsertNestedInput {
+
+    where: NonNull<FacultyWhereUniqueInput>;
+
+    update: NonNull<FacultyUpdateDataInput>;
+
+    create: NonNull<FacultyCreateInput>;
+}
+
+export interface FacultyUpsertWithoutUsersInput {
+
+    where: NonNull<FacultyWhereUniqueInput>;
+
+    update: NonNull<FacultyUpdateWithoutUsersDataInput>;
+
+    create: NonNull<FacultyCreateWithoutUsersInput>;
 }
 
 export interface FacultyWhereInput {
@@ -2846,6 +4923,12 @@ export interface FacultyWhereInput {
     name_not_ends_with?: Optional<String>;
 
     school?: Optional<SchoolWhereInput>;
+
+    users_every?: Optional<UserWhereInput>;
+
+    users_some?: Optional<UserWhereInput>;
+
+    users_none?: Optional<UserWhereInput>;
 }
 
 export interface FacultyWhereUniqueInput {
@@ -2853,7 +4936,926 @@ export interface FacultyWhereUniqueInput {
     id?: Optional<ID>;
 }
 
+export interface FileCreateInput {
+
+    name: NonNull<String>;
+
+    size: NonNull<Int>;
+
+    secret: NonNull<String>;
+
+    contentType: NonNull<String>;
+
+    url: NonNull<String>;
+}
+
+export interface FileSubscriptionWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<FileSubscriptionWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<FileSubscriptionWhereInput>>;
+
+    /**
+     * The subscription event gets dispatched when it's listed in mutation_in
+     */
+    mutation_in?: List<NonNull<MutationType>>;
+
+    /**
+     * The subscription event gets only dispatched when one of the updated fields names 
+     * is included in this list
+     */
+    updatedFields_contains?: Optional<String>;
+
+    /**
+     * The subscription event gets only dispatched when all of the field names included 
+     * in this list have been updated
+     */
+    updatedFields_contains_every?: List<NonNull<String>>;
+
+    /**
+     * The subscription event gets only dispatched when some of the field names 
+     * included in this list have been updated
+     */
+    updatedFields_contains_some?: List<NonNull<String>>;
+
+    node?: Optional<FileWhereInput>;
+}
+
+export interface FileUpdateInput {
+
+    name?: Optional<String>;
+
+    size?: Optional<Int>;
+
+    secret?: Optional<String>;
+
+    contentType?: Optional<String>;
+
+    url?: Optional<String>;
+}
+
+export interface FileWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<FileWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<FileWhereInput>>;
+
+    id?: Optional<ID>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    id_not?: Optional<ID>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    id_in?: List<NonNull<ID>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    id_not_in?: List<NonNull<ID>>;
+
+    /**
+     * All values less than the given value.
+     */
+    id_lt?: Optional<ID>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    id_lte?: Optional<ID>;
+
+    /**
+     * All values greater than the given value.
+     */
+    id_gt?: Optional<ID>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    id_gte?: Optional<ID>;
+
+    /**
+     * All values containing the given string.
+     */
+    id_contains?: Optional<ID>;
+
+    /**
+     * All values not containing the given string.
+     */
+    id_not_contains?: Optional<ID>;
+
+    /**
+     * All values starting with the given string.
+     */
+    id_starts_with?: Optional<ID>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    id_not_starts_with?: Optional<ID>;
+
+    /**
+     * All values ending with the given string.
+     */
+    id_ends_with?: Optional<ID>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    id_not_ends_with?: Optional<ID>;
+
+    name?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    name_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    name_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    name_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    name_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    name_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    name_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    name_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    name_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    name_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    name_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    name_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    name_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    name_not_ends_with?: Optional<String>;
+
+    size?: Optional<Int>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    size_not?: Optional<Int>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    size_in?: List<NonNull<Int>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    size_not_in?: List<NonNull<Int>>;
+
+    /**
+     * All values less than the given value.
+     */
+    size_lt?: Optional<Int>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    size_lte?: Optional<Int>;
+
+    /**
+     * All values greater than the given value.
+     */
+    size_gt?: Optional<Int>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    size_gte?: Optional<Int>;
+
+    secret?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    secret_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    secret_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    secret_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    secret_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    secret_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    secret_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    secret_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    secret_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    secret_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    secret_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    secret_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    secret_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    secret_not_ends_with?: Optional<String>;
+
+    contentType?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    contentType_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    contentType_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    contentType_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    contentType_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    contentType_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    contentType_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    contentType_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    contentType_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    contentType_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    contentType_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    contentType_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    contentType_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    contentType_not_ends_with?: Optional<String>;
+
+    createdAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    createdAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    createdAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    createdAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    createdAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    createdAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    createdAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    createdAt_gte?: Optional<DateTime>;
+
+    updatedAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    updatedAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    updatedAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    updatedAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    updatedAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    updatedAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    updatedAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    updatedAt_gte?: Optional<DateTime>;
+
+    url?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    url_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    url_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    url_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    url_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    url_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    url_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    url_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    url_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    url_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    url_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    url_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    url_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    url_not_ends_with?: Optional<String>;
+}
+
+export interface FileWhereUniqueInput {
+
+    id?: Optional<ID>;
+
+    secret?: Optional<String>;
+
+    url?: Optional<String>;
+}
+
+export interface ForumCreateInput {
+
+    title: NonNull<String>;
+
+    slug?: Optional<String>;
+
+    private?: Optional<Boolean>;
+
+    author: NonNull<UserCreateOneInput>;
+}
+
+export interface ForumSubscriptionWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<ForumSubscriptionWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<ForumSubscriptionWhereInput>>;
+
+    /**
+     * The subscription event gets dispatched when it's listed in mutation_in
+     */
+    mutation_in?: List<NonNull<MutationType>>;
+
+    /**
+     * The subscription event gets only dispatched when one of the updated fields names 
+     * is included in this list
+     */
+    updatedFields_contains?: Optional<String>;
+
+    /**
+     * The subscription event gets only dispatched when all of the field names included 
+     * in this list have been updated
+     */
+    updatedFields_contains_every?: List<NonNull<String>>;
+
+    /**
+     * The subscription event gets only dispatched when some of the field names 
+     * included in this list have been updated
+     */
+    updatedFields_contains_some?: List<NonNull<String>>;
+
+    node?: Optional<ForumWhereInput>;
+}
+
+export interface ForumUpdateInput {
+
+    title?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    private?: Optional<Boolean>;
+
+    author?: Optional<UserUpdateOneInput>;
+}
+
+export interface ForumWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<ForumWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<ForumWhereInput>>;
+
+    id?: Optional<ID>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    id_not?: Optional<ID>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    id_in?: List<NonNull<ID>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    id_not_in?: List<NonNull<ID>>;
+
+    /**
+     * All values less than the given value.
+     */
+    id_lt?: Optional<ID>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    id_lte?: Optional<ID>;
+
+    /**
+     * All values greater than the given value.
+     */
+    id_gt?: Optional<ID>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    id_gte?: Optional<ID>;
+
+    /**
+     * All values containing the given string.
+     */
+    id_contains?: Optional<ID>;
+
+    /**
+     * All values not containing the given string.
+     */
+    id_not_contains?: Optional<ID>;
+
+    /**
+     * All values starting with the given string.
+     */
+    id_starts_with?: Optional<ID>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    id_not_starts_with?: Optional<ID>;
+
+    /**
+     * All values ending with the given string.
+     */
+    id_ends_with?: Optional<ID>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    id_not_ends_with?: Optional<ID>;
+
+    createdAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    createdAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    createdAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    createdAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    createdAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    createdAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    createdAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    createdAt_gte?: Optional<DateTime>;
+
+    updatedAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    updatedAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    updatedAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    updatedAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    updatedAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    updatedAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    updatedAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    updatedAt_gte?: Optional<DateTime>;
+
+    title?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    title_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    title_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    title_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    title_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    title_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    title_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    title_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    title_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    title_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    title_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    title_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    title_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    title_not_ends_with?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    slug_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    slug_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    slug_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    slug_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    slug_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    slug_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    slug_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    slug_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    slug_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    slug_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    slug_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    slug_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    slug_not_ends_with?: Optional<String>;
+
+    private?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    private_not?: Optional<Boolean>;
+
+    author?: Optional<UserWhereInput>;
+}
+
+export interface ForumWhereUniqueInput {
+
+    id?: Optional<ID>;
+}
+
 export interface InstitutionsCreateInput {
+
+    title: NonNull<String>;
+
+    type: NonNull<InstitutionType>;
+
+    Country: NonNull<CountryCreateOneInput>;
+
+    users?: Optional<UserCreateManyWithoutInstitutionInput>;
+}
+
+export interface InstitutionsCreateOneInput {
+
+    create?: Optional<InstitutionsCreateInput>;
+
+    connect?: Optional<InstitutionsWhereUniqueInput>;
+}
+
+export interface InstitutionsCreateOneWithoutUsersInput {
+
+    create?: Optional<InstitutionsCreateWithoutUsersInput>;
+
+    connect?: Optional<InstitutionsWhereUniqueInput>;
+}
+
+export interface InstitutionsCreateWithoutUsersInput {
 
     title: NonNull<String>;
 
@@ -2900,6 +5902,17 @@ export interface InstitutionsSubscriptionWhereInput {
     node?: Optional<InstitutionsWhereInput>;
 }
 
+export interface InstitutionsUpdateDataInput {
+
+    title?: Optional<String>;
+
+    type?: Optional<InstitutionType>;
+
+    Country?: Optional<CountryUpdateOneInput>;
+
+    users?: Optional<UserUpdateManyWithoutInstitutionInput>;
+}
+
 export interface InstitutionsUpdateInput {
 
     title?: Optional<String>;
@@ -2907,6 +5920,79 @@ export interface InstitutionsUpdateInput {
     type?: Optional<InstitutionType>;
 
     Country?: Optional<CountryUpdateOneInput>;
+
+    users?: Optional<UserUpdateManyWithoutInstitutionInput>;
+}
+
+export interface InstitutionsUpdateNestedInput {
+
+    where: NonNull<InstitutionsWhereUniqueInput>;
+
+    data: NonNull<InstitutionsUpdateDataInput>;
+}
+
+export interface InstitutionsUpdateOneInput {
+
+    create?: Optional<InstitutionsCreateInput>;
+
+    connect?: Optional<InstitutionsWhereUniqueInput>;
+
+    disconnect?: Optional<InstitutionsWhereUniqueInput>;
+
+    delete?: Optional<InstitutionsWhereUniqueInput>;
+
+    update?: Optional<InstitutionsUpdateNestedInput>;
+
+    upsert?: Optional<InstitutionsUpsertNestedInput>;
+}
+
+export interface InstitutionsUpdateOneWithoutUsersInput {
+
+    create?: Optional<InstitutionsCreateWithoutUsersInput>;
+
+    connect?: Optional<InstitutionsWhereUniqueInput>;
+
+    disconnect?: Optional<InstitutionsWhereUniqueInput>;
+
+    delete?: Optional<InstitutionsWhereUniqueInput>;
+
+    update?: Optional<InstitutionsUpdateWithoutUsersInput>;
+
+    upsert?: Optional<InstitutionsUpsertWithoutUsersInput>;
+}
+
+export interface InstitutionsUpdateWithoutUsersDataInput {
+
+    title?: Optional<String>;
+
+    type?: Optional<InstitutionType>;
+
+    Country?: Optional<CountryUpdateOneInput>;
+}
+
+export interface InstitutionsUpdateWithoutUsersInput {
+
+    where: NonNull<InstitutionsWhereUniqueInput>;
+
+    data: NonNull<InstitutionsUpdateWithoutUsersDataInput>;
+}
+
+export interface InstitutionsUpsertNestedInput {
+
+    where: NonNull<InstitutionsWhereUniqueInput>;
+
+    update: NonNull<InstitutionsUpdateDataInput>;
+
+    create: NonNull<InstitutionsCreateInput>;
+}
+
+export interface InstitutionsUpsertWithoutUsersInput {
+
+    where: NonNull<InstitutionsWhereUniqueInput>;
+
+    update: NonNull<InstitutionsUpdateWithoutUsersDataInput>;
+
+    create: NonNull<InstitutionsCreateWithoutUsersInput>;
 }
 
 export interface InstitutionsWhereInput {
@@ -3147,9 +6233,812 @@ export interface InstitutionsWhereInput {
     type_not_in?: List<NonNull<InstitutionType>>;
 
     Country?: Optional<CountryWhereInput>;
+
+    users_every?: Optional<UserWhereInput>;
+
+    users_some?: Optional<UserWhereInput>;
+
+    users_none?: Optional<UserWhereInput>;
 }
 
 export interface InstitutionsWhereUniqueInput {
+
+    id?: Optional<ID>;
+}
+
+export interface InterestCreateInput {
+
+    name: NonNull<String>;
+
+    avatar: NonNull<String>;
+
+    users?: Optional<UserCreateManyWithoutInterestInput>;
+}
+
+export interface InterestCreateOneWithoutUsersInput {
+
+    create?: Optional<InterestCreateWithoutUsersInput>;
+
+    connect?: Optional<InterestWhereUniqueInput>;
+}
+
+export interface InterestCreateWithoutUsersInput {
+
+    name: NonNull<String>;
+
+    avatar: NonNull<String>;
+}
+
+export interface InterestSubscriptionWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<InterestSubscriptionWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<InterestSubscriptionWhereInput>>;
+
+    /**
+     * The subscription event gets dispatched when it's listed in mutation_in
+     */
+    mutation_in?: List<NonNull<MutationType>>;
+
+    /**
+     * The subscription event gets only dispatched when one of the updated fields names 
+     * is included in this list
+     */
+    updatedFields_contains?: Optional<String>;
+
+    /**
+     * The subscription event gets only dispatched when all of the field names included 
+     * in this list have been updated
+     */
+    updatedFields_contains_every?: List<NonNull<String>>;
+
+    /**
+     * The subscription event gets only dispatched when some of the field names 
+     * included in this list have been updated
+     */
+    updatedFields_contains_some?: List<NonNull<String>>;
+
+    node?: Optional<InterestWhereInput>;
+}
+
+export interface InterestUpdateInput {
+
+    name?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    users?: Optional<UserUpdateManyWithoutInterestInput>;
+}
+
+export interface InterestUpdateOneWithoutUsersInput {
+
+    create?: Optional<InterestCreateWithoutUsersInput>;
+
+    connect?: Optional<InterestWhereUniqueInput>;
+
+    disconnect?: Optional<InterestWhereUniqueInput>;
+
+    delete?: Optional<InterestWhereUniqueInput>;
+
+    update?: Optional<InterestUpdateWithoutUsersInput>;
+
+    upsert?: Optional<InterestUpsertWithoutUsersInput>;
+}
+
+export interface InterestUpdateWithoutUsersDataInput {
+
+    name?: Optional<String>;
+
+    avatar?: Optional<String>;
+}
+
+export interface InterestUpdateWithoutUsersInput {
+
+    where: NonNull<InterestWhereUniqueInput>;
+
+    data: NonNull<InterestUpdateWithoutUsersDataInput>;
+}
+
+export interface InterestUpsertWithoutUsersInput {
+
+    where: NonNull<InterestWhereUniqueInput>;
+
+    update: NonNull<InterestUpdateWithoutUsersDataInput>;
+
+    create: NonNull<InterestCreateWithoutUsersInput>;
+}
+
+export interface InterestWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<InterestWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<InterestWhereInput>>;
+
+    id?: Optional<ID>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    id_not?: Optional<ID>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    id_in?: List<NonNull<ID>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    id_not_in?: List<NonNull<ID>>;
+
+    /**
+     * All values less than the given value.
+     */
+    id_lt?: Optional<ID>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    id_lte?: Optional<ID>;
+
+    /**
+     * All values greater than the given value.
+     */
+    id_gt?: Optional<ID>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    id_gte?: Optional<ID>;
+
+    /**
+     * All values containing the given string.
+     */
+    id_contains?: Optional<ID>;
+
+    /**
+     * All values not containing the given string.
+     */
+    id_not_contains?: Optional<ID>;
+
+    /**
+     * All values starting with the given string.
+     */
+    id_starts_with?: Optional<ID>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    id_not_starts_with?: Optional<ID>;
+
+    /**
+     * All values ending with the given string.
+     */
+    id_ends_with?: Optional<ID>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    id_not_ends_with?: Optional<ID>;
+
+    createdAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    createdAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    createdAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    createdAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    createdAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    createdAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    createdAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    createdAt_gte?: Optional<DateTime>;
+
+    updatedAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    updatedAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    updatedAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    updatedAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    updatedAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    updatedAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    updatedAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    updatedAt_gte?: Optional<DateTime>;
+
+    name?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    name_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    name_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    name_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    name_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    name_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    name_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    name_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    name_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    name_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    name_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    name_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    name_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    name_not_ends_with?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    avatar_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    avatar_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    avatar_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    avatar_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    avatar_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    avatar_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    avatar_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    avatar_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    avatar_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    avatar_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    avatar_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    avatar_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    avatar_not_ends_with?: Optional<String>;
+
+    users_every?: Optional<UserWhereInput>;
+
+    users_some?: Optional<UserWhereInput>;
+
+    users_none?: Optional<UserWhereInput>;
+}
+
+export interface InterestWhereUniqueInput {
+
+    id?: Optional<ID>;
+}
+
+export interface OpinionsCreateInput {
+
+    content: NonNull<String>;
+
+    author: NonNull<UserCreateOneWithoutOpinionsInput>;
+
+    discussion: NonNull<DiscussionCreateOneWithoutOpinionsInput>;
+}
+
+export interface OpinionsCreateManyWithoutAuthorInput {
+
+    create?: List<NonNull<OpinionsCreateWithoutAuthorInput>>;
+
+    connect?: List<NonNull<OpinionsWhereUniqueInput>>;
+}
+
+export interface OpinionsCreateManyWithoutDiscussionInput {
+
+    create?: List<NonNull<OpinionsCreateWithoutDiscussionInput>>;
+
+    connect?: List<NonNull<OpinionsWhereUniqueInput>>;
+}
+
+export interface OpinionsCreateWithoutAuthorInput {
+
+    content: NonNull<String>;
+
+    discussion: NonNull<DiscussionCreateOneWithoutOpinionsInput>;
+}
+
+export interface OpinionsCreateWithoutDiscussionInput {
+
+    content: NonNull<String>;
+
+    author: NonNull<UserCreateOneWithoutOpinionsInput>;
+}
+
+export interface OpinionsSubscriptionWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<OpinionsSubscriptionWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<OpinionsSubscriptionWhereInput>>;
+
+    /**
+     * The subscription event gets dispatched when it's listed in mutation_in
+     */
+    mutation_in?: List<NonNull<MutationType>>;
+
+    /**
+     * The subscription event gets only dispatched when one of the updated fields names 
+     * is included in this list
+     */
+    updatedFields_contains?: Optional<String>;
+
+    /**
+     * The subscription event gets only dispatched when all of the field names included 
+     * in this list have been updated
+     */
+    updatedFields_contains_every?: List<NonNull<String>>;
+
+    /**
+     * The subscription event gets only dispatched when some of the field names 
+     * included in this list have been updated
+     */
+    updatedFields_contains_some?: List<NonNull<String>>;
+
+    node?: Optional<OpinionsWhereInput>;
+}
+
+export interface OpinionsUpdateInput {
+
+    content?: Optional<String>;
+
+    author?: Optional<UserUpdateOneWithoutOpinionsInput>;
+
+    discussion?: Optional<DiscussionUpdateOneWithoutOpinionsInput>;
+}
+
+export interface OpinionsUpdateManyWithoutAuthorInput {
+
+    create?: List<NonNull<OpinionsCreateWithoutAuthorInput>>;
+
+    connect?: List<NonNull<OpinionsWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<OpinionsWhereUniqueInput>>;
+
+    delete?: List<NonNull<OpinionsWhereUniqueInput>>;
+
+    update?: List<NonNull<OpinionsUpdateWithoutAuthorInput>>;
+
+    upsert?: List<NonNull<OpinionsUpsertWithoutAuthorInput>>;
+}
+
+export interface OpinionsUpdateManyWithoutDiscussionInput {
+
+    create?: List<NonNull<OpinionsCreateWithoutDiscussionInput>>;
+
+    connect?: List<NonNull<OpinionsWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<OpinionsWhereUniqueInput>>;
+
+    delete?: List<NonNull<OpinionsWhereUniqueInput>>;
+
+    update?: List<NonNull<OpinionsUpdateWithoutDiscussionInput>>;
+
+    upsert?: List<NonNull<OpinionsUpsertWithoutDiscussionInput>>;
+}
+
+export interface OpinionsUpdateWithoutAuthorDataInput {
+
+    content?: Optional<String>;
+
+    discussion?: Optional<DiscussionUpdateOneWithoutOpinionsInput>;
+}
+
+export interface OpinionsUpdateWithoutAuthorInput {
+
+    where: NonNull<OpinionsWhereUniqueInput>;
+
+    data: NonNull<OpinionsUpdateWithoutAuthorDataInput>;
+}
+
+export interface OpinionsUpdateWithoutDiscussionDataInput {
+
+    content?: Optional<String>;
+
+    author?: Optional<UserUpdateOneWithoutOpinionsInput>;
+}
+
+export interface OpinionsUpdateWithoutDiscussionInput {
+
+    where: NonNull<OpinionsWhereUniqueInput>;
+
+    data: NonNull<OpinionsUpdateWithoutDiscussionDataInput>;
+}
+
+export interface OpinionsUpsertWithoutAuthorInput {
+
+    where: NonNull<OpinionsWhereUniqueInput>;
+
+    update: NonNull<OpinionsUpdateWithoutAuthorDataInput>;
+
+    create: NonNull<OpinionsCreateWithoutAuthorInput>;
+}
+
+export interface OpinionsUpsertWithoutDiscussionInput {
+
+    where: NonNull<OpinionsWhereUniqueInput>;
+
+    update: NonNull<OpinionsUpdateWithoutDiscussionDataInput>;
+
+    create: NonNull<OpinionsCreateWithoutDiscussionInput>;
+}
+
+export interface OpinionsWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<OpinionsWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<OpinionsWhereInput>>;
+
+    id?: Optional<ID>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    id_not?: Optional<ID>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    id_in?: List<NonNull<ID>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    id_not_in?: List<NonNull<ID>>;
+
+    /**
+     * All values less than the given value.
+     */
+    id_lt?: Optional<ID>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    id_lte?: Optional<ID>;
+
+    /**
+     * All values greater than the given value.
+     */
+    id_gt?: Optional<ID>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    id_gte?: Optional<ID>;
+
+    /**
+     * All values containing the given string.
+     */
+    id_contains?: Optional<ID>;
+
+    /**
+     * All values not containing the given string.
+     */
+    id_not_contains?: Optional<ID>;
+
+    /**
+     * All values starting with the given string.
+     */
+    id_starts_with?: Optional<ID>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    id_not_starts_with?: Optional<ID>;
+
+    /**
+     * All values ending with the given string.
+     */
+    id_ends_with?: Optional<ID>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    id_not_ends_with?: Optional<ID>;
+
+    createdAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    createdAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    createdAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    createdAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    createdAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    createdAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    createdAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    createdAt_gte?: Optional<DateTime>;
+
+    updatedAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    updatedAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    updatedAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    updatedAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    updatedAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    updatedAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    updatedAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    updatedAt_gte?: Optional<DateTime>;
+
+    content?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    content_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    content_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    content_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    content_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    content_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    content_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    content_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    content_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    content_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    content_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    content_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    content_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    content_not_ends_with?: Optional<String>;
+
+    author?: Optional<UserWhereInput>;
+
+    discussion?: Optional<DiscussionWhereInput>;
+}
+
+export interface OpinionsWhereUniqueInput {
 
     id?: Optional<ID>;
 }
@@ -3514,7 +7403,9 @@ export interface SchoolCreateInput {
 
     title: NonNull<String>;
 
-    Country: NonNull<CountryCreateOneInput>;
+    institution: NonNull<InstitutionsCreateOneInput>;
+
+    users?: Optional<UserCreateManyWithoutSchoolInput>;
 }
 
 export interface SchoolCreateOneInput {
@@ -3522,6 +7413,20 @@ export interface SchoolCreateOneInput {
     create?: Optional<SchoolCreateInput>;
 
     connect?: Optional<SchoolWhereUniqueInput>;
+}
+
+export interface SchoolCreateOneWithoutUsersInput {
+
+    create?: Optional<SchoolCreateWithoutUsersInput>;
+
+    connect?: Optional<SchoolWhereUniqueInput>;
+}
+
+export interface SchoolCreateWithoutUsersInput {
+
+    title: NonNull<String>;
+
+    institution: NonNull<InstitutionsCreateOneInput>;
 }
 
 export interface SchoolSubscriptionWhereInput {
@@ -3566,14 +7471,18 @@ export interface SchoolUpdateDataInput {
 
     title?: Optional<String>;
 
-    Country?: Optional<CountryUpdateOneInput>;
+    institution?: Optional<InstitutionsUpdateOneInput>;
+
+    users?: Optional<UserUpdateManyWithoutSchoolInput>;
 }
 
 export interface SchoolUpdateInput {
 
     title?: Optional<String>;
 
-    Country?: Optional<CountryUpdateOneInput>;
+    institution?: Optional<InstitutionsUpdateOneInput>;
+
+    users?: Optional<UserUpdateManyWithoutSchoolInput>;
 }
 
 export interface SchoolUpdateNestedInput {
@@ -3598,6 +7507,35 @@ export interface SchoolUpdateOneInput {
     upsert?: Optional<SchoolUpsertNestedInput>;
 }
 
+export interface SchoolUpdateOneWithoutUsersInput {
+
+    create?: Optional<SchoolCreateWithoutUsersInput>;
+
+    connect?: Optional<SchoolWhereUniqueInput>;
+
+    disconnect?: Optional<SchoolWhereUniqueInput>;
+
+    delete?: Optional<SchoolWhereUniqueInput>;
+
+    update?: Optional<SchoolUpdateWithoutUsersInput>;
+
+    upsert?: Optional<SchoolUpsertWithoutUsersInput>;
+}
+
+export interface SchoolUpdateWithoutUsersDataInput {
+
+    title?: Optional<String>;
+
+    institution?: Optional<InstitutionsUpdateOneInput>;
+}
+
+export interface SchoolUpdateWithoutUsersInput {
+
+    where: NonNull<SchoolWhereUniqueInput>;
+
+    data: NonNull<SchoolUpdateWithoutUsersDataInput>;
+}
+
 export interface SchoolUpsertNestedInput {
 
     where: NonNull<SchoolWhereUniqueInput>;
@@ -3605,6 +7543,15 @@ export interface SchoolUpsertNestedInput {
     update: NonNull<SchoolUpdateDataInput>;
 
     create: NonNull<SchoolCreateInput>;
+}
+
+export interface SchoolUpsertWithoutUsersInput {
+
+    where: NonNull<SchoolWhereUniqueInput>;
+
+    update: NonNull<SchoolUpdateWithoutUsersDataInput>;
+
+    create: NonNull<SchoolCreateWithoutUsersInput>;
 }
 
 export interface SchoolWhereInput {
@@ -3827,7 +7774,13 @@ export interface SchoolWhereInput {
      */
     title_not_ends_with?: Optional<String>;
 
-    Country?: Optional<CountryWhereInput>;
+    institution?: Optional<InstitutionsWhereInput>;
+
+    users_every?: Optional<UserWhereInput>;
+
+    users_some?: Optional<UserWhereInput>;
+
+    users_none?: Optional<UserWhereInput>;
 }
 
 export interface SchoolWhereUniqueInput {
@@ -3843,40 +7796,138 @@ export interface UserCreateInput {
 
     password: NonNull<String>;
 
-    name?: Optional<String>;
-
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
 
     gender: NonNull<String>;
 
-    type: NonNull<Usertype>;
+    type?: Optional<String>;
 
-    followedBy?: Optional<UserCreateManyWithoutFollowedByInput>;
+    userType?: Optional<String>;
 
-    following?: Optional<UserCreateManyWithoutFollowingInput>;
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolCreateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionCreateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutAuthorInput>;
 }
 
-export interface UserCreateManyWithoutFollowedByInput {
+export interface UserCreateManyWithoutCountryInput {
 
-    create?: List<NonNull<UserCreateWithoutFollowedByInput>>;
+    create?: List<NonNull<UserCreateWithoutCountryInput>>;
 
     connect?: List<NonNull<UserWhereUniqueInput>>;
 }
 
-export interface UserCreateManyWithoutFollowingInput {
+export interface UserCreateManyWithoutDepartmentInput {
 
-    create?: List<NonNull<UserCreateWithoutFollowingInput>>;
+    create?: List<NonNull<UserCreateWithoutDepartmentInput>>;
 
     connect?: List<NonNull<UserWhereUniqueInput>>;
+}
+
+export interface UserCreateManyWithoutFalcultyInput {
+
+    create?: List<NonNull<UserCreateWithoutFalcultyInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+}
+
+export interface UserCreateManyWithoutFavouritesInput {
+
+    create?: List<NonNull<UserCreateWithoutFavouritesInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+}
+
+export interface UserCreateManyWithoutInstitutionInput {
+
+    create?: List<NonNull<UserCreateWithoutInstitutionInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+}
+
+export interface UserCreateManyWithoutInterestInput {
+
+    create?: List<NonNull<UserCreateWithoutInterestInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+}
+
+export interface UserCreateManyWithoutSchoolInput {
+
+    create?: List<NonNull<UserCreateWithoutSchoolInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+}
+
+export interface UserCreateOneInput {
+
+    create?: Optional<UserCreateInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
 }
 
 export interface UserCreateOneWithoutArticlesInput {
 
     create?: Optional<UserCreateWithoutArticlesInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+}
+
+export interface UserCreateOneWithoutConectFromInput {
+
+    create?: Optional<UserCreateWithoutConectFromInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+}
+
+export interface UserCreateOneWithoutConnectToInput {
+
+    create?: Optional<UserCreateWithoutConnectToInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+}
+
+export interface UserCreateOneWithoutMyDiscussionsInput {
+
+    create?: Optional<UserCreateWithoutMyDiscussionsInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+}
+
+export interface UserCreateOneWithoutOpinionsInput {
+
+    create?: Optional<UserCreateWithoutOpinionsInput>;
 
     connect?: Optional<UserWhereUniqueInput>;
 }
@@ -3889,22 +7940,50 @@ export interface UserCreateWithoutArticlesInput {
 
     password: NonNull<String>;
 
-    name?: Optional<String>;
-
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
 
     gender: NonNull<String>;
 
-    type: NonNull<Usertype>;
+    type?: Optional<String>;
 
-    followedBy?: Optional<UserCreateManyWithoutFollowedByInput>;
+    userType?: Optional<String>;
 
-    following?: Optional<UserCreateManyWithoutFollowingInput>;
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolCreateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionCreateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutAuthorInput>;
 }
 
-export interface UserCreateWithoutFollowedByInput {
+export interface UserCreateWithoutConectFromInput {
 
     email: NonNull<String>;
 
@@ -3912,22 +7991,50 @@ export interface UserCreateWithoutFollowedByInput {
 
     password: NonNull<String>;
 
-    name?: Optional<String>;
-
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
 
     gender: NonNull<String>;
 
-    type: NonNull<Usertype>;
+    type?: Optional<String>;
 
-    following?: Optional<UserCreateManyWithoutFollowingInput>;
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolCreateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionCreateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutAuthorInput>;
 }
 
-export interface UserCreateWithoutFollowingInput {
+export interface UserCreateWithoutConnectToInput {
 
     email: NonNull<String>;
 
@@ -3935,7 +8042,56 @@ export interface UserCreateWithoutFollowingInput {
 
     password: NonNull<String>;
 
-    name?: Optional<String>;
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolCreateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionCreateOneWithoutAuthorInput>;
+
+    ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutAuthorInput>;
+}
+
+export interface UserCreateWithoutCountryInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    password: NonNull<String>;
 
     firstname: NonNull<String>;
 
@@ -3943,11 +8099,449 @@ export interface UserCreateWithoutFollowingInput {
 
     gender: NonNull<String>;
 
-    type: NonNull<Usertype>;
+    type?: Optional<String>;
 
-    followedBy?: Optional<UserCreateManyWithoutFollowedByInput>;
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolCreateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionCreateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutAuthorInput>;
+}
+
+export interface UserCreateWithoutDepartmentInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolCreateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionCreateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutAuthorInput>;
+}
+
+export interface UserCreateWithoutFalcultyInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionCreateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutAuthorInput>;
+}
+
+export interface UserCreateWithoutFavouritesInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolCreateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateOneWithoutUsersInput>;
+
+    myDiscussions?: Optional<DiscussionCreateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutAuthorInput>;
+}
+
+export interface UserCreateWithoutInstitutionInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolCreateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionCreateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutAuthorInput>;
+}
+
+export interface UserCreateWithoutInterestInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolCreateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionCreateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutAuthorInput>;
+}
+
+export interface UserCreateWithoutMyDiscussionsInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolCreateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
+
+    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutAuthorInput>;
+}
+
+export interface UserCreateWithoutOpinionsInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolCreateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionCreateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+}
+
+export interface UserCreateWithoutSchoolInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionCreateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsCreateManyWithoutAuthorInput>;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -3988,6 +8582,59 @@ export interface UserSubscriptionWhereInput {
     node?: Optional<UserWhereInput>;
 }
 
+export interface UserUpdateDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
+}
+
 export interface UserUpdateInput {
 
     email?: Optional<String>;
@@ -3996,26 +8643,54 @@ export interface UserUpdateInput {
 
     password?: Optional<String>;
 
-    name?: Optional<String>;
-
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
 
     gender?: Optional<String>;
 
-    type?: Optional<Usertype>;
+    type?: Optional<String>;
 
-    followedBy?: Optional<UserUpdateManyWithoutFollowedByInput>;
+    userType?: Optional<String>;
 
-    following?: Optional<UserUpdateManyWithoutFollowingInput>;
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
 }
 
-export interface UserUpdateManyWithoutFollowedByInput {
+export interface UserUpdateManyWithoutCountryInput {
 
-    create?: List<NonNull<UserCreateWithoutFollowedByInput>>;
+    create?: List<NonNull<UserCreateWithoutCountryInput>>;
 
     connect?: List<NonNull<UserWhereUniqueInput>>;
 
@@ -4023,14 +8698,14 @@ export interface UserUpdateManyWithoutFollowedByInput {
 
     delete?: List<NonNull<UserWhereUniqueInput>>;
 
-    update?: List<NonNull<UserUpdateWithoutFollowedByInput>>;
+    update?: List<NonNull<UserUpdateWithoutCountryInput>>;
 
-    upsert?: List<NonNull<UserUpsertWithoutFollowedByInput>>;
+    upsert?: List<NonNull<UserUpsertWithoutCountryInput>>;
 }
 
-export interface UserUpdateManyWithoutFollowingInput {
+export interface UserUpdateManyWithoutDepartmentInput {
 
-    create?: List<NonNull<UserCreateWithoutFollowingInput>>;
+    create?: List<NonNull<UserCreateWithoutDepartmentInput>>;
 
     connect?: List<NonNull<UserWhereUniqueInput>>;
 
@@ -4038,9 +8713,106 @@ export interface UserUpdateManyWithoutFollowingInput {
 
     delete?: List<NonNull<UserWhereUniqueInput>>;
 
-    update?: List<NonNull<UserUpdateWithoutFollowingInput>>;
+    update?: List<NonNull<UserUpdateWithoutDepartmentInput>>;
 
-    upsert?: List<NonNull<UserUpsertWithoutFollowingInput>>;
+    upsert?: List<NonNull<UserUpsertWithoutDepartmentInput>>;
+}
+
+export interface UserUpdateManyWithoutFalcultyInput {
+
+    create?: List<NonNull<UserCreateWithoutFalcultyInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<UserWhereUniqueInput>>;
+
+    delete?: List<NonNull<UserWhereUniqueInput>>;
+
+    update?: List<NonNull<UserUpdateWithoutFalcultyInput>>;
+
+    upsert?: List<NonNull<UserUpsertWithoutFalcultyInput>>;
+}
+
+export interface UserUpdateManyWithoutFavouritesInput {
+
+    create?: List<NonNull<UserCreateWithoutFavouritesInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<UserWhereUniqueInput>>;
+
+    delete?: List<NonNull<UserWhereUniqueInput>>;
+
+    update?: List<NonNull<UserUpdateWithoutFavouritesInput>>;
+
+    upsert?: List<NonNull<UserUpsertWithoutFavouritesInput>>;
+}
+
+export interface UserUpdateManyWithoutInstitutionInput {
+
+    create?: List<NonNull<UserCreateWithoutInstitutionInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<UserWhereUniqueInput>>;
+
+    delete?: List<NonNull<UserWhereUniqueInput>>;
+
+    update?: List<NonNull<UserUpdateWithoutInstitutionInput>>;
+
+    upsert?: List<NonNull<UserUpsertWithoutInstitutionInput>>;
+}
+
+export interface UserUpdateManyWithoutInterestInput {
+
+    create?: List<NonNull<UserCreateWithoutInterestInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<UserWhereUniqueInput>>;
+
+    delete?: List<NonNull<UserWhereUniqueInput>>;
+
+    update?: List<NonNull<UserUpdateWithoutInterestInput>>;
+
+    upsert?: List<NonNull<UserUpsertWithoutInterestInput>>;
+}
+
+export interface UserUpdateManyWithoutSchoolInput {
+
+    create?: List<NonNull<UserCreateWithoutSchoolInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<UserWhereUniqueInput>>;
+
+    delete?: List<NonNull<UserWhereUniqueInput>>;
+
+    update?: List<NonNull<UserUpdateWithoutSchoolInput>>;
+
+    upsert?: List<NonNull<UserUpsertWithoutSchoolInput>>;
+}
+
+export interface UserUpdateNestedInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateDataInput>;
+}
+
+export interface UserUpdateOneInput {
+
+    create?: Optional<UserCreateInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+
+    disconnect?: Optional<UserWhereUniqueInput>;
+
+    delete?: Optional<UserWhereUniqueInput>;
+
+    update?: Optional<UserUpdateNestedInput>;
+
+    upsert?: Optional<UserUpsertNestedInput>;
 }
 
 export interface UserUpdateOneWithoutArticlesInput {
@@ -4058,6 +8830,66 @@ export interface UserUpdateOneWithoutArticlesInput {
     upsert?: Optional<UserUpsertWithoutArticlesInput>;
 }
 
+export interface UserUpdateOneWithoutConectFromInput {
+
+    create?: Optional<UserCreateWithoutConectFromInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+
+    disconnect?: Optional<UserWhereUniqueInput>;
+
+    delete?: Optional<UserWhereUniqueInput>;
+
+    update?: Optional<UserUpdateWithoutConectFromInput>;
+
+    upsert?: Optional<UserUpsertWithoutConectFromInput>;
+}
+
+export interface UserUpdateOneWithoutConnectToInput {
+
+    create?: Optional<UserCreateWithoutConnectToInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+
+    disconnect?: Optional<UserWhereUniqueInput>;
+
+    delete?: Optional<UserWhereUniqueInput>;
+
+    update?: Optional<UserUpdateWithoutConnectToInput>;
+
+    upsert?: Optional<UserUpsertWithoutConnectToInput>;
+}
+
+export interface UserUpdateOneWithoutMyDiscussionsInput {
+
+    create?: Optional<UserCreateWithoutMyDiscussionsInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+
+    disconnect?: Optional<UserWhereUniqueInput>;
+
+    delete?: Optional<UserWhereUniqueInput>;
+
+    update?: Optional<UserUpdateWithoutMyDiscussionsInput>;
+
+    upsert?: Optional<UserUpsertWithoutMyDiscussionsInput>;
+}
+
+export interface UserUpdateOneWithoutOpinionsInput {
+
+    create?: Optional<UserCreateWithoutOpinionsInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+
+    disconnect?: Optional<UserWhereUniqueInput>;
+
+    delete?: Optional<UserWhereUniqueInput>;
+
+    update?: Optional<UserUpdateWithoutOpinionsInput>;
+
+    upsert?: Optional<UserUpsertWithoutOpinionsInput>;
+}
+
 export interface UserUpdateWithoutArticlesDataInput {
 
     email?: Optional<String>;
@@ -4066,19 +8898,47 @@ export interface UserUpdateWithoutArticlesDataInput {
 
     password?: Optional<String>;
 
-    name?: Optional<String>;
-
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
 
     gender?: Optional<String>;
 
-    type?: Optional<Usertype>;
+    type?: Optional<String>;
 
-    followedBy?: Optional<UserUpdateManyWithoutFollowedByInput>;
+    userType?: Optional<String>;
 
-    following?: Optional<UserUpdateManyWithoutFollowingInput>;
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
 }
 
 export interface UserUpdateWithoutArticlesInput {
@@ -4088,7 +8948,7 @@ export interface UserUpdateWithoutArticlesInput {
     data: NonNull<UserUpdateWithoutArticlesDataInput>;
 }
 
-export interface UserUpdateWithoutFollowedByDataInput {
+export interface UserUpdateWithoutConectFromDataInput {
 
     email?: Optional<String>;
 
@@ -4096,29 +8956,57 @@ export interface UserUpdateWithoutFollowedByDataInput {
 
     password?: Optional<String>;
 
-    name?: Optional<String>;
-
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
 
     gender?: Optional<String>;
 
-    type?: Optional<Usertype>;
+    type?: Optional<String>;
 
-    following?: Optional<UserUpdateManyWithoutFollowingInput>;
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
 }
 
-export interface UserUpdateWithoutFollowedByInput {
+export interface UserUpdateWithoutConectFromInput {
 
     where: NonNull<UserWhereUniqueInput>;
 
-    data: NonNull<UserUpdateWithoutFollowedByDataInput>;
+    data: NonNull<UserUpdateWithoutConectFromDataInput>;
 }
 
-export interface UserUpdateWithoutFollowingDataInput {
+export interface UserUpdateWithoutConnectToDataInput {
 
     email?: Optional<String>;
 
@@ -4126,7 +9014,63 @@ export interface UserUpdateWithoutFollowingDataInput {
 
     password?: Optional<String>;
 
-    name?: Optional<String>;
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
+
+    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateWithoutConnectToInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateWithoutConnectToDataInput>;
+}
+
+export interface UserUpdateWithoutCountryDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    password?: Optional<String>;
 
     firstname?: Optional<String>;
 
@@ -4134,18 +9078,521 @@ export interface UserUpdateWithoutFollowingDataInput {
 
     gender?: Optional<String>;
 
-    type?: Optional<Usertype>;
+    type?: Optional<String>;
 
-    followedBy?: Optional<UserUpdateManyWithoutFollowedByInput>;
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateWithoutCountryInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateWithoutCountryDataInput>;
+}
+
+export interface UserUpdateWithoutDepartmentDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateWithoutDepartmentInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateWithoutDepartmentDataInput>;
+}
+
+export interface UserUpdateWithoutFalcultyDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateWithoutFalcultyInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateWithoutFalcultyDataInput>;
+}
+
+export interface UserUpdateWithoutFavouritesDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
+
+    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateWithoutFavouritesInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateWithoutFavouritesDataInput>;
+}
+
+export interface UserUpdateWithoutInstitutionDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateWithoutInstitutionInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateWithoutInstitutionDataInput>;
+}
+
+export interface UserUpdateWithoutInterestDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateWithoutInterestInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateWithoutInterestDataInput>;
+}
+
+export interface UserUpdateWithoutMyDiscussionsDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
+
+    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateWithoutMyDiscussionsInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateWithoutMyDiscussionsDataInput>;
+}
+
+export interface UserUpdateWithoutOpinionsDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 }
 
-export interface UserUpdateWithoutFollowingInput {
+export interface UserUpdateWithoutOpinionsInput {
 
     where: NonNull<UserWhereUniqueInput>;
 
-    data: NonNull<UserUpdateWithoutFollowingDataInput>;
+    data: NonNull<UserUpdateWithoutOpinionsDataInput>;
+}
+
+export interface UserUpdateWithoutSchoolDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
+
+    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
+
+    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
+
+    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+
+    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateWithoutSchoolInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateWithoutSchoolDataInput>;
+}
+
+export interface UserUpsertNestedInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateDataInput>;
+
+    create: NonNull<UserCreateInput>;
 }
 
 export interface UserUpsertWithoutArticlesInput {
@@ -4157,22 +9604,103 @@ export interface UserUpsertWithoutArticlesInput {
     create: NonNull<UserCreateWithoutArticlesInput>;
 }
 
-export interface UserUpsertWithoutFollowedByInput {
+export interface UserUpsertWithoutConectFromInput {
 
     where: NonNull<UserWhereUniqueInput>;
 
-    update: NonNull<UserUpdateWithoutFollowedByDataInput>;
+    update: NonNull<UserUpdateWithoutConectFromDataInput>;
 
-    create: NonNull<UserCreateWithoutFollowedByInput>;
+    create: NonNull<UserCreateWithoutConectFromInput>;
 }
 
-export interface UserUpsertWithoutFollowingInput {
+export interface UserUpsertWithoutConnectToInput {
 
     where: NonNull<UserWhereUniqueInput>;
 
-    update: NonNull<UserUpdateWithoutFollowingDataInput>;
+    update: NonNull<UserUpdateWithoutConnectToDataInput>;
 
-    create: NonNull<UserCreateWithoutFollowingInput>;
+    create: NonNull<UserCreateWithoutConnectToInput>;
+}
+
+export interface UserUpsertWithoutCountryInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateWithoutCountryDataInput>;
+
+    create: NonNull<UserCreateWithoutCountryInput>;
+}
+
+export interface UserUpsertWithoutDepartmentInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateWithoutDepartmentDataInput>;
+
+    create: NonNull<UserCreateWithoutDepartmentInput>;
+}
+
+export interface UserUpsertWithoutFalcultyInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateWithoutFalcultyDataInput>;
+
+    create: NonNull<UserCreateWithoutFalcultyInput>;
+}
+
+export interface UserUpsertWithoutFavouritesInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateWithoutFavouritesDataInput>;
+
+    create: NonNull<UserCreateWithoutFavouritesInput>;
+}
+
+export interface UserUpsertWithoutInstitutionInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateWithoutInstitutionDataInput>;
+
+    create: NonNull<UserCreateWithoutInstitutionInput>;
+}
+
+export interface UserUpsertWithoutInterestInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateWithoutInterestDataInput>;
+
+    create: NonNull<UserCreateWithoutInterestInput>;
+}
+
+export interface UserUpsertWithoutMyDiscussionsInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateWithoutMyDiscussionsDataInput>;
+
+    create: NonNull<UserCreateWithoutMyDiscussionsInput>;
+}
+
+export interface UserUpsertWithoutOpinionsInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateWithoutOpinionsDataInput>;
+
+    create: NonNull<UserCreateWithoutOpinionsInput>;
+}
+
+export interface UserUpsertWithoutSchoolInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateWithoutSchoolDataInput>;
+
+    create: NonNull<UserCreateWithoutSchoolInput>;
 }
 
 export interface UserWhereInput {
@@ -4253,6 +9781,80 @@ export interface UserWhereInput {
      * All values not ending with the given string.
      */
     id_not_ends_with?: Optional<ID>;
+
+    createdAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    createdAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    createdAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    createdAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    createdAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    createdAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    createdAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    createdAt_gte?: Optional<DateTime>;
+
+    updatedAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    updatedAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    updatedAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    updatedAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    updatedAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    updatedAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    updatedAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    updatedAt_gte?: Optional<DateTime>;
 
     email?: Optional<String>;
 
@@ -4455,73 +10057,6 @@ export interface UserWhereInput {
      */
     password_not_ends_with?: Optional<String>;
 
-    name?: Optional<String>;
-
-    /**
-     * All values that are not equal to given value.
-     */
-    name_not?: Optional<String>;
-
-    /**
-     * All values that are contained in given list.
-     */
-    name_in?: List<NonNull<String>>;
-
-    /**
-     * All values that are not contained in given list.
-     */
-    name_not_in?: List<NonNull<String>>;
-
-    /**
-     * All values less than the given value.
-     */
-    name_lt?: Optional<String>;
-
-    /**
-     * All values less than or equal the given value.
-     */
-    name_lte?: Optional<String>;
-
-    /**
-     * All values greater than the given value.
-     */
-    name_gt?: Optional<String>;
-
-    /**
-     * All values greater than or equal the given value.
-     */
-    name_gte?: Optional<String>;
-
-    /**
-     * All values containing the given string.
-     */
-    name_contains?: Optional<String>;
-
-    /**
-     * All values not containing the given string.
-     */
-    name_not_contains?: Optional<String>;
-
-    /**
-     * All values starting with the given string.
-     */
-    name_starts_with?: Optional<String>;
-
-    /**
-     * All values not starting with the given string.
-     */
-    name_not_starts_with?: Optional<String>;
-
-    /**
-     * All values ending with the given string.
-     */
-    name_ends_with?: Optional<String>;
-
-    /**
-     * All values not ending with the given string.
-     */
-    name_not_ends_with?: Optional<String>;
-
     firstname?: Optional<String>;
 
     /**
@@ -4723,40 +10258,248 @@ export interface UserWhereInput {
      */
     gender_not_ends_with?: Optional<String>;
 
-    type?: Optional<Usertype>;
+    type?: Optional<String>;
 
     /**
      * All values that are not equal to given value.
      */
-    type_not?: Optional<Usertype>;
+    type_not?: Optional<String>;
 
     /**
      * All values that are contained in given list.
      */
-    type_in?: List<NonNull<Usertype>>;
+    type_in?: List<NonNull<String>>;
 
     /**
      * All values that are not contained in given list.
      */
-    type_not_in?: List<NonNull<Usertype>>;
+    type_not_in?: List<NonNull<String>>;
 
-    followedBy_every?: Optional<UserWhereInput>;
+    /**
+     * All values less than the given value.
+     */
+    type_lt?: Optional<String>;
 
-    followedBy_some?: Optional<UserWhereInput>;
+    /**
+     * All values less than or equal the given value.
+     */
+    type_lte?: Optional<String>;
 
-    followedBy_none?: Optional<UserWhereInput>;
+    /**
+     * All values greater than the given value.
+     */
+    type_gt?: Optional<String>;
 
-    following_every?: Optional<UserWhereInput>;
+    /**
+     * All values greater than or equal the given value.
+     */
+    type_gte?: Optional<String>;
 
-    following_some?: Optional<UserWhereInput>;
+    /**
+     * All values containing the given string.
+     */
+    type_contains?: Optional<String>;
 
-    following_none?: Optional<UserWhereInput>;
+    /**
+     * All values not containing the given string.
+     */
+    type_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    type_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    type_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    type_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    type_not_ends_with?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    userType_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    userType_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    userType_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    userType_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    userType_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    userType_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    userType_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    userType_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    userType_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    userType_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    userType_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    userType_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    userType_not_ends_with?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    newConnectNot_not?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    newCommentNot_not?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    newMessageNot_not?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    newProfileNot_not?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    completedProfile_not?: Optional<Int>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    completedProfile_in?: List<NonNull<Int>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    completedProfile_not_in?: List<NonNull<Int>>;
+
+    /**
+     * All values less than the given value.
+     */
+    completedProfile_lt?: Optional<Int>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    completedProfile_lte?: Optional<Int>;
+
+    /**
+     * All values greater than the given value.
+     */
+    completedProfile_gt?: Optional<Int>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    completedProfile_gte?: Optional<Int>;
+
+    country?: Optional<CountryWhereInput>;
+
+    institution?: Optional<InstitutionsWhereInput>;
+
+    school?: Optional<SchoolWhereInput>;
+
+    falculty?: Optional<FacultyWhereInput>;
+
+    department?: Optional<DepartmentWhereInput>;
+
+    interest?: Optional<InterestWhereInput>;
+
+    favourites_every?: Optional<DiscussionWhereInput>;
+
+    favourites_some?: Optional<DiscussionWhereInput>;
+
+    favourites_none?: Optional<DiscussionWhereInput>;
+
+    myDiscussions?: Optional<DiscussionWhereInput>;
+
+    connectTo_every?: Optional<ConnectWhereInput>;
+
+    connectTo_some?: Optional<ConnectWhereInput>;
+
+    connectTo_none?: Optional<ConnectWhereInput>;
+
+    ConectFrom_every?: Optional<ConnectWhereInput>;
+
+    ConectFrom_some?: Optional<ConnectWhereInput>;
+
+    ConectFrom_none?: Optional<ConnectWhereInput>;
 
     articles_every?: Optional<ArticleWhereInput>;
 
     articles_some?: Optional<ArticleWhereInput>;
 
     articles_none?: Optional<ArticleWhereInput>;
+
+    opinions_every?: Optional<OpinionsWhereInput>;
+
+    opinions_some?: Optional<OpinionsWhereInput>;
+
+    opinions_none?: Optional<OpinionsWhereInput>;
 }
 
 export interface UserWhereUniqueInput {

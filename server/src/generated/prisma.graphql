@@ -31,6 +31,7 @@ type Country implements Node {
   updatedAt: DateTime!
   shortName: String!
   name: String!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
 type Department implements Node {
@@ -38,7 +39,8 @@ type Department implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  Country(where: CountryWhereInput): Country!
+  falculty(where: FacultyWhereInput): Faculty!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
 type Discussion implements Node {
@@ -61,6 +63,18 @@ type Faculty implements Node {
   updatedAt: DateTime!
   name: String!
   school(where: SchoolWhereInput): School!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+}
+
+type File implements Node {
+  id: ID!
+  name: String!
+  size: Int!
+  secret: String!
+  contentType: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  url: String!
 }
 
 type Forum implements Node {
@@ -80,6 +94,16 @@ type Institutions implements Node {
   title: String!
   type: InstitutionType!
   Country(where: CountryWhereInput): Country!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+}
+
+type Interest implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  avatar: String!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
 type Opinions implements Node {
@@ -106,6 +130,7 @@ type School implements Node {
   updatedAt: DateTime!
   title: String!
   institution(where: InstitutionsWhereInput): Institutions!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
 type User implements Node {
@@ -118,13 +143,25 @@ type User implements Node {
   firstname: String!
   lastname: String!
   gender: String!
+  country(where: CountryWhereInput): Country
+  institution(where: InstitutionsWhereInput): Institutions
+  school(where: SchoolWhereInput): School
+  falculty(where: FacultyWhereInput): Faculty
+  department(where: DepartmentWhereInput): Department
+  interest(where: InterestWhereInput): Interest
   favourites(where: DiscussionWhereInput, orderBy: DiscussionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Discussion!]
   myDiscussions(where: DiscussionWhereInput): Discussion
   connectTo(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect!]
   ConectFrom(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect!]
   type: String
+  userType: String
   articles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article!]
   opinions(where: OpinionsWhereInput, orderBy: OpinionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Opinions!]
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
 }
 
 
@@ -156,11 +193,19 @@ type AggregateFaculty {
   count: Int!
 }
 
+type AggregateFile {
+  count: Int!
+}
+
 type AggregateForum {
   count: Int!
 }
 
 type AggregateInstitutions {
+  count: Int!
+}
+
+type AggregateInterest {
   count: Int!
 }
 
@@ -185,8 +230,17 @@ enum Arcticletype {
   Internal
 }
 
+"""
+A connection to a list of items.
+"""
 type ArticleConnection {
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
   edges: [ArticleEdge]!
   aggregate: AggregateArticle!
 }
@@ -211,8 +265,17 @@ input ArticleCreateWithoutAuthorInput {
   type: Arcticletype
 }
 
+"""
+An edge in a connection.
+"""
 type ArticleEdge {
+  """
+  The item at the end of the edge.
+  """
   node: Article!
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -251,11 +314,29 @@ type ArticleSubscriptionPayload {
 }
 
 input ArticleSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [ArticleSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [ArticleSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
   mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
   updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
   updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
   updatedFields_contains_some: [String!]
   node: ArticleWhereInput
 }
@@ -296,71 +377,248 @@ input ArticleUpsertWithoutAuthorInput {
 }
 
 input ArticleWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [ArticleWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [ArticleWhereInput!]
   id: ID
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
   id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
+  """
+  All values containing the given string.
+  """
   id_contains: ID
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   isPublished: Boolean
+  """
+  All values that are not equal to given value.
+  """
   isPublished_not: Boolean
   title: String
+  """
+  All values that are not equal to given value.
+  """
   title_not: String
+  """
+  All values that are contained in given list.
+  """
   title_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   title_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   title_lt: String
+  """
+  All values less than or equal the given value.
+  """
   title_lte: String
+  """
+  All values greater than the given value.
+  """
   title_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   title_gte: String
+  """
+  All values containing the given string.
+  """
   title_contains: String
+  """
+  All values not containing the given string.
+  """
   title_not_contains: String
+  """
+  All values starting with the given string.
+  """
   title_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   title_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   title_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   title_not_ends_with: String
   body: String
+  """
+  All values that are not equal to given value.
+  """
   body_not: String
+  """
+  All values that are contained in given list.
+  """
   body_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   body_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   body_lt: String
+  """
+  All values less than or equal the given value.
+  """
   body_lte: String
+  """
+  All values greater than the given value.
+  """
   body_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   body_gte: String
+  """
+  All values containing the given string.
+  """
   body_contains: String
+  """
+  All values not containing the given string.
+  """
   body_not_contains: String
+  """
+  All values starting with the given string.
+  """
   body_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   body_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   body_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   body_not_ends_with: String
   type: Arcticletype
+  """
+  All values that are not equal to given value.
+  """
   type_not: Arcticletype
+  """
+  All values that are contained in given list.
+  """
   type_in: [Arcticletype!]
+  """
+  All values that are not contained in given list.
+  """
   type_not_in: [Arcticletype!]
   author: UserWhereInput
 }
@@ -370,11 +628,23 @@ input ArticleWhereUniqueInput {
 }
 
 type BatchPayload {
+  """
+  The number of nodes that have been affected by the Batch operation.
+  """
   count: Long!
 }
 
+"""
+A connection to a list of items.
+"""
 type ConnectConnection {
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
   edges: [ConnectEdge]!
   aggregate: AggregateConnect!
 }
@@ -405,8 +675,17 @@ input ConnectCreateWithoutToInput {
   from: UserCreateOneWithoutConectFromInput!
 }
 
+"""
+An edge in a connection.
+"""
 type ConnectEdge {
+  """
+  The item at the end of the edge.
+  """
   node: Connect!
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -436,11 +715,29 @@ type ConnectSubscriptionPayload {
 }
 
 input ConnectSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [ConnectSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [ConnectSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
   mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
   updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
   updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
   updatedFields_contains_some: [String!]
   node: ConnectWhereInput
 }
@@ -502,39 +799,129 @@ input ConnectUpsertWithoutToInput {
 }
 
 input ConnectWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [ConnectWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [ConnectWhereInput!]
   id: ID
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
   id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
+  """
+  All values containing the given string.
+  """
   id_contains: ID
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   accepted: Boolean
+  """
+  All values that are not equal to given value.
+  """
   accepted_not: Boolean
   to: UserWhereInput
   from: UserWhereInput
@@ -544,8 +931,17 @@ input ConnectWhereUniqueInput {
   id: ID
 }
 
+"""
+A connection to a list of items.
+"""
 type CountryConnection {
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
   edges: [CountryEdge]!
   aggregate: AggregateCountry!
 }
@@ -553,6 +949,7 @@ type CountryConnection {
 input CountryCreateInput {
   shortName: String!
   name: String!
+  users: UserCreateManyWithoutCountryInput
 }
 
 input CountryCreateOneInput {
@@ -560,8 +957,27 @@ input CountryCreateOneInput {
   connect: CountryWhereUniqueInput
 }
 
+input CountryCreateOneWithoutUsersInput {
+  create: CountryCreateWithoutUsersInput
+  connect: CountryWhereUniqueInput
+}
+
+input CountryCreateWithoutUsersInput {
+  shortName: String!
+  name: String!
+}
+
+"""
+An edge in a connection.
+"""
 type CountryEdge {
+  """
+  The item at the end of the edge.
+  """
   node: Country!
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -594,11 +1010,29 @@ type CountrySubscriptionPayload {
 }
 
 input CountrySubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [CountrySubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [CountrySubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
   mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
   updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
   updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
   updatedFields_contains_some: [String!]
   node: CountryWhereInput
 }
@@ -606,11 +1040,13 @@ input CountrySubscriptionWhereInput {
 input CountryUpdateDataInput {
   shortName: String
   name: String
+  users: UserUpdateManyWithoutCountryInput
 }
 
 input CountryUpdateInput {
   shortName: String
   name: String
+  users: UserUpdateManyWithoutCountryInput
 }
 
 input CountryUpdateNestedInput {
@@ -627,73 +1063,266 @@ input CountryUpdateOneInput {
   upsert: CountryUpsertNestedInput
 }
 
+input CountryUpdateOneWithoutUsersInput {
+  create: CountryCreateWithoutUsersInput
+  connect: CountryWhereUniqueInput
+  disconnect: CountryWhereUniqueInput
+  delete: CountryWhereUniqueInput
+  update: CountryUpdateWithoutUsersInput
+  upsert: CountryUpsertWithoutUsersInput
+}
+
+input CountryUpdateWithoutUsersDataInput {
+  shortName: String
+  name: String
+}
+
+input CountryUpdateWithoutUsersInput {
+  where: CountryWhereUniqueInput!
+  data: CountryUpdateWithoutUsersDataInput!
+}
+
 input CountryUpsertNestedInput {
   where: CountryWhereUniqueInput!
   update: CountryUpdateDataInput!
   create: CountryCreateInput!
 }
 
+input CountryUpsertWithoutUsersInput {
+  where: CountryWhereUniqueInput!
+  update: CountryUpdateWithoutUsersDataInput!
+  create: CountryCreateWithoutUsersInput!
+}
+
 input CountryWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [CountryWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [CountryWhereInput!]
   id: ID
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
   id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
+  """
+  All values containing the given string.
+  """
   id_contains: ID
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   shortName: String
+  """
+  All values that are not equal to given value.
+  """
   shortName_not: String
+  """
+  All values that are contained in given list.
+  """
   shortName_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   shortName_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   shortName_lt: String
+  """
+  All values less than or equal the given value.
+  """
   shortName_lte: String
+  """
+  All values greater than the given value.
+  """
   shortName_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   shortName_gte: String
+  """
+  All values containing the given string.
+  """
   shortName_contains: String
+  """
+  All values not containing the given string.
+  """
   shortName_not_contains: String
+  """
+  All values starting with the given string.
+  """
   shortName_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   shortName_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   shortName_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   shortName_not_ends_with: String
   name: String
+  """
+  All values that are not equal to given value.
+  """
   name_not: String
+  """
+  All values that are contained in given list.
+  """
   name_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   name_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   name_lt: String
+  """
+  All values less than or equal the given value.
+  """
   name_lte: String
+  """
+  All values greater than the given value.
+  """
   name_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   name_gte: String
+  """
+  All values containing the given string.
+  """
   name_contains: String
+  """
+  All values not containing the given string.
+  """
   name_not_contains: String
+  """
+  All values starting with the given string.
+  """
   name_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   name_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   name_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   name_not_ends_with: String
+  users_every: UserWhereInput
+  users_some: UserWhereInput
+  users_none: UserWhereInput
 }
 
 input CountryWhereUniqueInput {
@@ -704,19 +1333,48 @@ input CountryWhereUniqueInput {
 
 scalar DateTime
 
+"""
+A connection to a list of items.
+"""
 type DepartmentConnection {
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
   edges: [DepartmentEdge]!
   aggregate: AggregateDepartment!
 }
 
 input DepartmentCreateInput {
   name: String!
-  Country: CountryCreateOneInput!
+  falculty: FacultyCreateOneInput!
+  users: UserCreateManyWithoutDepartmentInput
 }
 
+input DepartmentCreateOneWithoutUsersInput {
+  create: DepartmentCreateWithoutUsersInput
+  connect: DepartmentWhereUniqueInput
+}
+
+input DepartmentCreateWithoutUsersInput {
+  name: String!
+  falculty: FacultyCreateOneInput!
+}
+
+"""
+An edge in a connection.
+"""
 type DepartmentEdge {
+  """
+  The item at the end of the edge.
+  """
   node: Department!
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -746,76 +1404,258 @@ type DepartmentSubscriptionPayload {
 }
 
 input DepartmentSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [DepartmentSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [DepartmentSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
   mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
   updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
   updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
   updatedFields_contains_some: [String!]
   node: DepartmentWhereInput
 }
 
 input DepartmentUpdateInput {
   name: String
-  Country: CountryUpdateOneInput
+  falculty: FacultyUpdateOneInput
+  users: UserUpdateManyWithoutDepartmentInput
+}
+
+input DepartmentUpdateOneWithoutUsersInput {
+  create: DepartmentCreateWithoutUsersInput
+  connect: DepartmentWhereUniqueInput
+  disconnect: DepartmentWhereUniqueInput
+  delete: DepartmentWhereUniqueInput
+  update: DepartmentUpdateWithoutUsersInput
+  upsert: DepartmentUpsertWithoutUsersInput
+}
+
+input DepartmentUpdateWithoutUsersDataInput {
+  name: String
+  falculty: FacultyUpdateOneInput
+}
+
+input DepartmentUpdateWithoutUsersInput {
+  where: DepartmentWhereUniqueInput!
+  data: DepartmentUpdateWithoutUsersDataInput!
+}
+
+input DepartmentUpsertWithoutUsersInput {
+  where: DepartmentWhereUniqueInput!
+  update: DepartmentUpdateWithoutUsersDataInput!
+  create: DepartmentCreateWithoutUsersInput!
 }
 
 input DepartmentWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [DepartmentWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [DepartmentWhereInput!]
   id: ID
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
   id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
+  """
+  All values containing the given string.
+  """
   id_contains: ID
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   name: String
+  """
+  All values that are not equal to given value.
+  """
   name_not: String
+  """
+  All values that are contained in given list.
+  """
   name_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   name_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   name_lt: String
+  """
+  All values less than or equal the given value.
+  """
   name_lte: String
+  """
+  All values greater than the given value.
+  """
   name_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   name_gte: String
+  """
+  All values containing the given string.
+  """
   name_contains: String
+  """
+  All values not containing the given string.
+  """
   name_not_contains: String
+  """
+  All values starting with the given string.
+  """
   name_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   name_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   name_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   name_not_ends_with: String
-  Country: CountryWhereInput
+  falculty: FacultyWhereInput
+  users_every: UserWhereInput
+  users_some: UserWhereInput
+  users_none: UserWhereInput
 }
 
 input DepartmentWhereUniqueInput {
   id: ID
 }
 
+"""
+A connection to a list of items.
+"""
 type DiscussionConnection {
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
   edges: [DiscussionEdge]!
   aggregate: AggregateDiscussion!
 }
@@ -880,8 +1720,17 @@ input DiscussionCreateWithoutOpinionsInput {
   author: UserCreateOneWithoutMyDiscussionsInput!
 }
 
+"""
+An edge in a connection.
+"""
 type DiscussionEdge {
+  """
+  The item at the end of the edge.
+  """
   node: Discussion!
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -921,11 +1770,29 @@ type DiscussionSubscriptionPayload {
 }
 
 input DiscussionSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [DiscussionSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [DiscussionSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
   mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
   updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
   updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
   updatedFields_contains_some: [String!]
   node: DiscussionWhereInput
 }
@@ -1036,81 +1903,288 @@ input DiscussionUpsertWithoutOpinionsInput {
 }
 
 input DiscussionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [DiscussionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [DiscussionWhereInput!]
   id: ID
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
   id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
+  """
+  All values containing the given string.
+  """
   id_contains: ID
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   title: String
+  """
+  All values that are not equal to given value.
+  """
   title_not: String
+  """
+  All values that are contained in given list.
+  """
   title_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   title_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   title_lt: String
+  """
+  All values less than or equal the given value.
+  """
   title_lte: String
+  """
+  All values greater than the given value.
+  """
   title_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   title_gte: String
+  """
+  All values containing the given string.
+  """
   title_contains: String
+  """
+  All values not containing the given string.
+  """
   title_not_contains: String
+  """
+  All values starting with the given string.
+  """
   title_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   title_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   title_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   title_not_ends_with: String
   slug: String
+  """
+  All values that are not equal to given value.
+  """
   slug_not: String
+  """
+  All values that are contained in given list.
+  """
   slug_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   slug_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   slug_lt: String
+  """
+  All values less than or equal the given value.
+  """
   slug_lte: String
+  """
+  All values greater than the given value.
+  """
   slug_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   slug_gte: String
+  """
+  All values containing the given string.
+  """
   slug_contains: String
+  """
+  All values not containing the given string.
+  """
   slug_not_contains: String
+  """
+  All values starting with the given string.
+  """
   slug_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   slug_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   slug_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   slug_not_ends_with: String
   content: String
+  """
+  All values that are not equal to given value.
+  """
   content_not: String
+  """
+  All values that are contained in given list.
+  """
   content_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   content_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   content_lt: String
+  """
+  All values less than or equal the given value.
+  """
   content_lte: String
+  """
+  All values greater than the given value.
+  """
   content_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   content_gte: String
+  """
+  All values containing the given string.
+  """
   content_contains: String
+  """
+  All values not containing the given string.
+  """
   content_not_contains: String
+  """
+  All values starting with the given string.
+  """
   content_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   content_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   content_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   content_not_ends_with: String
   private: Boolean
+  """
+  All values that are not equal to given value.
+  """
   private_not: Boolean
   favourites_every: UserWhereInput
   favourites_some: UserWhereInput
@@ -1125,8 +2199,17 @@ input DiscussionWhereUniqueInput {
   id: ID
 }
 
+"""
+A connection to a list of items.
+"""
 type FacultyConnection {
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
   edges: [FacultyEdge]!
   aggregate: AggregateFaculty!
 }
@@ -1134,10 +2217,35 @@ type FacultyConnection {
 input FacultyCreateInput {
   name: String!
   school: SchoolCreateOneInput!
+  users: UserCreateManyWithoutFalcultyInput
 }
 
+input FacultyCreateOneInput {
+  create: FacultyCreateInput
+  connect: FacultyWhereUniqueInput
+}
+
+input FacultyCreateOneWithoutUsersInput {
+  create: FacultyCreateWithoutUsersInput
+  connect: FacultyWhereUniqueInput
+}
+
+input FacultyCreateWithoutUsersInput {
+  name: String!
+  school: SchoolCreateOneInput!
+}
+
+"""
+An edge in a connection.
+"""
 type FacultyEdge {
+  """
+  The item at the end of the edge.
+  """
   node: Faculty!
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -1167,76 +2275,763 @@ type FacultySubscriptionPayload {
 }
 
 input FacultySubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [FacultySubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [FacultySubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
   mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
   updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
   updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
   updatedFields_contains_some: [String!]
   node: FacultyWhereInput
+}
+
+input FacultyUpdateDataInput {
+  name: String
+  school: SchoolUpdateOneInput
+  users: UserUpdateManyWithoutFalcultyInput
 }
 
 input FacultyUpdateInput {
   name: String
   school: SchoolUpdateOneInput
+  users: UserUpdateManyWithoutFalcultyInput
+}
+
+input FacultyUpdateNestedInput {
+  where: FacultyWhereUniqueInput!
+  data: FacultyUpdateDataInput!
+}
+
+input FacultyUpdateOneInput {
+  create: FacultyCreateInput
+  connect: FacultyWhereUniqueInput
+  disconnect: FacultyWhereUniqueInput
+  delete: FacultyWhereUniqueInput
+  update: FacultyUpdateNestedInput
+  upsert: FacultyUpsertNestedInput
+}
+
+input FacultyUpdateOneWithoutUsersInput {
+  create: FacultyCreateWithoutUsersInput
+  connect: FacultyWhereUniqueInput
+  disconnect: FacultyWhereUniqueInput
+  delete: FacultyWhereUniqueInput
+  update: FacultyUpdateWithoutUsersInput
+  upsert: FacultyUpsertWithoutUsersInput
+}
+
+input FacultyUpdateWithoutUsersDataInput {
+  name: String
+  school: SchoolUpdateOneInput
+}
+
+input FacultyUpdateWithoutUsersInput {
+  where: FacultyWhereUniqueInput!
+  data: FacultyUpdateWithoutUsersDataInput!
+}
+
+input FacultyUpsertNestedInput {
+  where: FacultyWhereUniqueInput!
+  update: FacultyUpdateDataInput!
+  create: FacultyCreateInput!
+}
+
+input FacultyUpsertWithoutUsersInput {
+  where: FacultyWhereUniqueInput!
+  update: FacultyUpdateWithoutUsersDataInput!
+  create: FacultyCreateWithoutUsersInput!
 }
 
 input FacultyWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [FacultyWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [FacultyWhereInput!]
   id: ID
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
   id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
+  """
+  All values containing the given string.
+  """
   id_contains: ID
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   name: String
+  """
+  All values that are not equal to given value.
+  """
   name_not: String
+  """
+  All values that are contained in given list.
+  """
   name_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   name_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   name_lt: String
+  """
+  All values less than or equal the given value.
+  """
   name_lte: String
+  """
+  All values greater than the given value.
+  """
   name_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   name_gte: String
+  """
+  All values containing the given string.
+  """
   name_contains: String
+  """
+  All values not containing the given string.
+  """
   name_not_contains: String
+  """
+  All values starting with the given string.
+  """
   name_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   name_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   name_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   name_not_ends_with: String
   school: SchoolWhereInput
+  users_every: UserWhereInput
+  users_some: UserWhereInput
+  users_none: UserWhereInput
 }
 
 input FacultyWhereUniqueInput {
   id: ID
 }
 
-type ForumConnection {
+"""
+A connection to a list of items.
+"""
+type FileConnection {
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
+  edges: [FileEdge]!
+  aggregate: AggregateFile!
+}
+
+input FileCreateInput {
+  name: String!
+  size: Int!
+  secret: String!
+  contentType: String!
+  url: String!
+}
+
+"""
+An edge in a connection.
+"""
+type FileEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: File!
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+}
+
+enum FileOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  size_ASC
+  size_DESC
+  secret_ASC
+  secret_DESC
+  contentType_ASC
+  contentType_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  url_ASC
+  url_DESC
+}
+
+type FilePreviousValues {
+  id: ID!
+  name: String!
+  size: Int!
+  secret: String!
+  contentType: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  url: String!
+}
+
+type FileSubscriptionPayload {
+  mutation: MutationType!
+  node: File
+  updatedFields: [String!]
+  previousValues: FilePreviousValues
+}
+
+input FileSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
+  AND: [FileSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
+  OR: [FileSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: FileWhereInput
+}
+
+input FileUpdateInput {
+  name: String
+  size: Int
+  secret: String
+  contentType: String
+  url: String
+}
+
+input FileWhereInput {
+  """
+  Logical AND on all given filters.
+  """
+  AND: [FileWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
+  OR: [FileWhereInput!]
+  id: ID
+  """
+  All values that are not equal to given value.
+  """
+  id_not: ID
+  """
+  All values that are contained in given list.
+  """
+  id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
+  id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
+  id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
+  id_lte: ID
+  """
+  All values greater than the given value.
+  """
+  id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
+  id_gte: ID
+  """
+  All values containing the given string.
+  """
+  id_contains: ID
+  """
+  All values not containing the given string.
+  """
+  id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
+  id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
+  id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
+  id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
+  id_not_ends_with: ID
+  name: String
+  """
+  All values that are not equal to given value.
+  """
+  name_not: String
+  """
+  All values that are contained in given list.
+  """
+  name_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  name_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  name_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  name_lte: String
+  """
+  All values greater than the given value.
+  """
+  name_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  name_gte: String
+  """
+  All values containing the given string.
+  """
+  name_contains: String
+  """
+  All values not containing the given string.
+  """
+  name_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  name_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  name_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  name_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  name_not_ends_with: String
+  size: Int
+  """
+  All values that are not equal to given value.
+  """
+  size_not: Int
+  """
+  All values that are contained in given list.
+  """
+  size_in: [Int!]
+  """
+  All values that are not contained in given list.
+  """
+  size_not_in: [Int!]
+  """
+  All values less than the given value.
+  """
+  size_lt: Int
+  """
+  All values less than or equal the given value.
+  """
+  size_lte: Int
+  """
+  All values greater than the given value.
+  """
+  size_gt: Int
+  """
+  All values greater than or equal the given value.
+  """
+  size_gte: Int
+  secret: String
+  """
+  All values that are not equal to given value.
+  """
+  secret_not: String
+  """
+  All values that are contained in given list.
+  """
+  secret_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  secret_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  secret_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  secret_lte: String
+  """
+  All values greater than the given value.
+  """
+  secret_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  secret_gte: String
+  """
+  All values containing the given string.
+  """
+  secret_contains: String
+  """
+  All values not containing the given string.
+  """
+  secret_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  secret_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  secret_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  secret_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  secret_not_ends_with: String
+  contentType: String
+  """
+  All values that are not equal to given value.
+  """
+  contentType_not: String
+  """
+  All values that are contained in given list.
+  """
+  contentType_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  contentType_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  contentType_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  contentType_lte: String
+  """
+  All values greater than the given value.
+  """
+  contentType_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  contentType_gte: String
+  """
+  All values containing the given string.
+  """
+  contentType_contains: String
+  """
+  All values not containing the given string.
+  """
+  contentType_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  contentType_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  contentType_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  contentType_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  contentType_not_ends_with: String
+  createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
+  createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
+  createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
+  createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
+  createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
+  createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
+  createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
+  updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
+  updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
+  updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
+  updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
+  updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
+  updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
+  updatedAt_gte: DateTime
+  url: String
+  """
+  All values that are not equal to given value.
+  """
+  url_not: String
+  """
+  All values that are contained in given list.
+  """
+  url_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  url_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  url_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  url_lte: String
+  """
+  All values greater than the given value.
+  """
+  url_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  url_gte: String
+  """
+  All values containing the given string.
+  """
+  url_contains: String
+  """
+  All values not containing the given string.
+  """
+  url_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  url_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  url_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  url_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  url_not_ends_with: String
+}
+
+input FileWhereUniqueInput {
+  id: ID
+  secret: String
+  url: String
+}
+
+"""
+A connection to a list of items.
+"""
+type ForumConnection {
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
   edges: [ForumEdge]!
   aggregate: AggregateForum!
 }
@@ -1248,8 +3043,17 @@ input ForumCreateInput {
   author: UserCreateOneInput!
 }
 
+"""
+An edge in a connection.
+"""
 type ForumEdge {
+  """
+  The item at the end of the edge.
+  """
   node: Forum!
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -1285,11 +3089,29 @@ type ForumSubscriptionPayload {
 }
 
 input ForumSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [ForumSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [ForumSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
   mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
   updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
   updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
   updatedFields_contains_some: [String!]
   node: ForumWhereInput
 }
@@ -1302,67 +3124,235 @@ input ForumUpdateInput {
 }
 
 input ForumWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [ForumWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [ForumWhereInput!]
   id: ID
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
   id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
+  """
+  All values containing the given string.
+  """
   id_contains: ID
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   title: String
+  """
+  All values that are not equal to given value.
+  """
   title_not: String
+  """
+  All values that are contained in given list.
+  """
   title_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   title_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   title_lt: String
+  """
+  All values less than or equal the given value.
+  """
   title_lte: String
+  """
+  All values greater than the given value.
+  """
   title_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   title_gte: String
+  """
+  All values containing the given string.
+  """
   title_contains: String
+  """
+  All values not containing the given string.
+  """
   title_not_contains: String
+  """
+  All values starting with the given string.
+  """
   title_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   title_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   title_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   title_not_ends_with: String
   slug: String
+  """
+  All values that are not equal to given value.
+  """
   slug_not: String
+  """
+  All values that are contained in given list.
+  """
   slug_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   slug_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   slug_lt: String
+  """
+  All values less than or equal the given value.
+  """
   slug_lte: String
+  """
+  All values greater than the given value.
+  """
   slug_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   slug_gte: String
+  """
+  All values containing the given string.
+  """
   slug_contains: String
+  """
+  All values not containing the given string.
+  """
   slug_not_contains: String
+  """
+  All values starting with the given string.
+  """
   slug_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   slug_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   slug_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   slug_not_ends_with: String
   private: Boolean
+  """
+  All values that are not equal to given value.
+  """
   private_not: Boolean
   author: UserWhereInput
 }
@@ -1371,8 +3361,17 @@ input ForumWhereUniqueInput {
   id: ID
 }
 
+"""
+A connection to a list of items.
+"""
 type InstitutionsConnection {
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
   edges: [InstitutionsEdge]!
   aggregate: AggregateInstitutions!
 }
@@ -1381,6 +3380,7 @@ input InstitutionsCreateInput {
   title: String!
   type: InstitutionType!
   Country: CountryCreateOneInput!
+  users: UserCreateManyWithoutInstitutionInput
 }
 
 input InstitutionsCreateOneInput {
@@ -1388,8 +3388,28 @@ input InstitutionsCreateOneInput {
   connect: InstitutionsWhereUniqueInput
 }
 
+input InstitutionsCreateOneWithoutUsersInput {
+  create: InstitutionsCreateWithoutUsersInput
+  connect: InstitutionsWhereUniqueInput
+}
+
+input InstitutionsCreateWithoutUsersInput {
+  title: String!
+  type: InstitutionType!
+  Country: CountryCreateOneInput!
+}
+
+"""
+An edge in a connection.
+"""
 type InstitutionsEdge {
+  """
+  The item at the end of the edge.
+  """
   node: Institutions!
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -1422,11 +3442,29 @@ type InstitutionsSubscriptionPayload {
 }
 
 input InstitutionsSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [InstitutionsSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [InstitutionsSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
   mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
   updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
   updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
   updatedFields_contains_some: [String!]
   node: InstitutionsWhereInput
 }
@@ -1435,12 +3473,14 @@ input InstitutionsUpdateDataInput {
   title: String
   type: InstitutionType
   Country: CountryUpdateOneInput
+  users: UserUpdateManyWithoutInstitutionInput
 }
 
 input InstitutionsUpdateInput {
   title: String
   type: InstitutionType
   Country: CountryUpdateOneInput
+  users: UserUpdateManyWithoutInstitutionInput
 }
 
 input InstitutionsUpdateNestedInput {
@@ -1457,64 +3497,228 @@ input InstitutionsUpdateOneInput {
   upsert: InstitutionsUpsertNestedInput
 }
 
+input InstitutionsUpdateOneWithoutUsersInput {
+  create: InstitutionsCreateWithoutUsersInput
+  connect: InstitutionsWhereUniqueInput
+  disconnect: InstitutionsWhereUniqueInput
+  delete: InstitutionsWhereUniqueInput
+  update: InstitutionsUpdateWithoutUsersInput
+  upsert: InstitutionsUpsertWithoutUsersInput
+}
+
+input InstitutionsUpdateWithoutUsersDataInput {
+  title: String
+  type: InstitutionType
+  Country: CountryUpdateOneInput
+}
+
+input InstitutionsUpdateWithoutUsersInput {
+  where: InstitutionsWhereUniqueInput!
+  data: InstitutionsUpdateWithoutUsersDataInput!
+}
+
 input InstitutionsUpsertNestedInput {
   where: InstitutionsWhereUniqueInput!
   update: InstitutionsUpdateDataInput!
   create: InstitutionsCreateInput!
 }
 
+input InstitutionsUpsertWithoutUsersInput {
+  where: InstitutionsWhereUniqueInput!
+  update: InstitutionsUpdateWithoutUsersDataInput!
+  create: InstitutionsCreateWithoutUsersInput!
+}
+
 input InstitutionsWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [InstitutionsWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [InstitutionsWhereInput!]
   id: ID
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
   id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
+  """
+  All values containing the given string.
+  """
   id_contains: ID
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   title: String
+  """
+  All values that are not equal to given value.
+  """
   title_not: String
+  """
+  All values that are contained in given list.
+  """
   title_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   title_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   title_lt: String
+  """
+  All values less than or equal the given value.
+  """
   title_lte: String
+  """
+  All values greater than the given value.
+  """
   title_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   title_gte: String
+  """
+  All values containing the given string.
+  """
   title_contains: String
+  """
+  All values not containing the given string.
+  """
   title_not_contains: String
+  """
+  All values starting with the given string.
+  """
   title_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   title_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   title_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   title_not_ends_with: String
   type: InstitutionType
+  """
+  All values that are not equal to given value.
+  """
   type_not: InstitutionType
+  """
+  All values that are contained in given list.
+  """
   type_in: [InstitutionType!]
+  """
+  All values that are not contained in given list.
+  """
   type_not_in: [InstitutionType!]
   Country: CountryWhereInput
+  users_every: UserWhereInput
+  users_some: UserWhereInput
+  users_none: UserWhereInput
 }
 
 input InstitutionsWhereUniqueInput {
@@ -1526,9 +3730,381 @@ enum InstitutionType {
   College
 }
 
+"""
+A connection to a list of items.
+"""
+type InterestConnection {
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
+  edges: [InterestEdge]!
+  aggregate: AggregateInterest!
+}
+
+input InterestCreateInput {
+  name: String!
+  avatar: String!
+  users: UserCreateManyWithoutInterestInput
+}
+
+input InterestCreateOneWithoutUsersInput {
+  create: InterestCreateWithoutUsersInput
+  connect: InterestWhereUniqueInput
+}
+
+input InterestCreateWithoutUsersInput {
+  name: String!
+  avatar: String!
+}
+
+"""
+An edge in a connection.
+"""
+type InterestEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Interest!
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+}
+
+enum InterestOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  name_ASC
+  name_DESC
+  avatar_ASC
+  avatar_DESC
+}
+
+type InterestPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  avatar: String!
+}
+
+type InterestSubscriptionPayload {
+  mutation: MutationType!
+  node: Interest
+  updatedFields: [String!]
+  previousValues: InterestPreviousValues
+}
+
+input InterestSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
+  AND: [InterestSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
+  OR: [InterestSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: InterestWhereInput
+}
+
+input InterestUpdateInput {
+  name: String
+  avatar: String
+  users: UserUpdateManyWithoutInterestInput
+}
+
+input InterestUpdateOneWithoutUsersInput {
+  create: InterestCreateWithoutUsersInput
+  connect: InterestWhereUniqueInput
+  disconnect: InterestWhereUniqueInput
+  delete: InterestWhereUniqueInput
+  update: InterestUpdateWithoutUsersInput
+  upsert: InterestUpsertWithoutUsersInput
+}
+
+input InterestUpdateWithoutUsersDataInput {
+  name: String
+  avatar: String
+}
+
+input InterestUpdateWithoutUsersInput {
+  where: InterestWhereUniqueInput!
+  data: InterestUpdateWithoutUsersDataInput!
+}
+
+input InterestUpsertWithoutUsersInput {
+  where: InterestWhereUniqueInput!
+  update: InterestUpdateWithoutUsersDataInput!
+  create: InterestCreateWithoutUsersInput!
+}
+
+input InterestWhereInput {
+  """
+  Logical AND on all given filters.
+  """
+  AND: [InterestWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
+  OR: [InterestWhereInput!]
+  id: ID
+  """
+  All values that are not equal to given value.
+  """
+  id_not: ID
+  """
+  All values that are contained in given list.
+  """
+  id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
+  id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
+  id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
+  id_lte: ID
+  """
+  All values greater than the given value.
+  """
+  id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
+  id_gte: ID
+  """
+  All values containing the given string.
+  """
+  id_contains: ID
+  """
+  All values not containing the given string.
+  """
+  id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
+  id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
+  id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
+  id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
+  id_not_ends_with: ID
+  createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
+  createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
+  createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
+  createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
+  createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
+  createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
+  createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
+  updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
+  updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
+  updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
+  updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
+  updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
+  updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
+  updatedAt_gte: DateTime
+  name: String
+  """
+  All values that are not equal to given value.
+  """
+  name_not: String
+  """
+  All values that are contained in given list.
+  """
+  name_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  name_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  name_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  name_lte: String
+  """
+  All values greater than the given value.
+  """
+  name_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  name_gte: String
+  """
+  All values containing the given string.
+  """
+  name_contains: String
+  """
+  All values not containing the given string.
+  """
+  name_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  name_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  name_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  name_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  name_not_ends_with: String
+  avatar: String
+  """
+  All values that are not equal to given value.
+  """
+  avatar_not: String
+  """
+  All values that are contained in given list.
+  """
+  avatar_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  avatar_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  avatar_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  avatar_lte: String
+  """
+  All values greater than the given value.
+  """
+  avatar_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  avatar_gte: String
+  """
+  All values containing the given string.
+  """
+  avatar_contains: String
+  """
+  All values not containing the given string.
+  """
+  avatar_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  avatar_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  avatar_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  avatar_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  avatar_not_ends_with: String
+  users_every: UserWhereInput
+  users_some: UserWhereInput
+  users_none: UserWhereInput
+}
+
+input InterestWhereUniqueInput {
+  id: ID
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
 scalar Long
 
 type Mutation {
+  createFile(data: FileCreateInput!): File!
   createPost(data: PostCreateInput!): Post!
   createArticle(data: ArticleCreateInput!): Article!
   createCountry(data: CountryCreateInput!): Country!
@@ -1536,11 +4112,13 @@ type Mutation {
   createSchool(data: SchoolCreateInput!): School!
   createFaculty(data: FacultyCreateInput!): Faculty!
   createDepartment(data: DepartmentCreateInput!): Department!
+  createInterest(data: InterestCreateInput!): Interest!
   createUser(data: UserCreateInput!): User!
   createConnect(data: ConnectCreateInput!): Connect!
   createForum(data: ForumCreateInput!): Forum!
   createDiscussion(data: DiscussionCreateInput!): Discussion!
   createOpinions(data: OpinionsCreateInput!): Opinions!
+  updateFile(data: FileUpdateInput!, where: FileWhereUniqueInput!): File
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
   updateArticle(data: ArticleUpdateInput!, where: ArticleWhereUniqueInput!): Article
   updateCountry(data: CountryUpdateInput!, where: CountryWhereUniqueInput!): Country
@@ -1548,11 +4126,13 @@ type Mutation {
   updateSchool(data: SchoolUpdateInput!, where: SchoolWhereUniqueInput!): School
   updateFaculty(data: FacultyUpdateInput!, where: FacultyWhereUniqueInput!): Faculty
   updateDepartment(data: DepartmentUpdateInput!, where: DepartmentWhereUniqueInput!): Department
+  updateInterest(data: InterestUpdateInput!, where: InterestWhereUniqueInput!): Interest
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateConnect(data: ConnectUpdateInput!, where: ConnectWhereUniqueInput!): Connect
   updateForum(data: ForumUpdateInput!, where: ForumWhereUniqueInput!): Forum
   updateDiscussion(data: DiscussionUpdateInput!, where: DiscussionWhereUniqueInput!): Discussion
   updateOpinions(data: OpinionsUpdateInput!, where: OpinionsWhereUniqueInput!): Opinions
+  deleteFile(where: FileWhereUniqueInput!): File
   deletePost(where: PostWhereUniqueInput!): Post
   deleteArticle(where: ArticleWhereUniqueInput!): Article
   deleteCountry(where: CountryWhereUniqueInput!): Country
@@ -1560,11 +4140,13 @@ type Mutation {
   deleteSchool(where: SchoolWhereUniqueInput!): School
   deleteFaculty(where: FacultyWhereUniqueInput!): Faculty
   deleteDepartment(where: DepartmentWhereUniqueInput!): Department
+  deleteInterest(where: InterestWhereUniqueInput!): Interest
   deleteUser(where: UserWhereUniqueInput!): User
   deleteConnect(where: ConnectWhereUniqueInput!): Connect
   deleteForum(where: ForumWhereUniqueInput!): Forum
   deleteDiscussion(where: DiscussionWhereUniqueInput!): Discussion
   deleteOpinions(where: OpinionsWhereUniqueInput!): Opinions
+  upsertFile(where: FileWhereUniqueInput!, create: FileCreateInput!, update: FileUpdateInput!): File!
   upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
   upsertArticle(where: ArticleWhereUniqueInput!, create: ArticleCreateInput!, update: ArticleUpdateInput!): Article!
   upsertCountry(where: CountryWhereUniqueInput!, create: CountryCreateInput!, update: CountryUpdateInput!): Country!
@@ -1572,11 +4154,13 @@ type Mutation {
   upsertSchool(where: SchoolWhereUniqueInput!, create: SchoolCreateInput!, update: SchoolUpdateInput!): School!
   upsertFaculty(where: FacultyWhereUniqueInput!, create: FacultyCreateInput!, update: FacultyUpdateInput!): Faculty!
   upsertDepartment(where: DepartmentWhereUniqueInput!, create: DepartmentCreateInput!, update: DepartmentUpdateInput!): Department!
+  upsertInterest(where: InterestWhereUniqueInput!, create: InterestCreateInput!, update: InterestUpdateInput!): Interest!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertConnect(where: ConnectWhereUniqueInput!, create: ConnectCreateInput!, update: ConnectUpdateInput!): Connect!
   upsertForum(where: ForumWhereUniqueInput!, create: ForumCreateInput!, update: ForumUpdateInput!): Forum!
   upsertDiscussion(where: DiscussionWhereUniqueInput!, create: DiscussionCreateInput!, update: DiscussionUpdateInput!): Discussion!
   upsertOpinions(where: OpinionsWhereUniqueInput!, create: OpinionsCreateInput!, update: OpinionsUpdateInput!): Opinions!
+  updateManyFiles(data: FileUpdateInput!, where: FileWhereInput!): BatchPayload!
   updateManyPosts(data: PostUpdateInput!, where: PostWhereInput!): BatchPayload!
   updateManyArticles(data: ArticleUpdateInput!, where: ArticleWhereInput!): BatchPayload!
   updateManyCountries(data: CountryUpdateInput!, where: CountryWhereInput!): BatchPayload!
@@ -1584,11 +4168,13 @@ type Mutation {
   updateManySchools(data: SchoolUpdateInput!, where: SchoolWhereInput!): BatchPayload!
   updateManyFaculties(data: FacultyUpdateInput!, where: FacultyWhereInput!): BatchPayload!
   updateManyDepartments(data: DepartmentUpdateInput!, where: DepartmentWhereInput!): BatchPayload!
+  updateManyInterests(data: InterestUpdateInput!, where: InterestWhereInput!): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput!): BatchPayload!
   updateManyConnects(data: ConnectUpdateInput!, where: ConnectWhereInput!): BatchPayload!
   updateManyForums(data: ForumUpdateInput!, where: ForumWhereInput!): BatchPayload!
   updateManyDiscussions(data: DiscussionUpdateInput!, where: DiscussionWhereInput!): BatchPayload!
   updateManyOpinionses(data: OpinionsUpdateInput!, where: OpinionsWhereInput!): BatchPayload!
+  deleteManyFiles(where: FileWhereInput!): BatchPayload!
   deleteManyPosts(where: PostWhereInput!): BatchPayload!
   deleteManyArticles(where: ArticleWhereInput!): BatchPayload!
   deleteManyCountries(where: CountryWhereInput!): BatchPayload!
@@ -1596,6 +4182,7 @@ type Mutation {
   deleteManySchools(where: SchoolWhereInput!): BatchPayload!
   deleteManyFaculties(where: FacultyWhereInput!): BatchPayload!
   deleteManyDepartments(where: DepartmentWhereInput!): BatchPayload!
+  deleteManyInterests(where: InterestWhereInput!): BatchPayload!
   deleteManyUsers(where: UserWhereInput!): BatchPayload!
   deleteManyConnects(where: ConnectWhereInput!): BatchPayload!
   deleteManyForums(where: ForumWhereInput!): BatchPayload!
@@ -1609,12 +4196,27 @@ enum MutationType {
   DELETED
 }
 
+"""
+An object with an ID
+"""
 interface Node {
+  """
+  The id of the object.
+  """
   id: ID!
 }
 
+"""
+A connection to a list of items.
+"""
 type OpinionsConnection {
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
   edges: [OpinionsEdge]!
   aggregate: AggregateOpinions!
 }
@@ -1645,8 +4247,17 @@ input OpinionsCreateWithoutDiscussionInput {
   author: UserCreateOneWithoutOpinionsInput!
 }
 
+"""
+An edge in a connection.
+"""
 type OpinionsEdge {
+  """
+  The item at the end of the edge.
+  """
   node: Opinions!
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -1676,11 +4287,29 @@ type OpinionsSubscriptionPayload {
 }
 
 input OpinionsSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [OpinionsSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [OpinionsSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
   mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
   updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
   updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
   updatedFields_contains_some: [String!]
   node: OpinionsWhereInput
 }
@@ -1742,51 +4371,177 @@ input OpinionsUpsertWithoutDiscussionInput {
 }
 
 input OpinionsWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [OpinionsWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [OpinionsWhereInput!]
   id: ID
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
   id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
+  """
+  All values containing the given string.
+  """
   id_contains: ID
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   content: String
+  """
+  All values that are not equal to given value.
+  """
   content_not: String
+  """
+  All values that are contained in given list.
+  """
   content_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   content_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   content_lt: String
+  """
+  All values less than or equal the given value.
+  """
   content_lte: String
+  """
+  All values greater than the given value.
+  """
   content_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   content_gte: String
+  """
+  All values containing the given string.
+  """
   content_contains: String
+  """
+  All values not containing the given string.
+  """
   content_not_contains: String
+  """
+  All values starting with the given string.
+  """
   content_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   content_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   content_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   content_not_ends_with: String
   author: UserWhereInput
   discussion: DiscussionWhereInput
@@ -1796,15 +4551,39 @@ input OpinionsWhereUniqueInput {
   id: ID
 }
 
+"""
+Information about pagination in a connection.
+"""
 type PageInfo {
+  """
+  When paginating forwards, are there more items?
+  """
   hasNextPage: Boolean!
+  """
+  When paginating backwards, are there more items?
+  """
   hasPreviousPage: Boolean!
+  """
+  When paginating backwards, the cursor to continue.
+  """
   startCursor: String
+  """
+  When paginating forwards, the cursor to continue.
+  """
   endCursor: String
 }
 
+"""
+A connection to a list of items.
+"""
 type PostConnection {
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
   edges: [PostEdge]!
   aggregate: AggregatePost!
 }
@@ -1815,8 +4594,17 @@ input PostCreateInput {
   text: String!
 }
 
+"""
+An edge in a connection.
+"""
 type PostEdge {
+  """
+  The item at the end of the edge.
+  """
   node: Post!
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -1852,11 +4640,29 @@ type PostSubscriptionPayload {
 }
 
 input PostSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [PostSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [PostSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
   mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
   updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
   updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
   updatedFields_contains_some: [String!]
   node: PostWhereInput
 }
@@ -1868,67 +4674,235 @@ input PostUpdateInput {
 }
 
 input PostWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [PostWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [PostWhereInput!]
   id: ID
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
   id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
+  """
+  All values containing the given string.
+  """
   id_contains: ID
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   isPublished: Boolean
+  """
+  All values that are not equal to given value.
+  """
   isPublished_not: Boolean
   title: String
+  """
+  All values that are not equal to given value.
+  """
   title_not: String
+  """
+  All values that are contained in given list.
+  """
   title_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   title_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   title_lt: String
+  """
+  All values less than or equal the given value.
+  """
   title_lte: String
+  """
+  All values greater than the given value.
+  """
   title_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   title_gte: String
+  """
+  All values containing the given string.
+  """
   title_contains: String
+  """
+  All values not containing the given string.
+  """
   title_not_contains: String
+  """
+  All values starting with the given string.
+  """
   title_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   title_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   title_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   title_not_ends_with: String
   text: String
+  """
+  All values that are not equal to given value.
+  """
   text_not: String
+  """
+  All values that are contained in given list.
+  """
   text_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   text_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   text_lt: String
+  """
+  All values less than or equal the given value.
+  """
   text_lte: String
+  """
+  All values greater than the given value.
+  """
   text_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   text_gte: String
+  """
+  All values containing the given string.
+  """
   text_contains: String
+  """
+  All values not containing the given string.
+  """
   text_not_contains: String
+  """
+  All values starting with the given string.
+  """
   text_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   text_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   text_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   text_not_ends_with: String
 }
 
@@ -1937,6 +4911,7 @@ input PostWhereUniqueInput {
 }
 
 type Query {
+  files(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File]!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   articles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article]!
   countries(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Country]!
@@ -1944,11 +4919,13 @@ type Query {
   schools(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [School]!
   faculties(where: FacultyWhereInput, orderBy: FacultyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Faculty]!
   departments(where: DepartmentWhereInput, orderBy: DepartmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Department]!
+  interests(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Interest]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   connects(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect]!
   forums(where: ForumWhereInput, orderBy: ForumOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Forum]!
   discussions(where: DiscussionWhereInput, orderBy: DiscussionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Discussion]!
   opinionses(where: OpinionsWhereInput, orderBy: OpinionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Opinions]!
+  file(where: FileWhereUniqueInput!): File
   post(where: PostWhereUniqueInput!): Post
   article(where: ArticleWhereUniqueInput!): Article
   country(where: CountryWhereUniqueInput!): Country
@@ -1956,11 +4933,13 @@ type Query {
   school(where: SchoolWhereUniqueInput!): School
   faculty(where: FacultyWhereUniqueInput!): Faculty
   department(where: DepartmentWhereUniqueInput!): Department
+  interest(where: InterestWhereUniqueInput!): Interest
   user(where: UserWhereUniqueInput!): User
   connect(where: ConnectWhereUniqueInput!): Connect
   forum(where: ForumWhereUniqueInput!): Forum
   discussion(where: DiscussionWhereUniqueInput!): Discussion
   opinions(where: OpinionsWhereUniqueInput!): Opinions
+  filesConnection(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
   articlesConnection(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ArticleConnection!
   countriesConnection(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CountryConnection!
@@ -1968,16 +4947,32 @@ type Query {
   schoolsConnection(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SchoolConnection!
   facultiesConnection(where: FacultyWhereInput, orderBy: FacultyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FacultyConnection!
   departmentsConnection(where: DepartmentWhereInput, orderBy: DepartmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DepartmentConnection!
+  interestsConnection(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InterestConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   connectsConnection(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ConnectConnection!
   forumsConnection(where: ForumWhereInput, orderBy: ForumOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ForumConnection!
   discussionsConnection(where: DiscussionWhereInput, orderBy: DiscussionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DiscussionConnection!
   opinionsesConnection(where: OpinionsWhereInput, orderBy: OpinionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OpinionsConnection!
-  node(id: ID!): Node
+  """
+  Fetches an object given its ID
+  """
+  node("""
+  The ID of an object
+  """
+  id: ID!): Node
 }
 
+"""
+A connection to a list of items.
+"""
 type SchoolConnection {
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
   edges: [SchoolEdge]!
   aggregate: AggregateSchool!
 }
@@ -1985,6 +4980,7 @@ type SchoolConnection {
 input SchoolCreateInput {
   title: String!
   institution: InstitutionsCreateOneInput!
+  users: UserCreateManyWithoutSchoolInput
 }
 
 input SchoolCreateOneInput {
@@ -1992,8 +4988,27 @@ input SchoolCreateOneInput {
   connect: SchoolWhereUniqueInput
 }
 
+input SchoolCreateOneWithoutUsersInput {
+  create: SchoolCreateWithoutUsersInput
+  connect: SchoolWhereUniqueInput
+}
+
+input SchoolCreateWithoutUsersInput {
+  title: String!
+  institution: InstitutionsCreateOneInput!
+}
+
+"""
+An edge in a connection.
+"""
 type SchoolEdge {
+  """
+  The item at the end of the edge.
+  """
   node: School!
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -2023,11 +5038,29 @@ type SchoolSubscriptionPayload {
 }
 
 input SchoolSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [SchoolSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [SchoolSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
   mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
   updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
   updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
   updatedFields_contains_some: [String!]
   node: SchoolWhereInput
 }
@@ -2035,11 +5068,13 @@ input SchoolSubscriptionWhereInput {
 input SchoolUpdateDataInput {
   title: String
   institution: InstitutionsUpdateOneInput
+  users: UserUpdateManyWithoutSchoolInput
 }
 
 input SchoolUpdateInput {
   title: String
   institution: InstitutionsUpdateOneInput
+  users: UserUpdateManyWithoutSchoolInput
 }
 
 input SchoolUpdateNestedInput {
@@ -2056,60 +5091,214 @@ input SchoolUpdateOneInput {
   upsert: SchoolUpsertNestedInput
 }
 
+input SchoolUpdateOneWithoutUsersInput {
+  create: SchoolCreateWithoutUsersInput
+  connect: SchoolWhereUniqueInput
+  disconnect: SchoolWhereUniqueInput
+  delete: SchoolWhereUniqueInput
+  update: SchoolUpdateWithoutUsersInput
+  upsert: SchoolUpsertWithoutUsersInput
+}
+
+input SchoolUpdateWithoutUsersDataInput {
+  title: String
+  institution: InstitutionsUpdateOneInput
+}
+
+input SchoolUpdateWithoutUsersInput {
+  where: SchoolWhereUniqueInput!
+  data: SchoolUpdateWithoutUsersDataInput!
+}
+
 input SchoolUpsertNestedInput {
   where: SchoolWhereUniqueInput!
   update: SchoolUpdateDataInput!
   create: SchoolCreateInput!
 }
 
+input SchoolUpsertWithoutUsersInput {
+  where: SchoolWhereUniqueInput!
+  update: SchoolUpdateWithoutUsersDataInput!
+  create: SchoolCreateWithoutUsersInput!
+}
+
 input SchoolWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [SchoolWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [SchoolWhereInput!]
   id: ID
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
   id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
+  """
+  All values containing the given string.
+  """
   id_contains: ID
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   title: String
+  """
+  All values that are not equal to given value.
+  """
   title_not: String
+  """
+  All values that are contained in given list.
+  """
   title_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   title_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   title_lt: String
+  """
+  All values less than or equal the given value.
+  """
   title_lte: String
+  """
+  All values greater than the given value.
+  """
   title_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   title_gte: String
+  """
+  All values containing the given string.
+  """
   title_contains: String
+  """
+  All values not containing the given string.
+  """
   title_not_contains: String
+  """
+  All values starting with the given string.
+  """
   title_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   title_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   title_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   title_not_ends_with: String
   institution: InstitutionsWhereInput
+  users_every: UserWhereInput
+  users_some: UserWhereInput
+  users_none: UserWhereInput
 }
 
 input SchoolWhereUniqueInput {
@@ -2117,6 +5306,7 @@ input SchoolWhereUniqueInput {
 }
 
 type Subscription {
+  file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   article(where: ArticleSubscriptionWhereInput): ArticleSubscriptionPayload
   country(where: CountrySubscriptionWhereInput): CountrySubscriptionPayload
@@ -2124,6 +5314,7 @@ type Subscription {
   school(where: SchoolSubscriptionWhereInput): SchoolSubscriptionPayload
   faculty(where: FacultySubscriptionWhereInput): FacultySubscriptionPayload
   department(where: DepartmentSubscriptionWhereInput): DepartmentSubscriptionPayload
+  interest(where: InterestSubscriptionWhereInput): InterestSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   connect(where: ConnectSubscriptionWhereInput): ConnectSubscriptionPayload
   forum(where: ForumSubscriptionWhereInput): ForumSubscriptionPayload
@@ -2131,8 +5322,17 @@ type Subscription {
   opinions(where: OpinionsSubscriptionWhereInput): OpinionsSubscriptionPayload
 }
 
+"""
+A connection to a list of items.
+"""
 type UserConnection {
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
   edges: [UserEdge]!
   aggregate: AggregateUser!
 }
@@ -2145,6 +5345,18 @@ input UserCreateInput {
   lastname: String!
   gender: String!
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  school: SchoolCreateOneWithoutUsersInput
+  falculty: FacultyCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput
   connectTo: ConnectCreateManyWithoutToInput
@@ -2153,8 +5365,38 @@ input UserCreateInput {
   opinions: OpinionsCreateManyWithoutAuthorInput
 }
 
+input UserCreateManyWithoutCountryInput {
+  create: [UserCreateWithoutCountryInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateManyWithoutDepartmentInput {
+  create: [UserCreateWithoutDepartmentInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateManyWithoutFalcultyInput {
+  create: [UserCreateWithoutFalcultyInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
 input UserCreateManyWithoutFavouritesInput {
   create: [UserCreateWithoutFavouritesInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateManyWithoutInstitutionInput {
+  create: [UserCreateWithoutInstitutionInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateManyWithoutInterestInput {
+  create: [UserCreateWithoutInterestInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateManyWithoutSchoolInput {
+  create: [UserCreateWithoutSchoolInput!]
   connect: [UserWhereUniqueInput!]
 }
 
@@ -2196,6 +5438,18 @@ input UserCreateWithoutArticlesInput {
   lastname: String!
   gender: String!
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  school: SchoolCreateOneWithoutUsersInput
+  falculty: FacultyCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput
   connectTo: ConnectCreateManyWithoutToInput
@@ -2211,6 +5465,18 @@ input UserCreateWithoutConectFromInput {
   lastname: String!
   gender: String!
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  school: SchoolCreateOneWithoutUsersInput
+  falculty: FacultyCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput
   connectTo: ConnectCreateManyWithoutToInput
@@ -2226,8 +5492,101 @@ input UserCreateWithoutConnectToInput {
   lastname: String!
   gender: String!
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  school: SchoolCreateOneWithoutUsersInput
+  falculty: FacultyCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  ConectFrom: ConnectCreateManyWithoutFromInput
+  articles: ArticleCreateManyWithoutAuthorInput
+  opinions: OpinionsCreateManyWithoutAuthorInput
+}
+
+input UserCreateWithoutCountryInput {
+  email: String!
+  username: String
+  password: String!
+  firstname: String!
+  lastname: String!
+  gender: String!
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  institution: InstitutionsCreateOneWithoutUsersInput
+  school: SchoolCreateOneWithoutUsersInput
+  falculty: FacultyCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateOneWithoutUsersInput
+  favourites: DiscussionCreateManyWithoutFavouritesInput
+  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  connectTo: ConnectCreateManyWithoutToInput
+  ConectFrom: ConnectCreateManyWithoutFromInput
+  articles: ArticleCreateManyWithoutAuthorInput
+  opinions: OpinionsCreateManyWithoutAuthorInput
+}
+
+input UserCreateWithoutDepartmentInput {
+  email: String!
+  username: String
+  password: String!
+  firstname: String!
+  lastname: String!
+  gender: String!
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  school: SchoolCreateOneWithoutUsersInput
+  falculty: FacultyCreateOneWithoutUsersInput
+  interest: InterestCreateOneWithoutUsersInput
+  favourites: DiscussionCreateManyWithoutFavouritesInput
+  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  connectTo: ConnectCreateManyWithoutToInput
+  ConectFrom: ConnectCreateManyWithoutFromInput
+  articles: ArticleCreateManyWithoutAuthorInput
+  opinions: OpinionsCreateManyWithoutAuthorInput
+}
+
+input UserCreateWithoutFalcultyInput {
+  email: String!
+  username: String
+  password: String!
+  firstname: String!
+  lastname: String!
+  gender: String!
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  school: SchoolCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateOneWithoutUsersInput
+  favourites: DiscussionCreateManyWithoutFavouritesInput
+  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
   opinions: OpinionsCreateManyWithoutAuthorInput
@@ -2241,6 +5600,72 @@ input UserCreateWithoutFavouritesInput {
   lastname: String!
   gender: String!
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  school: SchoolCreateOneWithoutUsersInput
+  falculty: FacultyCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateOneWithoutUsersInput
+  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  connectTo: ConnectCreateManyWithoutToInput
+  ConectFrom: ConnectCreateManyWithoutFromInput
+  articles: ArticleCreateManyWithoutAuthorInput
+  opinions: OpinionsCreateManyWithoutAuthorInput
+}
+
+input UserCreateWithoutInstitutionInput {
+  email: String!
+  username: String
+  password: String!
+  firstname: String!
+  lastname: String!
+  gender: String!
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryCreateOneWithoutUsersInput
+  school: SchoolCreateOneWithoutUsersInput
+  falculty: FacultyCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateOneWithoutUsersInput
+  favourites: DiscussionCreateManyWithoutFavouritesInput
+  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  connectTo: ConnectCreateManyWithoutToInput
+  ConectFrom: ConnectCreateManyWithoutFromInput
+  articles: ArticleCreateManyWithoutAuthorInput
+  opinions: OpinionsCreateManyWithoutAuthorInput
+}
+
+input UserCreateWithoutInterestInput {
+  email: String!
+  username: String
+  password: String!
+  firstname: String!
+  lastname: String!
+  gender: String!
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  school: SchoolCreateOneWithoutUsersInput
+  falculty: FacultyCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
@@ -2256,6 +5681,18 @@ input UserCreateWithoutMyDiscussionsInput {
   lastname: String!
   gender: String!
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  school: SchoolCreateOneWithoutUsersInput
+  falculty: FacultyCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
@@ -2271,6 +5708,18 @@ input UserCreateWithoutOpinionsInput {
   lastname: String!
   gender: String!
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  school: SchoolCreateOneWithoutUsersInput
+  falculty: FacultyCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput
   connectTo: ConnectCreateManyWithoutToInput
@@ -2278,8 +5727,44 @@ input UserCreateWithoutOpinionsInput {
   articles: ArticleCreateManyWithoutAuthorInput
 }
 
+input UserCreateWithoutSchoolInput {
+  email: String!
+  username: String
+  password: String!
+  firstname: String!
+  lastname: String!
+  gender: String!
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  falculty: FacultyCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateOneWithoutUsersInput
+  favourites: DiscussionCreateManyWithoutFavouritesInput
+  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  connectTo: ConnectCreateManyWithoutToInput
+  ConectFrom: ConnectCreateManyWithoutFromInput
+  articles: ArticleCreateManyWithoutAuthorInput
+  opinions: OpinionsCreateManyWithoutAuthorInput
+}
+
+"""
+An edge in a connection.
+"""
 type UserEdge {
+  """
+  The item at the end of the edge.
+  """
   node: User!
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -2304,6 +5789,18 @@ enum UserOrderByInput {
   gender_DESC
   type_ASC
   type_DESC
+  userType_ASC
+  userType_DESC
+  newConnectNot_ASC
+  newConnectNot_DESC
+  newCommentNot_ASC
+  newCommentNot_DESC
+  newMessageNot_ASC
+  newMessageNot_DESC
+  newProfileNot_ASC
+  newProfileNot_DESC
+  completedProfile_ASC
+  completedProfile_DESC
 }
 
 type UserPreviousValues {
@@ -2317,6 +5814,12 @@ type UserPreviousValues {
   lastname: String!
   gender: String!
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
 }
 
 type UserSubscriptionPayload {
@@ -2327,11 +5830,29 @@ type UserSubscriptionPayload {
 }
 
 input UserSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [UserSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [UserSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
   mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
   updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
   updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
   updatedFields_contains_some: [String!]
   node: UserWhereInput
 }
@@ -2344,6 +5865,18 @@ input UserUpdateDataInput {
   lastname: String
   gender: String
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  school: SchoolUpdateOneWithoutUsersInput
+  falculty: FacultyUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
   connectTo: ConnectUpdateManyWithoutToInput
@@ -2360,12 +5893,51 @@ input UserUpdateInput {
   lastname: String
   gender: String
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  school: SchoolUpdateOneWithoutUsersInput
+  falculty: FacultyUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
   connectTo: ConnectUpdateManyWithoutToInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
   opinions: OpinionsUpdateManyWithoutAuthorInput
+}
+
+input UserUpdateManyWithoutCountryInput {
+  create: [UserCreateWithoutCountryInput!]
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithoutCountryInput!]
+  upsert: [UserUpsertWithoutCountryInput!]
+}
+
+input UserUpdateManyWithoutDepartmentInput {
+  create: [UserCreateWithoutDepartmentInput!]
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithoutDepartmentInput!]
+  upsert: [UserUpsertWithoutDepartmentInput!]
+}
+
+input UserUpdateManyWithoutFalcultyInput {
+  create: [UserCreateWithoutFalcultyInput!]
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithoutFalcultyInput!]
+  upsert: [UserUpsertWithoutFalcultyInput!]
 }
 
 input UserUpdateManyWithoutFavouritesInput {
@@ -2375,6 +5947,33 @@ input UserUpdateManyWithoutFavouritesInput {
   delete: [UserWhereUniqueInput!]
   update: [UserUpdateWithoutFavouritesInput!]
   upsert: [UserUpsertWithoutFavouritesInput!]
+}
+
+input UserUpdateManyWithoutInstitutionInput {
+  create: [UserCreateWithoutInstitutionInput!]
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithoutInstitutionInput!]
+  upsert: [UserUpsertWithoutInstitutionInput!]
+}
+
+input UserUpdateManyWithoutInterestInput {
+  create: [UserCreateWithoutInterestInput!]
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithoutInterestInput!]
+  upsert: [UserUpsertWithoutInterestInput!]
+}
+
+input UserUpdateManyWithoutSchoolInput {
+  create: [UserCreateWithoutSchoolInput!]
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithoutSchoolInput!]
+  upsert: [UserUpsertWithoutSchoolInput!]
 }
 
 input UserUpdateNestedInput {
@@ -2444,6 +6043,18 @@ input UserUpdateWithoutArticlesDataInput {
   lastname: String
   gender: String
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  school: SchoolUpdateOneWithoutUsersInput
+  falculty: FacultyUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
   connectTo: ConnectUpdateManyWithoutToInput
@@ -2464,6 +6075,18 @@ input UserUpdateWithoutConectFromDataInput {
   lastname: String
   gender: String
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  school: SchoolUpdateOneWithoutUsersInput
+  falculty: FacultyUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
   connectTo: ConnectUpdateManyWithoutToInput
@@ -2484,6 +6107,18 @@ input UserUpdateWithoutConnectToDataInput {
   lastname: String
   gender: String
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  school: SchoolUpdateOneWithoutUsersInput
+  falculty: FacultyUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
@@ -2496,6 +6131,102 @@ input UserUpdateWithoutConnectToInput {
   data: UserUpdateWithoutConnectToDataInput!
 }
 
+input UserUpdateWithoutCountryDataInput {
+  email: String
+  username: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  school: SchoolUpdateOneWithoutUsersInput
+  falculty: FacultyUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateOneWithoutUsersInput
+  favourites: DiscussionUpdateManyWithoutFavouritesInput
+  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  connectTo: ConnectUpdateManyWithoutToInput
+  ConectFrom: ConnectUpdateManyWithoutFromInput
+  articles: ArticleUpdateManyWithoutAuthorInput
+  opinions: OpinionsUpdateManyWithoutAuthorInput
+}
+
+input UserUpdateWithoutCountryInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutCountryDataInput!
+}
+
+input UserUpdateWithoutDepartmentDataInput {
+  email: String
+  username: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  school: SchoolUpdateOneWithoutUsersInput
+  falculty: FacultyUpdateOneWithoutUsersInput
+  interest: InterestUpdateOneWithoutUsersInput
+  favourites: DiscussionUpdateManyWithoutFavouritesInput
+  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  connectTo: ConnectUpdateManyWithoutToInput
+  ConectFrom: ConnectUpdateManyWithoutFromInput
+  articles: ArticleUpdateManyWithoutAuthorInput
+  opinions: OpinionsUpdateManyWithoutAuthorInput
+}
+
+input UserUpdateWithoutDepartmentInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutDepartmentDataInput!
+}
+
+input UserUpdateWithoutFalcultyDataInput {
+  email: String
+  username: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  school: SchoolUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateOneWithoutUsersInput
+  favourites: DiscussionUpdateManyWithoutFavouritesInput
+  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  connectTo: ConnectUpdateManyWithoutToInput
+  ConectFrom: ConnectUpdateManyWithoutFromInput
+  articles: ArticleUpdateManyWithoutAuthorInput
+  opinions: OpinionsUpdateManyWithoutAuthorInput
+}
+
+input UserUpdateWithoutFalcultyInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutFalcultyDataInput!
+}
+
 input UserUpdateWithoutFavouritesDataInput {
   email: String
   username: String
@@ -2504,6 +6235,18 @@ input UserUpdateWithoutFavouritesDataInput {
   lastname: String
   gender: String
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  school: SchoolUpdateOneWithoutUsersInput
+  falculty: FacultyUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateOneWithoutUsersInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
   connectTo: ConnectUpdateManyWithoutToInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
@@ -2516,6 +6259,70 @@ input UserUpdateWithoutFavouritesInput {
   data: UserUpdateWithoutFavouritesDataInput!
 }
 
+input UserUpdateWithoutInstitutionDataInput {
+  email: String
+  username: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryUpdateOneWithoutUsersInput
+  school: SchoolUpdateOneWithoutUsersInput
+  falculty: FacultyUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateOneWithoutUsersInput
+  favourites: DiscussionUpdateManyWithoutFavouritesInput
+  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  connectTo: ConnectUpdateManyWithoutToInput
+  ConectFrom: ConnectUpdateManyWithoutFromInput
+  articles: ArticleUpdateManyWithoutAuthorInput
+  opinions: OpinionsUpdateManyWithoutAuthorInput
+}
+
+input UserUpdateWithoutInstitutionInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutInstitutionDataInput!
+}
+
+input UserUpdateWithoutInterestDataInput {
+  email: String
+  username: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  school: SchoolUpdateOneWithoutUsersInput
+  falculty: FacultyUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  favourites: DiscussionUpdateManyWithoutFavouritesInput
+  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  connectTo: ConnectUpdateManyWithoutToInput
+  ConectFrom: ConnectUpdateManyWithoutFromInput
+  articles: ArticleUpdateManyWithoutAuthorInput
+  opinions: OpinionsUpdateManyWithoutAuthorInput
+}
+
+input UserUpdateWithoutInterestInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutInterestDataInput!
+}
+
 input UserUpdateWithoutMyDiscussionsDataInput {
   email: String
   username: String
@@ -2524,6 +6331,18 @@ input UserUpdateWithoutMyDiscussionsDataInput {
   lastname: String
   gender: String
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  school: SchoolUpdateOneWithoutUsersInput
+  falculty: FacultyUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   connectTo: ConnectUpdateManyWithoutToInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
@@ -2544,6 +6363,18 @@ input UserUpdateWithoutOpinionsDataInput {
   lastname: String
   gender: String
   type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  school: SchoolUpdateOneWithoutUsersInput
+  falculty: FacultyUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
   connectTo: ConnectUpdateManyWithoutToInput
@@ -2554,6 +6385,38 @@ input UserUpdateWithoutOpinionsDataInput {
 input UserUpdateWithoutOpinionsInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutOpinionsDataInput!
+}
+
+input UserUpdateWithoutSchoolDataInput {
+  email: String
+  username: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  falculty: FacultyUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateOneWithoutUsersInput
+  favourites: DiscussionUpdateManyWithoutFavouritesInput
+  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  connectTo: ConnectUpdateManyWithoutToInput
+  ConectFrom: ConnectUpdateManyWithoutFromInput
+  articles: ArticleUpdateManyWithoutAuthorInput
+  opinions: OpinionsUpdateManyWithoutAuthorInput
+}
+
+input UserUpdateWithoutSchoolInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutSchoolDataInput!
 }
 
 input UserUpsertNestedInput {
@@ -2580,10 +6443,40 @@ input UserUpsertWithoutConnectToInput {
   create: UserCreateWithoutConnectToInput!
 }
 
+input UserUpsertWithoutCountryInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutCountryDataInput!
+  create: UserCreateWithoutCountryInput!
+}
+
+input UserUpsertWithoutDepartmentInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutDepartmentDataInput!
+  create: UserCreateWithoutDepartmentInput!
+}
+
+input UserUpsertWithoutFalcultyInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutFalcultyDataInput!
+  create: UserCreateWithoutFalcultyInput!
+}
+
 input UserUpsertWithoutFavouritesInput {
   where: UserWhereUniqueInput!
   update: UserUpdateWithoutFavouritesDataInput!
   create: UserCreateWithoutFavouritesInput!
+}
+
+input UserUpsertWithoutInstitutionInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutInstitutionDataInput!
+  create: UserCreateWithoutInstitutionInput!
+}
+
+input UserUpsertWithoutInterestInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutInterestDataInput!
+  create: UserCreateWithoutInterestInput!
 }
 
 input UserUpsertWithoutMyDiscussionsInput {
@@ -2598,137 +6491,611 @@ input UserUpsertWithoutOpinionsInput {
   create: UserCreateWithoutOpinionsInput!
 }
 
+input UserUpsertWithoutSchoolInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutSchoolDataInput!
+  create: UserCreateWithoutSchoolInput!
+}
+
 input UserWhereInput {
+  """
+  Logical AND on all given filters.
+  """
   AND: [UserWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
   OR: [UserWhereInput!]
   id: ID
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
   id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
+  """
+  All values containing the given string.
+  """
   id_contains: ID
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   email: String
+  """
+  All values that are not equal to given value.
+  """
   email_not: String
+  """
+  All values that are contained in given list.
+  """
   email_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   email_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   email_lt: String
+  """
+  All values less than or equal the given value.
+  """
   email_lte: String
+  """
+  All values greater than the given value.
+  """
   email_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   email_gte: String
+  """
+  All values containing the given string.
+  """
   email_contains: String
+  """
+  All values not containing the given string.
+  """
   email_not_contains: String
+  """
+  All values starting with the given string.
+  """
   email_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   email_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   email_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   email_not_ends_with: String
   username: String
+  """
+  All values that are not equal to given value.
+  """
   username_not: String
+  """
+  All values that are contained in given list.
+  """
   username_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   username_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   username_lt: String
+  """
+  All values less than or equal the given value.
+  """
   username_lte: String
+  """
+  All values greater than the given value.
+  """
   username_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   username_gte: String
+  """
+  All values containing the given string.
+  """
   username_contains: String
+  """
+  All values not containing the given string.
+  """
   username_not_contains: String
+  """
+  All values starting with the given string.
+  """
   username_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   username_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   username_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   username_not_ends_with: String
   password: String
+  """
+  All values that are not equal to given value.
+  """
   password_not: String
+  """
+  All values that are contained in given list.
+  """
   password_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   password_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   password_lt: String
+  """
+  All values less than or equal the given value.
+  """
   password_lte: String
+  """
+  All values greater than the given value.
+  """
   password_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   password_gte: String
+  """
+  All values containing the given string.
+  """
   password_contains: String
+  """
+  All values not containing the given string.
+  """
   password_not_contains: String
+  """
+  All values starting with the given string.
+  """
   password_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   password_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   password_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   password_not_ends_with: String
   firstname: String
+  """
+  All values that are not equal to given value.
+  """
   firstname_not: String
+  """
+  All values that are contained in given list.
+  """
   firstname_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   firstname_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   firstname_lt: String
+  """
+  All values less than or equal the given value.
+  """
   firstname_lte: String
+  """
+  All values greater than the given value.
+  """
   firstname_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   firstname_gte: String
+  """
+  All values containing the given string.
+  """
   firstname_contains: String
+  """
+  All values not containing the given string.
+  """
   firstname_not_contains: String
+  """
+  All values starting with the given string.
+  """
   firstname_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   firstname_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   firstname_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   firstname_not_ends_with: String
   lastname: String
+  """
+  All values that are not equal to given value.
+  """
   lastname_not: String
+  """
+  All values that are contained in given list.
+  """
   lastname_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   lastname_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   lastname_lt: String
+  """
+  All values less than or equal the given value.
+  """
   lastname_lte: String
+  """
+  All values greater than the given value.
+  """
   lastname_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   lastname_gte: String
+  """
+  All values containing the given string.
+  """
   lastname_contains: String
+  """
+  All values not containing the given string.
+  """
   lastname_not_contains: String
+  """
+  All values starting with the given string.
+  """
   lastname_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   lastname_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   lastname_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   lastname_not_ends_with: String
   gender: String
+  """
+  All values that are not equal to given value.
+  """
   gender_not: String
+  """
+  All values that are contained in given list.
+  """
   gender_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   gender_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   gender_lt: String
+  """
+  All values less than or equal the given value.
+  """
   gender_lte: String
+  """
+  All values greater than the given value.
+  """
   gender_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   gender_gte: String
+  """
+  All values containing the given string.
+  """
   gender_contains: String
+  """
+  All values not containing the given string.
+  """
   gender_not_contains: String
+  """
+  All values starting with the given string.
+  """
   gender_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   gender_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   gender_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   gender_not_ends_with: String
   type: String
+  """
+  All values that are not equal to given value.
+  """
   type_not: String
+  """
+  All values that are contained in given list.
+  """
   type_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
   type_not_in: [String!]
+  """
+  All values less than the given value.
+  """
   type_lt: String
+  """
+  All values less than or equal the given value.
+  """
   type_lte: String
+  """
+  All values greater than the given value.
+  """
   type_gt: String
+  """
+  All values greater than or equal the given value.
+  """
   type_gte: String
+  """
+  All values containing the given string.
+  """
   type_contains: String
+  """
+  All values not containing the given string.
+  """
   type_not_contains: String
+  """
+  All values starting with the given string.
+  """
   type_starts_with: String
+  """
+  All values not starting with the given string.
+  """
   type_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
   type_ends_with: String
+  """
+  All values not ending with the given string.
+  """
   type_not_ends_with: String
+  userType: String
+  """
+  All values that are not equal to given value.
+  """
+  userType_not: String
+  """
+  All values that are contained in given list.
+  """
+  userType_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  userType_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  userType_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  userType_lte: String
+  """
+  All values greater than the given value.
+  """
+  userType_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  userType_gte: String
+  """
+  All values containing the given string.
+  """
+  userType_contains: String
+  """
+  All values not containing the given string.
+  """
+  userType_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  userType_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  userType_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  userType_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  userType_not_ends_with: String
+  newConnectNot: Boolean
+  """
+  All values that are not equal to given value.
+  """
+  newConnectNot_not: Boolean
+  newCommentNot: Boolean
+  """
+  All values that are not equal to given value.
+  """
+  newCommentNot_not: Boolean
+  newMessageNot: Boolean
+  """
+  All values that are not equal to given value.
+  """
+  newMessageNot_not: Boolean
+  newProfileNot: Boolean
+  """
+  All values that are not equal to given value.
+  """
+  newProfileNot_not: Boolean
+  completedProfile: Int
+  """
+  All values that are not equal to given value.
+  """
+  completedProfile_not: Int
+  """
+  All values that are contained in given list.
+  """
+  completedProfile_in: [Int!]
+  """
+  All values that are not contained in given list.
+  """
+  completedProfile_not_in: [Int!]
+  """
+  All values less than the given value.
+  """
+  completedProfile_lt: Int
+  """
+  All values less than or equal the given value.
+  """
+  completedProfile_lte: Int
+  """
+  All values greater than the given value.
+  """
+  completedProfile_gt: Int
+  """
+  All values greater than or equal the given value.
+  """
+  completedProfile_gte: Int
+  country: CountryWhereInput
+  institution: InstitutionsWhereInput
+  school: SchoolWhereInput
+  falculty: FacultyWhereInput
+  department: DepartmentWhereInput
+  interest: InterestWhereInput
   favourites_every: DiscussionWhereInput
   favourites_some: DiscussionWhereInput
   favourites_none: DiscussionWhereInput

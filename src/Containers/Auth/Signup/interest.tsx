@@ -19,7 +19,7 @@ type Props = {
   client?: any
 };
 
-class Signup extends React.Component<RouteComponentProps & Props> {
+class Interest extends React.Component<RouteComponentProps & Props> {
   state = { 
     show: false,
     email: '',
@@ -308,4 +308,4 @@ class Signup extends React.Component<RouteComponentProps & Props> {
 
 export default withRouter(compose(
   withApollo
-)(Signup));
+)(Interest));
