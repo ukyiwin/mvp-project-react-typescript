@@ -46,12 +46,7 @@ class PrivateHeader extends React.Component<Props> {
               uk-icon="icon: menu; ratio: 1.5"
             />
             <a className="uk-navbar-item uk-logo" href="#">
-            <img 
-              src="https://getuikit.com/docs/images/avatar.jpg"
-              alt="Logo"
-              width="40" 
-              height="40" 
-            />  Unizonn
+              Unizonn
             </a>
             <ul className="uk-navbar-nav uk-visible@m">
               <li><Link to="/home" className="uk-light">Articles</Link></li>

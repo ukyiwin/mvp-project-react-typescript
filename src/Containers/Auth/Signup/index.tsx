@@ -75,11 +75,12 @@ class Signup extends React.Component<RouteComponentProps & Props> {
       return;
     }
     this.setState({loading: true});
-    const { email, password, firstname, lastname, gender, userType } = this.state;
+    const { email, password, username, firstname, lastname, gender, userType } = this.state;
     this.props.signup({
       variables: {
         email,
         password,
+        username,
         firstname,
         lastname,
         userType,
@@ -90,7 +91,7 @@ class Signup extends React.Component<RouteComponentProps & Props> {
       localStorage.setItem(CURRENT_USER, result.data.login.user);
       this.props.refreshToken(result.data.login.token);
       this.setState({loading: false});
-      this.props.history.replace('/');
+      this.props.history.replace('/signup/profile');
     }).catch( err => {
       this.setState({loading: false}); 
       UIkit.notification(`Error: ${err.message}`, {status: 'danger', pos: 'top-right'});
@@ -181,7 +182,7 @@ class Signup extends React.Component<RouteComponentProps & Props> {
             className="uk-form-horizontal uk-width-1-1 uk-margin-large uk-padding-large uk-padding-remove-vertical"
             onSubmit={this.handleSubmit}
           >
-            <div className="uk-margin" style={{marginTop: 50}}>
+            <div className="uk-margin" style={{marginTop: 40}}>
               <h3 className="uk-heading-primary uk-align-center">Signup </h3>
             </div>
             <div className="uk-margin">
