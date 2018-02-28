@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { compose, withApollo } from 'react-apollo';
 // import { ChildProps } from 'react-apollo/types';
 // import { SIGNUP_USER } from 'Graphql/Mutation';
 // import { User } from 'CustomTypings/schema';
-import { validateSignup } from 'Utils/helpers';
 import * as UIkit from 'uikit';
 
 import { AUTH_TOKEN, CURRENT_USER } from '../../../constants';
@@ -65,9 +64,7 @@ class SignupPhoto extends React.Component<RouteComponentProps & Props> {
   
   handleSubmit = (evt) => {
     evt.preventDefault();
-    if (!this.canBeSubmitted()) {
-      return;
-    }
+
     this.setState({loading: true});
     const { email, password, firstname, lastname, gender, userType } = this.state;
     this.props.signup({
@@ -90,14 +87,6 @@ class SignupPhoto extends React.Component<RouteComponentProps & Props> {
       UIkit.notification(`Error: ${err.message}`, {status: 'danger', pos: 'top-right'});
     });
   }
-  
-  canBeSubmitted() {
-    const errors =  validateSignup(
-      this.state.email, this.state.password, this.state.confirmPassword, 
-      this.state.firstname, this.state.lastname, this.state.gender, this.state.userType);
-    const isDisabled = Object.keys(errors).some(x => errors[x]);
-    return !isDisabled;
-  }
 
   componentWillMount() {
     const email = this.props.location.email;
@@ -107,11 +96,6 @@ class SignupPhoto extends React.Component<RouteComponentProps & Props> {
   }
   
   render() {
-
-    const errors = validateSignup(
-      this.state.email, this.state.password, this.state.confirmPassword, 
-      this.state.firstname, this.state.lastname, this.state.gender, this.state.userType);
-    const isDisabled = Object.keys(errors).some(x => errors[x]);
     
     return(
       <div 
@@ -168,138 +152,7 @@ class SignupPhoto extends React.Component<RouteComponentProps & Props> {
           </div>
         </div>
         <div className="uk-container uk-width-3-5 uk-flex uk-flex-stretch uk-flex-middle uk-box-shadow-small">
-          <form 
-            className="uk-form-horizontal uk-width-1-1 uk-margin-large uk-padding-large uk-padding-remove-vertical"
-            onSubmit={this.handleSubmit}
-          >
-            <div className="uk-margin">
-              <h3 className="uk-heading-primary uk-align-center">Signup </h3>
-            </div>
-            <div className="uk-margin">
-              <label className="uk-form-label" htmlFor="firstname">Firstname</label>
-              <div className="uk-form-controls">
-                <input 
-                  id="firstname"
-                  className={`uk-input ${errors.firstname ? 'uk-form-danger' : ''} `} 
-                  type="text"
-                  value={this.state.firstname}
-                  required={true}
-                  onChange={this.handleFnameChange}
-                />
-              </div>
-            </div>
-            <div className="uk-margin">
-              <label className="uk-form-label" htmlFor="lastname">Lastname</label>
-              <div className="uk-form-controls">
-                <input 
-                  id="lastname"
-                  className={`uk-input ${errors.lastname ? 'uk-form-danger' : ''} `} 
-                  type="text"
-                  value={this.state.lastname}
-                  required={true}
-                  onChange={this.handleLnameChange}
-                />
-              </div>
-            </div>
-            <div className="uk-margin">
-              <label className="uk-form-label" htmlFor="email">Email</label>
-              <div className="uk-form-controls">
-                <input 
-                  id="email"
-                  className={`uk-input ${errors.email ? 'uk-form-danger' : ''} `} 
-                  type="email"
-                  value={this.state.email}
-                  required={true}
-                  onChange={this.handleEmailChange}
-                />
-              </div>
-            </div>
-            <div className="uk-margin">
-              <label className="uk-form-label" htmlFor="form-horizontal-text">Password</label>
-              <div className="uk-form-controls">
-                <input 
-                  className={`uk-input ${errors.password ? 'uk-form-danger' : ''} `} 
-                  type="password" 
-                  id="password"
-                  value={this.state.password}
-                  required={true}
-                  onChange={this.handlePasswordChange}
-                />
-              </div>
-            </div>
-            <div className="uk-margin">
-              <label className="uk-form-label" htmlFor="confirmPassword">Confirm Password</label>
-              <div className="uk-form-controls">
-                <input 
-                  className={`uk-input ${errors.confirmPassword ? 'uk-form-danger' : ''} `} 
-                  type="password" 
-                  id="confirmPassword"
-                  value={this.state.confirmPassword}
-                  required={true}
-                  onChange={this.handleConPasswordChange}
-                />
-              </div>
-            </div>
-            <div className="uk-margin">
-              <label className="uk-form-label" htmlFor="form-horizontal-text">Gender</label>
-              <div className="uk-form-controls">
-                <select 
-                  className="uk-select"
-                  value={this.state.gender}
-                  required={true}
-                  onChange={this.handleGenderChange}
-                >
-                  <option value="">Select sex</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-              </div>
-            </div>
-            <div className="uk-margin">
-              <label className="uk-form-label" htmlFor="form-horizontal-text">I am a</label>
-              <div className="uk-form-controls">
-                <select 
-                  className="uk-select"
-                  value={this.state.userType}
-                  required={true}
-                  onChange={this.handleUserTypeChange}
-                >
-                  <option value="">Select one</option>
-                  <option value="Student">Student</option>
-                  <option value="Lecturer">Lecturer</option>
-                </select>
-              </div>
-            </div>
-            <div className="uk-margin">
-              { this.state.loading ? 
-                <div
-                  data-uk-spinner="ratio: 1"
-                />
-              :
-                <button 
-                  className={`uk-button uk-button-primary uk-width-1-1 ${isDisabled ? 'disabled' : 'disabled'}`}
-                  type="submit"
-                >
-                Sign Up
-                </button>
-              }
-            </div>
-            <hr className="uk-divider-icon" />
-            <div className="uk-margin">
-              <p 
-                className={`uk-button uk-button-text}`}
-              >
-              Already have an account?
-              </p>
-              <Link 
-                className={`uk-button uk-button-secondary
-                 uk-align-right`}
-                to="/login"
-              >
-              Login now
-              </Link>
-            </div>
-          </form>
+        hjhj
         </div>
       </div>
     );

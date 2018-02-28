@@ -46,23 +46,18 @@ class PrivateHeader extends React.Component<Props> {
               uk-icon="icon: menu; ratio: 1.5"
             />
             <a className="uk-navbar-item uk-logo" href="#">
-            <img 
-              src="https://getuikit.com/docs/images/avatar.jpg"
-              alt="Logo"
-              width="40" 
-              height="40" 
-            />  Unizonn
+              Unizonn
             </a>
             <ul className="uk-navbar-nav uk-visible@m">
               <li><Link to="/home" className="uk-light">Articles</Link></li>
               <li><Link to="/forum" className="uk-light">Forums</Link></li>
               <li><Link to="/library" className="uk-light">Library</Link></li>
-              <li><Link to="/home" className="uk-light">Network</Link></li>
+              <li><Link to="/home" className="uk-light">Connections</Link></li>
             </ul>
             <div className="uk-navbar-right uk-visible@s">
               <form 
                 style={{maxWidth: 250}}
-                className="uk-search uk-search-navbar"
+                className="uk-search uk-search-navbar uk-visible@m"
               >
                 <span 
                   // tslint:disable-next-line:jsx-boolean-value

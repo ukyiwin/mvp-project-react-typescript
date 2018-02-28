@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 import Calendar from 'Components/Calender';
 import './style.css';
+import { User } from 'CustomTypings/schema';
 
 interface DefaultProps {
   // tslint:disable-next-line:no-any
@@ -12,6 +13,7 @@ interface DefaultProps {
   match: object;
   location: object;
   history: object;
+  me?: User;
 }
 
 const PublicLayout: React.SFC<DefaultProps & Response> = (props) => {

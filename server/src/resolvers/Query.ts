@@ -44,23 +44,16 @@ export const Query = {
     }, info);
   },
 
-  getSchools(parent, { idInstitutions }, ctx: Context, info) {
-    return ctx.db.query.schools({ where: {
-      institution: {
-        id: idInstitutions
-      }
-    }}, info)
-  },
-  getDepartment(parent, { idFaculty }, ctx: Context, info) {
+  getDepartment(parent, { idInstitution }, ctx: Context, info) {
     return ctx.db.query.departments({ where: {
-      falculty: {
-        id: idFaculty
+      institution: {
+        id: idInstitution
       }
     }}, info)
   },
   getInstitution(parent, { idCountry }, ctx: Context, info) {
     return ctx.db.query.institutionses({ where: {
-      Country: {
+      country: {
         id: idCountry
       }
     }}, info)

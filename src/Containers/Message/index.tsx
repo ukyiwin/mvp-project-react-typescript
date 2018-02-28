@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ChatList, MessageList, Input, Button } from 'react-chat-elements';
+import { Helmet } from 'react-helmet';
 import 'react-chat-elements/dist/main.css';
 import './style.css';
 
@@ -13,6 +14,10 @@ export default class Messages extends React.Component {
   render() {
     return (
       <div className="container" >
+        <Helmet>
+          <title>Unizonn | Chat</title>
+          <meta name="an inclusive community" content="Unizonn community" />
+        </Helmet>
         <div className="app-wrapper" >
           <div className="uk-flex uk-height-1-1 uk-height-match">
             <div className="uk-width-1-3 uk-height-1-1">

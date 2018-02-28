@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Editor from 'Components/Editor';
+// import Editor from 'Components/Editor';
 // import UIkit from 'uikit/src/js/uikit';
 // import { Link } from 'react-router-dom';
 
@@ -50,8 +50,6 @@ class WriteModal extends React.Component<Props> {
                uk-overflow-hidden uk-article uk-padding"
             >
                 <button className="uk-modal-close-default" type="button" data-uk-close={true} />
-                <textarea className="uk-article-title" placeholder="Write your title" />
-                <Editor />
                 
                 <input 
                   className="uk-article-meta" 

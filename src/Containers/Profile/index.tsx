@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Helmet } from 'react-helmet';
 import './style.css';
 
 export default class Profile extends React.Component {
@@ -11,6 +12,10 @@ export default class Profile extends React.Component {
   render() {
     return (
       <div className="uk-flex uk-height-1-1 uk-height-match">
+        <Helmet>
+          <title>Unizonn | My Profile</title>
+          <meta name="an inclusive community" content="Unizonn community" />
+        </Helmet>
         dhjdhjh
       </div>
     );

@@ -20,9 +20,11 @@ type Props = {
 };
 
 class Signup extends React.Component<RouteComponentProps & Props> {
+  
   state = { 
     show: false,
     email: '',
+    username: '',
     password: '',
     confirmPassword: '',
     gender: '',
@@ -47,6 +49,10 @@ class Signup extends React.Component<RouteComponentProps & Props> {
     this.setState({ confirmPassword: evt.target.value });
   }
 
+  handleUsernameChange = (evt) => {
+    this.setState({ username: evt.target.value });
+  }
+
   handleFnameChange = (evt) => {
     this.setState({ firstname: evt.target.value });
   }
@@ -69,11 +75,12 @@ class Signup extends React.Component<RouteComponentProps & Props> {
       return;
     }
     this.setState({loading: true});
-    const { email, password, firstname, lastname, gender, userType } = this.state;
+    const { email, password, username, firstname, lastname, gender, userType } = this.state;
     this.props.signup({
       variables: {
         email,
         password,
+        username,
         firstname,
         lastname,
         userType,
@@ -84,7 +91,7 @@ class Signup extends React.Component<RouteComponentProps & Props> {
       localStorage.setItem(CURRENT_USER, result.data.login.user);
       this.props.refreshToken(result.data.login.token);
       this.setState({loading: false});
-      this.props.history.replace('/');
+      this.props.history.replace('/signup/profile');
     }).catch( err => {
       this.setState({loading: false}); 
       UIkit.notification(`Error: ${err.message}`, {status: 'danger', pos: 'top-right'});
@@ -93,7 +100,7 @@ class Signup extends React.Component<RouteComponentProps & Props> {
   
   canBeSubmitted() {
     const errors =  validateSignup(
-      this.state.email, this.state.password, this.state.confirmPassword, 
+      this.state.email, this.state.password, this.state.username, this.state.confirmPassword, 
       this.state.firstname, this.state.lastname, this.state.gender, this.state.userType);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
     return !isDisabled;
@@ -109,7 +116,7 @@ class Signup extends React.Component<RouteComponentProps & Props> {
   render() {
 
     const errors = validateSignup(
-      this.state.email, this.state.password, this.state.confirmPassword, 
+      this.state.email, this.state.password, this.state.username, this.state.confirmPassword, 
       this.state.firstname, this.state.lastname, this.state.gender, this.state.userType);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
     
@@ -118,9 +125,9 @@ class Signup extends React.Component<RouteComponentProps & Props> {
         className="uk-flex uk-flex-stretch" 
         // tslint:disable-next-line:jsx-boolean-value
         data-uk-grid
-        style={{height: '100vh', backgroundColor: '#ffffff'}}
+        style={{ backgroundColor: '#ffffff'}}
       >
-        <div className="uk-width-2-5 sideBg uk-flex uk-flex-middle " id="sideBg">
+        <div className="uk-width-2-5 uk-visible@m sideBg uk-flex uk-flex-middle " id="sideBg">
           <div 
             className="uk-position-relative uk-visible-toggle uk-light"
             data-uk-slideshow="animation: scale"
@@ -167,13 +174,29 @@ class Signup extends React.Component<RouteComponentProps & Props> {
             />
           </div>
         </div>
-        <div className="uk-container uk-width-3-5 uk-flex uk-flex-stretch uk-flex-middle uk-box-shadow-small">
+        <div 
+          className="uk-container uk-width-3-5@m uk-width-1-1@s uk-flex 
+          uk-flex-stretch uk-flex-middle uk-box-shadow-small"
+        >
           <form 
             className="uk-form-horizontal uk-width-1-1 uk-margin-large uk-padding-large uk-padding-remove-vertical"
             onSubmit={this.handleSubmit}
           >
-            <div className="uk-margin">
+            <div className="uk-margin" style={{marginTop: 40}}>
               <h3 className="uk-heading-primary uk-align-center">Signup </h3>
+            </div>
+            <div className="uk-margin">
+              <label className="uk-form-label" htmlFor="firstname">Username</label>
+              <div className="uk-form-controls">
+                <input 
+                  id="firstname"
+                  className={`uk-input ${errors.username ? 'uk-form-danger' : ''} `} 
+                  type="text"
+                  value={this.state.username}
+                  required={true}
+                  onChange={this.handleUsernameChange}
+                />
+              </div>
             </div>
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="firstname">Firstname</label>

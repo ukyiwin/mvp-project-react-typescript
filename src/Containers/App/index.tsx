@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import Home from '../Home';
 import PublicHome from '../HomePublic';
 import NotFound from '../NotFound';
@@ -16,22 +17,18 @@ import { isTokenExpired } from 'Utils/jwtHelper';
 import { AUTH_TOKEN } from '../../constants';
 import { PrivateHeader } from 'Components/Layouts/Header';
 import SideBar from 'Components/Layouts/SideBar';
-import './style.css';
 import Compose from 'Containers/ComposeArticle';
 import { User } from 'CustomTypings/schema';
 import { ME } from 'Graphql/Query';
-import { withApollo, graphql, compose } from 'react-apollo';
+import { withApollo, graphql, compose, ChildProps } from 'react-apollo';
 import Profile from 'Containers/Profile';
+import './style.css';
 // const customHistory = createBrowserHistory();
 
-/* const AppWrapper = glamorous('div')({
-  border: 0,
-  color: 'white',
-  display: 'flex',
-  flex: 1,
-  paddingLeft: '70px',
-  paddingRight: '70px',
-}); */
+type Props = {
+  // tslint:disable-next-line:no-any
+  client?: any
+};
 
 const supportsHistory = 'pushState' in window.history;
 
@@ -39,14 +36,27 @@ type Response = {
   me: User
 };
 
-class App extends React.Component<Response> {
+interface State {
+  isAuthenticated: boolean;
+  token: string;
+  expireToken: boolean;
+  me: object;
+}
+
+class App extends React.Component<Props & ChildProps<Response, {}>, State> {
 
   state = {
     isAuthenticated: false,
     token: '',
     expireToken: false,
+    me: {
+      id: '',
+      firstname: '',
+      lastname: '',
+      email: ''
+    }
   };
-
+  
   componentWillMount() {
     const token = localStorage.getItem(AUTH_TOKEN);
     if (token !== null && token !== undefined) {
@@ -58,7 +68,7 @@ class App extends React.Component<Response> {
       } else {
         localStorage.removeItem(AUTH_TOKEN);
         this.setState({isAuthenticated: false});
-        this.setState({token: undefined});
+        this.setState({token: ''});
         this.setState({expireToken: false});
       }
     }
@@ -66,6 +76,8 @@ class App extends React.Component<Response> {
 
   componentDidMount() {
     // this.props.
+    // tslint:disable-next-line:no-console
+    console.log(this.props.me);
   }
 
   refreshToken = (token: string) => {
@@ -81,11 +93,9 @@ class App extends React.Component<Response> {
   }
 
   _logout = () => {
-    // tslint:disable-next-line:no-console
-    console.log('hello');
     localStorage.removeItem(AUTH_TOKEN);
     this.setState({isAuthenticated: false});
-    this.setState({token: undefined});
+    this.setState({token: ''});
     this.setState({expireToken: false});
   }
 
@@ -98,15 +108,40 @@ class App extends React.Component<Response> {
     // jhjhjhj
   }
 
+  loadMe() {
+    this.props.client.query({
+      query: ME
+    }).then(({ data }) => {
+
+      // tslint:disable-next-line:no-console
+      console.log(data);
+      this.setState({me: data.me});
+
+      if (data.me.completedProfile === 1 || data.me.completedProfile === null) {
+        // ghghgh
+      }
+
+    }).catch((error) => {
+      // tslint:disable-next-line:no-console
+      console.log(JSON.stringify(error));
+    });
+  }
+
   render() {
     const { isAuthenticated } = this.state;
     // const userAuthed = token ? true : false;
+    // tslint:disable-next-line:no-unused-expression
+    isAuthenticated ? this.loadMe() : null;
 
     return (
       <BrowserRouter
         forceRefresh={!supportsHistory}
       >
         <div className="uk-offcanvas-content uk-background-muted">
+          <Helmet>
+            <title>Unizonn</title>
+            <meta name="an inclusive community" content="Unizonn community" />
+          </Helmet>
           <PrivateHeader isAuthenticated={isAuthenticated} />
           <Switch>
             <Route 

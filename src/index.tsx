@@ -24,7 +24,6 @@ const AUTH_TOKEN = 'token';
 const httpLink = new HttpLink({ uri: 'https://uniserver.now.sh/' });
 
 const defaults = { appState: 'INITIAL' };
-
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.map(({ message, locations, path }) =>
@@ -37,7 +36,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) {
     // tslint:disable-next-line:no-console
     console.log(`[Network error]: ${networkError}`);
-    // Toast.message("You are offline")
+    // (networkError.statusCode === 401) ? logout();
   }
 });
 

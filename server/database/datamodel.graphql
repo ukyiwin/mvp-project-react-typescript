@@ -44,26 +44,8 @@ type Institutions {
   updatedAt: DateTime!
   title: String!
   type: InstitutionType!
-  Country: Country!
+  country: Country!
   users: [User!]! @relation(name: "UserInstitution")
-}
-
-type School {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-  institution: Institutions!
-  users: [User!]! @relation(name: "UserSchool")
-}
-
-type Faculty {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  name: String!
-  school: School!
-  users: [User!]! @relation(name: "UserFaculty")
 }
 
 type Department {
@@ -71,7 +53,7 @@ type Department {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  falculty: Faculty!
+  institution: Institutions!
   users: [User!]! @relation(name: "UserDepartment")
 }
 
@@ -80,7 +62,7 @@ type Interest {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  avatar: String!
+  file: File!
   users: [User!]! @relation(name: "UserInterest")
 }
 
@@ -96,8 +78,6 @@ type User {
   gender: String!
   country: Country @relation(name: "UserCountry")
   institution: Institutions @relation(name: "UserInstitution")
-  school: School @relation(name: "UserSchool")
-  falculty: Faculty @relation(name: "UserFaculty")
   department: Department @relation(name: "UserDepartment")
   interest: Interest @relation(name: "UserInterest")
   favourites: [Discussion!]! @relation(name: "UserFavDiscussion")
