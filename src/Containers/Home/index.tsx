@@ -1,5 +1,6 @@
 import * as React from 'react';
 import WriteModal from 'Components/WriteModal';
+import { Helmet } from 'react-helmet';
 
 import './style.css';
 import { User } from 'CustomTypings/schema';
@@ -26,6 +27,10 @@ class Home extends React.Component<Props> {
 
     return (
       <div className="uk-width-1-1">
+        <Helmet>
+          <title>Unizonn | Home</title>
+          <meta name="an inclusive community" content="Unizonn community" />
+        </Helmet>
         <WriteModal />
         <div className="uk-flex">
         jkhjh

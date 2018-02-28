@@ -1,9 +1,7 @@
 import * as React from 'react';
-// import * as $ from 'jquery';
-// import LoginSignupForm from 'Components/LoginSignupForm';
-import './style.css';
+import { Helmet } from 'react-helmet';
 import InputBoxLogin from 'Components/InputBoxLogin';
-// import { purple } from 'material-ui/colors';
+import './style.css';
 
 type Props = {
   classes?: object,
@@ -36,6 +34,10 @@ class HomePublic extends React.Component<Props> {
 
     return(
       <div className="uk-flex-stretch ">
+        <Helmet>
+          <title>Unizonn | Home</title>
+          <meta name="an inclusive community" content="Unizonn community" />
+        </Helmet>
         <div 
           id="bg1"
           className="uk-flex uk-width-1-1 uk-flex-stretch uk-height-large backgroundOne"

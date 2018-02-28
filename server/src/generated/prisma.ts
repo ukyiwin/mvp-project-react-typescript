@@ -43,7 +43,7 @@ type Department implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  falculty(where: FacultyWhereInput): Faculty!
+  institution(where: InstitutionsWhereInput): Institutions!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
@@ -59,15 +59,6 @@ type Discussion implements Node {
   author(where: UserWhereInput): User!
   private: Boolean!
   opinions(where: OpinionsWhereInput, orderBy: OpinionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Opinions!]
-}
-
-type Faculty implements Node {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  name: String!
-  school(where: SchoolWhereInput): School!
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
 type File implements Node {
@@ -97,7 +88,7 @@ type Institutions implements Node {
   updatedAt: DateTime!
   title: String!
   type: InstitutionType!
-  Country(where: CountryWhereInput): Country!
+  country(where: CountryWhereInput): Country!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
@@ -106,7 +97,7 @@ type Interest implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  avatar: String!
+  file(where: FileWhereInput): File!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
@@ -128,15 +119,6 @@ type Post implements Node {
   text: String!
 }
 
-type School implements Node {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-  institution(where: InstitutionsWhereInput): Institutions!
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
-}
-
 type User implements Node {
   id: ID!
   createdAt: DateTime!
@@ -149,8 +131,6 @@ type User implements Node {
   gender: String!
   country(where: CountryWhereInput): Country
   institution(where: InstitutionsWhereInput): Institutions
-  school(where: SchoolWhereInput): School
-  falculty(where: FacultyWhereInput): Faculty
   department(where: DepartmentWhereInput): Department
   interest(where: InterestWhereInput): Interest
   favourites(where: DiscussionWhereInput, orderBy: DiscussionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Discussion!]
@@ -193,10 +173,6 @@ type AggregateDiscussion {
   count: Int!
 }
 
-type AggregateFaculty {
-  count: Int!
-}
-
 type AggregateFile {
   count: Int!
 }
@@ -218,10 +194,6 @@ type AggregateOpinions {
 }
 
 type AggregatePost {
-  count: Int!
-}
-
-type AggregateSchool {
   count: Int!
 }
 
@@ -1354,7 +1326,7 @@ type DepartmentConnection {
 
 input DepartmentCreateInput {
   name: String!
-  falculty: FacultyCreateOneInput!
+  institution: InstitutionsCreateOneInput!
   users: UserCreateManyWithoutDepartmentInput
 }
 
@@ -1365,7 +1337,7 @@ input DepartmentCreateOneWithoutUsersInput {
 
 input DepartmentCreateWithoutUsersInput {
   name: String!
-  falculty: FacultyCreateOneInput!
+  institution: InstitutionsCreateOneInput!
 }
 
 """
@@ -1437,7 +1409,7 @@ input DepartmentSubscriptionWhereInput {
 
 input DepartmentUpdateInput {
   name: String
-  falculty: FacultyUpdateOneInput
+  institution: InstitutionsUpdateOneInput
   users: UserUpdateManyWithoutDepartmentInput
 }
 
@@ -1452,7 +1424,7 @@ input DepartmentUpdateOneWithoutUsersInput {
 
 input DepartmentUpdateWithoutUsersDataInput {
   name: String
-  falculty: FacultyUpdateOneInput
+  institution: InstitutionsUpdateOneInput
 }
 
 input DepartmentUpdateWithoutUsersInput {
@@ -1639,7 +1611,7 @@ input DepartmentWhereInput {
   All values not ending with the given string.
   """
   name_not_ends_with: String
-  falculty: FacultyWhereInput
+  institution: InstitutionsWhereInput
   users_every: UserWhereInput
   users_some: UserWhereInput
   users_none: UserWhereInput
@@ -2206,349 +2178,6 @@ input DiscussionWhereUniqueInput {
 """
 A connection to a list of items.
 """
-type FacultyConnection {
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-  """
-  A list of edges.
-  """
-  edges: [FacultyEdge]!
-  aggregate: AggregateFaculty!
-}
-
-input FacultyCreateInput {
-  name: String!
-  school: SchoolCreateOneInput!
-  users: UserCreateManyWithoutFalcultyInput
-}
-
-input FacultyCreateOneInput {
-  create: FacultyCreateInput
-  connect: FacultyWhereUniqueInput
-}
-
-input FacultyCreateOneWithoutUsersInput {
-  create: FacultyCreateWithoutUsersInput
-  connect: FacultyWhereUniqueInput
-}
-
-input FacultyCreateWithoutUsersInput {
-  name: String!
-  school: SchoolCreateOneInput!
-}
-
-"""
-An edge in a connection.
-"""
-type FacultyEdge {
-  """
-  The item at the end of the edge.
-  """
-  node: Faculty!
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-}
-
-enum FacultyOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  name_ASC
-  name_DESC
-}
-
-type FacultyPreviousValues {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  name: String!
-}
-
-type FacultySubscriptionPayload {
-  mutation: MutationType!
-  node: Faculty
-  updatedFields: [String!]
-  previousValues: FacultyPreviousValues
-}
-
-input FacultySubscriptionWhereInput {
-  """
-  Logical AND on all given filters.
-  """
-  AND: [FacultySubscriptionWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
-  OR: [FacultySubscriptionWhereInput!]
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: FacultyWhereInput
-}
-
-input FacultyUpdateDataInput {
-  name: String
-  school: SchoolUpdateOneInput
-  users: UserUpdateManyWithoutFalcultyInput
-}
-
-input FacultyUpdateInput {
-  name: String
-  school: SchoolUpdateOneInput
-  users: UserUpdateManyWithoutFalcultyInput
-}
-
-input FacultyUpdateNestedInput {
-  where: FacultyWhereUniqueInput!
-  data: FacultyUpdateDataInput!
-}
-
-input FacultyUpdateOneInput {
-  create: FacultyCreateInput
-  connect: FacultyWhereUniqueInput
-  disconnect: FacultyWhereUniqueInput
-  delete: FacultyWhereUniqueInput
-  update: FacultyUpdateNestedInput
-  upsert: FacultyUpsertNestedInput
-}
-
-input FacultyUpdateOneWithoutUsersInput {
-  create: FacultyCreateWithoutUsersInput
-  connect: FacultyWhereUniqueInput
-  disconnect: FacultyWhereUniqueInput
-  delete: FacultyWhereUniqueInput
-  update: FacultyUpdateWithoutUsersInput
-  upsert: FacultyUpsertWithoutUsersInput
-}
-
-input FacultyUpdateWithoutUsersDataInput {
-  name: String
-  school: SchoolUpdateOneInput
-}
-
-input FacultyUpdateWithoutUsersInput {
-  where: FacultyWhereUniqueInput!
-  data: FacultyUpdateWithoutUsersDataInput!
-}
-
-input FacultyUpsertNestedInput {
-  where: FacultyWhereUniqueInput!
-  update: FacultyUpdateDataInput!
-  create: FacultyCreateInput!
-}
-
-input FacultyUpsertWithoutUsersInput {
-  where: FacultyWhereUniqueInput!
-  update: FacultyUpdateWithoutUsersDataInput!
-  create: FacultyCreateWithoutUsersInput!
-}
-
-input FacultyWhereInput {
-  """
-  Logical AND on all given filters.
-  """
-  AND: [FacultyWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
-  OR: [FacultyWhereInput!]
-  id: ID
-  """
-  All values that are not equal to given value.
-  """
-  id_not: ID
-  """
-  All values that are contained in given list.
-  """
-  id_in: [ID!]
-  """
-  All values that are not contained in given list.
-  """
-  id_not_in: [ID!]
-  """
-  All values less than the given value.
-  """
-  id_lt: ID
-  """
-  All values less than or equal the given value.
-  """
-  id_lte: ID
-  """
-  All values greater than the given value.
-  """
-  id_gt: ID
-  """
-  All values greater than or equal the given value.
-  """
-  id_gte: ID
-  """
-  All values containing the given string.
-  """
-  id_contains: ID
-  """
-  All values not containing the given string.
-  """
-  id_not_contains: ID
-  """
-  All values starting with the given string.
-  """
-  id_starts_with: ID
-  """
-  All values not starting with the given string.
-  """
-  id_not_starts_with: ID
-  """
-  All values ending with the given string.
-  """
-  id_ends_with: ID
-  """
-  All values not ending with the given string.
-  """
-  id_not_ends_with: ID
-  createdAt: DateTime
-  """
-  All values that are not equal to given value.
-  """
-  createdAt_not: DateTime
-  """
-  All values that are contained in given list.
-  """
-  createdAt_in: [DateTime!]
-  """
-  All values that are not contained in given list.
-  """
-  createdAt_not_in: [DateTime!]
-  """
-  All values less than the given value.
-  """
-  createdAt_lt: DateTime
-  """
-  All values less than or equal the given value.
-  """
-  createdAt_lte: DateTime
-  """
-  All values greater than the given value.
-  """
-  createdAt_gt: DateTime
-  """
-  All values greater than or equal the given value.
-  """
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  """
-  All values that are not equal to given value.
-  """
-  updatedAt_not: DateTime
-  """
-  All values that are contained in given list.
-  """
-  updatedAt_in: [DateTime!]
-  """
-  All values that are not contained in given list.
-  """
-  updatedAt_not_in: [DateTime!]
-  """
-  All values less than the given value.
-  """
-  updatedAt_lt: DateTime
-  """
-  All values less than or equal the given value.
-  """
-  updatedAt_lte: DateTime
-  """
-  All values greater than the given value.
-  """
-  updatedAt_gt: DateTime
-  """
-  All values greater than or equal the given value.
-  """
-  updatedAt_gte: DateTime
-  name: String
-  """
-  All values that are not equal to given value.
-  """
-  name_not: String
-  """
-  All values that are contained in given list.
-  """
-  name_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
-  name_not_in: [String!]
-  """
-  All values less than the given value.
-  """
-  name_lt: String
-  """
-  All values less than or equal the given value.
-  """
-  name_lte: String
-  """
-  All values greater than the given value.
-  """
-  name_gt: String
-  """
-  All values greater than or equal the given value.
-  """
-  name_gte: String
-  """
-  All values containing the given string.
-  """
-  name_contains: String
-  """
-  All values not containing the given string.
-  """
-  name_not_contains: String
-  """
-  All values starting with the given string.
-  """
-  name_starts_with: String
-  """
-  All values not starting with the given string.
-  """
-  name_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
-  name_ends_with: String
-  """
-  All values not ending with the given string.
-  """
-  name_not_ends_with: String
-  school: SchoolWhereInput
-  users_every: UserWhereInput
-  users_some: UserWhereInput
-  users_none: UserWhereInput
-}
-
-input FacultyWhereUniqueInput {
-  id: ID
-}
-
-"""
-A connection to a list of items.
-"""
 type FileConnection {
   """
   Information to aid in pagination.
@@ -2567,6 +2196,11 @@ input FileCreateInput {
   secret: String!
   contentType: String!
   url: String!
+}
+
+input FileCreateOneInput {
+  create: FileCreateInput
+  connect: FileWhereUniqueInput
 }
 
 """
@@ -2648,12 +2282,40 @@ input FileSubscriptionWhereInput {
   node: FileWhereInput
 }
 
+input FileUpdateDataInput {
+  name: String
+  size: Int
+  secret: String
+  contentType: String
+  url: String
+}
+
 input FileUpdateInput {
   name: String
   size: Int
   secret: String
   contentType: String
   url: String
+}
+
+input FileUpdateNestedInput {
+  where: FileWhereUniqueInput!
+  data: FileUpdateDataInput!
+}
+
+input FileUpdateOneInput {
+  create: FileCreateInput
+  connect: FileWhereUniqueInput
+  disconnect: FileWhereUniqueInput
+  delete: FileWhereUniqueInput
+  update: FileUpdateNestedInput
+  upsert: FileUpsertNestedInput
+}
+
+input FileUpsertNestedInput {
+  where: FileWhereUniqueInput!
+  update: FileUpdateDataInput!
+  create: FileCreateInput!
 }
 
 input FileWhereInput {
@@ -3383,7 +3045,7 @@ type InstitutionsConnection {
 input InstitutionsCreateInput {
   title: String!
   type: InstitutionType!
-  Country: CountryCreateOneInput!
+  country: CountryCreateOneInput!
   users: UserCreateManyWithoutInstitutionInput
 }
 
@@ -3400,7 +3062,7 @@ input InstitutionsCreateOneWithoutUsersInput {
 input InstitutionsCreateWithoutUsersInput {
   title: String!
   type: InstitutionType!
-  Country: CountryCreateOneInput!
+  country: CountryCreateOneInput!
 }
 
 """
@@ -3476,14 +3138,14 @@ input InstitutionsSubscriptionWhereInput {
 input InstitutionsUpdateDataInput {
   title: String
   type: InstitutionType
-  Country: CountryUpdateOneInput
+  country: CountryUpdateOneInput
   users: UserUpdateManyWithoutInstitutionInput
 }
 
 input InstitutionsUpdateInput {
   title: String
   type: InstitutionType
-  Country: CountryUpdateOneInput
+  country: CountryUpdateOneInput
   users: UserUpdateManyWithoutInstitutionInput
 }
 
@@ -3513,7 +3175,7 @@ input InstitutionsUpdateOneWithoutUsersInput {
 input InstitutionsUpdateWithoutUsersDataInput {
   title: String
   type: InstitutionType
-  Country: CountryUpdateOneInput
+  country: CountryUpdateOneInput
 }
 
 input InstitutionsUpdateWithoutUsersInput {
@@ -3719,7 +3381,7 @@ input InstitutionsWhereInput {
   All values that are not contained in given list.
   """
   type_not_in: [InstitutionType!]
-  Country: CountryWhereInput
+  country: CountryWhereInput
   users_every: UserWhereInput
   users_some: UserWhereInput
   users_none: UserWhereInput
@@ -3751,7 +3413,7 @@ type InterestConnection {
 
 input InterestCreateInput {
   name: String!
-  avatar: String!
+  file: FileCreateOneInput!
   users: UserCreateManyWithoutInterestInput
 }
 
@@ -3762,7 +3424,7 @@ input InterestCreateOneWithoutUsersInput {
 
 input InterestCreateWithoutUsersInput {
   name: String!
-  avatar: String!
+  file: FileCreateOneInput!
 }
 
 """
@@ -3788,8 +3450,6 @@ enum InterestOrderByInput {
   updatedAt_DESC
   name_ASC
   name_DESC
-  avatar_ASC
-  avatar_DESC
 }
 
 type InterestPreviousValues {
@@ -3797,7 +3457,6 @@ type InterestPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  avatar: String!
 }
 
 type InterestSubscriptionPayload {
@@ -3837,7 +3496,7 @@ input InterestSubscriptionWhereInput {
 
 input InterestUpdateInput {
   name: String
-  avatar: String
+  file: FileUpdateOneInput
   users: UserUpdateManyWithoutInterestInput
 }
 
@@ -3852,7 +3511,7 @@ input InterestUpdateOneWithoutUsersInput {
 
 input InterestUpdateWithoutUsersDataInput {
   name: String
-  avatar: String
+  file: FileUpdateOneInput
 }
 
 input InterestUpdateWithoutUsersInput {
@@ -4039,59 +3698,7 @@ input InterestWhereInput {
   All values not ending with the given string.
   """
   name_not_ends_with: String
-  avatar: String
-  """
-  All values that are not equal to given value.
-  """
-  avatar_not: String
-  """
-  All values that are contained in given list.
-  """
-  avatar_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
-  avatar_not_in: [String!]
-  """
-  All values less than the given value.
-  """
-  avatar_lt: String
-  """
-  All values less than or equal the given value.
-  """
-  avatar_lte: String
-  """
-  All values greater than the given value.
-  """
-  avatar_gt: String
-  """
-  All values greater than or equal the given value.
-  """
-  avatar_gte: String
-  """
-  All values containing the given string.
-  """
-  avatar_contains: String
-  """
-  All values not containing the given string.
-  """
-  avatar_not_contains: String
-  """
-  All values starting with the given string.
-  """
-  avatar_starts_with: String
-  """
-  All values not starting with the given string.
-  """
-  avatar_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
-  avatar_ends_with: String
-  """
-  All values not ending with the given string.
-  """
-  avatar_not_ends_with: String
+  file: FileWhereInput
   users_every: UserWhereInput
   users_some: UserWhereInput
   users_none: UserWhereInput
@@ -4113,8 +3720,6 @@ type Mutation {
   createArticle(data: ArticleCreateInput!): Article!
   createCountry(data: CountryCreateInput!): Country!
   createInstitutions(data: InstitutionsCreateInput!): Institutions!
-  createSchool(data: SchoolCreateInput!): School!
-  createFaculty(data: FacultyCreateInput!): Faculty!
   createDepartment(data: DepartmentCreateInput!): Department!
   createInterest(data: InterestCreateInput!): Interest!
   createUser(data: UserCreateInput!): User!
@@ -4127,8 +3732,6 @@ type Mutation {
   updateArticle(data: ArticleUpdateInput!, where: ArticleWhereUniqueInput!): Article
   updateCountry(data: CountryUpdateInput!, where: CountryWhereUniqueInput!): Country
   updateInstitutions(data: InstitutionsUpdateInput!, where: InstitutionsWhereUniqueInput!): Institutions
-  updateSchool(data: SchoolUpdateInput!, where: SchoolWhereUniqueInput!): School
-  updateFaculty(data: FacultyUpdateInput!, where: FacultyWhereUniqueInput!): Faculty
   updateDepartment(data: DepartmentUpdateInput!, where: DepartmentWhereUniqueInput!): Department
   updateInterest(data: InterestUpdateInput!, where: InterestWhereUniqueInput!): Interest
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
@@ -4141,8 +3744,6 @@ type Mutation {
   deleteArticle(where: ArticleWhereUniqueInput!): Article
   deleteCountry(where: CountryWhereUniqueInput!): Country
   deleteInstitutions(where: InstitutionsWhereUniqueInput!): Institutions
-  deleteSchool(where: SchoolWhereUniqueInput!): School
-  deleteFaculty(where: FacultyWhereUniqueInput!): Faculty
   deleteDepartment(where: DepartmentWhereUniqueInput!): Department
   deleteInterest(where: InterestWhereUniqueInput!): Interest
   deleteUser(where: UserWhereUniqueInput!): User
@@ -4155,8 +3756,6 @@ type Mutation {
   upsertArticle(where: ArticleWhereUniqueInput!, create: ArticleCreateInput!, update: ArticleUpdateInput!): Article!
   upsertCountry(where: CountryWhereUniqueInput!, create: CountryCreateInput!, update: CountryUpdateInput!): Country!
   upsertInstitutions(where: InstitutionsWhereUniqueInput!, create: InstitutionsCreateInput!, update: InstitutionsUpdateInput!): Institutions!
-  upsertSchool(where: SchoolWhereUniqueInput!, create: SchoolCreateInput!, update: SchoolUpdateInput!): School!
-  upsertFaculty(where: FacultyWhereUniqueInput!, create: FacultyCreateInput!, update: FacultyUpdateInput!): Faculty!
   upsertDepartment(where: DepartmentWhereUniqueInput!, create: DepartmentCreateInput!, update: DepartmentUpdateInput!): Department!
   upsertInterest(where: InterestWhereUniqueInput!, create: InterestCreateInput!, update: InterestUpdateInput!): Interest!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
@@ -4169,8 +3768,6 @@ type Mutation {
   updateManyArticles(data: ArticleUpdateInput!, where: ArticleWhereInput!): BatchPayload!
   updateManyCountries(data: CountryUpdateInput!, where: CountryWhereInput!): BatchPayload!
   updateManyInstitutionses(data: InstitutionsUpdateInput!, where: InstitutionsWhereInput!): BatchPayload!
-  updateManySchools(data: SchoolUpdateInput!, where: SchoolWhereInput!): BatchPayload!
-  updateManyFaculties(data: FacultyUpdateInput!, where: FacultyWhereInput!): BatchPayload!
   updateManyDepartments(data: DepartmentUpdateInput!, where: DepartmentWhereInput!): BatchPayload!
   updateManyInterests(data: InterestUpdateInput!, where: InterestWhereInput!): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput!): BatchPayload!
@@ -4183,8 +3780,6 @@ type Mutation {
   deleteManyArticles(where: ArticleWhereInput!): BatchPayload!
   deleteManyCountries(where: CountryWhereInput!): BatchPayload!
   deleteManyInstitutionses(where: InstitutionsWhereInput!): BatchPayload!
-  deleteManySchools(where: SchoolWhereInput!): BatchPayload!
-  deleteManyFaculties(where: FacultyWhereInput!): BatchPayload!
   deleteManyDepartments(where: DepartmentWhereInput!): BatchPayload!
   deleteManyInterests(where: InterestWhereInput!): BatchPayload!
   deleteManyUsers(where: UserWhereInput!): BatchPayload!
@@ -4920,8 +4515,6 @@ type Query {
   articles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article]!
   countries(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Country]!
   institutionses(where: InstitutionsWhereInput, orderBy: InstitutionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Institutions]!
-  schools(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [School]!
-  faculties(where: FacultyWhereInput, orderBy: FacultyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Faculty]!
   departments(where: DepartmentWhereInput, orderBy: DepartmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Department]!
   interests(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Interest]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
@@ -4934,8 +4527,6 @@ type Query {
   article(where: ArticleWhereUniqueInput!): Article
   country(where: CountryWhereUniqueInput!): Country
   institutions(where: InstitutionsWhereUniqueInput!): Institutions
-  school(where: SchoolWhereUniqueInput!): School
-  faculty(where: FacultyWhereUniqueInput!): Faculty
   department(where: DepartmentWhereUniqueInput!): Department
   interest(where: InterestWhereUniqueInput!): Interest
   user(where: UserWhereUniqueInput!): User
@@ -4948,8 +4539,6 @@ type Query {
   articlesConnection(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ArticleConnection!
   countriesConnection(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CountryConnection!
   institutionsesConnection(where: InstitutionsWhereInput, orderBy: InstitutionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InstitutionsConnection!
-  schoolsConnection(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SchoolConnection!
-  facultiesConnection(where: FacultyWhereInput, orderBy: FacultyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FacultyConnection!
   departmentsConnection(where: DepartmentWhereInput, orderBy: DepartmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DepartmentConnection!
   interestsConnection(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InterestConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -4966,357 +4555,12 @@ type Query {
   id: ID!): Node
 }
 
-"""
-A connection to a list of items.
-"""
-type SchoolConnection {
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-  """
-  A list of edges.
-  """
-  edges: [SchoolEdge]!
-  aggregate: AggregateSchool!
-}
-
-input SchoolCreateInput {
-  title: String!
-  institution: InstitutionsCreateOneInput!
-  users: UserCreateManyWithoutSchoolInput
-}
-
-input SchoolCreateOneInput {
-  create: SchoolCreateInput
-  connect: SchoolWhereUniqueInput
-}
-
-input SchoolCreateOneWithoutUsersInput {
-  create: SchoolCreateWithoutUsersInput
-  connect: SchoolWhereUniqueInput
-}
-
-input SchoolCreateWithoutUsersInput {
-  title: String!
-  institution: InstitutionsCreateOneInput!
-}
-
-"""
-An edge in a connection.
-"""
-type SchoolEdge {
-  """
-  The item at the end of the edge.
-  """
-  node: School!
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-}
-
-enum SchoolOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  title_ASC
-  title_DESC
-}
-
-type SchoolPreviousValues {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-}
-
-type SchoolSubscriptionPayload {
-  mutation: MutationType!
-  node: School
-  updatedFields: [String!]
-  previousValues: SchoolPreviousValues
-}
-
-input SchoolSubscriptionWhereInput {
-  """
-  Logical AND on all given filters.
-  """
-  AND: [SchoolSubscriptionWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
-  OR: [SchoolSubscriptionWhereInput!]
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: SchoolWhereInput
-}
-
-input SchoolUpdateDataInput {
-  title: String
-  institution: InstitutionsUpdateOneInput
-  users: UserUpdateManyWithoutSchoolInput
-}
-
-input SchoolUpdateInput {
-  title: String
-  institution: InstitutionsUpdateOneInput
-  users: UserUpdateManyWithoutSchoolInput
-}
-
-input SchoolUpdateNestedInput {
-  where: SchoolWhereUniqueInput!
-  data: SchoolUpdateDataInput!
-}
-
-input SchoolUpdateOneInput {
-  create: SchoolCreateInput
-  connect: SchoolWhereUniqueInput
-  disconnect: SchoolWhereUniqueInput
-  delete: SchoolWhereUniqueInput
-  update: SchoolUpdateNestedInput
-  upsert: SchoolUpsertNestedInput
-}
-
-input SchoolUpdateOneWithoutUsersInput {
-  create: SchoolCreateWithoutUsersInput
-  connect: SchoolWhereUniqueInput
-  disconnect: SchoolWhereUniqueInput
-  delete: SchoolWhereUniqueInput
-  update: SchoolUpdateWithoutUsersInput
-  upsert: SchoolUpsertWithoutUsersInput
-}
-
-input SchoolUpdateWithoutUsersDataInput {
-  title: String
-  institution: InstitutionsUpdateOneInput
-}
-
-input SchoolUpdateWithoutUsersInput {
-  where: SchoolWhereUniqueInput!
-  data: SchoolUpdateWithoutUsersDataInput!
-}
-
-input SchoolUpsertNestedInput {
-  where: SchoolWhereUniqueInput!
-  update: SchoolUpdateDataInput!
-  create: SchoolCreateInput!
-}
-
-input SchoolUpsertWithoutUsersInput {
-  where: SchoolWhereUniqueInput!
-  update: SchoolUpdateWithoutUsersDataInput!
-  create: SchoolCreateWithoutUsersInput!
-}
-
-input SchoolWhereInput {
-  """
-  Logical AND on all given filters.
-  """
-  AND: [SchoolWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
-  OR: [SchoolWhereInput!]
-  id: ID
-  """
-  All values that are not equal to given value.
-  """
-  id_not: ID
-  """
-  All values that are contained in given list.
-  """
-  id_in: [ID!]
-  """
-  All values that are not contained in given list.
-  """
-  id_not_in: [ID!]
-  """
-  All values less than the given value.
-  """
-  id_lt: ID
-  """
-  All values less than or equal the given value.
-  """
-  id_lte: ID
-  """
-  All values greater than the given value.
-  """
-  id_gt: ID
-  """
-  All values greater than or equal the given value.
-  """
-  id_gte: ID
-  """
-  All values containing the given string.
-  """
-  id_contains: ID
-  """
-  All values not containing the given string.
-  """
-  id_not_contains: ID
-  """
-  All values starting with the given string.
-  """
-  id_starts_with: ID
-  """
-  All values not starting with the given string.
-  """
-  id_not_starts_with: ID
-  """
-  All values ending with the given string.
-  """
-  id_ends_with: ID
-  """
-  All values not ending with the given string.
-  """
-  id_not_ends_with: ID
-  createdAt: DateTime
-  """
-  All values that are not equal to given value.
-  """
-  createdAt_not: DateTime
-  """
-  All values that are contained in given list.
-  """
-  createdAt_in: [DateTime!]
-  """
-  All values that are not contained in given list.
-  """
-  createdAt_not_in: [DateTime!]
-  """
-  All values less than the given value.
-  """
-  createdAt_lt: DateTime
-  """
-  All values less than or equal the given value.
-  """
-  createdAt_lte: DateTime
-  """
-  All values greater than the given value.
-  """
-  createdAt_gt: DateTime
-  """
-  All values greater than or equal the given value.
-  """
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  """
-  All values that are not equal to given value.
-  """
-  updatedAt_not: DateTime
-  """
-  All values that are contained in given list.
-  """
-  updatedAt_in: [DateTime!]
-  """
-  All values that are not contained in given list.
-  """
-  updatedAt_not_in: [DateTime!]
-  """
-  All values less than the given value.
-  """
-  updatedAt_lt: DateTime
-  """
-  All values less than or equal the given value.
-  """
-  updatedAt_lte: DateTime
-  """
-  All values greater than the given value.
-  """
-  updatedAt_gt: DateTime
-  """
-  All values greater than or equal the given value.
-  """
-  updatedAt_gte: DateTime
-  title: String
-  """
-  All values that are not equal to given value.
-  """
-  title_not: String
-  """
-  All values that are contained in given list.
-  """
-  title_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
-  title_not_in: [String!]
-  """
-  All values less than the given value.
-  """
-  title_lt: String
-  """
-  All values less than or equal the given value.
-  """
-  title_lte: String
-  """
-  All values greater than the given value.
-  """
-  title_gt: String
-  """
-  All values greater than or equal the given value.
-  """
-  title_gte: String
-  """
-  All values containing the given string.
-  """
-  title_contains: String
-  """
-  All values not containing the given string.
-  """
-  title_not_contains: String
-  """
-  All values starting with the given string.
-  """
-  title_starts_with: String
-  """
-  All values not starting with the given string.
-  """
-  title_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
-  title_ends_with: String
-  """
-  All values not ending with the given string.
-  """
-  title_not_ends_with: String
-  institution: InstitutionsWhereInput
-  users_every: UserWhereInput
-  users_some: UserWhereInput
-  users_none: UserWhereInput
-}
-
-input SchoolWhereUniqueInput {
-  id: ID
-}
-
 type Subscription {
   file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   article(where: ArticleSubscriptionWhereInput): ArticleSubscriptionPayload
   country(where: CountrySubscriptionWhereInput): CountrySubscriptionPayload
   institutions(where: InstitutionsSubscriptionWhereInput): InstitutionsSubscriptionPayload
-  school(where: SchoolSubscriptionWhereInput): SchoolSubscriptionPayload
-  faculty(where: FacultySubscriptionWhereInput): FacultySubscriptionPayload
   department(where: DepartmentSubscriptionWhereInput): DepartmentSubscriptionPayload
   interest(where: InterestSubscriptionWhereInput): InterestSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
@@ -5357,8 +4601,6 @@ input UserCreateInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5379,11 +4621,6 @@ input UserCreateManyWithoutDepartmentInput {
   connect: [UserWhereUniqueInput!]
 }
 
-input UserCreateManyWithoutFalcultyInput {
-  create: [UserCreateWithoutFalcultyInput!]
-  connect: [UserWhereUniqueInput!]
-}
-
 input UserCreateManyWithoutFavouritesInput {
   create: [UserCreateWithoutFavouritesInput!]
   connect: [UserWhereUniqueInput!]
@@ -5396,11 +4633,6 @@ input UserCreateManyWithoutInstitutionInput {
 
 input UserCreateManyWithoutInterestInput {
   create: [UserCreateWithoutInterestInput!]
-  connect: [UserWhereUniqueInput!]
-}
-
-input UserCreateManyWithoutSchoolInput {
-  create: [UserCreateWithoutSchoolInput!]
   connect: [UserWhereUniqueInput!]
 }
 
@@ -5450,8 +4682,6 @@ input UserCreateWithoutArticlesInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5477,8 +4707,6 @@ input UserCreateWithoutConectFromInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5504,8 +4732,6 @@ input UserCreateWithoutConnectToInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5530,8 +4756,6 @@ input UserCreateWithoutCountryInput {
   newProfileNot: Boolean
   completedProfile: Int
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5558,35 +4782,6 @@ input UserCreateWithoutDepartmentInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
-  interest: InterestCreateOneWithoutUsersInput
-  favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
-  connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
-  articles: ArticleCreateManyWithoutAuthorInput
-  opinions: OpinionsCreateManyWithoutAuthorInput
-}
-
-input UserCreateWithoutFalcultyInput {
-  email: String!
-  username: String
-  password: String!
-  firstname: String!
-  lastname: String!
-  gender: String!
-  type: String
-  userType: String
-  newConnectNot: Boolean
-  newCommentNot: Boolean
-  newMessageNot: Boolean
-  newProfileNot: Boolean
-  completedProfile: Int
-  country: CountryCreateOneWithoutUsersInput
-  institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput
@@ -5612,8 +4807,6 @@ input UserCreateWithoutFavouritesInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput
@@ -5638,8 +4831,6 @@ input UserCreateWithoutInstitutionInput {
   newProfileNot: Boolean
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5666,8 +4857,6 @@ input UserCreateWithoutInterestInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput
@@ -5693,8 +4882,6 @@ input UserCreateWithoutMyDiscussionsInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5720,8 +4907,6 @@ input UserCreateWithoutOpinionsInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5729,33 +4914,6 @@ input UserCreateWithoutOpinionsInput {
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
-}
-
-input UserCreateWithoutSchoolInput {
-  email: String!
-  username: String
-  password: String!
-  firstname: String!
-  lastname: String!
-  gender: String!
-  type: String
-  userType: String
-  newConnectNot: Boolean
-  newCommentNot: Boolean
-  newMessageNot: Boolean
-  newProfileNot: Boolean
-  completedProfile: Int
-  country: CountryCreateOneWithoutUsersInput
-  institution: InstitutionsCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
-  department: DepartmentCreateOneWithoutUsersInput
-  interest: InterestCreateOneWithoutUsersInput
-  favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
-  connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
-  articles: ArticleCreateManyWithoutAuthorInput
-  opinions: OpinionsCreateManyWithoutAuthorInput
 }
 
 """
@@ -5877,8 +5035,6 @@ input UserUpdateDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -5905,8 +5061,6 @@ input UserUpdateInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -5935,15 +5089,6 @@ input UserUpdateManyWithoutDepartmentInput {
   upsert: [UserUpsertWithoutDepartmentInput!]
 }
 
-input UserUpdateManyWithoutFalcultyInput {
-  create: [UserCreateWithoutFalcultyInput!]
-  connect: [UserWhereUniqueInput!]
-  disconnect: [UserWhereUniqueInput!]
-  delete: [UserWhereUniqueInput!]
-  update: [UserUpdateWithoutFalcultyInput!]
-  upsert: [UserUpsertWithoutFalcultyInput!]
-}
-
 input UserUpdateManyWithoutFavouritesInput {
   create: [UserCreateWithoutFavouritesInput!]
   connect: [UserWhereUniqueInput!]
@@ -5969,15 +5114,6 @@ input UserUpdateManyWithoutInterestInput {
   delete: [UserWhereUniqueInput!]
   update: [UserUpdateWithoutInterestInput!]
   upsert: [UserUpsertWithoutInterestInput!]
-}
-
-input UserUpdateManyWithoutSchoolInput {
-  create: [UserCreateWithoutSchoolInput!]
-  connect: [UserWhereUniqueInput!]
-  disconnect: [UserWhereUniqueInput!]
-  delete: [UserWhereUniqueInput!]
-  update: [UserUpdateWithoutSchoolInput!]
-  upsert: [UserUpsertWithoutSchoolInput!]
 }
 
 input UserUpdateNestedInput {
@@ -6055,8 +5191,6 @@ input UserUpdateWithoutArticlesDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -6087,8 +5221,6 @@ input UserUpdateWithoutConectFromDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -6119,8 +5251,6 @@ input UserUpdateWithoutConnectToDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -6150,8 +5280,6 @@ input UserUpdateWithoutCountryDataInput {
   newProfileNot: Boolean
   completedProfile: Int
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -6183,8 +5311,6 @@ input UserUpdateWithoutDepartmentDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
@@ -6197,38 +5323,6 @@ input UserUpdateWithoutDepartmentDataInput {
 input UserUpdateWithoutDepartmentInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutDepartmentDataInput!
-}
-
-input UserUpdateWithoutFalcultyDataInput {
-  email: String
-  username: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type: String
-  userType: String
-  newConnectNot: Boolean
-  newCommentNot: Boolean
-  newMessageNot: Boolean
-  newProfileNot: Boolean
-  completedProfile: Int
-  country: CountryUpdateOneWithoutUsersInput
-  institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  department: DepartmentUpdateOneWithoutUsersInput
-  interest: InterestUpdateOneWithoutUsersInput
-  favourites: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
-  connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
-  articles: ArticleUpdateManyWithoutAuthorInput
-  opinions: OpinionsUpdateManyWithoutAuthorInput
-}
-
-input UserUpdateWithoutFalcultyInput {
-  where: UserWhereUniqueInput!
-  data: UserUpdateWithoutFalcultyDataInput!
 }
 
 input UserUpdateWithoutFavouritesDataInput {
@@ -6247,8 +5341,6 @@ input UserUpdateWithoutFavouritesDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
@@ -6278,8 +5370,6 @@ input UserUpdateWithoutInstitutionDataInput {
   newProfileNot: Boolean
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -6311,8 +5401,6 @@ input UserUpdateWithoutInterestDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
@@ -6343,8 +5431,6 @@ input UserUpdateWithoutMyDiscussionsDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -6375,8 +5461,6 @@ input UserUpdateWithoutOpinionsDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -6389,38 +5473,6 @@ input UserUpdateWithoutOpinionsDataInput {
 input UserUpdateWithoutOpinionsInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutOpinionsDataInput!
-}
-
-input UserUpdateWithoutSchoolDataInput {
-  email: String
-  username: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type: String
-  userType: String
-  newConnectNot: Boolean
-  newCommentNot: Boolean
-  newMessageNot: Boolean
-  newProfileNot: Boolean
-  completedProfile: Int
-  country: CountryUpdateOneWithoutUsersInput
-  institution: InstitutionsUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
-  department: DepartmentUpdateOneWithoutUsersInput
-  interest: InterestUpdateOneWithoutUsersInput
-  favourites: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
-  connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
-  articles: ArticleUpdateManyWithoutAuthorInput
-  opinions: OpinionsUpdateManyWithoutAuthorInput
-}
-
-input UserUpdateWithoutSchoolInput {
-  where: UserWhereUniqueInput!
-  data: UserUpdateWithoutSchoolDataInput!
 }
 
 input UserUpsertNestedInput {
@@ -6459,12 +5511,6 @@ input UserUpsertWithoutDepartmentInput {
   create: UserCreateWithoutDepartmentInput!
 }
 
-input UserUpsertWithoutFalcultyInput {
-  where: UserWhereUniqueInput!
-  update: UserUpdateWithoutFalcultyDataInput!
-  create: UserCreateWithoutFalcultyInput!
-}
-
 input UserUpsertWithoutFavouritesInput {
   where: UserWhereUniqueInput!
   update: UserUpdateWithoutFavouritesDataInput!
@@ -6493,12 +5539,6 @@ input UserUpsertWithoutOpinionsInput {
   where: UserWhereUniqueInput!
   update: UserUpdateWithoutOpinionsDataInput!
   create: UserCreateWithoutOpinionsInput!
-}
-
-input UserUpsertWithoutSchoolInput {
-  where: UserWhereUniqueInput!
-  update: UserUpdateWithoutSchoolDataInput!
-  create: UserCreateWithoutSchoolInput!
 }
 
 input UserWhereInput {
@@ -7096,8 +6136,6 @@ input UserWhereInput {
   completedProfile_gte: Int
   country: CountryWhereInput
   institution: InstitutionsWhereInput
-  school: SchoolWhereInput
-  falculty: FacultyWhereInput
   department: DepartmentWhereInput
   interest: InterestWhereInput
   favourites_every: DiscussionWhereInput
@@ -7125,6 +6163,20 @@ input UserWhereUniqueInput {
 }
 `
 
+export type ConnectOrderByInput = 
+  'id_ASC' |
+  'id_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'accepted_ASC' |
+  'accepted_DESC'
+
+export type InstitutionType = 
+  'University' |
+  'College'
+
 export type PostOrderByInput = 
   'id_ASC' |
   'id_DESC' |
@@ -7138,34 +6190,6 @@ export type PostOrderByInput =
   'title_DESC' |
   'text_ASC' |
   'text_DESC'
-
-export type ArticleOrderByInput = 
-  'id_ASC' |
-  'id_DESC' |
-  'createdAt_ASC' |
-  'createdAt_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
-  'isPublished_ASC' |
-  'isPublished_DESC' |
-  'title_ASC' |
-  'title_DESC' |
-  'body_ASC' |
-  'body_DESC' |
-  'type_ASC' |
-  'type_DESC'
-
-export type CountryOrderByInput = 
-  'id_ASC' |
-  'id_DESC' |
-  'createdAt_ASC' |
-  'createdAt_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
-  'shortName_ASC' |
-  'shortName_DESC' |
-  'name_ASC' |
-  'name_DESC'
 
 export type ForumOrderByInput = 
   'id_ASC' |
@@ -7181,15 +6205,15 @@ export type ForumOrderByInput =
   'private_ASC' |
   'private_DESC'
 
-export type ConnectOrderByInput = 
+export type OpinionsOrderByInput = 
   'id_ASC' |
   'id_DESC' |
   'createdAt_ASC' |
   'createdAt_DESC' |
   'updatedAt_ASC' |
   'updatedAt_DESC' |
-  'accepted_ASC' |
-  'accepted_DESC'
+  'content_ASC' |
+  'content_DESC'
 
 export type FileOrderByInput = 
   'id_ASC' |
@@ -7209,23 +6233,21 @@ export type FileOrderByInput =
   'url_ASC' |
   'url_DESC'
 
-export type Arcticletype = 
-  'External' |
-  'Internal'
-
-export type FacultyOrderByInput = 
+export type ArticleOrderByInput = 
   'id_ASC' |
   'id_DESC' |
   'createdAt_ASC' |
   'createdAt_DESC' |
   'updatedAt_ASC' |
   'updatedAt_DESC' |
-  'name_ASC' |
-  'name_DESC'
-
-export type InstitutionType = 
-  'University' |
-  'College'
+  'isPublished_ASC' |
+  'isPublished_DESC' |
+  'title_ASC' |
+  'title_DESC' |
+  'body_ASC' |
+  'body_DESC' |
+  'type_ASC' |
+  'type_DESC'
 
 export type UserOrderByInput = 
   'id_ASC' |
@@ -7261,6 +6283,10 @@ export type UserOrderByInput =
   'completedProfile_ASC' |
   'completedProfile_DESC'
 
+export type Arcticletype = 
+  'External' |
+  'Internal'
+
 export type DiscussionOrderByInput = 
   'id_ASC' |
   'id_DESC' |
@@ -7276,26 +6302,6 @@ export type DiscussionOrderByInput =
   'content_DESC' |
   'private_ASC' |
   'private_DESC'
-
-export type OpinionsOrderByInput = 
-  'id_ASC' |
-  'id_DESC' |
-  'createdAt_ASC' |
-  'createdAt_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
-  'content_ASC' |
-  'content_DESC'
-
-export type SchoolOrderByInput = 
-  'id_ASC' |
-  'id_DESC' |
-  'createdAt_ASC' |
-  'createdAt_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
-  'title_ASC' |
-  'title_DESC'
 
 export type DepartmentOrderByInput = 
   'id_ASC' |
@@ -7315,14 +6321,24 @@ export type InterestOrderByInput =
   'updatedAt_ASC' |
   'updatedAt_DESC' |
   'name_ASC' |
-  'name_DESC' |
-  'avatar_ASC' |
-  'avatar_DESC'
+  'name_DESC'
 
 export type MutationType = 
   'CREATED' |
   'UPDATED' |
   'DELETED'
+
+export type CountryOrderByInput = 
+  'id_ASC' |
+  'id_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'shortName_ASC' |
+  'shortName_DESC' |
+  'name_ASC' |
+  'name_DESC'
 
 export type InstitutionsOrderByInput = 
   'id_ASC' |
@@ -7336,12 +6352,10 @@ export type InstitutionsOrderByInput =
   'type_ASC' |
   'type_DESC'
 
-export interface ArticleUpdateInput {
+export interface PostUpdateInput {
   isPublished?: Boolean
   title?: String
-  body?: String
-  type?: Arcticletype
-  author?: UserUpdateOneWithoutArticlesInput
+  text?: String
 }
 
 export interface FileWhereInput {
@@ -7443,15 +6457,15 @@ export interface FileWhereInput {
   url_not_ends_with?: String
 }
 
-export interface InstitutionsUpdateWithoutUsersDataInput {
-  title?: String
-  type?: InstitutionType
-  Country?: CountryUpdateOneInput
+export interface CountryUpsertWithoutUsersInput {
+  where: CountryWhereUniqueInput
+  update: CountryUpdateWithoutUsersDataInput
+  create: CountryCreateWithoutUsersInput
 }
 
-export interface FacultyWhereInput {
-  AND?: FacultyWhereInput[] | FacultyWhereInput
-  OR?: FacultyWhereInput[] | FacultyWhereInput
+export interface InstitutionsWhereInput {
+  AND?: InstitutionsWhereInput[] | InstitutionsWhereInput
+  OR?: InstitutionsWhereInput[] | InstitutionsWhereInput
   id?: ID_Input
   id_not?: ID_Input
   id_in?: ID_Input[] | ID_Input
@@ -7482,33 +6496,37 @@ export interface FacultyWhereInput {
   updatedAt_lte?: DateTime
   updatedAt_gt?: DateTime
   updatedAt_gte?: DateTime
-  name?: String
-  name_not?: String
-  name_in?: String[] | String
-  name_not_in?: String[] | String
-  name_lt?: String
-  name_lte?: String
-  name_gt?: String
-  name_gte?: String
-  name_contains?: String
-  name_not_contains?: String
-  name_starts_with?: String
-  name_not_starts_with?: String
-  name_ends_with?: String
-  name_not_ends_with?: String
-  school?: SchoolWhereInput
+  title?: String
+  title_not?: String
+  title_in?: String[] | String
+  title_not_in?: String[] | String
+  title_lt?: String
+  title_lte?: String
+  title_gt?: String
+  title_gte?: String
+  title_contains?: String
+  title_not_contains?: String
+  title_starts_with?: String
+  title_not_starts_with?: String
+  title_ends_with?: String
+  title_not_ends_with?: String
+  type?: InstitutionType
+  type_not?: InstitutionType
+  type_in?: InstitutionType[] | InstitutionType
+  type_not_in?: InstitutionType[] | InstitutionType
+  country?: CountryWhereInput
   users_every?: UserWhereInput
   users_some?: UserWhereInput
   users_none?: UserWhereInput
 }
 
-export interface CountryUpdateOneInput {
-  create?: CountryCreateInput
-  connect?: CountryWhereUniqueInput
-  disconnect?: CountryWhereUniqueInput
-  delete?: CountryWhereUniqueInput
-  update?: CountryUpdateNestedInput
-  upsert?: CountryUpsertNestedInput
+export interface InstitutionsUpdateOneWithoutUsersInput {
+  create?: InstitutionsCreateWithoutUsersInput
+  connect?: InstitutionsWhereUniqueInput
+  disconnect?: InstitutionsWhereUniqueInput
+  delete?: InstitutionsWhereUniqueInput
+  update?: InstitutionsUpdateWithoutUsersInput
+  upsert?: InstitutionsUpsertWithoutUsersInput
 }
 
 export interface InterestWhereInput {
@@ -7558,28 +6576,15 @@ export interface InterestWhereInput {
   name_not_starts_with?: String
   name_ends_with?: String
   name_not_ends_with?: String
-  avatar?: String
-  avatar_not?: String
-  avatar_in?: String[] | String
-  avatar_not_in?: String[] | String
-  avatar_lt?: String
-  avatar_lte?: String
-  avatar_gt?: String
-  avatar_gte?: String
-  avatar_contains?: String
-  avatar_not_contains?: String
-  avatar_starts_with?: String
-  avatar_not_starts_with?: String
-  avatar_ends_with?: String
-  avatar_not_ends_with?: String
+  file?: FileWhereInput
   users_every?: UserWhereInput
   users_some?: UserWhereInput
   users_none?: UserWhereInput
 }
 
-export interface CountryUpdateNestedInput {
-  where: CountryWhereUniqueInput
-  data: CountryUpdateDataInput
+export interface InstitutionsUpdateWithoutUsersInput {
+  where: InstitutionsWhereUniqueInput
+  data: InstitutionsUpdateWithoutUsersDataInput
 }
 
 export interface OpinionsWhereInput {
@@ -7633,15 +6638,15 @@ export interface OpinionsWhereInput {
   discussion?: DiscussionWhereInput
 }
 
-export interface CountryUpdateDataInput {
-  shortName?: String
-  name?: String
-  users?: UserUpdateManyWithoutCountryInput
+export interface InstitutionsUpdateWithoutUsersDataInput {
+  title?: String
+  type?: InstitutionType
+  country?: CountryUpdateOneInput
 }
 
-export interface SchoolWhereInput {
-  AND?: SchoolWhereInput[] | SchoolWhereInput
-  OR?: SchoolWhereInput[] | SchoolWhereInput
+export interface CountryWhereInput {
+  AND?: CountryWhereInput[] | CountryWhereInput
+  OR?: CountryWhereInput[] | CountryWhereInput
   id?: ID_Input
   id_not?: ID_Input
   id_in?: ID_Input[] | ID_Input
@@ -7672,80 +6677,70 @@ export interface SchoolWhereInput {
   updatedAt_lte?: DateTime
   updatedAt_gt?: DateTime
   updatedAt_gte?: DateTime
-  title?: String
-  title_not?: String
-  title_in?: String[] | String
-  title_not_in?: String[] | String
-  title_lt?: String
-  title_lte?: String
-  title_gt?: String
-  title_gte?: String
-  title_contains?: String
-  title_not_contains?: String
-  title_starts_with?: String
-  title_not_starts_with?: String
-  title_ends_with?: String
-  title_not_ends_with?: String
-  institution?: InstitutionsWhereInput
+  shortName?: String
+  shortName_not?: String
+  shortName_in?: String[] | String
+  shortName_not_in?: String[] | String
+  shortName_lt?: String
+  shortName_lte?: String
+  shortName_gt?: String
+  shortName_gte?: String
+  shortName_contains?: String
+  shortName_not_contains?: String
+  shortName_starts_with?: String
+  shortName_not_starts_with?: String
+  shortName_ends_with?: String
+  shortName_not_ends_with?: String
+  name?: String
+  name_not?: String
+  name_in?: String[] | String
+  name_not_in?: String[] | String
+  name_lt?: String
+  name_lte?: String
+  name_gt?: String
+  name_gte?: String
+  name_contains?: String
+  name_not_contains?: String
+  name_starts_with?: String
+  name_not_starts_with?: String
+  name_ends_with?: String
+  name_not_ends_with?: String
   users_every?: UserWhereInput
   users_some?: UserWhereInput
   users_none?: UserWhereInput
 }
 
-export interface DiscussionCreateWithoutAuthorInput {
-  title: String
-  slug?: String
-  content: String
-  private?: Boolean
-  tags?: DiscussionCreatetagsInput
-  favourites?: UserCreateManyWithoutFavouritesInput
-  opinions?: OpinionsCreateManyWithoutDiscussionInput
+export interface ConnectCreateManyWithoutFromInput {
+  create?: ConnectCreateWithoutFromInput[] | ConnectCreateWithoutFromInput
+  connect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
 }
 
-export interface OpinionsUpdateWithoutDiscussionDataInput {
-  content?: String
-  author?: UserUpdateOneWithoutOpinionsInput
+export interface OpinionsUpdateManyWithoutDiscussionInput {
+  create?: OpinionsCreateWithoutDiscussionInput[] | OpinionsCreateWithoutDiscussionInput
+  connect?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
+  disconnect?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
+  delete?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
+  update?: OpinionsUpdateWithoutDiscussionInput[] | OpinionsUpdateWithoutDiscussionInput
+  upsert?: OpinionsUpsertWithoutDiscussionInput[] | OpinionsUpsertWithoutDiscussionInput
 }
 
-export interface UserCreateManyWithoutFavouritesInput {
-  create?: UserCreateWithoutFavouritesInput[] | UserCreateWithoutFavouritesInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+export interface ConnectCreateWithoutFromInput {
+  accepted?: Boolean
+  to: UserCreateOneWithoutConnectToInput
 }
 
-export interface UserUpdateManyWithoutCountryInput {
-  create?: UserCreateWithoutCountryInput[] | UserCreateWithoutCountryInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  update?: UserUpdateWithoutCountryInput[] | UserUpdateWithoutCountryInput
-  upsert?: UserUpsertWithoutCountryInput[] | UserUpsertWithoutCountryInput
+export interface CountryUpdateOneInput {
+  create?: CountryCreateInput
+  connect?: CountryWhereUniqueInput
+  disconnect?: CountryWhereUniqueInput
+  delete?: CountryWhereUniqueInput
+  update?: CountryUpdateNestedInput
+  upsert?: CountryUpsertNestedInput
 }
 
-export interface UserCreateWithoutFavouritesInput {
-  email: String
-  username?: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryCreateOneWithoutUsersInput
-  institution?: InstitutionsCreateOneWithoutUsersInput
-  school?: SchoolCreateOneWithoutUsersInput
-  falculty?: FacultyCreateOneWithoutUsersInput
-  department?: DepartmentCreateOneWithoutUsersInput
-  interest?: InterestCreateOneWithoutUsersInput
-  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
-  connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
-  articles?: ArticleCreateManyWithoutAuthorInput
-  opinions?: OpinionsCreateManyWithoutAuthorInput
+export interface UserCreateOneWithoutConnectToInput {
+  create?: UserCreateWithoutConnectToInput
+  connect?: UserWhereUniqueInput
 }
 
 export interface OpinionsSubscriptionWhereInput {
@@ -7756,51 +6751,6 @@ export interface OpinionsSubscriptionWhereInput {
   updatedFields_contains_every?: String[] | String
   updatedFields_contains_some?: String[] | String
   node?: OpinionsWhereInput
-}
-
-export interface ConnectCreateManyWithoutFromInput {
-  create?: ConnectCreateWithoutFromInput[] | ConnectCreateWithoutFromInput
-  connect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
-}
-
-export interface ForumSubscriptionWhereInput {
-  AND?: ForumSubscriptionWhereInput[] | ForumSubscriptionWhereInput
-  OR?: ForumSubscriptionWhereInput[] | ForumSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: ForumWhereInput
-}
-
-export interface ConnectCreateWithoutFromInput {
-  accepted?: Boolean
-  to: UserCreateOneWithoutConnectToInput
-}
-
-export interface UserSubscriptionWhereInput {
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: UserWhereInput
-}
-
-export interface UserCreateOneWithoutConnectToInput {
-  create?: UserCreateWithoutConnectToInput
-  connect?: UserWhereUniqueInput
-}
-
-export interface InterestSubscriptionWhereInput {
-  AND?: InterestSubscriptionWhereInput[] | InterestSubscriptionWhereInput
-  OR?: InterestSubscriptionWhereInput[] | InterestSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: InterestWhereInput
 }
 
 export interface UserCreateWithoutConnectToInput {
@@ -7819,8 +6769,6 @@ export interface UserCreateWithoutConnectToInput {
   completedProfile?: Int
   country?: CountryCreateOneWithoutUsersInput
   institution?: InstitutionsCreateOneWithoutUsersInput
-  school?: SchoolCreateOneWithoutUsersInput
-  falculty?: FacultyCreateOneWithoutUsersInput
   department?: DepartmentCreateOneWithoutUsersInput
   interest?: InterestCreateOneWithoutUsersInput
   favourites?: DiscussionCreateManyWithoutFavouritesInput
@@ -7830,14 +6778,14 @@ export interface UserCreateWithoutConnectToInput {
   opinions?: OpinionsCreateManyWithoutAuthorInput
 }
 
-export interface DepartmentSubscriptionWhereInput {
-  AND?: DepartmentSubscriptionWhereInput[] | DepartmentSubscriptionWhereInput
-  OR?: DepartmentSubscriptionWhereInput[] | DepartmentSubscriptionWhereInput
+export interface ForumSubscriptionWhereInput {
+  AND?: ForumSubscriptionWhereInput[] | ForumSubscriptionWhereInput
+  OR?: ForumSubscriptionWhereInput[] | ForumSubscriptionWhereInput
   mutation_in?: MutationType[] | MutationType
   updatedFields_contains?: String
   updatedFields_contains_every?: String[] | String
   updatedFields_contains_some?: String[] | String
-  node?: DepartmentWhereInput
+  node?: ForumWhereInput
 }
 
 export interface ArticleCreateManyWithoutAuthorInput {
@@ -7845,14 +6793,14 @@ export interface ArticleCreateManyWithoutAuthorInput {
   connect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
 }
 
-export interface FacultySubscriptionWhereInput {
-  AND?: FacultySubscriptionWhereInput[] | FacultySubscriptionWhereInput
-  OR?: FacultySubscriptionWhereInput[] | FacultySubscriptionWhereInput
+export interface ConnectSubscriptionWhereInput {
+  AND?: ConnectSubscriptionWhereInput[] | ConnectSubscriptionWhereInput
+  OR?: ConnectSubscriptionWhereInput[] | ConnectSubscriptionWhereInput
   mutation_in?: MutationType[] | MutationType
   updatedFields_contains?: String
   updatedFields_contains_every?: String[] | String
   updatedFields_contains_some?: String[] | String
-  node?: FacultyWhereInput
+  node?: ConnectWhereInput
 }
 
 export interface ArticleCreateWithoutAuthorInput {
@@ -7860,6 +6808,21 @@ export interface ArticleCreateWithoutAuthorInput {
   title: String
   body: String
   type?: Arcticletype
+}
+
+export interface InterestSubscriptionWhereInput {
+  AND?: InterestSubscriptionWhereInput[] | InterestSubscriptionWhereInput
+  OR?: InterestSubscriptionWhereInput[] | InterestSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: InterestWhereInput
+}
+
+export interface OpinionsCreateManyWithoutAuthorInput {
+  create?: OpinionsCreateWithoutAuthorInput[] | OpinionsCreateWithoutAuthorInput
+  connect?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
 }
 
 export interface InstitutionsSubscriptionWhereInput {
@@ -7872,9 +6835,9 @@ export interface InstitutionsSubscriptionWhereInput {
   node?: InstitutionsWhereInput
 }
 
-export interface OpinionsCreateManyWithoutAuthorInput {
-  create?: OpinionsCreateWithoutAuthorInput[] | OpinionsCreateWithoutAuthorInput
-  connect?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
+export interface OpinionsCreateWithoutAuthorInput {
+  content: String
+  discussion: DiscussionCreateOneWithoutOpinionsInput
 }
 
 export interface ArticleSubscriptionWhereInput {
@@ -7887,9 +6850,9 @@ export interface ArticleSubscriptionWhereInput {
   node?: ArticleWhereInput
 }
 
-export interface OpinionsCreateWithoutAuthorInput {
-  content: String
-  discussion: DiscussionCreateOneWithoutOpinionsInput
+export interface DiscussionCreateOneWithoutOpinionsInput {
+  create?: DiscussionCreateWithoutOpinionsInput
+  connect?: DiscussionWhereUniqueInput
 }
 
 export interface PostSubscriptionWhereInput {
@@ -7902,17 +6865,6 @@ export interface PostSubscriptionWhereInput {
   node?: PostWhereInput
 }
 
-export interface DiscussionCreateOneWithoutOpinionsInput {
-  create?: DiscussionCreateWithoutOpinionsInput
-  connect?: DiscussionWhereUniqueInput
-}
-
-export interface FileWhereUniqueInput {
-  id?: ID_Input
-  secret?: String
-  url?: String
-}
-
 export interface DiscussionCreateWithoutOpinionsInput {
   title: String
   slug?: String
@@ -7923,8 +6875,10 @@ export interface DiscussionCreateWithoutOpinionsInput {
   author: UserCreateOneWithoutMyDiscussionsInput
 }
 
-export interface ArticleWhereUniqueInput {
+export interface FileWhereUniqueInput {
   id?: ID_Input
+  secret?: String
+  url?: String
 }
 
 export interface OpinionsCreateManyWithoutDiscussionInput {
@@ -7932,7 +6886,7 @@ export interface OpinionsCreateManyWithoutDiscussionInput {
   connect?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
 }
 
-export interface InstitutionsWhereUniqueInput {
+export interface ArticleWhereUniqueInput {
   id?: ID_Input
 }
 
@@ -7941,7 +6895,7 @@ export interface OpinionsCreateWithoutDiscussionInput {
   author: UserCreateOneWithoutOpinionsInput
 }
 
-export interface FacultyWhereUniqueInput {
+export interface InstitutionsWhereUniqueInput {
   id?: ID_Input
 }
 
@@ -7970,8 +6924,6 @@ export interface UserCreateWithoutOpinionsInput {
   completedProfile?: Int
   country?: CountryCreateOneWithoutUsersInput
   institution?: InstitutionsCreateOneWithoutUsersInput
-  school?: SchoolCreateOneWithoutUsersInput
-  falculty?: FacultyCreateOneWithoutUsersInput
   department?: DepartmentCreateOneWithoutUsersInput
   interest?: InterestCreateOneWithoutUsersInput
   favourites?: DiscussionCreateManyWithoutFavouritesInput
@@ -7987,7 +6939,7 @@ export interface ConnectWhereUniqueInput {
 
 export interface DepartmentCreateInput {
   name: String
-  falculty: FacultyCreateOneInput
+  institution: InstitutionsCreateOneInput
   users?: UserCreateManyWithoutDepartmentInput
 }
 
@@ -8022,8 +6974,6 @@ export interface UserCreateWithoutDepartmentInput {
   completedProfile?: Int
   country?: CountryCreateOneWithoutUsersInput
   institution?: InstitutionsCreateOneWithoutUsersInput
-  school?: SchoolCreateOneWithoutUsersInput
-  falculty?: FacultyCreateOneWithoutUsersInput
   interest?: InterestCreateOneWithoutUsersInput
   favourites?: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions?: DiscussionCreateOneWithoutAuthorInput
@@ -8041,7 +6991,7 @@ export interface UserUpsertNestedInput {
 
 export interface InterestCreateInput {
   name: String
-  avatar: String
+  file: FileCreateOneInput
   users?: UserCreateManyWithoutInterestInput
 }
 
@@ -8078,8 +7028,6 @@ export interface UserCreateWithoutInterestInput {
   completedProfile?: Int
   country?: CountryCreateOneWithoutUsersInput
   institution?: InstitutionsCreateOneWithoutUsersInput
-  school?: SchoolCreateOneWithoutUsersInput
-  falculty?: FacultyCreateOneWithoutUsersInput
   department?: DepartmentCreateOneWithoutUsersInput
   favourites?: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions?: DiscussionCreateOneWithoutAuthorInput
@@ -8105,8 +7053,6 @@ export interface UserUpdateInput {
   completedProfile?: Int
   country?: CountryUpdateOneWithoutUsersInput
   institution?: InstitutionsUpdateOneWithoutUsersInput
-  school?: SchoolUpdateOneWithoutUsersInput
-  falculty?: FacultyUpdateOneWithoutUsersInput
   department?: DepartmentUpdateOneWithoutUsersInput
   interest?: InterestUpdateOneWithoutUsersInput
   favourites?: DiscussionUpdateManyWithoutFavouritesInput
@@ -8133,8 +7079,6 @@ export interface UserCreateInput {
   completedProfile?: Int
   country?: CountryCreateOneWithoutUsersInput
   institution?: InstitutionsCreateOneWithoutUsersInput
-  school?: SchoolCreateOneWithoutUsersInput
-  falculty?: FacultyCreateOneWithoutUsersInput
   department?: DepartmentCreateOneWithoutUsersInput
   interest?: InterestCreateOneWithoutUsersInput
   favourites?: DiscussionCreateManyWithoutFavouritesInput
@@ -8161,8 +7105,6 @@ export interface UserUpdateWithoutInterestDataInput {
   completedProfile?: Int
   country?: CountryUpdateOneWithoutUsersInput
   institution?: InstitutionsUpdateOneWithoutUsersInput
-  school?: SchoolUpdateOneWithoutUsersInput
-  falculty?: FacultyUpdateOneWithoutUsersInput
   department?: DepartmentUpdateOneWithoutUsersInput
   favourites?: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
@@ -8223,7 +7165,7 @@ export interface DiscussionCreateInput {
 
 export interface DepartmentUpdateInput {
   name?: String
-  falculty?: FacultyUpdateOneInput
+  institution?: InstitutionsUpdateOneInput
   users?: UserUpdateManyWithoutDepartmentInput
 }
 
@@ -8233,10 +7175,10 @@ export interface OpinionsCreateInput {
   discussion: DiscussionCreateOneWithoutOpinionsInput
 }
 
-export interface SchoolUpdateInput {
-  title?: String
-  institution?: InstitutionsUpdateOneInput
-  users?: UserUpdateManyWithoutSchoolInput
+export interface CountryUpdateInput {
+  shortName?: String
+  name?: String
+  users?: UserUpdateManyWithoutCountryInput
 }
 
 export interface FileUpdateInput {
@@ -8247,55 +7189,39 @@ export interface FileUpdateInput {
   url?: String
 }
 
-export interface CountryUpdateInput {
-  shortName?: String
-  name?: String
-  users?: UserUpdateManyWithoutCountryInput
-}
-
-export interface PostUpdateInput {
-  isPublished?: Boolean
-  title?: String
-  text?: String
-}
-
 export interface InstitutionsUpsertWithoutUsersInput {
   where: InstitutionsWhereUniqueInput
   update: InstitutionsUpdateWithoutUsersDataInput
   create: InstitutionsCreateWithoutUsersInput
 }
 
-export interface UserUpdateWithoutOpinionsDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryUpdateOneWithoutUsersInput
-  institution?: InstitutionsUpdateOneWithoutUsersInput
-  school?: SchoolUpdateOneWithoutUsersInput
-  falculty?: FacultyUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  interest?: InterestUpdateOneWithoutUsersInput
-  favourites?: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
-  connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
+export interface UserUpdateOneWithoutOpinionsInput {
+  create?: UserCreateWithoutOpinionsInput
+  connect?: UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput
+  delete?: UserWhereUniqueInput
+  update?: UserUpdateWithoutOpinionsInput
+  upsert?: UserUpsertWithoutOpinionsInput
 }
 
 export interface UserUpsertWithoutCountryInput {
   where: UserWhereUniqueInput
   update: UserUpdateWithoutCountryDataInput
   create: UserCreateWithoutCountryInput
+}
+
+export interface ArticleUpdateInput {
+  isPublished?: Boolean
+  title?: String
+  body?: String
+  type?: Arcticletype
+  author?: UserUpdateOneWithoutArticlesInput
+}
+
+export interface InstitutionsUpsertNestedInput {
+  where: InstitutionsWhereUniqueInput
+  update: InstitutionsUpdateDataInput
+  create: InstitutionsCreateInput
 }
 
 export interface UserUpdateOneWithoutArticlesInput {
@@ -8307,10 +7233,10 @@ export interface UserUpdateOneWithoutArticlesInput {
   upsert?: UserUpsertWithoutArticlesInput
 }
 
-export interface InstitutionsUpsertNestedInput {
-  where: InstitutionsWhereUniqueInput
-  update: InstitutionsUpdateDataInput
-  create: InstitutionsCreateInput
+export interface DiscussionUpsertWithoutFavouritesInput {
+  where: DiscussionWhereUniqueInput
+  update: DiscussionUpdateWithoutFavouritesDataInput
+  create: DiscussionCreateWithoutFavouritesInput
 }
 
 export interface UserUpdateWithoutArticlesInput {
@@ -8318,10 +7244,10 @@ export interface UserUpdateWithoutArticlesInput {
   data: UserUpdateWithoutArticlesDataInput
 }
 
-export interface FacultyUpsertWithoutUsersInput {
-  where: FacultyWhereUniqueInput
-  update: FacultyUpdateWithoutUsersDataInput
-  create: FacultyCreateWithoutUsersInput
+export interface ConnectUpsertWithoutToInput {
+  where: ConnectWhereUniqueInput
+  update: ConnectUpdateWithoutToDataInput
+  create: ConnectCreateWithoutToInput
 }
 
 export interface UserUpdateWithoutArticlesDataInput {
@@ -8340,8 +7266,6 @@ export interface UserUpdateWithoutArticlesDataInput {
   completedProfile?: Int
   country?: CountryUpdateOneWithoutUsersInput
   institution?: InstitutionsUpdateOneWithoutUsersInput
-  school?: SchoolUpdateOneWithoutUsersInput
-  falculty?: FacultyUpdateOneWithoutUsersInput
   department?: DepartmentUpdateOneWithoutUsersInput
   interest?: InterestUpdateOneWithoutUsersInput
   favourites?: DiscussionUpdateManyWithoutFavouritesInput
@@ -8351,10 +7275,10 @@ export interface UserUpdateWithoutArticlesDataInput {
   opinions?: OpinionsUpdateManyWithoutAuthorInput
 }
 
-export interface UserUpsertWithoutSchoolInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutSchoolDataInput
-  create: UserCreateWithoutSchoolInput
+export interface DiscussionUpsertWithoutAuthorInput {
+  where: DiscussionWhereUniqueInput
+  update: DiscussionUpdateWithoutAuthorDataInput
+  create: DiscussionCreateWithoutAuthorInput
 }
 
 export interface CountryUpdateOneWithoutUsersInput {
@@ -8366,10 +7290,10 @@ export interface CountryUpdateOneWithoutUsersInput {
   upsert?: CountryUpsertWithoutUsersInput
 }
 
-export interface FacultyUpsertNestedInput {
-  where: FacultyWhereUniqueInput
-  update: FacultyUpdateDataInput
-  create: FacultyCreateInput
+export interface UserUpsertWithoutOpinionsInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutOpinionsDataInput
+  create: UserCreateWithoutOpinionsInput
 }
 
 export interface CountryUpdateWithoutUsersInput {
@@ -8377,53 +7301,14 @@ export interface CountryUpdateWithoutUsersInput {
   data: CountryUpdateWithoutUsersDataInput
 }
 
-export interface DiscussionUpsertWithoutFavouritesInput {
-  where: DiscussionWhereUniqueInput
-  update: DiscussionUpdateWithoutFavouritesDataInput
-  create: DiscussionCreateWithoutFavouritesInput
+export interface UserUpdateWithoutOpinionsInput {
+  where: UserWhereUniqueInput
+  data: UserUpdateWithoutOpinionsDataInput
 }
 
 export interface CountryUpdateWithoutUsersDataInput {
   shortName?: String
   name?: String
-}
-
-export interface ConnectUpsertWithoutToInput {
-  where: ConnectWhereUniqueInput
-  update: ConnectUpdateWithoutToDataInput
-  create: ConnectCreateWithoutToInput
-}
-
-export interface CountryUpsertWithoutUsersInput {
-  where: CountryWhereUniqueInput
-  update: CountryUpdateWithoutUsersDataInput
-  create: CountryCreateWithoutUsersInput
-}
-
-export interface DiscussionUpsertWithoutAuthorInput {
-  where: DiscussionWhereUniqueInput
-  update: DiscussionUpdateWithoutAuthorDataInput
-  create: DiscussionCreateWithoutAuthorInput
-}
-
-export interface InstitutionsUpdateOneWithoutUsersInput {
-  create?: InstitutionsCreateWithoutUsersInput
-  connect?: InstitutionsWhereUniqueInput
-  disconnect?: InstitutionsWhereUniqueInput
-  delete?: InstitutionsWhereUniqueInput
-  update?: InstitutionsUpdateWithoutUsersInput
-  upsert?: InstitutionsUpsertWithoutUsersInput
-}
-
-export interface UserUpsertWithoutOpinionsInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutOpinionsDataInput
-  create: UserCreateWithoutOpinionsInput
-}
-
-export interface InstitutionsUpdateWithoutUsersInput {
-  where: InstitutionsWhereUniqueInput
-  data: InstitutionsUpdateWithoutUsersDataInput
 }
 
 export interface PostCreateInput {
@@ -8479,7 +7364,7 @@ export interface DepartmentWhereInput {
   name_not_starts_with?: String
   name_ends_with?: String
   name_not_ends_with?: String
-  falculty?: FacultyWhereInput
+  institution?: InstitutionsWhereInput
   users_every?: UserWhereInput
   users_some?: UserWhereInput
   users_none?: UserWhereInput
@@ -8625,9 +7510,9 @@ export interface InstitutionsCreateOneWithoutUsersInput {
   connect?: InstitutionsWhereUniqueInput
 }
 
-export interface UserUpdateWithoutOpinionsInput {
-  where: UserWhereUniqueInput
-  data: UserUpdateWithoutOpinionsDataInput
+export interface OpinionsUpdateWithoutDiscussionDataInput {
+  content?: String
+  author?: UserUpdateOneWithoutOpinionsInput
 }
 
 export interface CountryCreateOneInput {
@@ -8635,17 +7520,48 @@ export interface CountryCreateOneInput {
   connect?: CountryWhereUniqueInput
 }
 
-export interface UserUpdateOneWithoutOpinionsInput {
-  create?: UserCreateWithoutOpinionsInput
-  connect?: UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput
-  delete?: UserWhereUniqueInput
-  update?: UserUpdateWithoutOpinionsInput
-  upsert?: UserUpsertWithoutOpinionsInput
+export interface OpinionsUpdateWithoutDiscussionInput {
+  where: OpinionsWhereUniqueInput
+  data: OpinionsUpdateWithoutDiscussionDataInput
 }
 
 export interface UserCreateManyWithoutCountryInput {
   create?: UserCreateWithoutCountryInput[] | UserCreateWithoutCountryInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+}
+
+export interface CountryUpdateNestedInput {
+  where: CountryWhereUniqueInput
+  data: CountryUpdateDataInput
+}
+
+export interface DepartmentCreateOneWithoutUsersInput {
+  create?: DepartmentCreateWithoutUsersInput
+  connect?: DepartmentWhereUniqueInput
+}
+
+export interface CountryUpdateDataInput {
+  shortName?: String
+  name?: String
+  users?: UserUpdateManyWithoutCountryInput
+}
+
+export interface InstitutionsCreateOneInput {
+  create?: InstitutionsCreateInput
+  connect?: InstitutionsWhereUniqueInput
+}
+
+export interface UserUpdateManyWithoutCountryInput {
+  create?: UserCreateWithoutCountryInput[] | UserCreateWithoutCountryInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  update?: UserUpdateWithoutCountryInput[] | UserUpdateWithoutCountryInput
+  upsert?: UserUpsertWithoutCountryInput[] | UserUpsertWithoutCountryInput
+}
+
+export interface UserCreateManyWithoutInstitutionInput {
+  create?: UserCreateWithoutInstitutionInput[] | UserCreateWithoutInstitutionInput
   connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
 }
 
@@ -8654,9 +7570,9 @@ export interface UserUpdateWithoutCountryInput {
   data: UserUpdateWithoutCountryDataInput
 }
 
-export interface SchoolCreateOneWithoutUsersInput {
-  create?: SchoolCreateWithoutUsersInput
-  connect?: SchoolWhereUniqueInput
+export interface InterestCreateOneWithoutUsersInput {
+  create?: InterestCreateWithoutUsersInput
+  connect?: InterestWhereUniqueInput
 }
 
 export interface UserUpdateWithoutCountryDataInput {
@@ -8674,8 +7590,6 @@ export interface UserUpdateWithoutCountryDataInput {
   newProfileNot?: Boolean
   completedProfile?: Int
   institution?: InstitutionsUpdateOneWithoutUsersInput
-  school?: SchoolUpdateOneWithoutUsersInput
-  falculty?: FacultyUpdateOneWithoutUsersInput
   department?: DepartmentUpdateOneWithoutUsersInput
   interest?: InterestUpdateOneWithoutUsersInput
   favourites?: DiscussionUpdateManyWithoutFavouritesInput
@@ -8686,43 +7600,48 @@ export interface UserUpdateWithoutCountryDataInput {
   opinions?: OpinionsUpdateManyWithoutAuthorInput
 }
 
-export interface InstitutionsCreateOneInput {
-  create?: InstitutionsCreateInput
-  connect?: InstitutionsWhereUniqueInput
+export interface FileCreateOneInput {
+  create?: FileCreateInput
+  connect?: FileWhereUniqueInput
 }
 
-export interface SchoolUpdateOneWithoutUsersInput {
-  create?: SchoolCreateWithoutUsersInput
-  connect?: SchoolWhereUniqueInput
-  disconnect?: SchoolWhereUniqueInput
-  delete?: SchoolWhereUniqueInput
-  update?: SchoolUpdateWithoutUsersInput
-  upsert?: SchoolUpsertWithoutUsersInput
+export interface DepartmentUpdateOneWithoutUsersInput {
+  create?: DepartmentCreateWithoutUsersInput
+  connect?: DepartmentWhereUniqueInput
+  disconnect?: DepartmentWhereUniqueInput
+  delete?: DepartmentWhereUniqueInput
+  update?: DepartmentUpdateWithoutUsersInput
+  upsert?: DepartmentUpsertWithoutUsersInput
 }
 
-export interface UserCreateManyWithoutInstitutionInput {
-  create?: UserCreateWithoutInstitutionInput[] | UserCreateWithoutInstitutionInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+export interface DiscussionCreateWithoutFavouritesInput {
+  title: String
+  slug?: String
+  content: String
+  private?: Boolean
+  tags?: DiscussionCreatetagsInput
+  author: UserCreateOneWithoutMyDiscussionsInput
+  opinions?: OpinionsCreateManyWithoutDiscussionInput
 }
 
-export interface SchoolUpdateWithoutUsersInput {
-  where: SchoolWhereUniqueInput
-  data: SchoolUpdateWithoutUsersDataInput
+export interface DepartmentUpdateWithoutUsersInput {
+  where: DepartmentWhereUniqueInput
+  data: DepartmentUpdateWithoutUsersDataInput
 }
 
-export interface FacultyCreateOneWithoutUsersInput {
-  create?: FacultyCreateWithoutUsersInput
-  connect?: FacultyWhereUniqueInput
+export interface UserCreateOneWithoutMyDiscussionsInput {
+  create?: UserCreateWithoutMyDiscussionsInput
+  connect?: UserWhereUniqueInput
 }
 
-export interface SchoolUpdateWithoutUsersDataInput {
-  title?: String
+export interface DepartmentUpdateWithoutUsersDataInput {
+  name?: String
   institution?: InstitutionsUpdateOneInput
 }
 
-export interface SchoolCreateOneInput {
-  create?: SchoolCreateInput
-  connect?: SchoolWhereUniqueInput
+export interface ConnectCreateManyWithoutToInput {
+  create?: ConnectCreateWithoutToInput[] | ConnectCreateWithoutToInput
+  connect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
 }
 
 export interface InstitutionsUpdateOneInput {
@@ -8734,9 +7653,9 @@ export interface InstitutionsUpdateOneInput {
   upsert?: InstitutionsUpsertNestedInput
 }
 
-export interface UserCreateManyWithoutSchoolInput {
-  create?: UserCreateWithoutSchoolInput[] | UserCreateWithoutSchoolInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+export interface UserCreateOneWithoutConectFromInput {
+  create?: UserCreateWithoutConectFromInput
+  connect?: UserWhereUniqueInput
 }
 
 export interface InstitutionsUpdateNestedInput {
@@ -8744,21 +7663,21 @@ export interface InstitutionsUpdateNestedInput {
   data: InstitutionsUpdateDataInput
 }
 
-export interface DepartmentCreateOneWithoutUsersInput {
-  create?: DepartmentCreateWithoutUsersInput
-  connect?: DepartmentWhereUniqueInput
+export interface DiscussionCreateOneWithoutAuthorInput {
+  create?: DiscussionCreateWithoutAuthorInput
+  connect?: DiscussionWhereUniqueInput
 }
 
 export interface InstitutionsUpdateDataInput {
   title?: String
   type?: InstitutionType
-  Country?: CountryUpdateOneInput
+  country?: CountryUpdateOneInput
   users?: UserUpdateManyWithoutInstitutionInput
 }
 
-export interface FacultyCreateOneInput {
-  create?: FacultyCreateInput
-  connect?: FacultyWhereUniqueInput
+export interface UserCreateManyWithoutFavouritesInput {
+  create?: UserCreateWithoutFavouritesInput[] | UserCreateWithoutFavouritesInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
 }
 
 export interface UserUpdateManyWithoutInstitutionInput {
@@ -8768,231 +7687,6 @@ export interface UserUpdateManyWithoutInstitutionInput {
   delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
   update?: UserUpdateWithoutInstitutionInput[] | UserUpdateWithoutInstitutionInput
   upsert?: UserUpsertWithoutInstitutionInput[] | UserUpsertWithoutInstitutionInput
-}
-
-export interface UserCreateManyWithoutFalcultyInput {
-  create?: UserCreateWithoutFalcultyInput[] | UserCreateWithoutFalcultyInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-}
-
-export interface UserUpdateWithoutInstitutionInput {
-  where: UserWhereUniqueInput
-  data: UserUpdateWithoutInstitutionDataInput
-}
-
-export interface InterestCreateOneWithoutUsersInput {
-  create?: InterestCreateWithoutUsersInput
-  connect?: InterestWhereUniqueInput
-}
-
-export interface UserUpdateWithoutInstitutionDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryUpdateOneWithoutUsersInput
-  school?: SchoolUpdateOneWithoutUsersInput
-  falculty?: FacultyUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  interest?: InterestUpdateOneWithoutUsersInput
-  favourites?: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
-  connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
-  opinions?: OpinionsUpdateManyWithoutAuthorInput
-}
-
-export interface DiscussionCreateManyWithoutFavouritesInput {
-  create?: DiscussionCreateWithoutFavouritesInput[] | DiscussionCreateWithoutFavouritesInput
-  connect?: DiscussionWhereUniqueInput[] | DiscussionWhereUniqueInput
-}
-
-export interface FacultyUpdateOneWithoutUsersInput {
-  create?: FacultyCreateWithoutUsersInput
-  connect?: FacultyWhereUniqueInput
-  disconnect?: FacultyWhereUniqueInput
-  delete?: FacultyWhereUniqueInput
-  update?: FacultyUpdateWithoutUsersInput
-  upsert?: FacultyUpsertWithoutUsersInput
-}
-
-export interface DiscussionCreatetagsInput {
-  set?: String[] | String
-}
-
-export interface FacultyUpdateWithoutUsersInput {
-  where: FacultyWhereUniqueInput
-  data: FacultyUpdateWithoutUsersDataInput
-}
-
-export interface UserCreateWithoutMyDiscussionsInput {
-  email: String
-  username?: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryCreateOneWithoutUsersInput
-  institution?: InstitutionsCreateOneWithoutUsersInput
-  school?: SchoolCreateOneWithoutUsersInput
-  falculty?: FacultyCreateOneWithoutUsersInput
-  department?: DepartmentCreateOneWithoutUsersInput
-  interest?: InterestCreateOneWithoutUsersInput
-  favourites?: DiscussionCreateManyWithoutFavouritesInput
-  connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
-  articles?: ArticleCreateManyWithoutAuthorInput
-  opinions?: OpinionsCreateManyWithoutAuthorInput
-}
-
-export interface FacultyUpdateWithoutUsersDataInput {
-  name?: String
-  school?: SchoolUpdateOneInput
-}
-
-export interface ConnectCreateWithoutToInput {
-  accepted?: Boolean
-  from: UserCreateOneWithoutConectFromInput
-}
-
-export interface SchoolUpdateOneInput {
-  create?: SchoolCreateInput
-  connect?: SchoolWhereUniqueInput
-  disconnect?: SchoolWhereUniqueInput
-  delete?: SchoolWhereUniqueInput
-  update?: SchoolUpdateNestedInput
-  upsert?: SchoolUpsertNestedInput
-}
-
-export interface UserCreateWithoutConectFromInput {
-  email: String
-  username?: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryCreateOneWithoutUsersInput
-  institution?: InstitutionsCreateOneWithoutUsersInput
-  school?: SchoolCreateOneWithoutUsersInput
-  falculty?: FacultyCreateOneWithoutUsersInput
-  department?: DepartmentCreateOneWithoutUsersInput
-  interest?: InterestCreateOneWithoutUsersInput
-  favourites?: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
-  connectTo?: ConnectCreateManyWithoutToInput
-  articles?: ArticleCreateManyWithoutAuthorInput
-  opinions?: OpinionsCreateManyWithoutAuthorInput
-}
-
-export interface SchoolUpdateNestedInput {
-  where: SchoolWhereUniqueInput
-  data: SchoolUpdateDataInput
-}
-
-export interface InstitutionsWhereInput {
-  AND?: InstitutionsWhereInput[] | InstitutionsWhereInput
-  OR?: InstitutionsWhereInput[] | InstitutionsWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  createdAt?: DateTime
-  createdAt_not?: DateTime
-  createdAt_in?: DateTime[] | DateTime
-  createdAt_not_in?: DateTime[] | DateTime
-  createdAt_lt?: DateTime
-  createdAt_lte?: DateTime
-  createdAt_gt?: DateTime
-  createdAt_gte?: DateTime
-  updatedAt?: DateTime
-  updatedAt_not?: DateTime
-  updatedAt_in?: DateTime[] | DateTime
-  updatedAt_not_in?: DateTime[] | DateTime
-  updatedAt_lt?: DateTime
-  updatedAt_lte?: DateTime
-  updatedAt_gt?: DateTime
-  updatedAt_gte?: DateTime
-  title?: String
-  title_not?: String
-  title_in?: String[] | String
-  title_not_in?: String[] | String
-  title_lt?: String
-  title_lte?: String
-  title_gt?: String
-  title_gte?: String
-  title_contains?: String
-  title_not_contains?: String
-  title_starts_with?: String
-  title_not_starts_with?: String
-  title_ends_with?: String
-  title_not_ends_with?: String
-  type?: InstitutionType
-  type_not?: InstitutionType
-  type_in?: InstitutionType[] | InstitutionType
-  type_not_in?: InstitutionType[] | InstitutionType
-  Country?: CountryWhereInput
-  users_every?: UserWhereInput
-  users_some?: UserWhereInput
-  users_none?: UserWhereInput
-}
-
-export interface SchoolUpdateDataInput {
-  title?: String
-  institution?: InstitutionsUpdateOneInput
-  users?: UserUpdateManyWithoutSchoolInput
-}
-
-export interface ConnectSubscriptionWhereInput {
-  AND?: ConnectSubscriptionWhereInput[] | ConnectSubscriptionWhereInput
-  OR?: ConnectSubscriptionWhereInput[] | ConnectSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: ConnectWhereInput
-}
-
-export interface UserUpdateManyWithoutSchoolInput {
-  create?: UserCreateWithoutSchoolInput[] | UserCreateWithoutSchoolInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  update?: UserUpdateWithoutSchoolInput[] | UserUpdateWithoutSchoolInput
-  upsert?: UserUpsertWithoutSchoolInput[] | UserUpsertWithoutSchoolInput
 }
 
 export interface UserWhereInput {
@@ -9158,8 +7852,6 @@ export interface UserWhereInput {
   completedProfile_gte?: Int
   country?: CountryWhereInput
   institution?: InstitutionsWhereInput
-  school?: SchoolWhereInput
-  falculty?: FacultyWhereInput
   department?: DepartmentWhereInput
   interest?: InterestWhereInput
   favourites_every?: DiscussionWhereInput
@@ -9180,903 +7872,9 @@ export interface UserWhereInput {
   opinions_none?: OpinionsWhereInput
 }
 
-export interface UserUpdateWithoutSchoolInput {
+export interface UserUpdateWithoutInstitutionInput {
   where: UserWhereUniqueInput
-  data: UserUpdateWithoutSchoolDataInput
-}
-
-export interface SchoolSubscriptionWhereInput {
-  AND?: SchoolSubscriptionWhereInput[] | SchoolSubscriptionWhereInput
-  OR?: SchoolSubscriptionWhereInput[] | SchoolSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: SchoolWhereInput
-}
-
-export interface UserUpdateWithoutSchoolDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryUpdateOneWithoutUsersInput
-  institution?: InstitutionsUpdateOneWithoutUsersInput
-  falculty?: FacultyUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  interest?: InterestUpdateOneWithoutUsersInput
-  favourites?: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
-  connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
-  opinions?: OpinionsUpdateManyWithoutAuthorInput
-}
-
-export interface CountrySubscriptionWhereInput {
-  AND?: CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput
-  OR?: CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: CountryWhereInput
-}
-
-export interface DepartmentUpdateOneWithoutUsersInput {
-  create?: DepartmentCreateWithoutUsersInput
-  connect?: DepartmentWhereUniqueInput
-  disconnect?: DepartmentWhereUniqueInput
-  delete?: DepartmentWhereUniqueInput
-  update?: DepartmentUpdateWithoutUsersInput
-  upsert?: DepartmentUpsertWithoutUsersInput
-}
-
-export interface FileSubscriptionWhereInput {
-  AND?: FileSubscriptionWhereInput[] | FileSubscriptionWhereInput
-  OR?: FileSubscriptionWhereInput[] | FileSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: FileWhereInput
-}
-
-export interface DepartmentUpdateWithoutUsersInput {
-  where: DepartmentWhereUniqueInput
-  data: DepartmentUpdateWithoutUsersDataInput
-}
-
-export interface CountryWhereUniqueInput {
-  id?: ID_Input
-  shortName?: String
-  name?: String
-}
-
-export interface DepartmentUpdateWithoutUsersDataInput {
-  name?: String
-  falculty?: FacultyUpdateOneInput
-}
-
-export interface DepartmentWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface FacultyUpdateOneInput {
-  create?: FacultyCreateInput
-  connect?: FacultyWhereUniqueInput
-  disconnect?: FacultyWhereUniqueInput
-  delete?: FacultyWhereUniqueInput
-  update?: FacultyUpdateNestedInput
-  upsert?: FacultyUpsertNestedInput
-}
-
-export interface ForumWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface FacultyUpdateNestedInput {
-  where: FacultyWhereUniqueInput
-  data: FacultyUpdateDataInput
-}
-
-export interface DiscussionUpdateInput {
-  title?: String
-  slug?: String
-  content?: String
-  private?: Boolean
-  tags?: DiscussionUpdatetagsInput
-  favourites?: UserUpdateManyWithoutFavouritesInput
-  author?: UserUpdateOneWithoutMyDiscussionsInput
-  opinions?: OpinionsUpdateManyWithoutDiscussionInput
-}
-
-export interface FacultyUpdateDataInput {
-  name?: String
-  school?: SchoolUpdateOneInput
-  users?: UserUpdateManyWithoutFalcultyInput
-}
-
-export interface UserUpdateOneInput {
-  create?: UserCreateInput
-  connect?: UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput
-  delete?: UserWhereUniqueInput
-  update?: UserUpdateNestedInput
-  upsert?: UserUpsertNestedInput
-}
-
-export interface UserUpdateManyWithoutFalcultyInput {
-  create?: UserCreateWithoutFalcultyInput[] | UserCreateWithoutFalcultyInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  update?: UserUpdateWithoutFalcultyInput[] | UserUpdateWithoutFalcultyInput
-  upsert?: UserUpsertWithoutFalcultyInput[] | UserUpsertWithoutFalcultyInput
-}
-
-export interface UserUpsertWithoutInterestInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutInterestDataInput
-  create: UserCreateWithoutInterestInput
-}
-
-export interface UserUpdateWithoutFalcultyInput {
-  where: UserWhereUniqueInput
-  data: UserUpdateWithoutFalcultyDataInput
-}
-
-export interface InterestUpdateInput {
-  name?: String
-  avatar?: String
-  users?: UserUpdateManyWithoutInterestInput
-}
-
-export interface UserUpdateWithoutFalcultyDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryUpdateOneWithoutUsersInput
-  institution?: InstitutionsUpdateOneWithoutUsersInput
-  school?: SchoolUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  interest?: InterestUpdateOneWithoutUsersInput
-  favourites?: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
-  connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
-  opinions?: OpinionsUpdateManyWithoutAuthorInput
-}
-
-export interface UserUpdateManyWithoutDepartmentInput {
-  create?: UserCreateWithoutDepartmentInput[] | UserCreateWithoutDepartmentInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  update?: UserUpdateWithoutDepartmentInput[] | UserUpdateWithoutDepartmentInput
-  upsert?: UserUpsertWithoutDepartmentInput[] | UserUpsertWithoutDepartmentInput
-}
-
-export interface InterestUpdateOneWithoutUsersInput {
-  create?: InterestCreateWithoutUsersInput
-  connect?: InterestWhereUniqueInput
-  disconnect?: InterestWhereUniqueInput
-  delete?: InterestWhereUniqueInput
-  update?: InterestUpdateWithoutUsersInput
-  upsert?: InterestUpsertWithoutUsersInput
-}
-
-export interface InstitutionsUpdateInput {
-  title?: String
-  type?: InstitutionType
-  Country?: CountryUpdateOneInput
-  users?: UserUpdateManyWithoutInstitutionInput
-}
-
-export interface InterestUpdateWithoutUsersInput {
-  where: InterestWhereUniqueInput
-  data: InterestUpdateWithoutUsersDataInput
-}
-
-export interface CountryUpsertNestedInput {
-  where: CountryWhereUniqueInput
-  update: CountryUpdateDataInput
-  create: CountryCreateInput
-}
-
-export interface InterestUpdateWithoutUsersDataInput {
-  name?: String
-  avatar?: String
-}
-
-export interface UserUpsertWithoutInstitutionInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutInstitutionDataInput
-  create: UserCreateWithoutInstitutionInput
-}
-
-export interface InterestUpsertWithoutUsersInput {
-  where: InterestWhereUniqueInput
-  update: InterestUpdateWithoutUsersDataInput
-  create: InterestCreateWithoutUsersInput
-}
-
-export interface DepartmentUpsertWithoutUsersInput {
-  where: DepartmentWhereUniqueInput
-  update: DepartmentUpdateWithoutUsersDataInput
-  create: DepartmentCreateWithoutUsersInput
-}
-
-export interface DiscussionUpdateManyWithoutFavouritesInput {
-  create?: DiscussionCreateWithoutFavouritesInput[] | DiscussionCreateWithoutFavouritesInput
-  connect?: DiscussionWhereUniqueInput[] | DiscussionWhereUniqueInput
-  disconnect?: DiscussionWhereUniqueInput[] | DiscussionWhereUniqueInput
-  delete?: DiscussionWhereUniqueInput[] | DiscussionWhereUniqueInput
-  update?: DiscussionUpdateWithoutFavouritesInput[] | DiscussionUpdateWithoutFavouritesInput
-  upsert?: DiscussionUpsertWithoutFavouritesInput[] | DiscussionUpsertWithoutFavouritesInput
-}
-
-export interface UserUpsertWithoutMyDiscussionsInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutMyDiscussionsDataInput
-  create: UserCreateWithoutMyDiscussionsInput
-}
-
-export interface DiscussionUpdateWithoutFavouritesInput {
-  where: DiscussionWhereUniqueInput
-  data: DiscussionUpdateWithoutFavouritesDataInput
-}
-
-export interface OpinionsUpsertWithoutDiscussionInput {
-  where: OpinionsWhereUniqueInput
-  update: OpinionsUpdateWithoutDiscussionDataInput
-  create: OpinionsCreateWithoutDiscussionInput
-}
-
-export interface DiscussionUpdateWithoutFavouritesDataInput {
-  title?: String
-  slug?: String
-  content?: String
-  private?: Boolean
-  tags?: DiscussionUpdatetagsInput
-  author?: UserUpdateOneWithoutMyDiscussionsInput
-  opinions?: OpinionsUpdateManyWithoutDiscussionInput
-}
-
-export interface ArticleCreateInput {
-  isPublished?: Boolean
-  title: String
-  body: String
-  type?: Arcticletype
-  author: UserCreateOneWithoutArticlesInput
-}
-
-export interface DiscussionUpdatetagsInput {
-  set?: String[] | String
-}
-
-export interface CountryCreateWithoutUsersInput {
-  shortName: String
-  name: String
-}
-
-export interface UserUpdateOneWithoutMyDiscussionsInput {
-  create?: UserCreateWithoutMyDiscussionsInput
-  connect?: UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput
-  delete?: UserWhereUniqueInput
-  update?: UserUpdateWithoutMyDiscussionsInput
-  upsert?: UserUpsertWithoutMyDiscussionsInput
-}
-
-export interface CountryCreateInput {
-  shortName: String
-  name: String
-  users?: UserCreateManyWithoutCountryInput
-}
-
-export interface UserUpdateWithoutMyDiscussionsInput {
-  where: UserWhereUniqueInput
-  data: UserUpdateWithoutMyDiscussionsDataInput
-}
-
-export interface SchoolCreateWithoutUsersInput {
-  title: String
-  institution: InstitutionsCreateOneInput
-}
-
-export interface UserUpdateWithoutMyDiscussionsDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryUpdateOneWithoutUsersInput
-  institution?: InstitutionsUpdateOneWithoutUsersInput
-  school?: SchoolUpdateOneWithoutUsersInput
-  falculty?: FacultyUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  interest?: InterestUpdateOneWithoutUsersInput
-  favourites?: DiscussionUpdateManyWithoutFavouritesInput
-  connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
-  opinions?: OpinionsUpdateManyWithoutAuthorInput
-}
-
-export interface UserCreateWithoutInstitutionInput {
-  email: String
-  username?: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryCreateOneWithoutUsersInput
-  school?: SchoolCreateOneWithoutUsersInput
-  falculty?: FacultyCreateOneWithoutUsersInput
-  department?: DepartmentCreateOneWithoutUsersInput
-  interest?: InterestCreateOneWithoutUsersInput
-  favourites?: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
-  connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
-  articles?: ArticleCreateManyWithoutAuthorInput
-  opinions?: OpinionsCreateManyWithoutAuthorInput
-}
-
-export interface ConnectUpdateManyWithoutToInput {
-  create?: ConnectCreateWithoutToInput[] | ConnectCreateWithoutToInput
-  connect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
-  disconnect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
-  delete?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
-  update?: ConnectUpdateWithoutToInput[] | ConnectUpdateWithoutToInput
-  upsert?: ConnectUpsertWithoutToInput[] | ConnectUpsertWithoutToInput
-}
-
-export interface SchoolCreateInput {
-  title: String
-  institution: InstitutionsCreateOneInput
-  users?: UserCreateManyWithoutSchoolInput
-}
-
-export interface ConnectUpdateWithoutToInput {
-  where: ConnectWhereUniqueInput
-  data: ConnectUpdateWithoutToDataInput
-}
-
-export interface DepartmentCreateWithoutUsersInput {
-  name: String
-  falculty: FacultyCreateOneInput
-}
-
-export interface ConnectUpdateWithoutToDataInput {
-  accepted?: Boolean
-  from?: UserUpdateOneWithoutConectFromInput
-}
-
-export interface UserCreateWithoutFalcultyInput {
-  email: String
-  username?: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryCreateOneWithoutUsersInput
-  institution?: InstitutionsCreateOneWithoutUsersInput
-  school?: SchoolCreateOneWithoutUsersInput
-  department?: DepartmentCreateOneWithoutUsersInput
-  interest?: InterestCreateOneWithoutUsersInput
-  favourites?: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
-  connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
-  articles?: ArticleCreateManyWithoutAuthorInput
-  opinions?: OpinionsCreateManyWithoutAuthorInput
-}
-
-export interface UserUpdateOneWithoutConectFromInput {
-  create?: UserCreateWithoutConectFromInput
-  connect?: UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput
-  delete?: UserWhereUniqueInput
-  update?: UserUpdateWithoutConectFromInput
-  upsert?: UserUpsertWithoutConectFromInput
-}
-
-export interface DiscussionCreateWithoutFavouritesInput {
-  title: String
-  slug?: String
-  content: String
-  private?: Boolean
-  tags?: DiscussionCreatetagsInput
-  author: UserCreateOneWithoutMyDiscussionsInput
-  opinions?: OpinionsCreateManyWithoutDiscussionInput
-}
-
-export interface UserUpdateWithoutConectFromInput {
-  where: UserWhereUniqueInput
-  data: UserUpdateWithoutConectFromDataInput
-}
-
-export interface ConnectCreateManyWithoutToInput {
-  create?: ConnectCreateWithoutToInput[] | ConnectCreateWithoutToInput
-  connect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
-}
-
-export interface UserUpdateWithoutConectFromDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryUpdateOneWithoutUsersInput
-  institution?: InstitutionsUpdateOneWithoutUsersInput
-  school?: SchoolUpdateOneWithoutUsersInput
-  falculty?: FacultyUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  interest?: InterestUpdateOneWithoutUsersInput
-  favourites?: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
-  connectTo?: ConnectUpdateManyWithoutToInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
-  opinions?: OpinionsUpdateManyWithoutAuthorInput
-}
-
-export interface DiscussionCreateOneWithoutAuthorInput {
-  create?: DiscussionCreateWithoutAuthorInput
-  connect?: DiscussionWhereUniqueInput
-}
-
-export interface DiscussionUpdateOneWithoutAuthorInput {
-  create?: DiscussionCreateWithoutAuthorInput
-  connect?: DiscussionWhereUniqueInput
-  disconnect?: DiscussionWhereUniqueInput
-  delete?: DiscussionWhereUniqueInput
-  update?: DiscussionUpdateWithoutAuthorInput
-  upsert?: DiscussionUpsertWithoutAuthorInput
-}
-
-export interface CountryWhereInput {
-  AND?: CountryWhereInput[] | CountryWhereInput
-  OR?: CountryWhereInput[] | CountryWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  createdAt?: DateTime
-  createdAt_not?: DateTime
-  createdAt_in?: DateTime[] | DateTime
-  createdAt_not_in?: DateTime[] | DateTime
-  createdAt_lt?: DateTime
-  createdAt_lte?: DateTime
-  createdAt_gt?: DateTime
-  createdAt_gte?: DateTime
-  updatedAt?: DateTime
-  updatedAt_not?: DateTime
-  updatedAt_in?: DateTime[] | DateTime
-  updatedAt_not_in?: DateTime[] | DateTime
-  updatedAt_lt?: DateTime
-  updatedAt_lte?: DateTime
-  updatedAt_gt?: DateTime
-  updatedAt_gte?: DateTime
-  shortName?: String
-  shortName_not?: String
-  shortName_in?: String[] | String
-  shortName_not_in?: String[] | String
-  shortName_lt?: String
-  shortName_lte?: String
-  shortName_gt?: String
-  shortName_gte?: String
-  shortName_contains?: String
-  shortName_not_contains?: String
-  shortName_starts_with?: String
-  shortName_not_starts_with?: String
-  shortName_ends_with?: String
-  shortName_not_ends_with?: String
-  name?: String
-  name_not?: String
-  name_in?: String[] | String
-  name_not_in?: String[] | String
-  name_lt?: String
-  name_lte?: String
-  name_gt?: String
-  name_gte?: String
-  name_contains?: String
-  name_not_contains?: String
-  name_starts_with?: String
-  name_not_starts_with?: String
-  name_ends_with?: String
-  name_not_ends_with?: String
-  users_every?: UserWhereInput
-  users_some?: UserWhereInput
-  users_none?: UserWhereInput
-}
-
-export interface DiscussionUpdateWithoutAuthorInput {
-  where: DiscussionWhereUniqueInput
-  data: DiscussionUpdateWithoutAuthorDataInput
-}
-
-export interface PostWhereInput {
-  AND?: PostWhereInput[] | PostWhereInput
-  OR?: PostWhereInput[] | PostWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  createdAt?: DateTime
-  createdAt_not?: DateTime
-  createdAt_in?: DateTime[] | DateTime
-  createdAt_not_in?: DateTime[] | DateTime
-  createdAt_lt?: DateTime
-  createdAt_lte?: DateTime
-  createdAt_gt?: DateTime
-  createdAt_gte?: DateTime
-  updatedAt?: DateTime
-  updatedAt_not?: DateTime
-  updatedAt_in?: DateTime[] | DateTime
-  updatedAt_not_in?: DateTime[] | DateTime
-  updatedAt_lt?: DateTime
-  updatedAt_lte?: DateTime
-  updatedAt_gt?: DateTime
-  updatedAt_gte?: DateTime
-  isPublished?: Boolean
-  isPublished_not?: Boolean
-  title?: String
-  title_not?: String
-  title_in?: String[] | String
-  title_not_in?: String[] | String
-  title_lt?: String
-  title_lte?: String
-  title_gt?: String
-  title_gte?: String
-  title_contains?: String
-  title_not_contains?: String
-  title_starts_with?: String
-  title_not_starts_with?: String
-  title_ends_with?: String
-  title_not_ends_with?: String
-  text?: String
-  text_not?: String
-  text_in?: String[] | String
-  text_not_in?: String[] | String
-  text_lt?: String
-  text_lte?: String
-  text_gt?: String
-  text_gte?: String
-  text_contains?: String
-  text_not_contains?: String
-  text_starts_with?: String
-  text_not_starts_with?: String
-  text_ends_with?: String
-  text_not_ends_with?: String
-}
-
-export interface DiscussionUpdateWithoutAuthorDataInput {
-  title?: String
-  slug?: String
-  content?: String
-  private?: Boolean
-  tags?: DiscussionUpdatetagsInput
-  favourites?: UserUpdateManyWithoutFavouritesInput
-  opinions?: OpinionsUpdateManyWithoutDiscussionInput
-}
-
-export interface PostWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface UserUpdateManyWithoutFavouritesInput {
-  create?: UserCreateWithoutFavouritesInput[] | UserCreateWithoutFavouritesInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  update?: UserUpdateWithoutFavouritesInput[] | UserUpdateWithoutFavouritesInput
-  upsert?: UserUpsertWithoutFavouritesInput[] | UserUpsertWithoutFavouritesInput
-}
-
-export interface UserWhereUniqueInput {
-  id?: ID_Input
-  email?: String
-  username?: String
-}
-
-export interface UserUpdateWithoutFavouritesInput {
-  where: UserWhereUniqueInput
-  data: UserUpdateWithoutFavouritesDataInput
-}
-
-export interface UserUpdateDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryUpdateOneWithoutUsersInput
-  institution?: InstitutionsUpdateOneWithoutUsersInput
-  school?: SchoolUpdateOneWithoutUsersInput
-  falculty?: FacultyUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  interest?: InterestUpdateOneWithoutUsersInput
-  favourites?: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
-  connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
-  opinions?: OpinionsUpdateManyWithoutAuthorInput
-}
-
-export interface UserUpdateWithoutFavouritesDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryUpdateOneWithoutUsersInput
-  institution?: InstitutionsUpdateOneWithoutUsersInput
-  school?: SchoolUpdateOneWithoutUsersInput
-  falculty?: FacultyUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  interest?: InterestUpdateOneWithoutUsersInput
-  myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
-  connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
-  opinions?: OpinionsUpdateManyWithoutAuthorInput
-}
-
-export interface UserUpdateWithoutInterestInput {
-  where: UserWhereUniqueInput
-  data: UserUpdateWithoutInterestDataInput
-}
-
-export interface ConnectUpdateManyWithoutFromInput {
-  create?: ConnectCreateWithoutFromInput[] | ConnectCreateWithoutFromInput
-  connect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
-  disconnect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
-  delete?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
-  update?: ConnectUpdateWithoutFromInput[] | ConnectUpdateWithoutFromInput
-  upsert?: ConnectUpsertWithoutFromInput[] | ConnectUpsertWithoutFromInput
-}
-
-export interface FacultyUpdateInput {
-  name?: String
-  school?: SchoolUpdateOneInput
-  users?: UserUpdateManyWithoutFalcultyInput
-}
-
-export interface ConnectUpdateWithoutFromInput {
-  where: ConnectWhereUniqueInput
-  data: ConnectUpdateWithoutFromDataInput
-}
-
-export interface SchoolUpsertWithoutUsersInput {
-  where: SchoolWhereUniqueInput
-  update: SchoolUpdateWithoutUsersDataInput
-  create: SchoolCreateWithoutUsersInput
-}
-
-export interface ConnectUpdateWithoutFromDataInput {
-  accepted?: Boolean
-  to?: UserUpdateOneWithoutConnectToInput
-}
-
-export interface UserUpsertWithoutFalcultyInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutFalcultyDataInput
-  create: UserCreateWithoutFalcultyInput
-}
-
-export interface UserUpdateOneWithoutConnectToInput {
-  create?: UserCreateWithoutConnectToInput
-  connect?: UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput
-  delete?: UserWhereUniqueInput
-  update?: UserUpdateWithoutConnectToInput
-  upsert?: UserUpsertWithoutConnectToInput
-}
-
-export interface FileCreateInput {
-  name: String
-  size: Int
-  secret: String
-  contentType: String
-  url: String
-}
-
-export interface UserUpdateWithoutConnectToInput {
-  where: UserWhereUniqueInput
-  data: UserUpdateWithoutConnectToDataInput
-}
-
-export interface InstitutionsCreateWithoutUsersInput {
-  title: String
-  type: InstitutionType
-  Country: CountryCreateOneInput
-}
-
-export interface UserUpdateWithoutConnectToDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryUpdateOneWithoutUsersInput
-  institution?: InstitutionsUpdateOneWithoutUsersInput
-  school?: SchoolUpdateOneWithoutUsersInput
-  falculty?: FacultyUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  interest?: InterestUpdateOneWithoutUsersInput
-  favourites?: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
-  opinions?: OpinionsUpdateManyWithoutAuthorInput
-}
-
-export interface InstitutionsCreateInput {
-  title: String
-  type: InstitutionType
-  Country: CountryCreateOneInput
-  users?: UserCreateManyWithoutInstitutionInput
-}
-
-export interface ArticleUpdateManyWithoutAuthorInput {
-  create?: ArticleCreateWithoutAuthorInput[] | ArticleCreateWithoutAuthorInput
-  connect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
-  disconnect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
-  delete?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
-  update?: ArticleUpdateWithoutAuthorInput[] | ArticleUpdateWithoutAuthorInput
-  upsert?: ArticleUpsertWithoutAuthorInput[] | ArticleUpsertWithoutAuthorInput
-}
-
-export interface UserCreateWithoutSchoolInput {
-  email: String
-  username?: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryCreateOneWithoutUsersInput
-  institution?: InstitutionsCreateOneWithoutUsersInput
-  falculty?: FacultyCreateOneWithoutUsersInput
-  department?: DepartmentCreateOneWithoutUsersInput
-  interest?: InterestCreateOneWithoutUsersInput
-  favourites?: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
-  connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
-  articles?: ArticleCreateManyWithoutAuthorInput
-  opinions?: OpinionsCreateManyWithoutAuthorInput
-}
-
-export interface ArticleUpdateWithoutAuthorInput {
-  where: ArticleWhereUniqueInput
-  data: ArticleUpdateWithoutAuthorDataInput
-}
-
-export interface InterestCreateWithoutUsersInput {
-  name: String
-  avatar: String
-}
-
-export interface ArticleUpdateWithoutAuthorDataInput {
-  isPublished?: Boolean
-  title?: String
-  body?: String
-  type?: Arcticletype
-}
-
-export interface UserCreateOneWithoutConectFromInput {
-  create?: UserCreateWithoutConectFromInput
-  connect?: UserWhereUniqueInput
-}
-
-export interface ArticleUpsertWithoutAuthorInput {
-  where: ArticleWhereUniqueInput
-  update: ArticleUpdateWithoutAuthorDataInput
-  create: ArticleCreateWithoutAuthorInput
+  data: UserUpdateWithoutInstitutionDataInput
 }
 
 export interface ArticleWhereInput {
@@ -10149,22 +7947,148 @@ export interface ArticleWhereInput {
   author?: UserWhereInput
 }
 
-export interface OpinionsUpdateManyWithoutAuthorInput {
-  create?: OpinionsCreateWithoutAuthorInput[] | OpinionsCreateWithoutAuthorInput
-  connect?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
-  disconnect?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
-  delete?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
-  update?: OpinionsUpdateWithoutAuthorInput[] | OpinionsUpdateWithoutAuthorInput
-  upsert?: OpinionsUpsertWithoutAuthorInput[] | OpinionsUpsertWithoutAuthorInput
+export interface UserUpdateWithoutInstitutionDataInput {
+  email?: String
+  username?: String
+  password?: String
+  firstname?: String
+  lastname?: String
+  gender?: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  country?: CountryUpdateOneWithoutUsersInput
+  department?: DepartmentUpdateOneWithoutUsersInput
+  interest?: InterestUpdateOneWithoutUsersInput
+  favourites?: DiscussionUpdateManyWithoutFavouritesInput
+  myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
+  connectTo?: ConnectUpdateManyWithoutToInput
+  ConectFrom?: ConnectUpdateManyWithoutFromInput
+  articles?: ArticleUpdateManyWithoutAuthorInput
+  opinions?: OpinionsUpdateManyWithoutAuthorInput
 }
 
-export interface SchoolWhereUniqueInput {
+export interface DepartmentSubscriptionWhereInput {
+  AND?: DepartmentSubscriptionWhereInput[] | DepartmentSubscriptionWhereInput
+  OR?: DepartmentSubscriptionWhereInput[] | DepartmentSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: DepartmentWhereInput
+}
+
+export interface InterestUpdateOneWithoutUsersInput {
+  create?: InterestCreateWithoutUsersInput
+  connect?: InterestWhereUniqueInput
+  disconnect?: InterestWhereUniqueInput
+  delete?: InterestWhereUniqueInput
+  update?: InterestUpdateWithoutUsersInput
+  upsert?: InterestUpsertWithoutUsersInput
+}
+
+export interface CountrySubscriptionWhereInput {
+  AND?: CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput
+  OR?: CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: CountryWhereInput
+}
+
+export interface InterestUpdateWithoutUsersInput {
+  where: InterestWhereUniqueInput
+  data: InterestUpdateWithoutUsersDataInput
+}
+
+export interface FileSubscriptionWhereInput {
+  AND?: FileSubscriptionWhereInput[] | FileSubscriptionWhereInput
+  OR?: FileSubscriptionWhereInput[] | FileSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: FileWhereInput
+}
+
+export interface InterestUpdateWithoutUsersDataInput {
+  name?: String
+  file?: FileUpdateOneInput
+}
+
+export interface CountryWhereUniqueInput {
+  id?: ID_Input
+  shortName?: String
+  name?: String
+}
+
+export interface FileUpdateOneInput {
+  create?: FileCreateInput
+  connect?: FileWhereUniqueInput
+  disconnect?: FileWhereUniqueInput
+  delete?: FileWhereUniqueInput
+  update?: FileUpdateNestedInput
+  upsert?: FileUpsertNestedInput
+}
+
+export interface UserWhereUniqueInput {
+  id?: ID_Input
+  email?: String
+  username?: String
+}
+
+export interface FileUpdateNestedInput {
+  where: FileWhereUniqueInput
+  data: FileUpdateDataInput
+}
+
+export interface OpinionsWhereUniqueInput {
   id?: ID_Input
 }
 
-export interface OpinionsUpdateWithoutAuthorInput {
-  where: OpinionsWhereUniqueInput
-  data: OpinionsUpdateWithoutAuthorDataInput
+export interface FileUpdateDataInput {
+  name?: String
+  size?: Int
+  secret?: String
+  contentType?: String
+  url?: String
+}
+
+export interface UserUpdateDataInput {
+  email?: String
+  username?: String
+  password?: String
+  firstname?: String
+  lastname?: String
+  gender?: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  country?: CountryUpdateOneWithoutUsersInput
+  institution?: InstitutionsUpdateOneWithoutUsersInput
+  department?: DepartmentUpdateOneWithoutUsersInput
+  interest?: InterestUpdateOneWithoutUsersInput
+  favourites?: DiscussionUpdateManyWithoutFavouritesInput
+  myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
+  connectTo?: ConnectUpdateManyWithoutToInput
+  ConectFrom?: ConnectUpdateManyWithoutFromInput
+  articles?: ArticleUpdateManyWithoutAuthorInput
+  opinions?: OpinionsUpdateManyWithoutAuthorInput
+}
+
+export interface FileUpsertNestedInput {
+  where: FileWhereUniqueInput
+  update: FileUpdateDataInput
+  create: FileCreateInput
 }
 
 export interface ConnectUpdateInput {
@@ -10173,169 +8097,24 @@ export interface ConnectUpdateInput {
   from?: UserUpdateOneWithoutConectFromInput
 }
 
-export interface OpinionsUpdateWithoutAuthorDataInput {
-  content?: String
-  discussion?: DiscussionUpdateOneWithoutOpinionsInput
+export interface InterestUpsertWithoutUsersInput {
+  where: InterestWhereUniqueInput
+  update: InterestUpdateWithoutUsersDataInput
+  create: InterestCreateWithoutUsersInput
 }
 
-export interface UserUpsertWithoutArticlesInput {
+export interface UserUpdateWithoutInterestInput {
   where: UserWhereUniqueInput
-  update: UserUpdateWithoutArticlesDataInput
-  create: UserCreateWithoutArticlesInput
+  data: UserUpdateWithoutInterestDataInput
 }
 
-export interface DiscussionUpdateOneWithoutOpinionsInput {
-  create?: DiscussionCreateWithoutOpinionsInput
-  connect?: DiscussionWhereUniqueInput
-  disconnect?: DiscussionWhereUniqueInput
-  delete?: DiscussionWhereUniqueInput
-  update?: DiscussionUpdateWithoutOpinionsInput
-  upsert?: DiscussionUpsertWithoutOpinionsInput
-}
-
-export interface UserUpsertWithoutConectFromInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutConectFromDataInput
-  create: UserCreateWithoutConectFromInput
-}
-
-export interface DiscussionUpdateWithoutOpinionsInput {
-  where: DiscussionWhereUniqueInput
-  data: DiscussionUpdateWithoutOpinionsDataInput
-}
-
-export interface UserCreateWithoutCountryInput {
-  email: String
-  username?: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  institution?: InstitutionsCreateOneWithoutUsersInput
-  school?: SchoolCreateOneWithoutUsersInput
-  falculty?: FacultyCreateOneWithoutUsersInput
-  department?: DepartmentCreateOneWithoutUsersInput
-  interest?: InterestCreateOneWithoutUsersInput
-  favourites?: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
-  connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
-  articles?: ArticleCreateManyWithoutAuthorInput
-  opinions?: OpinionsCreateManyWithoutAuthorInput
-}
-
-export interface DiscussionUpdateWithoutOpinionsDataInput {
-  title?: String
-  slug?: String
-  content?: String
-  private?: Boolean
-  tags?: DiscussionUpdatetagsInput
-  favourites?: UserUpdateManyWithoutFavouritesInput
-  author?: UserUpdateOneWithoutMyDiscussionsInput
-}
-
-export interface FacultyCreateInput {
-  name: String
-  school: SchoolCreateOneInput
-  users?: UserCreateManyWithoutFalcultyInput
-}
-
-export interface DiscussionUpsertWithoutOpinionsInput {
-  where: DiscussionWhereUniqueInput
-  update: DiscussionUpdateWithoutOpinionsDataInput
-  create: DiscussionCreateWithoutOpinionsInput
-}
-
-export interface DiscussionSubscriptionWhereInput {
-  AND?: DiscussionSubscriptionWhereInput[] | DiscussionSubscriptionWhereInput
-  OR?: DiscussionSubscriptionWhereInput[] | DiscussionSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: DiscussionWhereInput
-}
-
-export interface OpinionsUpsertWithoutAuthorInput {
-  where: OpinionsWhereUniqueInput
-  update: OpinionsUpdateWithoutAuthorDataInput
-  create: OpinionsCreateWithoutAuthorInput
-}
-
-export interface OpinionsWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface UserUpsertWithoutConnectToInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutConnectToDataInput
-  create: UserCreateWithoutConnectToInput
-}
-
-export interface SchoolUpsertNestedInput {
-  where: SchoolWhereUniqueInput
-  update: SchoolUpdateDataInput
-  create: SchoolCreateInput
-}
-
-export interface OpinionsUpdateWithoutDiscussionInput {
-  where: OpinionsWhereUniqueInput
-  data: OpinionsUpdateWithoutDiscussionDataInput
-}
-
-export interface OpinionsUpdateManyWithoutDiscussionInput {
-  create?: OpinionsCreateWithoutDiscussionInput[] | OpinionsCreateWithoutDiscussionInput
-  connect?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
-  disconnect?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
-  delete?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
-  update?: OpinionsUpdateWithoutDiscussionInput[] | OpinionsUpdateWithoutDiscussionInput
-  upsert?: OpinionsUpsertWithoutDiscussionInput[] | OpinionsUpsertWithoutDiscussionInput
-}
-
-export interface UserUpsertWithoutFavouritesInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutFavouritesDataInput
-  create: UserCreateWithoutFavouritesInput
-}
-
-export interface ConnectUpsertWithoutFromInput {
-  where: ConnectWhereUniqueInput
-  update: ConnectUpdateWithoutFromDataInput
-  create: ConnectCreateWithoutFromInput
-}
-
-export interface UserCreateWithoutArticlesInput {
-  email: String
-  username?: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  country?: CountryCreateOneWithoutUsersInput
-  institution?: InstitutionsCreateOneWithoutUsersInput
-  school?: SchoolCreateOneWithoutUsersInput
-  falculty?: FacultyCreateOneWithoutUsersInput
-  department?: DepartmentCreateOneWithoutUsersInput
-  interest?: InterestCreateOneWithoutUsersInput
-  favourites?: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
-  connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
-  opinions?: OpinionsCreateManyWithoutAuthorInput
+export interface DiscussionUpdateManyWithoutFavouritesInput {
+  create?: DiscussionCreateWithoutFavouritesInput[] | DiscussionCreateWithoutFavouritesInput
+  connect?: DiscussionWhereUniqueInput[] | DiscussionWhereUniqueInput
+  disconnect?: DiscussionWhereUniqueInput[] | DiscussionWhereUniqueInput
+  delete?: DiscussionWhereUniqueInput[] | DiscussionWhereUniqueInput
+  update?: DiscussionUpdateWithoutFavouritesInput[] | DiscussionUpdateWithoutFavouritesInput
+  upsert?: DiscussionUpsertWithoutFavouritesInput[] | DiscussionUpsertWithoutFavouritesInput
 }
 
 export interface UserUpdateWithoutDepartmentDataInput {
@@ -10354,8 +8133,6 @@ export interface UserUpdateWithoutDepartmentDataInput {
   completedProfile?: Int
   country?: CountryUpdateOneWithoutUsersInput
   institution?: InstitutionsUpdateOneWithoutUsersInput
-  school?: SchoolUpdateOneWithoutUsersInput
-  falculty?: FacultyUpdateOneWithoutUsersInput
   interest?: InterestUpdateOneWithoutUsersInput
   favourites?: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
@@ -10363,6 +8140,344 @@ export interface UserUpdateWithoutDepartmentDataInput {
   ConectFrom?: ConnectUpdateManyWithoutFromInput
   articles?: ArticleUpdateManyWithoutAuthorInput
   opinions?: OpinionsUpdateManyWithoutAuthorInput
+}
+
+export interface DiscussionUpdateWithoutFavouritesInput {
+  where: DiscussionWhereUniqueInput
+  data: DiscussionUpdateWithoutFavouritesDataInput
+}
+
+export interface InstitutionsUpdateInput {
+  title?: String
+  type?: InstitutionType
+  country?: CountryUpdateOneInput
+  users?: UserUpdateManyWithoutInstitutionInput
+}
+
+export interface DiscussionUpdateWithoutFavouritesDataInput {
+  title?: String
+  slug?: String
+  content?: String
+  private?: Boolean
+  tags?: DiscussionUpdatetagsInput
+  author?: UserUpdateOneWithoutMyDiscussionsInput
+  opinions?: OpinionsUpdateManyWithoutDiscussionInput
+}
+
+export interface CountryUpsertNestedInput {
+  where: CountryWhereUniqueInput
+  update: CountryUpdateDataInput
+  create: CountryCreateInput
+}
+
+export interface DiscussionUpdatetagsInput {
+  set?: String[] | String
+}
+
+export interface UserUpsertWithoutInstitutionInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutInstitutionDataInput
+  create: UserCreateWithoutInstitutionInput
+}
+
+export interface UserUpdateOneWithoutMyDiscussionsInput {
+  create?: UserCreateWithoutMyDiscussionsInput
+  connect?: UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput
+  delete?: UserWhereUniqueInput
+  update?: UserUpdateWithoutMyDiscussionsInput
+  upsert?: UserUpsertWithoutMyDiscussionsInput
+}
+
+export interface UserUpsertWithoutConectFromInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutConectFromDataInput
+  create: UserCreateWithoutConectFromInput
+}
+
+export interface UserUpdateWithoutMyDiscussionsInput {
+  where: UserWhereUniqueInput
+  data: UserUpdateWithoutMyDiscussionsDataInput
+}
+
+export interface UserUpdateWithoutOpinionsDataInput {
+  email?: String
+  username?: String
+  password?: String
+  firstname?: String
+  lastname?: String
+  gender?: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  country?: CountryUpdateOneWithoutUsersInput
+  institution?: InstitutionsUpdateOneWithoutUsersInput
+  department?: DepartmentUpdateOneWithoutUsersInput
+  interest?: InterestUpdateOneWithoutUsersInput
+  favourites?: DiscussionUpdateManyWithoutFavouritesInput
+  myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
+  connectTo?: ConnectUpdateManyWithoutToInput
+  ConectFrom?: ConnectUpdateManyWithoutFromInput
+  articles?: ArticleUpdateManyWithoutAuthorInput
+}
+
+export interface UserUpdateWithoutMyDiscussionsDataInput {
+  email?: String
+  username?: String
+  password?: String
+  firstname?: String
+  lastname?: String
+  gender?: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  country?: CountryUpdateOneWithoutUsersInput
+  institution?: InstitutionsUpdateOneWithoutUsersInput
+  department?: DepartmentUpdateOneWithoutUsersInput
+  interest?: InterestUpdateOneWithoutUsersInput
+  favourites?: DiscussionUpdateManyWithoutFavouritesInput
+  connectTo?: ConnectUpdateManyWithoutToInput
+  ConectFrom?: ConnectUpdateManyWithoutFromInput
+  articles?: ArticleUpdateManyWithoutAuthorInput
+  opinions?: OpinionsUpdateManyWithoutAuthorInput
+}
+
+export interface ArticleCreateInput {
+  isPublished?: Boolean
+  title: String
+  body: String
+  type?: Arcticletype
+  author: UserCreateOneWithoutArticlesInput
+}
+
+export interface ConnectUpdateManyWithoutToInput {
+  create?: ConnectCreateWithoutToInput[] | ConnectCreateWithoutToInput
+  connect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
+  disconnect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
+  delete?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
+  update?: ConnectUpdateWithoutToInput[] | ConnectUpdateWithoutToInput
+  upsert?: ConnectUpsertWithoutToInput[] | ConnectUpsertWithoutToInput
+}
+
+export interface CountryCreateWithoutUsersInput {
+  shortName: String
+  name: String
+}
+
+export interface ConnectUpdateWithoutToInput {
+  where: ConnectWhereUniqueInput
+  data: ConnectUpdateWithoutToDataInput
+}
+
+export interface CountryCreateInput {
+  shortName: String
+  name: String
+  users?: UserCreateManyWithoutCountryInput
+}
+
+export interface ConnectUpdateWithoutToDataInput {
+  accepted?: Boolean
+  from?: UserUpdateOneWithoutConectFromInput
+}
+
+export interface DepartmentCreateWithoutUsersInput {
+  name: String
+  institution: InstitutionsCreateOneInput
+}
+
+export interface UserUpdateOneWithoutConectFromInput {
+  create?: UserCreateWithoutConectFromInput
+  connect?: UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput
+  delete?: UserWhereUniqueInput
+  update?: UserUpdateWithoutConectFromInput
+  upsert?: UserUpsertWithoutConectFromInput
+}
+
+export interface UserCreateWithoutInstitutionInput {
+  email: String
+  username?: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  country?: CountryCreateOneWithoutUsersInput
+  department?: DepartmentCreateOneWithoutUsersInput
+  interest?: InterestCreateOneWithoutUsersInput
+  favourites?: DiscussionCreateManyWithoutFavouritesInput
+  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
+  connectTo?: ConnectCreateManyWithoutToInput
+  ConectFrom?: ConnectCreateManyWithoutFromInput
+  articles?: ArticleCreateManyWithoutAuthorInput
+  opinions?: OpinionsCreateManyWithoutAuthorInput
+}
+
+export interface UserUpdateWithoutConectFromInput {
+  where: UserWhereUniqueInput
+  data: UserUpdateWithoutConectFromDataInput
+}
+
+export interface DiscussionCreateManyWithoutFavouritesInput {
+  create?: DiscussionCreateWithoutFavouritesInput[] | DiscussionCreateWithoutFavouritesInput
+  connect?: DiscussionWhereUniqueInput[] | DiscussionWhereUniqueInput
+}
+
+export interface UserUpdateWithoutConectFromDataInput {
+  email?: String
+  username?: String
+  password?: String
+  firstname?: String
+  lastname?: String
+  gender?: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  country?: CountryUpdateOneWithoutUsersInput
+  institution?: InstitutionsUpdateOneWithoutUsersInput
+  department?: DepartmentUpdateOneWithoutUsersInput
+  interest?: InterestUpdateOneWithoutUsersInput
+  favourites?: DiscussionUpdateManyWithoutFavouritesInput
+  myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
+  connectTo?: ConnectUpdateManyWithoutToInput
+  articles?: ArticleUpdateManyWithoutAuthorInput
+  opinions?: OpinionsUpdateManyWithoutAuthorInput
+}
+
+export interface UserCreateWithoutMyDiscussionsInput {
+  email: String
+  username?: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  country?: CountryCreateOneWithoutUsersInput
+  institution?: InstitutionsCreateOneWithoutUsersInput
+  department?: DepartmentCreateOneWithoutUsersInput
+  interest?: InterestCreateOneWithoutUsersInput
+  favourites?: DiscussionCreateManyWithoutFavouritesInput
+  connectTo?: ConnectCreateManyWithoutToInput
+  ConectFrom?: ConnectCreateManyWithoutFromInput
+  articles?: ArticleCreateManyWithoutAuthorInput
+  opinions?: OpinionsCreateManyWithoutAuthorInput
+}
+
+export interface DiscussionUpdateOneWithoutAuthorInput {
+  create?: DiscussionCreateWithoutAuthorInput
+  connect?: DiscussionWhereUniqueInput
+  disconnect?: DiscussionWhereUniqueInput
+  delete?: DiscussionWhereUniqueInput
+  update?: DiscussionUpdateWithoutAuthorInput
+  upsert?: DiscussionUpsertWithoutAuthorInput
+}
+
+export interface UserCreateWithoutConectFromInput {
+  email: String
+  username?: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  country?: CountryCreateOneWithoutUsersInput
+  institution?: InstitutionsCreateOneWithoutUsersInput
+  department?: DepartmentCreateOneWithoutUsersInput
+  interest?: InterestCreateOneWithoutUsersInput
+  favourites?: DiscussionCreateManyWithoutFavouritesInput
+  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
+  connectTo?: ConnectCreateManyWithoutToInput
+  articles?: ArticleCreateManyWithoutAuthorInput
+  opinions?: OpinionsCreateManyWithoutAuthorInput
+}
+
+export interface DiscussionUpdateWithoutAuthorInput {
+  where: DiscussionWhereUniqueInput
+  data: DiscussionUpdateWithoutAuthorDataInput
+}
+
+export interface UserCreateWithoutFavouritesInput {
+  email: String
+  username?: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  country?: CountryCreateOneWithoutUsersInput
+  institution?: InstitutionsCreateOneWithoutUsersInput
+  department?: DepartmentCreateOneWithoutUsersInput
+  interest?: InterestCreateOneWithoutUsersInput
+  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
+  connectTo?: ConnectCreateManyWithoutToInput
+  ConectFrom?: ConnectCreateManyWithoutFromInput
+  articles?: ArticleCreateManyWithoutAuthorInput
+  opinions?: OpinionsCreateManyWithoutAuthorInput
+}
+
+export interface DiscussionUpdateWithoutAuthorDataInput {
+  title?: String
+  slug?: String
+  content?: String
+  private?: Boolean
+  tags?: DiscussionUpdatetagsInput
+  favourites?: UserUpdateManyWithoutFavouritesInput
+  opinions?: OpinionsUpdateManyWithoutDiscussionInput
+}
+
+export interface UserSubscriptionWhereInput {
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: UserWhereInput
+}
+
+export interface UserUpdateManyWithoutFavouritesInput {
+  create?: UserCreateWithoutFavouritesInput[] | UserCreateWithoutFavouritesInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  update?: UserUpdateWithoutFavouritesInput[] | UserUpdateWithoutFavouritesInput
+  upsert?: UserUpsertWithoutFavouritesInput[] | UserUpsertWithoutFavouritesInput
 }
 
 export interface ForumWhereInput {
@@ -10431,14 +8546,439 @@ export interface ForumWhereInput {
   author?: UserWhereInput
 }
 
-export interface UserCreateOneWithoutMyDiscussionsInput {
-  create?: UserCreateWithoutMyDiscussionsInput
-  connect?: UserWhereUniqueInput
+export interface UserUpdateWithoutFavouritesInput {
+  where: UserWhereUniqueInput
+  data: UserUpdateWithoutFavouritesDataInput
 }
 
-export interface FacultyCreateWithoutUsersInput {
+export interface DepartmentWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface UserUpdateWithoutFavouritesDataInput {
+  email?: String
+  username?: String
+  password?: String
+  firstname?: String
+  lastname?: String
+  gender?: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  country?: CountryUpdateOneWithoutUsersInput
+  institution?: InstitutionsUpdateOneWithoutUsersInput
+  department?: DepartmentUpdateOneWithoutUsersInput
+  interest?: InterestUpdateOneWithoutUsersInput
+  myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
+  connectTo?: ConnectUpdateManyWithoutToInput
+  ConectFrom?: ConnectUpdateManyWithoutFromInput
+  articles?: ArticleUpdateManyWithoutAuthorInput
+  opinions?: OpinionsUpdateManyWithoutAuthorInput
+}
+
+export interface DiscussionUpdateInput {
+  title?: String
+  slug?: String
+  content?: String
+  private?: Boolean
+  tags?: DiscussionUpdatetagsInput
+  favourites?: UserUpdateManyWithoutFavouritesInput
+  author?: UserUpdateOneWithoutMyDiscussionsInput
+  opinions?: OpinionsUpdateManyWithoutDiscussionInput
+}
+
+export interface ConnectUpdateManyWithoutFromInput {
+  create?: ConnectCreateWithoutFromInput[] | ConnectCreateWithoutFromInput
+  connect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
+  disconnect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
+  delete?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
+  update?: ConnectUpdateWithoutFromInput[] | ConnectUpdateWithoutFromInput
+  upsert?: ConnectUpsertWithoutFromInput[] | ConnectUpsertWithoutFromInput
+}
+
+export interface UserUpsertWithoutInterestInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutInterestDataInput
+  create: UserCreateWithoutInterestInput
+}
+
+export interface ConnectUpdateWithoutFromInput {
+  where: ConnectWhereUniqueInput
+  data: ConnectUpdateWithoutFromDataInput
+}
+
+export interface UserUpdateManyWithoutDepartmentInput {
+  create?: UserCreateWithoutDepartmentInput[] | UserCreateWithoutDepartmentInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  update?: UserUpdateWithoutDepartmentInput[] | UserUpdateWithoutDepartmentInput
+  upsert?: UserUpsertWithoutDepartmentInput[] | UserUpsertWithoutDepartmentInput
+}
+
+export interface ConnectUpdateWithoutFromDataInput {
+  accepted?: Boolean
+  to?: UserUpdateOneWithoutConnectToInput
+}
+
+export interface DepartmentUpsertWithoutUsersInput {
+  where: DepartmentWhereUniqueInput
+  update: DepartmentUpdateWithoutUsersDataInput
+  create: DepartmentCreateWithoutUsersInput
+}
+
+export interface UserUpdateOneWithoutConnectToInput {
+  create?: UserCreateWithoutConnectToInput
+  connect?: UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput
+  delete?: UserWhereUniqueInput
+  update?: UserUpdateWithoutConnectToInput
+  upsert?: UserUpsertWithoutConnectToInput
+}
+
+export interface OpinionsUpsertWithoutDiscussionInput {
+  where: OpinionsWhereUniqueInput
+  update: OpinionsUpdateWithoutDiscussionDataInput
+  create: OpinionsCreateWithoutDiscussionInput
+}
+
+export interface UserUpdateWithoutConnectToInput {
+  where: UserWhereUniqueInput
+  data: UserUpdateWithoutConnectToDataInput
+}
+
+export interface UserCreateWithoutArticlesInput {
+  email: String
+  username?: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  country?: CountryCreateOneWithoutUsersInput
+  institution?: InstitutionsCreateOneWithoutUsersInput
+  department?: DepartmentCreateOneWithoutUsersInput
+  interest?: InterestCreateOneWithoutUsersInput
+  favourites?: DiscussionCreateManyWithoutFavouritesInput
+  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
+  connectTo?: ConnectCreateManyWithoutToInput
+  ConectFrom?: ConnectCreateManyWithoutFromInput
+  opinions?: OpinionsCreateManyWithoutAuthorInput
+}
+
+export interface UserUpdateWithoutConnectToDataInput {
+  email?: String
+  username?: String
+  password?: String
+  firstname?: String
+  lastname?: String
+  gender?: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  country?: CountryUpdateOneWithoutUsersInput
+  institution?: InstitutionsUpdateOneWithoutUsersInput
+  department?: DepartmentUpdateOneWithoutUsersInput
+  interest?: InterestUpdateOneWithoutUsersInput
+  favourites?: DiscussionUpdateManyWithoutFavouritesInput
+  myDiscussions?: DiscussionUpdateOneWithoutAuthorInput
+  ConectFrom?: ConnectUpdateManyWithoutFromInput
+  articles?: ArticleUpdateManyWithoutAuthorInput
+  opinions?: OpinionsUpdateManyWithoutAuthorInput
+}
+
+export interface UserCreateWithoutCountryInput {
+  email: String
+  username?: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  institution?: InstitutionsCreateOneWithoutUsersInput
+  department?: DepartmentCreateOneWithoutUsersInput
+  interest?: InterestCreateOneWithoutUsersInput
+  favourites?: DiscussionCreateManyWithoutFavouritesInput
+  myDiscussions?: DiscussionCreateOneWithoutAuthorInput
+  connectTo?: ConnectCreateManyWithoutToInput
+  ConectFrom?: ConnectCreateManyWithoutFromInput
+  articles?: ArticleCreateManyWithoutAuthorInput
+  opinions?: OpinionsCreateManyWithoutAuthorInput
+}
+
+export interface ArticleUpdateManyWithoutAuthorInput {
+  create?: ArticleCreateWithoutAuthorInput[] | ArticleCreateWithoutAuthorInput
+  connect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
+  disconnect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
+  delete?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
+  update?: ArticleUpdateWithoutAuthorInput[] | ArticleUpdateWithoutAuthorInput
+  upsert?: ArticleUpsertWithoutAuthorInput[] | ArticleUpsertWithoutAuthorInput
+}
+
+export interface InterestCreateWithoutUsersInput {
   name: String
-  school: SchoolCreateOneInput
+  file: FileCreateOneInput
+}
+
+export interface ArticleUpdateWithoutAuthorInput {
+  where: ArticleWhereUniqueInput
+  data: ArticleUpdateWithoutAuthorDataInput
+}
+
+export interface ConnectCreateWithoutToInput {
+  accepted?: Boolean
+  from: UserCreateOneWithoutConectFromInput
+}
+
+export interface ArticleUpdateWithoutAuthorDataInput {
+  isPublished?: Boolean
+  title?: String
+  body?: String
+  type?: Arcticletype
+}
+
+export interface DiscussionSubscriptionWhereInput {
+  AND?: DiscussionSubscriptionWhereInput[] | DiscussionSubscriptionWhereInput
+  OR?: DiscussionSubscriptionWhereInput[] | DiscussionSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: DiscussionWhereInput
+}
+
+export interface ArticleUpsertWithoutAuthorInput {
+  where: ArticleWhereUniqueInput
+  update: ArticleUpdateWithoutAuthorDataInput
+  create: ArticleCreateWithoutAuthorInput
+}
+
+export interface PostWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface OpinionsUpdateManyWithoutAuthorInput {
+  create?: OpinionsCreateWithoutAuthorInput[] | OpinionsCreateWithoutAuthorInput
+  connect?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
+  disconnect?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
+  delete?: OpinionsWhereUniqueInput[] | OpinionsWhereUniqueInput
+  update?: OpinionsUpdateWithoutAuthorInput[] | OpinionsUpdateWithoutAuthorInput
+  upsert?: OpinionsUpsertWithoutAuthorInput[] | OpinionsUpsertWithoutAuthorInput
+}
+
+export interface UserUpdateOneInput {
+  create?: UserCreateInput
+  connect?: UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput
+  delete?: UserWhereUniqueInput
+  update?: UserUpdateNestedInput
+  upsert?: UserUpsertNestedInput
+}
+
+export interface OpinionsUpdateWithoutAuthorInput {
+  where: OpinionsWhereUniqueInput
+  data: OpinionsUpdateWithoutAuthorDataInput
+}
+
+export interface UserUpsertWithoutArticlesInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutArticlesDataInput
+  create: UserCreateWithoutArticlesInput
+}
+
+export interface OpinionsUpdateWithoutAuthorDataInput {
+  content?: String
+  discussion?: DiscussionUpdateOneWithoutOpinionsInput
+}
+
+export interface FileCreateInput {
+  name: String
+  size: Int
+  secret: String
+  contentType: String
+  url: String
+}
+
+export interface DiscussionUpdateOneWithoutOpinionsInput {
+  create?: DiscussionCreateWithoutOpinionsInput
+  connect?: DiscussionWhereUniqueInput
+  disconnect?: DiscussionWhereUniqueInput
+  delete?: DiscussionWhereUniqueInput
+  update?: DiscussionUpdateWithoutOpinionsInput
+  upsert?: DiscussionUpsertWithoutOpinionsInput
+}
+
+export interface InstitutionsCreateInput {
+  title: String
+  type: InstitutionType
+  country: CountryCreateOneInput
+  users?: UserCreateManyWithoutInstitutionInput
+}
+
+export interface DiscussionUpdateWithoutOpinionsInput {
+  where: DiscussionWhereUniqueInput
+  data: DiscussionUpdateWithoutOpinionsDataInput
+}
+
+export interface DiscussionCreateWithoutAuthorInput {
+  title: String
+  slug?: String
+  content: String
+  private?: Boolean
+  tags?: DiscussionCreatetagsInput
+  favourites?: UserCreateManyWithoutFavouritesInput
+  opinions?: OpinionsCreateManyWithoutDiscussionInput
+}
+
+export interface DiscussionUpdateWithoutOpinionsDataInput {
+  title?: String
+  slug?: String
+  content?: String
+  private?: Boolean
+  tags?: DiscussionUpdatetagsInput
+  favourites?: UserUpdateManyWithoutFavouritesInput
+  author?: UserUpdateOneWithoutMyDiscussionsInput
+}
+
+export interface ForumWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface DiscussionUpsertWithoutOpinionsInput {
+  where: DiscussionWhereUniqueInput
+  update: DiscussionUpdateWithoutOpinionsDataInput
+  create: DiscussionCreateWithoutOpinionsInput
+}
+
+export interface UserUpsertWithoutMyDiscussionsInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutMyDiscussionsDataInput
+  create: UserCreateWithoutMyDiscussionsInput
+}
+
+export interface UserUpsertWithoutFavouritesInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutFavouritesDataInput
+  create: UserCreateWithoutFavouritesInput
+}
+
+export interface ConnectUpsertWithoutFromInput {
+  where: ConnectWhereUniqueInput
+  update: ConnectUpdateWithoutFromDataInput
+  create: ConnectCreateWithoutFromInput
+}
+
+export interface UserUpsertWithoutConnectToInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutConnectToDataInput
+  create: UserCreateWithoutConnectToInput
+}
+
+export interface OpinionsUpsertWithoutAuthorInput {
+  where: OpinionsWhereUniqueInput
+  update: OpinionsUpdateWithoutAuthorDataInput
+  create: OpinionsCreateWithoutAuthorInput
+}
+
+export interface InstitutionsCreateWithoutUsersInput {
+  title: String
+  type: InstitutionType
+  country: CountryCreateOneInput
+}
+
+export interface InterestUpdateInput {
+  name?: String
+  file?: FileUpdateOneInput
+  users?: UserUpdateManyWithoutInterestInput
+}
+
+export interface PostWhereInput {
+  AND?: PostWhereInput[] | PostWhereInput
+  OR?: PostWhereInput[] | PostWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  createdAt?: DateTime
+  createdAt_not?: DateTime
+  createdAt_in?: DateTime[] | DateTime
+  createdAt_not_in?: DateTime[] | DateTime
+  createdAt_lt?: DateTime
+  createdAt_lte?: DateTime
+  createdAt_gt?: DateTime
+  createdAt_gte?: DateTime
+  updatedAt?: DateTime
+  updatedAt_not?: DateTime
+  updatedAt_in?: DateTime[] | DateTime
+  updatedAt_not_in?: DateTime[] | DateTime
+  updatedAt_lt?: DateTime
+  updatedAt_lte?: DateTime
+  updatedAt_gt?: DateTime
+  updatedAt_gte?: DateTime
+  isPublished?: Boolean
+  isPublished_not?: Boolean
+  title?: String
+  title_not?: String
+  title_in?: String[] | String
+  title_not_in?: String[] | String
+  title_lt?: String
+  title_lte?: String
+  title_gt?: String
+  title_gte?: String
+  title_contains?: String
+  title_not_contains?: String
+  title_starts_with?: String
+  title_not_starts_with?: String
+  title_ends_with?: String
+  title_not_ends_with?: String
+  text?: String
+  text_not?: String
+  text_in?: String[] | String
+  text_not_in?: String[] | String
+  text_lt?: String
+  text_lte?: String
+  text_gt?: String
+  text_gte?: String
+  text_contains?: String
+  text_not_contains?: String
+  text_starts_with?: String
+  text_not_starts_with?: String
+  text_ends_with?: String
+  text_not_ends_with?: String
+}
+
+export interface DiscussionCreatetagsInput {
+  set?: String[] | String
 }
 
 /*
@@ -10478,8 +9018,6 @@ export interface User extends Node {
   gender: String
   country?: Country
   institution?: Institutions
-  school?: School
-  falculty?: Faculty
   department?: Department
   interest?: Interest
   favourites?: Discussion[]
@@ -10521,11 +9059,11 @@ export interface Article extends Node {
   author: User
 }
 
-export interface School extends Node {
+export interface Department extends Node {
   id: ID_Output
   createdAt: DateTime
   updatedAt: DateTime
-  title: String
+  name: String
   institution: Institutions
   users?: User[]
 }
@@ -10630,7 +9168,7 @@ export interface Institutions extends Node {
   updatedAt: DateTime
   title: String
   type: InstitutionType
-  Country: Country
+  country: Country
   users?: User[]
 }
 
@@ -10705,8 +9243,8 @@ export interface ArticleSubscriptionPayload {
  * An edge in a connection.
 
  */
-export interface FacultyEdge {
-  node: Faculty
+export interface InstitutionsEdge {
+  node: Institutions
   cursor: String
 }
 
@@ -10720,7 +9258,7 @@ export interface ArticlePreviousValues {
   type?: Arcticletype
 }
 
-export interface AggregateSchool {
+export interface AggregateCountry {
   count: Int
 }
 
@@ -10739,10 +9277,10 @@ export interface File extends Node {
  * A connection to a list of items.
 
  */
-export interface SchoolConnection {
+export interface CountryConnection {
   pageInfo: PageInfo
-  edges: SchoolEdge[]
-  aggregate: AggregateSchool
+  edges: CountryEdge[]
+  aggregate: AggregateCountry
 }
 
 export interface CountrySubscriptionPayload {
@@ -10756,8 +9294,8 @@ export interface CountrySubscriptionPayload {
  * An edge in a connection.
 
  */
-export interface InstitutionsEdge {
-  node: Institutions
+export interface ArticleEdge {
+  node: Article
   cursor: String
 }
 
@@ -10769,98 +9307,7 @@ export interface CountryPreviousValues {
   name: String
 }
 
-export interface AggregateCountry {
-  count: Int
-}
-
-export interface DiscussionSubscriptionPayload {
-  mutation: MutationType
-  node?: Discussion
-  updatedFields?: String[]
-  previousValues?: DiscussionPreviousValues
-}
-
-/*
- * A connection to a list of items.
-
- */
-export interface CountryConnection {
-  pageInfo: PageInfo
-  edges: CountryEdge[]
-  aggregate: AggregateCountry
-}
-
-export interface InstitutionsSubscriptionPayload {
-  mutation: MutationType
-  node?: Institutions
-  updatedFields?: String[]
-  previousValues?: InstitutionsPreviousValues
-}
-
-/*
- * An edge in a connection.
-
- */
-export interface ArticleEdge {
-  node: Article
-  cursor: String
-}
-
-export interface InstitutionsPreviousValues {
-  id: ID_Output
-  createdAt: DateTime
-  updatedAt: DateTime
-  title: String
-  type: InstitutionType
-}
-
 export interface AggregatePost {
-  count: Int
-}
-
-export interface Post extends Node {
-  id: ID_Output
-  createdAt: DateTime
-  updatedAt: DateTime
-  isPublished: Boolean
-  title: String
-  text: String
-}
-
-/*
- * A connection to a list of items.
-
- */
-export interface PostConnection {
-  pageInfo: PageInfo
-  edges: PostEdge[]
-  aggregate: AggregatePost
-}
-
-export interface SchoolSubscriptionPayload {
-  mutation: MutationType
-  node?: School
-  updatedFields?: String[]
-  previousValues?: SchoolPreviousValues
-}
-
-/*
- * An edge in a connection.
-
- */
-export interface FileEdge {
-  node: File
-  cursor: String
-}
-
-export interface SchoolPreviousValues {
-  id: ID_Output
-  createdAt: DateTime
-  updatedAt: DateTime
-  title: String
-}
-
-export interface AggregateDiscussion {
   count: Int
 }
 
@@ -10874,6 +9321,51 @@ export interface Connect extends Node {
 }
 
 /*
+ * A connection to a list of items.
+
+ */
+export interface PostConnection {
+  pageInfo: PageInfo
+  edges: PostEdge[]
+  aggregate: AggregatePost
+}
+
+export interface InstitutionsSubscriptionPayload {
+  mutation: MutationType
+  node?: Institutions
+  updatedFields?: String[]
+  previousValues?: InstitutionsPreviousValues
+}
+
+/*
+ * An edge in a connection.
+
+ */
+export interface FileEdge {
+  node: File
+  cursor: String
+}
+
+export interface InstitutionsPreviousValues {
+  id: ID_Output
+  createdAt: DateTime
+  updatedAt: DateTime
+  title: String
+  type: InstitutionType
+}
+
+export interface AggregateDiscussion {
+  count: Int
+}
+
+export interface DiscussionSubscriptionPayload {
+  mutation: MutationType
+  node?: Discussion
+  updatedFields?: String[]
+  previousValues?: DiscussionPreviousValues
+}
+
+/*
  * An edge in a connection.
 
  */
@@ -10882,11 +9374,11 @@ export interface ForumEdge {
   cursor: String
 }
 
-export interface FacultySubscriptionPayload {
+export interface DepartmentSubscriptionPayload {
   mutation: MutationType
-  node?: Faculty
+  node?: Department
   updatedFields?: String[]
-  previousValues?: FacultyPreviousValues
+  previousValues?: DepartmentPreviousValues
 }
 
 /*
@@ -10899,7 +9391,7 @@ export interface ConnectConnection {
   aggregate: AggregateConnect
 }
 
-export interface FacultyPreviousValues {
+export interface DepartmentPreviousValues {
   id: ID_Output
   createdAt: DateTime
   updatedAt: DateTime
@@ -10928,57 +9420,6 @@ export interface DepartmentEdge {
   cursor: String
 }
 
-export interface DepartmentSubscriptionPayload {
-  mutation: MutationType
-  node?: Department
-  updatedFields?: String[]
-  previousValues?: DepartmentPreviousValues
-}
-
-/*
- * A connection to a list of items.
-
- */
-export interface FacultyConnection {
-  pageInfo: PageInfo
-  edges: FacultyEdge[]
-  aggregate: AggregateFaculty
-}
-
-export interface DepartmentPreviousValues {
-  id: ID_Output
-  createdAt: DateTime
-  updatedAt: DateTime
-  name: String
-}
-
-export interface AggregateInstitutions {
-  count: Int
-}
-
-export interface Discussion extends Node {
-  id: ID_Output
-  createdAt: DateTime
-  updatedAt: DateTime
-  title: String
-  slug?: String
-  content: String
-  tags?: String[]
-  favourites?: User[]
-  author: User
-  private: Boolean
-  opinions?: Opinions[]
-}
-
-/*
- * An edge in a connection.
-
- */
-export interface CountryEdge {
-  node: Country
-  cursor: String
-}
-
 export interface InterestSubscriptionPayload {
   mutation: MutationType
   node?: Interest
@@ -10990,10 +9431,10 @@ export interface InterestSubscriptionPayload {
  * A connection to a list of items.
 
  */
-export interface ArticleConnection {
+export interface InstitutionsConnection {
   pageInfo: PageInfo
-  edges: ArticleEdge[]
-  aggregate: AggregateArticle
+  edges: InstitutionsEdge[]
+  aggregate: AggregateInstitutions
 }
 
 export interface InterestPreviousValues {
@@ -11001,30 +9442,28 @@ export interface InterestPreviousValues {
   createdAt: DateTime
   updatedAt: DateTime
   name: String
-  avatar: String
 }
 
-export interface AggregateFile {
+export interface AggregateArticle {
   count: Int
 }
 
-export interface Interest extends Node {
+export interface Post extends Node {
   id: ID_Output
   createdAt: DateTime
   updatedAt: DateTime
-  name: String
-  avatar: String
-  users?: User[]
+  isPublished: Boolean
+  title: String
+  text: String
 }
 
 /*
- * A connection to a list of items.
+ * An edge in a connection.
 
  */
-export interface DiscussionConnection {
-  pageInfo: PageInfo
-  edges: DiscussionEdge[]
-  aggregate: AggregateDiscussion
+export interface PostEdge {
+  node: Post
+  cursor: String
 }
 
 export interface UserSubscriptionPayload {
@@ -11035,12 +9474,14 @@ export interface UserSubscriptionPayload {
 }
 
 /*
- * An edge in a connection.
+ * Information about pagination in a connection.
 
  */
-export interface UserEdge {
-  node: User
-  cursor: String
+export interface PageInfo {
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor?: String
+  endCursor?: String
 }
 
 export interface UserPreviousValues {
@@ -11062,27 +9503,32 @@ export interface UserPreviousValues {
   completedProfile?: Int
 }
 
-export interface AggregateFaculty {
+export interface AggregateConnect {
   count: Int
 }
 
-export interface Department extends Node {
+export interface Discussion extends Node {
   id: ID_Output
   createdAt: DateTime
   updatedAt: DateTime
-  name: String
-  falculty: Faculty
-  users?: User[]
+  title: String
+  slug?: String
+  content: String
+  tags?: String[]
+  favourites?: User[]
+  author: User
+  private: Boolean
+  opinions?: Opinions[]
 }
 
 /*
  * A connection to a list of items.
 
  */
-export interface InstitutionsConnection {
+export interface InterestConnection {
   pageInfo: PageInfo
-  edges: InstitutionsEdge[]
-  aggregate: AggregateInstitutions
+  edges: InterestEdge[]
+  aggregate: AggregateInterest
 }
 
 export interface ConnectSubscriptionPayload {
@@ -11096,12 +9542,12 @@ export interface ConnectSubscriptionPayload {
  * An edge in a connection.
 
  */
-export interface PostEdge {
-  node: Post
+export interface CountryEdge {
+  node: Country
   cursor: String
 }
 
-export interface AggregateConnect {
+export interface AggregateFile {
   count: Int
 }
 
@@ -11121,12 +9567,12 @@ export interface ForumSubscriptionPayload {
   previousValues?: ForumPreviousValues
 }
 
-export interface Faculty extends Node {
+export interface Interest extends Node {
   id: ID_Output
   createdAt: DateTime
   updatedAt: DateTime
   name: String
-  school: School
+  file: File
   users?: User[]
 }
 
@@ -11141,24 +9587,23 @@ export interface ConnectPreviousValues {
  * A connection to a list of items.
 
  */
-export interface InterestConnection {
+export interface DiscussionConnection {
   pageInfo: PageInfo
-  edges: InterestEdge[]
-  aggregate: AggregateInterest
+  edges: DiscussionEdge[]
+  aggregate: AggregateDiscussion
 }
 
 /*
- * Information about pagination in a connection.
+ * A connection to a list of items.
 
  */
-export interface PageInfo {
-  hasNextPage: Boolean
-  hasPreviousPage: Boolean
-  startCursor?: String
-  endCursor?: String
+export interface ArticleConnection {
+  pageInfo: PageInfo
+  edges: ArticleEdge[]
+  aggregate: AggregateArticle
 }
 
-export interface AggregateArticle {
+export interface AggregateInstitutions {
   count: Int
 }
 
@@ -11166,8 +9611,8 @@ export interface AggregateArticle {
  * An edge in a connection.
 
  */
-export interface SchoolEdge {
-  node: School
+export interface UserEdge {
+  node: User
   cursor: String
 }
 
@@ -11212,8 +9657,6 @@ export type Query = {
   articles: (args: { where?: ArticleWhereInput, orderBy?: ArticleOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<Article[]>
   countries: (args: { where?: CountryWhereInput, orderBy?: CountryOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<Country[]>
   institutionses: (args: { where?: InstitutionsWhereInput, orderBy?: InstitutionsOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<Institutions[]>
-  schools: (args: { where?: SchoolWhereInput, orderBy?: SchoolOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<School[]>
-  faculties: (args: { where?: FacultyWhereInput, orderBy?: FacultyOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<Faculty[]>
   departments: (args: { where?: DepartmentWhereInput, orderBy?: DepartmentOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<Department[]>
   interests: (args: { where?: InterestWhereInput, orderBy?: InterestOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<Interest[]>
   users: (args: { where?: UserWhereInput, orderBy?: UserOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<User[]>
@@ -11226,8 +9669,6 @@ export type Query = {
   article: (args: { where: ArticleWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Article | null>
   country: (args: { where: CountryWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Country | null>
   institutions: (args: { where: InstitutionsWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Institutions | null>
-  school: (args: { where: SchoolWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<School | null>
-  faculty: (args: { where: FacultyWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Faculty | null>
   department: (args: { where: DepartmentWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Department | null>
   interest: (args: { where: InterestWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Interest | null>
   user: (args: { where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<User | null>
@@ -11240,8 +9681,6 @@ export type Query = {
   articlesConnection: (args: { where?: ArticleWhereInput, orderBy?: ArticleOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<ArticleConnection>
   countriesConnection: (args: { where?: CountryWhereInput, orderBy?: CountryOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<CountryConnection>
   institutionsesConnection: (args: { where?: InstitutionsWhereInput, orderBy?: InstitutionsOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<InstitutionsConnection>
-  schoolsConnection: (args: { where?: SchoolWhereInput, orderBy?: SchoolOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<SchoolConnection>
-  facultiesConnection: (args: { where?: FacultyWhereInput, orderBy?: FacultyOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<FacultyConnection>
   departmentsConnection: (args: { where?: DepartmentWhereInput, orderBy?: DepartmentOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<DepartmentConnection>
   interestsConnection: (args: { where?: InterestWhereInput, orderBy?: InterestOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<InterestConnection>
   usersConnection: (args: { where?: UserWhereInput, orderBy?: UserOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<UserConnection>
@@ -11258,8 +9697,6 @@ export type Mutation = {
   createArticle: (args: { data: ArticleCreateInput }, info?: GraphQLResolveInfo | string) => Promise<Article>
   createCountry: (args: { data: CountryCreateInput }, info?: GraphQLResolveInfo | string) => Promise<Country>
   createInstitutions: (args: { data: InstitutionsCreateInput }, info?: GraphQLResolveInfo | string) => Promise<Institutions>
-  createSchool: (args: { data: SchoolCreateInput }, info?: GraphQLResolveInfo | string) => Promise<School>
-  createFaculty: (args: { data: FacultyCreateInput }, info?: GraphQLResolveInfo | string) => Promise<Faculty>
   createDepartment: (args: { data: DepartmentCreateInput }, info?: GraphQLResolveInfo | string) => Promise<Department>
   createInterest: (args: { data: InterestCreateInput }, info?: GraphQLResolveInfo | string) => Promise<Interest>
   createUser: (args: { data: UserCreateInput }, info?: GraphQLResolveInfo | string) => Promise<User>
@@ -11272,8 +9709,6 @@ export type Mutation = {
   updateArticle: (args: { data: ArticleUpdateInput, where: ArticleWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Article | null>
   updateCountry: (args: { data: CountryUpdateInput, where: CountryWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Country | null>
   updateInstitutions: (args: { data: InstitutionsUpdateInput, where: InstitutionsWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Institutions | null>
-  updateSchool: (args: { data: SchoolUpdateInput, where: SchoolWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<School | null>
-  updateFaculty: (args: { data: FacultyUpdateInput, where: FacultyWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Faculty | null>
   updateDepartment: (args: { data: DepartmentUpdateInput, where: DepartmentWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Department | null>
   updateInterest: (args: { data: InterestUpdateInput, where: InterestWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Interest | null>
   updateUser: (args: { data: UserUpdateInput, where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<User | null>
@@ -11286,8 +9721,6 @@ export type Mutation = {
   deleteArticle: (args: { where: ArticleWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Article | null>
   deleteCountry: (args: { where: CountryWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Country | null>
   deleteInstitutions: (args: { where: InstitutionsWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Institutions | null>
-  deleteSchool: (args: { where: SchoolWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<School | null>
-  deleteFaculty: (args: { where: FacultyWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Faculty | null>
   deleteDepartment: (args: { where: DepartmentWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Department | null>
   deleteInterest: (args: { where: InterestWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Interest | null>
   deleteUser: (args: { where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<User | null>
@@ -11300,8 +9733,6 @@ export type Mutation = {
   upsertArticle: (args: { where: ArticleWhereUniqueInput, create: ArticleCreateInput, update: ArticleUpdateInput }, info?: GraphQLResolveInfo | string) => Promise<Article>
   upsertCountry: (args: { where: CountryWhereUniqueInput, create: CountryCreateInput, update: CountryUpdateInput }, info?: GraphQLResolveInfo | string) => Promise<Country>
   upsertInstitutions: (args: { where: InstitutionsWhereUniqueInput, create: InstitutionsCreateInput, update: InstitutionsUpdateInput }, info?: GraphQLResolveInfo | string) => Promise<Institutions>
-  upsertSchool: (args: { where: SchoolWhereUniqueInput, create: SchoolCreateInput, update: SchoolUpdateInput }, info?: GraphQLResolveInfo | string) => Promise<School>
-  upsertFaculty: (args: { where: FacultyWhereUniqueInput, create: FacultyCreateInput, update: FacultyUpdateInput }, info?: GraphQLResolveInfo | string) => Promise<Faculty>
   upsertDepartment: (args: { where: DepartmentWhereUniqueInput, create: DepartmentCreateInput, update: DepartmentUpdateInput }, info?: GraphQLResolveInfo | string) => Promise<Department>
   upsertInterest: (args: { where: InterestWhereUniqueInput, create: InterestCreateInput, update: InterestUpdateInput }, info?: GraphQLResolveInfo | string) => Promise<Interest>
   upsertUser: (args: { where: UserWhereUniqueInput, create: UserCreateInput, update: UserUpdateInput }, info?: GraphQLResolveInfo | string) => Promise<User>
@@ -11314,8 +9745,6 @@ export type Mutation = {
   updateManyArticles: (args: { data: ArticleUpdateInput, where: ArticleWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
   updateManyCountries: (args: { data: CountryUpdateInput, where: CountryWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
   updateManyInstitutionses: (args: { data: InstitutionsUpdateInput, where: InstitutionsWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
-  updateManySchools: (args: { data: SchoolUpdateInput, where: SchoolWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
-  updateManyFaculties: (args: { data: FacultyUpdateInput, where: FacultyWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
   updateManyDepartments: (args: { data: DepartmentUpdateInput, where: DepartmentWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
   updateManyInterests: (args: { data: InterestUpdateInput, where: InterestWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
   updateManyUsers: (args: { data: UserUpdateInput, where: UserWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
@@ -11328,8 +9757,6 @@ export type Mutation = {
   deleteManyArticles: (args: { where: ArticleWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
   deleteManyCountries: (args: { where: CountryWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
   deleteManyInstitutionses: (args: { where: InstitutionsWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
-  deleteManySchools: (args: { where: SchoolWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
-  deleteManyFaculties: (args: { where: FacultyWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
   deleteManyDepartments: (args: { where: DepartmentWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
   deleteManyInterests: (args: { where: InterestWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
   deleteManyUsers: (args: { where: UserWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
@@ -11345,8 +9772,6 @@ export type Subscription = {
   article: (args: { where?: ArticleSubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<ArticleSubscriptionPayload>>
   country: (args: { where?: CountrySubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<CountrySubscriptionPayload>>
   institutions: (args: { where?: InstitutionsSubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<InstitutionsSubscriptionPayload>>
-  school: (args: { where?: SchoolSubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<SchoolSubscriptionPayload>>
-  faculty: (args: { where?: FacultySubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<FacultySubscriptionPayload>>
   department: (args: { where?: DepartmentSubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<DepartmentSubscriptionPayload>>
   interest: (args: { where?: InterestSubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<InterestSubscriptionPayload>>
   user: (args: { where?: UserSubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<UserSubscriptionPayload>>
@@ -11368,8 +9793,6 @@ export class Prisma extends BasePrisma {
     Article: (where: ArticleWhereInput): Promise<boolean> => super.existsDelegate('query', 'articles', { where }, {}, '{ id }'),
     Country: (where: CountryWhereInput): Promise<boolean> => super.existsDelegate('query', 'countries', { where }, {}, '{ id }'),
     Institutions: (where: InstitutionsWhereInput): Promise<boolean> => super.existsDelegate('query', 'institutionses', { where }, {}, '{ id }'),
-    School: (where: SchoolWhereInput): Promise<boolean> => super.existsDelegate('query', 'schools', { where }, {}, '{ id }'),
-    Faculty: (where: FacultyWhereInput): Promise<boolean> => super.existsDelegate('query', 'faculties', { where }, {}, '{ id }'),
     Department: (where: DepartmentWhereInput): Promise<boolean> => super.existsDelegate('query', 'departments', { where }, {}, '{ id }'),
     Interest: (where: InterestWhereInput): Promise<boolean> => super.existsDelegate('query', 'interests', { where }, {}, '{ id }'),
     User: (where: UserWhereInput): Promise<boolean> => super.existsDelegate('query', 'users', { where }, {}, '{ id }'),
@@ -11385,8 +9808,6 @@ export class Prisma extends BasePrisma {
     articles: (args, info): Promise<Article[]> => super.delegate('query', 'articles', args, {}, info),
     countries: (args, info): Promise<Country[]> => super.delegate('query', 'countries', args, {}, info),
     institutionses: (args, info): Promise<Institutions[]> => super.delegate('query', 'institutionses', args, {}, info),
-    schools: (args, info): Promise<School[]> => super.delegate('query', 'schools', args, {}, info),
-    faculties: (args, info): Promise<Faculty[]> => super.delegate('query', 'faculties', args, {}, info),
     departments: (args, info): Promise<Department[]> => super.delegate('query', 'departments', args, {}, info),
     interests: (args, info): Promise<Interest[]> => super.delegate('query', 'interests', args, {}, info),
     users: (args, info): Promise<User[]> => super.delegate('query', 'users', args, {}, info),
@@ -11399,8 +9820,6 @@ export class Prisma extends BasePrisma {
     article: (args, info): Promise<Article | null> => super.delegate('query', 'article', args, {}, info),
     country: (args, info): Promise<Country | null> => super.delegate('query', 'country', args, {}, info),
     institutions: (args, info): Promise<Institutions | null> => super.delegate('query', 'institutions', args, {}, info),
-    school: (args, info): Promise<School | null> => super.delegate('query', 'school', args, {}, info),
-    faculty: (args, info): Promise<Faculty | null> => super.delegate('query', 'faculty', args, {}, info),
     department: (args, info): Promise<Department | null> => super.delegate('query', 'department', args, {}, info),
     interest: (args, info): Promise<Interest | null> => super.delegate('query', 'interest', args, {}, info),
     user: (args, info): Promise<User | null> => super.delegate('query', 'user', args, {}, info),
@@ -11413,8 +9832,6 @@ export class Prisma extends BasePrisma {
     articlesConnection: (args, info): Promise<ArticleConnection> => super.delegate('query', 'articlesConnection', args, {}, info),
     countriesConnection: (args, info): Promise<CountryConnection> => super.delegate('query', 'countriesConnection', args, {}, info),
     institutionsesConnection: (args, info): Promise<InstitutionsConnection> => super.delegate('query', 'institutionsesConnection', args, {}, info),
-    schoolsConnection: (args, info): Promise<SchoolConnection> => super.delegate('query', 'schoolsConnection', args, {}, info),
-    facultiesConnection: (args, info): Promise<FacultyConnection> => super.delegate('query', 'facultiesConnection', args, {}, info),
     departmentsConnection: (args, info): Promise<DepartmentConnection> => super.delegate('query', 'departmentsConnection', args, {}, info),
     interestsConnection: (args, info): Promise<InterestConnection> => super.delegate('query', 'interestsConnection', args, {}, info),
     usersConnection: (args, info): Promise<UserConnection> => super.delegate('query', 'usersConnection', args, {}, info),
@@ -11431,8 +9848,6 @@ export class Prisma extends BasePrisma {
     createArticle: (args, info): Promise<Article> => super.delegate('mutation', 'createArticle', args, {}, info),
     createCountry: (args, info): Promise<Country> => super.delegate('mutation', 'createCountry', args, {}, info),
     createInstitutions: (args, info): Promise<Institutions> => super.delegate('mutation', 'createInstitutions', args, {}, info),
-    createSchool: (args, info): Promise<School> => super.delegate('mutation', 'createSchool', args, {}, info),
-    createFaculty: (args, info): Promise<Faculty> => super.delegate('mutation', 'createFaculty', args, {}, info),
     createDepartment: (args, info): Promise<Department> => super.delegate('mutation', 'createDepartment', args, {}, info),
     createInterest: (args, info): Promise<Interest> => super.delegate('mutation', 'createInterest', args, {}, info),
     createUser: (args, info): Promise<User> => super.delegate('mutation', 'createUser', args, {}, info),
@@ -11445,8 +9860,6 @@ export class Prisma extends BasePrisma {
     updateArticle: (args, info): Promise<Article | null> => super.delegate('mutation', 'updateArticle', args, {}, info),
     updateCountry: (args, info): Promise<Country | null> => super.delegate('mutation', 'updateCountry', args, {}, info),
     updateInstitutions: (args, info): Promise<Institutions | null> => super.delegate('mutation', 'updateInstitutions', args, {}, info),
-    updateSchool: (args, info): Promise<School | null> => super.delegate('mutation', 'updateSchool', args, {}, info),
-    updateFaculty: (args, info): Promise<Faculty | null> => super.delegate('mutation', 'updateFaculty', args, {}, info),
     updateDepartment: (args, info): Promise<Department | null> => super.delegate('mutation', 'updateDepartment', args, {}, info),
     updateInterest: (args, info): Promise<Interest | null> => super.delegate('mutation', 'updateInterest', args, {}, info),
     updateUser: (args, info): Promise<User | null> => super.delegate('mutation', 'updateUser', args, {}, info),
@@ -11459,8 +9872,6 @@ export class Prisma extends BasePrisma {
     deleteArticle: (args, info): Promise<Article | null> => super.delegate('mutation', 'deleteArticle', args, {}, info),
     deleteCountry: (args, info): Promise<Country | null> => super.delegate('mutation', 'deleteCountry', args, {}, info),
     deleteInstitutions: (args, info): Promise<Institutions | null> => super.delegate('mutation', 'deleteInstitutions', args, {}, info),
-    deleteSchool: (args, info): Promise<School | null> => super.delegate('mutation', 'deleteSchool', args, {}, info),
-    deleteFaculty: (args, info): Promise<Faculty | null> => super.delegate('mutation', 'deleteFaculty', args, {}, info),
     deleteDepartment: (args, info): Promise<Department | null> => super.delegate('mutation', 'deleteDepartment', args, {}, info),
     deleteInterest: (args, info): Promise<Interest | null> => super.delegate('mutation', 'deleteInterest', args, {}, info),
     deleteUser: (args, info): Promise<User | null> => super.delegate('mutation', 'deleteUser', args, {}, info),
@@ -11473,8 +9884,6 @@ export class Prisma extends BasePrisma {
     upsertArticle: (args, info): Promise<Article> => super.delegate('mutation', 'upsertArticle', args, {}, info),
     upsertCountry: (args, info): Promise<Country> => super.delegate('mutation', 'upsertCountry', args, {}, info),
     upsertInstitutions: (args, info): Promise<Institutions> => super.delegate('mutation', 'upsertInstitutions', args, {}, info),
-    upsertSchool: (args, info): Promise<School> => super.delegate('mutation', 'upsertSchool', args, {}, info),
-    upsertFaculty: (args, info): Promise<Faculty> => super.delegate('mutation', 'upsertFaculty', args, {}, info),
     upsertDepartment: (args, info): Promise<Department> => super.delegate('mutation', 'upsertDepartment', args, {}, info),
     upsertInterest: (args, info): Promise<Interest> => super.delegate('mutation', 'upsertInterest', args, {}, info),
     upsertUser: (args, info): Promise<User> => super.delegate('mutation', 'upsertUser', args, {}, info),
@@ -11487,8 +9896,6 @@ export class Prisma extends BasePrisma {
     updateManyArticles: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManyArticles', args, {}, info),
     updateManyCountries: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManyCountries', args, {}, info),
     updateManyInstitutionses: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManyInstitutionses', args, {}, info),
-    updateManySchools: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManySchools', args, {}, info),
-    updateManyFaculties: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManyFaculties', args, {}, info),
     updateManyDepartments: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManyDepartments', args, {}, info),
     updateManyInterests: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManyInterests', args, {}, info),
     updateManyUsers: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManyUsers', args, {}, info),
@@ -11501,8 +9908,6 @@ export class Prisma extends BasePrisma {
     deleteManyArticles: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManyArticles', args, {}, info),
     deleteManyCountries: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManyCountries', args, {}, info),
     deleteManyInstitutionses: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManyInstitutionses', args, {}, info),
-    deleteManySchools: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManySchools', args, {}, info),
-    deleteManyFaculties: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManyFaculties', args, {}, info),
     deleteManyDepartments: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManyDepartments', args, {}, info),
     deleteManyInterests: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManyInterests', args, {}, info),
     deleteManyUsers: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManyUsers', args, {}, info),
@@ -11518,8 +9923,6 @@ export class Prisma extends BasePrisma {
     article: (args, infoOrQuery): Promise<AsyncIterator<ArticleSubscriptionPayload>> => super.delegateSubscription('article', args, {}, infoOrQuery),
     country: (args, infoOrQuery): Promise<AsyncIterator<CountrySubscriptionPayload>> => super.delegateSubscription('country', args, {}, infoOrQuery),
     institutions: (args, infoOrQuery): Promise<AsyncIterator<InstitutionsSubscriptionPayload>> => super.delegateSubscription('institutions', args, {}, infoOrQuery),
-    school: (args, infoOrQuery): Promise<AsyncIterator<SchoolSubscriptionPayload>> => super.delegateSubscription('school', args, {}, infoOrQuery),
-    faculty: (args, infoOrQuery): Promise<AsyncIterator<FacultySubscriptionPayload>> => super.delegateSubscription('faculty', args, {}, infoOrQuery),
     department: (args, infoOrQuery): Promise<AsyncIterator<DepartmentSubscriptionPayload>> => super.delegateSubscription('department', args, {}, infoOrQuery),
     interest: (args, infoOrQuery): Promise<AsyncIterator<InterestSubscriptionPayload>> => super.delegateSubscription('interest', args, {}, infoOrQuery),
     user: (args, infoOrQuery): Promise<AsyncIterator<UserSubscriptionPayload>> => super.delegateSubscription('user', args, {}, infoOrQuery),

@@ -39,7 +39,7 @@ type Department implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  falculty(where: FacultyWhereInput): Faculty!
+  institution(where: InstitutionsWhereInput): Institutions!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
@@ -55,15 +55,6 @@ type Discussion implements Node {
   author(where: UserWhereInput): User!
   private: Boolean!
   opinions(where: OpinionsWhereInput, orderBy: OpinionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Opinions!]
-}
-
-type Faculty implements Node {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  name: String!
-  school(where: SchoolWhereInput): School!
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
 type File implements Node {
@@ -93,7 +84,7 @@ type Institutions implements Node {
   updatedAt: DateTime!
   title: String!
   type: InstitutionType!
-  Country(where: CountryWhereInput): Country!
+  country(where: CountryWhereInput): Country!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
@@ -102,7 +93,7 @@ type Interest implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  avatar: String!
+  file(where: FileWhereInput): File!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
@@ -124,15 +115,6 @@ type Post implements Node {
   text: String!
 }
 
-type School implements Node {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-  institution(where: InstitutionsWhereInput): Institutions!
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
-}
-
 type User implements Node {
   id: ID!
   createdAt: DateTime!
@@ -145,8 +127,6 @@ type User implements Node {
   gender: String!
   country(where: CountryWhereInput): Country
   institution(where: InstitutionsWhereInput): Institutions
-  school(where: SchoolWhereInput): School
-  falculty(where: FacultyWhereInput): Faculty
   department(where: DepartmentWhereInput): Department
   interest(where: InterestWhereInput): Interest
   favourites(where: DiscussionWhereInput, orderBy: DiscussionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Discussion!]
@@ -189,10 +169,6 @@ type AggregateDiscussion {
   count: Int!
 }
 
-type AggregateFaculty {
-  count: Int!
-}
-
 type AggregateFile {
   count: Int!
 }
@@ -214,10 +190,6 @@ type AggregateOpinions {
 }
 
 type AggregatePost {
-  count: Int!
-}
-
-type AggregateSchool {
   count: Int!
 }
 
@@ -1350,7 +1322,7 @@ type DepartmentConnection {
 
 input DepartmentCreateInput {
   name: String!
-  falculty: FacultyCreateOneInput!
+  institution: InstitutionsCreateOneInput!
   users: UserCreateManyWithoutDepartmentInput
 }
 
@@ -1361,7 +1333,7 @@ input DepartmentCreateOneWithoutUsersInput {
 
 input DepartmentCreateWithoutUsersInput {
   name: String!
-  falculty: FacultyCreateOneInput!
+  institution: InstitutionsCreateOneInput!
 }
 
 """
@@ -1433,7 +1405,7 @@ input DepartmentSubscriptionWhereInput {
 
 input DepartmentUpdateInput {
   name: String
-  falculty: FacultyUpdateOneInput
+  institution: InstitutionsUpdateOneInput
   users: UserUpdateManyWithoutDepartmentInput
 }
 
@@ -1448,7 +1420,7 @@ input DepartmentUpdateOneWithoutUsersInput {
 
 input DepartmentUpdateWithoutUsersDataInput {
   name: String
-  falculty: FacultyUpdateOneInput
+  institution: InstitutionsUpdateOneInput
 }
 
 input DepartmentUpdateWithoutUsersInput {
@@ -1635,7 +1607,7 @@ input DepartmentWhereInput {
   All values not ending with the given string.
   """
   name_not_ends_with: String
-  falculty: FacultyWhereInput
+  institution: InstitutionsWhereInput
   users_every: UserWhereInput
   users_some: UserWhereInput
   users_none: UserWhereInput
@@ -2202,349 +2174,6 @@ input DiscussionWhereUniqueInput {
 """
 A connection to a list of items.
 """
-type FacultyConnection {
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-  """
-  A list of edges.
-  """
-  edges: [FacultyEdge]!
-  aggregate: AggregateFaculty!
-}
-
-input FacultyCreateInput {
-  name: String!
-  school: SchoolCreateOneInput!
-  users: UserCreateManyWithoutFalcultyInput
-}
-
-input FacultyCreateOneInput {
-  create: FacultyCreateInput
-  connect: FacultyWhereUniqueInput
-}
-
-input FacultyCreateOneWithoutUsersInput {
-  create: FacultyCreateWithoutUsersInput
-  connect: FacultyWhereUniqueInput
-}
-
-input FacultyCreateWithoutUsersInput {
-  name: String!
-  school: SchoolCreateOneInput!
-}
-
-"""
-An edge in a connection.
-"""
-type FacultyEdge {
-  """
-  The item at the end of the edge.
-  """
-  node: Faculty!
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-}
-
-enum FacultyOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  name_ASC
-  name_DESC
-}
-
-type FacultyPreviousValues {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  name: String!
-}
-
-type FacultySubscriptionPayload {
-  mutation: MutationType!
-  node: Faculty
-  updatedFields: [String!]
-  previousValues: FacultyPreviousValues
-}
-
-input FacultySubscriptionWhereInput {
-  """
-  Logical AND on all given filters.
-  """
-  AND: [FacultySubscriptionWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
-  OR: [FacultySubscriptionWhereInput!]
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: FacultyWhereInput
-}
-
-input FacultyUpdateDataInput {
-  name: String
-  school: SchoolUpdateOneInput
-  users: UserUpdateManyWithoutFalcultyInput
-}
-
-input FacultyUpdateInput {
-  name: String
-  school: SchoolUpdateOneInput
-  users: UserUpdateManyWithoutFalcultyInput
-}
-
-input FacultyUpdateNestedInput {
-  where: FacultyWhereUniqueInput!
-  data: FacultyUpdateDataInput!
-}
-
-input FacultyUpdateOneInput {
-  create: FacultyCreateInput
-  connect: FacultyWhereUniqueInput
-  disconnect: FacultyWhereUniqueInput
-  delete: FacultyWhereUniqueInput
-  update: FacultyUpdateNestedInput
-  upsert: FacultyUpsertNestedInput
-}
-
-input FacultyUpdateOneWithoutUsersInput {
-  create: FacultyCreateWithoutUsersInput
-  connect: FacultyWhereUniqueInput
-  disconnect: FacultyWhereUniqueInput
-  delete: FacultyWhereUniqueInput
-  update: FacultyUpdateWithoutUsersInput
-  upsert: FacultyUpsertWithoutUsersInput
-}
-
-input FacultyUpdateWithoutUsersDataInput {
-  name: String
-  school: SchoolUpdateOneInput
-}
-
-input FacultyUpdateWithoutUsersInput {
-  where: FacultyWhereUniqueInput!
-  data: FacultyUpdateWithoutUsersDataInput!
-}
-
-input FacultyUpsertNestedInput {
-  where: FacultyWhereUniqueInput!
-  update: FacultyUpdateDataInput!
-  create: FacultyCreateInput!
-}
-
-input FacultyUpsertWithoutUsersInput {
-  where: FacultyWhereUniqueInput!
-  update: FacultyUpdateWithoutUsersDataInput!
-  create: FacultyCreateWithoutUsersInput!
-}
-
-input FacultyWhereInput {
-  """
-  Logical AND on all given filters.
-  """
-  AND: [FacultyWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
-  OR: [FacultyWhereInput!]
-  id: ID
-  """
-  All values that are not equal to given value.
-  """
-  id_not: ID
-  """
-  All values that are contained in given list.
-  """
-  id_in: [ID!]
-  """
-  All values that are not contained in given list.
-  """
-  id_not_in: [ID!]
-  """
-  All values less than the given value.
-  """
-  id_lt: ID
-  """
-  All values less than or equal the given value.
-  """
-  id_lte: ID
-  """
-  All values greater than the given value.
-  """
-  id_gt: ID
-  """
-  All values greater than or equal the given value.
-  """
-  id_gte: ID
-  """
-  All values containing the given string.
-  """
-  id_contains: ID
-  """
-  All values not containing the given string.
-  """
-  id_not_contains: ID
-  """
-  All values starting with the given string.
-  """
-  id_starts_with: ID
-  """
-  All values not starting with the given string.
-  """
-  id_not_starts_with: ID
-  """
-  All values ending with the given string.
-  """
-  id_ends_with: ID
-  """
-  All values not ending with the given string.
-  """
-  id_not_ends_with: ID
-  createdAt: DateTime
-  """
-  All values that are not equal to given value.
-  """
-  createdAt_not: DateTime
-  """
-  All values that are contained in given list.
-  """
-  createdAt_in: [DateTime!]
-  """
-  All values that are not contained in given list.
-  """
-  createdAt_not_in: [DateTime!]
-  """
-  All values less than the given value.
-  """
-  createdAt_lt: DateTime
-  """
-  All values less than or equal the given value.
-  """
-  createdAt_lte: DateTime
-  """
-  All values greater than the given value.
-  """
-  createdAt_gt: DateTime
-  """
-  All values greater than or equal the given value.
-  """
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  """
-  All values that are not equal to given value.
-  """
-  updatedAt_not: DateTime
-  """
-  All values that are contained in given list.
-  """
-  updatedAt_in: [DateTime!]
-  """
-  All values that are not contained in given list.
-  """
-  updatedAt_not_in: [DateTime!]
-  """
-  All values less than the given value.
-  """
-  updatedAt_lt: DateTime
-  """
-  All values less than or equal the given value.
-  """
-  updatedAt_lte: DateTime
-  """
-  All values greater than the given value.
-  """
-  updatedAt_gt: DateTime
-  """
-  All values greater than or equal the given value.
-  """
-  updatedAt_gte: DateTime
-  name: String
-  """
-  All values that are not equal to given value.
-  """
-  name_not: String
-  """
-  All values that are contained in given list.
-  """
-  name_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
-  name_not_in: [String!]
-  """
-  All values less than the given value.
-  """
-  name_lt: String
-  """
-  All values less than or equal the given value.
-  """
-  name_lte: String
-  """
-  All values greater than the given value.
-  """
-  name_gt: String
-  """
-  All values greater than or equal the given value.
-  """
-  name_gte: String
-  """
-  All values containing the given string.
-  """
-  name_contains: String
-  """
-  All values not containing the given string.
-  """
-  name_not_contains: String
-  """
-  All values starting with the given string.
-  """
-  name_starts_with: String
-  """
-  All values not starting with the given string.
-  """
-  name_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
-  name_ends_with: String
-  """
-  All values not ending with the given string.
-  """
-  name_not_ends_with: String
-  school: SchoolWhereInput
-  users_every: UserWhereInput
-  users_some: UserWhereInput
-  users_none: UserWhereInput
-}
-
-input FacultyWhereUniqueInput {
-  id: ID
-}
-
-"""
-A connection to a list of items.
-"""
 type FileConnection {
   """
   Information to aid in pagination.
@@ -2563,6 +2192,11 @@ input FileCreateInput {
   secret: String!
   contentType: String!
   url: String!
+}
+
+input FileCreateOneInput {
+  create: FileCreateInput
+  connect: FileWhereUniqueInput
 }
 
 """
@@ -2644,12 +2278,40 @@ input FileSubscriptionWhereInput {
   node: FileWhereInput
 }
 
+input FileUpdateDataInput {
+  name: String
+  size: Int
+  secret: String
+  contentType: String
+  url: String
+}
+
 input FileUpdateInput {
   name: String
   size: Int
   secret: String
   contentType: String
   url: String
+}
+
+input FileUpdateNestedInput {
+  where: FileWhereUniqueInput!
+  data: FileUpdateDataInput!
+}
+
+input FileUpdateOneInput {
+  create: FileCreateInput
+  connect: FileWhereUniqueInput
+  disconnect: FileWhereUniqueInput
+  delete: FileWhereUniqueInput
+  update: FileUpdateNestedInput
+  upsert: FileUpsertNestedInput
+}
+
+input FileUpsertNestedInput {
+  where: FileWhereUniqueInput!
+  update: FileUpdateDataInput!
+  create: FileCreateInput!
 }
 
 input FileWhereInput {
@@ -3379,7 +3041,7 @@ type InstitutionsConnection {
 input InstitutionsCreateInput {
   title: String!
   type: InstitutionType!
-  Country: CountryCreateOneInput!
+  country: CountryCreateOneInput!
   users: UserCreateManyWithoutInstitutionInput
 }
 
@@ -3396,7 +3058,7 @@ input InstitutionsCreateOneWithoutUsersInput {
 input InstitutionsCreateWithoutUsersInput {
   title: String!
   type: InstitutionType!
-  Country: CountryCreateOneInput!
+  country: CountryCreateOneInput!
 }
 
 """
@@ -3472,14 +3134,14 @@ input InstitutionsSubscriptionWhereInput {
 input InstitutionsUpdateDataInput {
   title: String
   type: InstitutionType
-  Country: CountryUpdateOneInput
+  country: CountryUpdateOneInput
   users: UserUpdateManyWithoutInstitutionInput
 }
 
 input InstitutionsUpdateInput {
   title: String
   type: InstitutionType
-  Country: CountryUpdateOneInput
+  country: CountryUpdateOneInput
   users: UserUpdateManyWithoutInstitutionInput
 }
 
@@ -3509,7 +3171,7 @@ input InstitutionsUpdateOneWithoutUsersInput {
 input InstitutionsUpdateWithoutUsersDataInput {
   title: String
   type: InstitutionType
-  Country: CountryUpdateOneInput
+  country: CountryUpdateOneInput
 }
 
 input InstitutionsUpdateWithoutUsersInput {
@@ -3715,7 +3377,7 @@ input InstitutionsWhereInput {
   All values that are not contained in given list.
   """
   type_not_in: [InstitutionType!]
-  Country: CountryWhereInput
+  country: CountryWhereInput
   users_every: UserWhereInput
   users_some: UserWhereInput
   users_none: UserWhereInput
@@ -3747,7 +3409,7 @@ type InterestConnection {
 
 input InterestCreateInput {
   name: String!
-  avatar: String!
+  file: FileCreateOneInput!
   users: UserCreateManyWithoutInterestInput
 }
 
@@ -3758,7 +3420,7 @@ input InterestCreateOneWithoutUsersInput {
 
 input InterestCreateWithoutUsersInput {
   name: String!
-  avatar: String!
+  file: FileCreateOneInput!
 }
 
 """
@@ -3784,8 +3446,6 @@ enum InterestOrderByInput {
   updatedAt_DESC
   name_ASC
   name_DESC
-  avatar_ASC
-  avatar_DESC
 }
 
 type InterestPreviousValues {
@@ -3793,7 +3453,6 @@ type InterestPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  avatar: String!
 }
 
 type InterestSubscriptionPayload {
@@ -3833,7 +3492,7 @@ input InterestSubscriptionWhereInput {
 
 input InterestUpdateInput {
   name: String
-  avatar: String
+  file: FileUpdateOneInput
   users: UserUpdateManyWithoutInterestInput
 }
 
@@ -3848,7 +3507,7 @@ input InterestUpdateOneWithoutUsersInput {
 
 input InterestUpdateWithoutUsersDataInput {
   name: String
-  avatar: String
+  file: FileUpdateOneInput
 }
 
 input InterestUpdateWithoutUsersInput {
@@ -4035,59 +3694,7 @@ input InterestWhereInput {
   All values not ending with the given string.
   """
   name_not_ends_with: String
-  avatar: String
-  """
-  All values that are not equal to given value.
-  """
-  avatar_not: String
-  """
-  All values that are contained in given list.
-  """
-  avatar_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
-  avatar_not_in: [String!]
-  """
-  All values less than the given value.
-  """
-  avatar_lt: String
-  """
-  All values less than or equal the given value.
-  """
-  avatar_lte: String
-  """
-  All values greater than the given value.
-  """
-  avatar_gt: String
-  """
-  All values greater than or equal the given value.
-  """
-  avatar_gte: String
-  """
-  All values containing the given string.
-  """
-  avatar_contains: String
-  """
-  All values not containing the given string.
-  """
-  avatar_not_contains: String
-  """
-  All values starting with the given string.
-  """
-  avatar_starts_with: String
-  """
-  All values not starting with the given string.
-  """
-  avatar_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
-  avatar_ends_with: String
-  """
-  All values not ending with the given string.
-  """
-  avatar_not_ends_with: String
+  file: FileWhereInput
   users_every: UserWhereInput
   users_some: UserWhereInput
   users_none: UserWhereInput
@@ -4109,8 +3716,6 @@ type Mutation {
   createArticle(data: ArticleCreateInput!): Article!
   createCountry(data: CountryCreateInput!): Country!
   createInstitutions(data: InstitutionsCreateInput!): Institutions!
-  createSchool(data: SchoolCreateInput!): School!
-  createFaculty(data: FacultyCreateInput!): Faculty!
   createDepartment(data: DepartmentCreateInput!): Department!
   createInterest(data: InterestCreateInput!): Interest!
   createUser(data: UserCreateInput!): User!
@@ -4123,8 +3728,6 @@ type Mutation {
   updateArticle(data: ArticleUpdateInput!, where: ArticleWhereUniqueInput!): Article
   updateCountry(data: CountryUpdateInput!, where: CountryWhereUniqueInput!): Country
   updateInstitutions(data: InstitutionsUpdateInput!, where: InstitutionsWhereUniqueInput!): Institutions
-  updateSchool(data: SchoolUpdateInput!, where: SchoolWhereUniqueInput!): School
-  updateFaculty(data: FacultyUpdateInput!, where: FacultyWhereUniqueInput!): Faculty
   updateDepartment(data: DepartmentUpdateInput!, where: DepartmentWhereUniqueInput!): Department
   updateInterest(data: InterestUpdateInput!, where: InterestWhereUniqueInput!): Interest
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
@@ -4137,8 +3740,6 @@ type Mutation {
   deleteArticle(where: ArticleWhereUniqueInput!): Article
   deleteCountry(where: CountryWhereUniqueInput!): Country
   deleteInstitutions(where: InstitutionsWhereUniqueInput!): Institutions
-  deleteSchool(where: SchoolWhereUniqueInput!): School
-  deleteFaculty(where: FacultyWhereUniqueInput!): Faculty
   deleteDepartment(where: DepartmentWhereUniqueInput!): Department
   deleteInterest(where: InterestWhereUniqueInput!): Interest
   deleteUser(where: UserWhereUniqueInput!): User
@@ -4151,8 +3752,6 @@ type Mutation {
   upsertArticle(where: ArticleWhereUniqueInput!, create: ArticleCreateInput!, update: ArticleUpdateInput!): Article!
   upsertCountry(where: CountryWhereUniqueInput!, create: CountryCreateInput!, update: CountryUpdateInput!): Country!
   upsertInstitutions(where: InstitutionsWhereUniqueInput!, create: InstitutionsCreateInput!, update: InstitutionsUpdateInput!): Institutions!
-  upsertSchool(where: SchoolWhereUniqueInput!, create: SchoolCreateInput!, update: SchoolUpdateInput!): School!
-  upsertFaculty(where: FacultyWhereUniqueInput!, create: FacultyCreateInput!, update: FacultyUpdateInput!): Faculty!
   upsertDepartment(where: DepartmentWhereUniqueInput!, create: DepartmentCreateInput!, update: DepartmentUpdateInput!): Department!
   upsertInterest(where: InterestWhereUniqueInput!, create: InterestCreateInput!, update: InterestUpdateInput!): Interest!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
@@ -4165,8 +3764,6 @@ type Mutation {
   updateManyArticles(data: ArticleUpdateInput!, where: ArticleWhereInput!): BatchPayload!
   updateManyCountries(data: CountryUpdateInput!, where: CountryWhereInput!): BatchPayload!
   updateManyInstitutionses(data: InstitutionsUpdateInput!, where: InstitutionsWhereInput!): BatchPayload!
-  updateManySchools(data: SchoolUpdateInput!, where: SchoolWhereInput!): BatchPayload!
-  updateManyFaculties(data: FacultyUpdateInput!, where: FacultyWhereInput!): BatchPayload!
   updateManyDepartments(data: DepartmentUpdateInput!, where: DepartmentWhereInput!): BatchPayload!
   updateManyInterests(data: InterestUpdateInput!, where: InterestWhereInput!): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput!): BatchPayload!
@@ -4179,8 +3776,6 @@ type Mutation {
   deleteManyArticles(where: ArticleWhereInput!): BatchPayload!
   deleteManyCountries(where: CountryWhereInput!): BatchPayload!
   deleteManyInstitutionses(where: InstitutionsWhereInput!): BatchPayload!
-  deleteManySchools(where: SchoolWhereInput!): BatchPayload!
-  deleteManyFaculties(where: FacultyWhereInput!): BatchPayload!
   deleteManyDepartments(where: DepartmentWhereInput!): BatchPayload!
   deleteManyInterests(where: InterestWhereInput!): BatchPayload!
   deleteManyUsers(where: UserWhereInput!): BatchPayload!
@@ -4916,8 +4511,6 @@ type Query {
   articles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article]!
   countries(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Country]!
   institutionses(where: InstitutionsWhereInput, orderBy: InstitutionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Institutions]!
-  schools(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [School]!
-  faculties(where: FacultyWhereInput, orderBy: FacultyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Faculty]!
   departments(where: DepartmentWhereInput, orderBy: DepartmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Department]!
   interests(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Interest]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
@@ -4930,8 +4523,6 @@ type Query {
   article(where: ArticleWhereUniqueInput!): Article
   country(where: CountryWhereUniqueInput!): Country
   institutions(where: InstitutionsWhereUniqueInput!): Institutions
-  school(where: SchoolWhereUniqueInput!): School
-  faculty(where: FacultyWhereUniqueInput!): Faculty
   department(where: DepartmentWhereUniqueInput!): Department
   interest(where: InterestWhereUniqueInput!): Interest
   user(where: UserWhereUniqueInput!): User
@@ -4944,8 +4535,6 @@ type Query {
   articlesConnection(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ArticleConnection!
   countriesConnection(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CountryConnection!
   institutionsesConnection(where: InstitutionsWhereInput, orderBy: InstitutionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InstitutionsConnection!
-  schoolsConnection(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SchoolConnection!
-  facultiesConnection(where: FacultyWhereInput, orderBy: FacultyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FacultyConnection!
   departmentsConnection(where: DepartmentWhereInput, orderBy: DepartmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DepartmentConnection!
   interestsConnection(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InterestConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -4962,357 +4551,12 @@ type Query {
   id: ID!): Node
 }
 
-"""
-A connection to a list of items.
-"""
-type SchoolConnection {
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-  """
-  A list of edges.
-  """
-  edges: [SchoolEdge]!
-  aggregate: AggregateSchool!
-}
-
-input SchoolCreateInput {
-  title: String!
-  institution: InstitutionsCreateOneInput!
-  users: UserCreateManyWithoutSchoolInput
-}
-
-input SchoolCreateOneInput {
-  create: SchoolCreateInput
-  connect: SchoolWhereUniqueInput
-}
-
-input SchoolCreateOneWithoutUsersInput {
-  create: SchoolCreateWithoutUsersInput
-  connect: SchoolWhereUniqueInput
-}
-
-input SchoolCreateWithoutUsersInput {
-  title: String!
-  institution: InstitutionsCreateOneInput!
-}
-
-"""
-An edge in a connection.
-"""
-type SchoolEdge {
-  """
-  The item at the end of the edge.
-  """
-  node: School!
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-}
-
-enum SchoolOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  title_ASC
-  title_DESC
-}
-
-type SchoolPreviousValues {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-}
-
-type SchoolSubscriptionPayload {
-  mutation: MutationType!
-  node: School
-  updatedFields: [String!]
-  previousValues: SchoolPreviousValues
-}
-
-input SchoolSubscriptionWhereInput {
-  """
-  Logical AND on all given filters.
-  """
-  AND: [SchoolSubscriptionWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
-  OR: [SchoolSubscriptionWhereInput!]
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: SchoolWhereInput
-}
-
-input SchoolUpdateDataInput {
-  title: String
-  institution: InstitutionsUpdateOneInput
-  users: UserUpdateManyWithoutSchoolInput
-}
-
-input SchoolUpdateInput {
-  title: String
-  institution: InstitutionsUpdateOneInput
-  users: UserUpdateManyWithoutSchoolInput
-}
-
-input SchoolUpdateNestedInput {
-  where: SchoolWhereUniqueInput!
-  data: SchoolUpdateDataInput!
-}
-
-input SchoolUpdateOneInput {
-  create: SchoolCreateInput
-  connect: SchoolWhereUniqueInput
-  disconnect: SchoolWhereUniqueInput
-  delete: SchoolWhereUniqueInput
-  update: SchoolUpdateNestedInput
-  upsert: SchoolUpsertNestedInput
-}
-
-input SchoolUpdateOneWithoutUsersInput {
-  create: SchoolCreateWithoutUsersInput
-  connect: SchoolWhereUniqueInput
-  disconnect: SchoolWhereUniqueInput
-  delete: SchoolWhereUniqueInput
-  update: SchoolUpdateWithoutUsersInput
-  upsert: SchoolUpsertWithoutUsersInput
-}
-
-input SchoolUpdateWithoutUsersDataInput {
-  title: String
-  institution: InstitutionsUpdateOneInput
-}
-
-input SchoolUpdateWithoutUsersInput {
-  where: SchoolWhereUniqueInput!
-  data: SchoolUpdateWithoutUsersDataInput!
-}
-
-input SchoolUpsertNestedInput {
-  where: SchoolWhereUniqueInput!
-  update: SchoolUpdateDataInput!
-  create: SchoolCreateInput!
-}
-
-input SchoolUpsertWithoutUsersInput {
-  where: SchoolWhereUniqueInput!
-  update: SchoolUpdateWithoutUsersDataInput!
-  create: SchoolCreateWithoutUsersInput!
-}
-
-input SchoolWhereInput {
-  """
-  Logical AND on all given filters.
-  """
-  AND: [SchoolWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
-  OR: [SchoolWhereInput!]
-  id: ID
-  """
-  All values that are not equal to given value.
-  """
-  id_not: ID
-  """
-  All values that are contained in given list.
-  """
-  id_in: [ID!]
-  """
-  All values that are not contained in given list.
-  """
-  id_not_in: [ID!]
-  """
-  All values less than the given value.
-  """
-  id_lt: ID
-  """
-  All values less than or equal the given value.
-  """
-  id_lte: ID
-  """
-  All values greater than the given value.
-  """
-  id_gt: ID
-  """
-  All values greater than or equal the given value.
-  """
-  id_gte: ID
-  """
-  All values containing the given string.
-  """
-  id_contains: ID
-  """
-  All values not containing the given string.
-  """
-  id_not_contains: ID
-  """
-  All values starting with the given string.
-  """
-  id_starts_with: ID
-  """
-  All values not starting with the given string.
-  """
-  id_not_starts_with: ID
-  """
-  All values ending with the given string.
-  """
-  id_ends_with: ID
-  """
-  All values not ending with the given string.
-  """
-  id_not_ends_with: ID
-  createdAt: DateTime
-  """
-  All values that are not equal to given value.
-  """
-  createdAt_not: DateTime
-  """
-  All values that are contained in given list.
-  """
-  createdAt_in: [DateTime!]
-  """
-  All values that are not contained in given list.
-  """
-  createdAt_not_in: [DateTime!]
-  """
-  All values less than the given value.
-  """
-  createdAt_lt: DateTime
-  """
-  All values less than or equal the given value.
-  """
-  createdAt_lte: DateTime
-  """
-  All values greater than the given value.
-  """
-  createdAt_gt: DateTime
-  """
-  All values greater than or equal the given value.
-  """
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  """
-  All values that are not equal to given value.
-  """
-  updatedAt_not: DateTime
-  """
-  All values that are contained in given list.
-  """
-  updatedAt_in: [DateTime!]
-  """
-  All values that are not contained in given list.
-  """
-  updatedAt_not_in: [DateTime!]
-  """
-  All values less than the given value.
-  """
-  updatedAt_lt: DateTime
-  """
-  All values less than or equal the given value.
-  """
-  updatedAt_lte: DateTime
-  """
-  All values greater than the given value.
-  """
-  updatedAt_gt: DateTime
-  """
-  All values greater than or equal the given value.
-  """
-  updatedAt_gte: DateTime
-  title: String
-  """
-  All values that are not equal to given value.
-  """
-  title_not: String
-  """
-  All values that are contained in given list.
-  """
-  title_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
-  title_not_in: [String!]
-  """
-  All values less than the given value.
-  """
-  title_lt: String
-  """
-  All values less than or equal the given value.
-  """
-  title_lte: String
-  """
-  All values greater than the given value.
-  """
-  title_gt: String
-  """
-  All values greater than or equal the given value.
-  """
-  title_gte: String
-  """
-  All values containing the given string.
-  """
-  title_contains: String
-  """
-  All values not containing the given string.
-  """
-  title_not_contains: String
-  """
-  All values starting with the given string.
-  """
-  title_starts_with: String
-  """
-  All values not starting with the given string.
-  """
-  title_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
-  title_ends_with: String
-  """
-  All values not ending with the given string.
-  """
-  title_not_ends_with: String
-  institution: InstitutionsWhereInput
-  users_every: UserWhereInput
-  users_some: UserWhereInput
-  users_none: UserWhereInput
-}
-
-input SchoolWhereUniqueInput {
-  id: ID
-}
-
 type Subscription {
   file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   article(where: ArticleSubscriptionWhereInput): ArticleSubscriptionPayload
   country(where: CountrySubscriptionWhereInput): CountrySubscriptionPayload
   institutions(where: InstitutionsSubscriptionWhereInput): InstitutionsSubscriptionPayload
-  school(where: SchoolSubscriptionWhereInput): SchoolSubscriptionPayload
-  faculty(where: FacultySubscriptionWhereInput): FacultySubscriptionPayload
   department(where: DepartmentSubscriptionWhereInput): DepartmentSubscriptionPayload
   interest(where: InterestSubscriptionWhereInput): InterestSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
@@ -5353,8 +4597,6 @@ input UserCreateInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5375,11 +4617,6 @@ input UserCreateManyWithoutDepartmentInput {
   connect: [UserWhereUniqueInput!]
 }
 
-input UserCreateManyWithoutFalcultyInput {
-  create: [UserCreateWithoutFalcultyInput!]
-  connect: [UserWhereUniqueInput!]
-}
-
 input UserCreateManyWithoutFavouritesInput {
   create: [UserCreateWithoutFavouritesInput!]
   connect: [UserWhereUniqueInput!]
@@ -5392,11 +4629,6 @@ input UserCreateManyWithoutInstitutionInput {
 
 input UserCreateManyWithoutInterestInput {
   create: [UserCreateWithoutInterestInput!]
-  connect: [UserWhereUniqueInput!]
-}
-
-input UserCreateManyWithoutSchoolInput {
-  create: [UserCreateWithoutSchoolInput!]
   connect: [UserWhereUniqueInput!]
 }
 
@@ -5446,8 +4678,6 @@ input UserCreateWithoutArticlesInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5473,8 +4703,6 @@ input UserCreateWithoutConectFromInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5500,8 +4728,6 @@ input UserCreateWithoutConnectToInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5526,8 +4752,6 @@ input UserCreateWithoutCountryInput {
   newProfileNot: Boolean
   completedProfile: Int
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5554,35 +4778,6 @@ input UserCreateWithoutDepartmentInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
-  interest: InterestCreateOneWithoutUsersInput
-  favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
-  connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
-  articles: ArticleCreateManyWithoutAuthorInput
-  opinions: OpinionsCreateManyWithoutAuthorInput
-}
-
-input UserCreateWithoutFalcultyInput {
-  email: String!
-  username: String
-  password: String!
-  firstname: String!
-  lastname: String!
-  gender: String!
-  type: String
-  userType: String
-  newConnectNot: Boolean
-  newCommentNot: Boolean
-  newMessageNot: Boolean
-  newProfileNot: Boolean
-  completedProfile: Int
-  country: CountryCreateOneWithoutUsersInput
-  institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput
@@ -5608,8 +4803,6 @@ input UserCreateWithoutFavouritesInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput
@@ -5634,8 +4827,6 @@ input UserCreateWithoutInstitutionInput {
   newProfileNot: Boolean
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5662,8 +4853,6 @@ input UserCreateWithoutInterestInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
   myDiscussions: DiscussionCreateOneWithoutAuthorInput
@@ -5689,8 +4878,6 @@ input UserCreateWithoutMyDiscussionsInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5716,8 +4903,6 @@ input UserCreateWithoutOpinionsInput {
   completedProfile: Int
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
-  school: SchoolCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateOneWithoutUsersInput
   favourites: DiscussionCreateManyWithoutFavouritesInput
@@ -5725,33 +4910,6 @@ input UserCreateWithoutOpinionsInput {
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
-}
-
-input UserCreateWithoutSchoolInput {
-  email: String!
-  username: String
-  password: String!
-  firstname: String!
-  lastname: String!
-  gender: String!
-  type: String
-  userType: String
-  newConnectNot: Boolean
-  newCommentNot: Boolean
-  newMessageNot: Boolean
-  newProfileNot: Boolean
-  completedProfile: Int
-  country: CountryCreateOneWithoutUsersInput
-  institution: InstitutionsCreateOneWithoutUsersInput
-  falculty: FacultyCreateOneWithoutUsersInput
-  department: DepartmentCreateOneWithoutUsersInput
-  interest: InterestCreateOneWithoutUsersInput
-  favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
-  connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
-  articles: ArticleCreateManyWithoutAuthorInput
-  opinions: OpinionsCreateManyWithoutAuthorInput
 }
 
 """
@@ -5873,8 +5031,6 @@ input UserUpdateDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -5901,8 +5057,6 @@ input UserUpdateInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -5931,15 +5085,6 @@ input UserUpdateManyWithoutDepartmentInput {
   upsert: [UserUpsertWithoutDepartmentInput!]
 }
 
-input UserUpdateManyWithoutFalcultyInput {
-  create: [UserCreateWithoutFalcultyInput!]
-  connect: [UserWhereUniqueInput!]
-  disconnect: [UserWhereUniqueInput!]
-  delete: [UserWhereUniqueInput!]
-  update: [UserUpdateWithoutFalcultyInput!]
-  upsert: [UserUpsertWithoutFalcultyInput!]
-}
-
 input UserUpdateManyWithoutFavouritesInput {
   create: [UserCreateWithoutFavouritesInput!]
   connect: [UserWhereUniqueInput!]
@@ -5965,15 +5110,6 @@ input UserUpdateManyWithoutInterestInput {
   delete: [UserWhereUniqueInput!]
   update: [UserUpdateWithoutInterestInput!]
   upsert: [UserUpsertWithoutInterestInput!]
-}
-
-input UserUpdateManyWithoutSchoolInput {
-  create: [UserCreateWithoutSchoolInput!]
-  connect: [UserWhereUniqueInput!]
-  disconnect: [UserWhereUniqueInput!]
-  delete: [UserWhereUniqueInput!]
-  update: [UserUpdateWithoutSchoolInput!]
-  upsert: [UserUpsertWithoutSchoolInput!]
 }
 
 input UserUpdateNestedInput {
@@ -6051,8 +5187,6 @@ input UserUpdateWithoutArticlesDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -6083,8 +5217,6 @@ input UserUpdateWithoutConectFromDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -6115,8 +5247,6 @@ input UserUpdateWithoutConnectToDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -6146,8 +5276,6 @@ input UserUpdateWithoutCountryDataInput {
   newProfileNot: Boolean
   completedProfile: Int
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -6179,8 +5307,6 @@ input UserUpdateWithoutDepartmentDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
@@ -6193,38 +5319,6 @@ input UserUpdateWithoutDepartmentDataInput {
 input UserUpdateWithoutDepartmentInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutDepartmentDataInput!
-}
-
-input UserUpdateWithoutFalcultyDataInput {
-  email: String
-  username: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type: String
-  userType: String
-  newConnectNot: Boolean
-  newCommentNot: Boolean
-  newMessageNot: Boolean
-  newProfileNot: Boolean
-  completedProfile: Int
-  country: CountryUpdateOneWithoutUsersInput
-  institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  department: DepartmentUpdateOneWithoutUsersInput
-  interest: InterestUpdateOneWithoutUsersInput
-  favourites: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
-  connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
-  articles: ArticleUpdateManyWithoutAuthorInput
-  opinions: OpinionsUpdateManyWithoutAuthorInput
-}
-
-input UserUpdateWithoutFalcultyInput {
-  where: UserWhereUniqueInput!
-  data: UserUpdateWithoutFalcultyDataInput!
 }
 
 input UserUpdateWithoutFavouritesDataInput {
@@ -6243,8 +5337,6 @@ input UserUpdateWithoutFavouritesDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
@@ -6274,8 +5366,6 @@ input UserUpdateWithoutInstitutionDataInput {
   newProfileNot: Boolean
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -6307,8 +5397,6 @@ input UserUpdateWithoutInterestDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
   myDiscussions: DiscussionUpdateOneWithoutAuthorInput
@@ -6339,8 +5427,6 @@ input UserUpdateWithoutMyDiscussionsDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -6371,8 +5457,6 @@ input UserUpdateWithoutOpinionsDataInput {
   completedProfile: Int
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
-  school: SchoolUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateOneWithoutUsersInput
   favourites: DiscussionUpdateManyWithoutFavouritesInput
@@ -6385,38 +5469,6 @@ input UserUpdateWithoutOpinionsDataInput {
 input UserUpdateWithoutOpinionsInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutOpinionsDataInput!
-}
-
-input UserUpdateWithoutSchoolDataInput {
-  email: String
-  username: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type: String
-  userType: String
-  newConnectNot: Boolean
-  newCommentNot: Boolean
-  newMessageNot: Boolean
-  newProfileNot: Boolean
-  completedProfile: Int
-  country: CountryUpdateOneWithoutUsersInput
-  institution: InstitutionsUpdateOneWithoutUsersInput
-  falculty: FacultyUpdateOneWithoutUsersInput
-  department: DepartmentUpdateOneWithoutUsersInput
-  interest: InterestUpdateOneWithoutUsersInput
-  favourites: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
-  connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
-  articles: ArticleUpdateManyWithoutAuthorInput
-  opinions: OpinionsUpdateManyWithoutAuthorInput
-}
-
-input UserUpdateWithoutSchoolInput {
-  where: UserWhereUniqueInput!
-  data: UserUpdateWithoutSchoolDataInput!
 }
 
 input UserUpsertNestedInput {
@@ -6455,12 +5507,6 @@ input UserUpsertWithoutDepartmentInput {
   create: UserCreateWithoutDepartmentInput!
 }
 
-input UserUpsertWithoutFalcultyInput {
-  where: UserWhereUniqueInput!
-  update: UserUpdateWithoutFalcultyDataInput!
-  create: UserCreateWithoutFalcultyInput!
-}
-
 input UserUpsertWithoutFavouritesInput {
   where: UserWhereUniqueInput!
   update: UserUpdateWithoutFavouritesDataInput!
@@ -6489,12 +5535,6 @@ input UserUpsertWithoutOpinionsInput {
   where: UserWhereUniqueInput!
   update: UserUpdateWithoutOpinionsDataInput!
   create: UserCreateWithoutOpinionsInput!
-}
-
-input UserUpsertWithoutSchoolInput {
-  where: UserWhereUniqueInput!
-  update: UserUpdateWithoutSchoolDataInput!
-  create: UserCreateWithoutSchoolInput!
 }
 
 input UserWhereInput {
@@ -7092,8 +6132,6 @@ input UserWhereInput {
   completedProfile_gte: Int
   country: CountryWhereInput
   institution: InstitutionsWhereInput
-  school: SchoolWhereInput
-  falculty: FacultyWhereInput
   department: DepartmentWhereInput
   interest: InterestWhereInput
   favourites_every: DiscussionWhereInput

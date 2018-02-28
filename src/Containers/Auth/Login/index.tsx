@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
 import { compose, graphql, withApollo } from 'react-apollo';
+import { Helmet } from 'react-helmet';
 import { ChildProps } from 'react-apollo/types';
 import { LOGIN_USER } from 'Graphql/Mutation';
 import { User } from 'CustomTypings/schema';
@@ -98,12 +99,19 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
         data-uk-grid
         style={{height: '100vh', backgroundColor: '#ffffff'}}
       >
-        <div className="uk-width-2-5 sideBg" id="sideBg">
+        <Helmet>
+            <title>Unizonn | Login</title>
+            <meta name="an inclusive community" content="Unizonn login" />
+          </Helmet>
+        <div className="uk-width-2-5 sideBg uk-visible@m" id="sideBg">
           <div className="uk-flex uk-flex-stretch uk-flex-middle">
           .
           </div>
         </div>
-        <div className="uk-container uk-width-3-5 uk-flex uk-flex-stretch uk-flex-middle uk-box-shadow-small">
+        <div 
+          className="uk-container uk-width-3-5@m uk-width-1-1@s uk-flex 
+          uk-flex-stretch uk-flex-middle uk-box-shadow-small"
+        >
           <form 
             className="uk-form-vertical uk-width-1-1 uk-margin-large uk-padding-large uk-padding-remove-vertical"
             onSubmit={this.handleSubmit}

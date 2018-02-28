@@ -6,13 +6,14 @@ export function validateLogin(email: string, password: string) {
   };
 }
 
-export function validateSignup(email: string, password: string, confirmPassword: string,
+export function validateSignup(email: string, password: string, username: string, confirmPassword: string,
                                firstname: string, lastname: string, gender: string,
                                userType: string,
 ) {
   // true means invalid, so our conditions got reversed
   return {
     email: email.length === 0,
+    username: username.length === 0,
     password: password.length === 0,
     confirmPassword: confirmPassword.length === 0 && confirmPassword !== password,
     lastname: lastname.length === 0,

@@ -12,6 +12,7 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
+var SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 const host = process.env.host || 'localhost';
@@ -162,6 +163,17 @@ module.exports = {
     new webpack.DefinePlugin(Object.assign({}, env.stringified, {
       __dirname: '__dirname',
     })),
+    new SWPrecacheWebpackPlugin(
+      {
+        cacheId: 'unizonn',
+        filename: 'unizonn-service-worker.js',
+        maximumFileSizeToCacheInBytes: 4194304,
+        runtimeCaching: [{
+          handler: 'cacheFirst',
+          urlPattern: /[.]mp3$/,
+        }],
+      }
+    ),
 
   ].concat(isProd ? [
 
