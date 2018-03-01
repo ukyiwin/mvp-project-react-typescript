@@ -1,21 +1,13 @@
 import * as React from 'react';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import { asyncComponent } from 'react-async-component';
 import { Helmet } from 'react-helmet';
-import Home from '../Home';
-import PublicHome from '../HomePublic';
 import NotFound from '../NotFound';
 import { PublicLayout, PrivateLayout, EmptyLayout, ProfileLayout } from 'Components/Layouts/MainLayout';
-import Maps from 'Containers/Maps';
-import Forum from 'Containers/Forum';
-import Message from 'Containers/Message';
-import Signup from 'Containers/Auth/Signup';
-import SignupPhoto from 'Containers/Auth/Signup/signupPhoto';
-import SignupProfile from 'Containers/Auth/Signup/signupProfile';
-import Interest from 'Containers/Auth/Signup/interest';
-import Login from 'Containers/Auth/Login';
 import { isTokenExpired } from 'Utils/jwtHelper';
 import { AUTH_TOKEN } from '../../constants';
 import { PrivateHeader } from 'Components/Layouts/Header';
+import LoadingComponent from 'Components/Loading';
 import SideBar from 'Components/Layouts/SideBar';
 import Compose from 'Containers/ComposeArticle';
 import { User } from 'CustomTypings/schema';
@@ -24,6 +16,57 @@ import { withApollo, graphql, compose, ChildProps } from 'react-apollo';
 import Profile from 'Containers/Profile';
 import './style.css';
 // const customHistory = createBrowserHistory();
+
+const Login = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Login'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const Message = asyncComponent({
+  resolve: () => System.import('Containers/Message'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const Interest = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Signup/interest'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const SignupProfile = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Signup/signupProfile'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const SignupPhoto = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Signup/signupPhoto'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const Signup = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Signup'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const Forum = asyncComponent({
+  resolve: () => System.import('Containers/Forum'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const Maps = asyncComponent({
+  resolve: () => System.import('Containers/Maps'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const PublicHome = asyncComponent({
+  resolve: () => System.import('Containers/HomePublic'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const Home = asyncComponent({
+  resolve: () => System.import('Containers/Home'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
 
 type Props = {
   // tslint:disable-next-line:no-any

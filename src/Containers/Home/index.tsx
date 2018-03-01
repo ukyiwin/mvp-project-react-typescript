@@ -1,9 +1,10 @@
 import * as React from 'react';
 import WriteModal from 'Components/WriteModal';
+import ArticleList from 'Components/ArticleList';
 import { Helmet } from 'react-helmet';
+import { User } from 'CustomTypings/schema';
 
 import './style.css';
-import { User } from 'CustomTypings/schema';
 // import ArcticleListComponent from 'Components/ArticleList';
 type Props = {
   me?: User
@@ -33,7 +34,7 @@ class Home extends React.Component<Props> {
         </Helmet>
         <WriteModal />
         <div className="uk-flex">
-        jkhjh
+          <ArticleList />
         </div>
       </div>
     );

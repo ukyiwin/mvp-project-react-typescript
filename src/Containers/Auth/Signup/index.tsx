@@ -1,14 +1,23 @@
 import * as React from 'react';
 import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
-import { compose, withApollo } from 'react-apollo';
-// import { ChildProps } from 'react-apollo/types';
-// import { SIGNUP_USER } from 'Graphql/Mutation';
-// import { User } from 'CustomTypings/schema';
+import { compose, withApollo, graphql } from 'react-apollo';
+import { ChildProps } from 'react-apollo/types';
+import { SIGNUP_USER } from 'Graphql/Mutation';
+import { User } from 'CustomTypings/schema';
 import { validateSignup } from 'Utils/helpers';
 import * as UIkit from 'uikit';
-
 import { AUTH_TOKEN, CURRENT_USER } from '../../../constants';
 import './style.css';
+
+type InputProps = {
+  email: string,
+  password: string
+};
+
+type Response = {
+  token: string,
+  user: User
+};
 
 type Props = {
   // tslint:disable-next-line:no-any
@@ -19,7 +28,7 @@ type Props = {
   client?: any
 };
 
-class Signup extends React.Component<RouteComponentProps & Props> {
+class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Response, InputProps>, {}> {
   
   state = { 
     show: false,
@@ -94,7 +103,7 @@ class Signup extends React.Component<RouteComponentProps & Props> {
       this.props.history.replace('/signup/profile');
     }).catch( err => {
       this.setState({loading: false}); 
-      UIkit.notification(`Error: ${err.message}`, {status: 'danger', pos: 'top-right'});
+      UIkit.notification(`${err.message}`, {status: 'danger', pos: 'top-right'});
     });
   }
   
@@ -330,5 +339,9 @@ class Signup extends React.Component<RouteComponentProps & Props> {
 }
 
 export default withRouter(compose(
-  withApollo
+  withApollo,
+  graphql<Response, InputProps, Props>(SIGNUP_USER, {
+    name: 'signup',
+    options: { variables: { email: '', password: '' } },
+  })
 )(Signup));
