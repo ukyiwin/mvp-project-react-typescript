@@ -185,7 +185,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
             <title>Unizonn</title>
             <meta name="an inclusive community" content="Unizonn community" />
           </Helmet>
-          <PrivateHeader isAuthenticated={isAuthenticated} />
+          <PrivateHeader isAuthenticated={isAuthenticated} logout={this._logout} />
           <Switch>
             <Route 
               exact={true}
@@ -225,8 +225,13 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
               isAuthenticated={isAuthenticated}  
             />
             <EmptyLayout component={SignupPhoto} path="/signup/photo" isAuthenticated={isAuthenticated} />
-            <EmptyLayout component={SignupProfile} path="/signup/profile" isAuthenticated={isAuthenticated}/>
-            <EmptyLayout component={Interest} path="/signup/interest" isAuthenticated={isAuthenticated} />
+            <PublicLayout 
+              exact={true} 
+              component={SignupProfile} 
+              path="/add/profile" 
+              isAuthenticated={isAuthenticated}
+            />
+            <EmptyLayout component={Interest} path="/add/interest" isAuthenticated={isAuthenticated} />
             <EmptyLayout component={Maps} path="/library" isAuthenticated={isAuthenticated} />
             <EmptyLayout component={Message} path="/message" isAuthenticated={isAuthenticated} />
             <PrivateLayout component={Forum} path="/Forum" isAuthenticated={isAuthenticated} />

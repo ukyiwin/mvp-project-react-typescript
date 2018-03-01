@@ -132,7 +132,23 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
             onSubmit={this.handleSubmit}
           >
             <div className="uk-margin">
-              <h3 className="uk-heading-primary uk-align-center">We want to know you more </h3>
+              <h3 className="uk-heading-primary uk-align-center">You're Almost done </h3>
+            </div>
+            <div className="uk-margin">
+              <div className="js-upload uk-placeholder uk-text-center">
+                  <span uk-icon="icon: cloud-upload"/>
+                  <span className="uk-text-middle">Attach photo by dropping them here or </span>
+                  <div
+                    uk-form-custom=""
+                  >
+                    <input 
+                      type="file" 
+                      multiple={false}
+                    />
+                    <span className="uk-link">selecting one</span>
+                  </div>
+              </div>
+              <progress id="js-progressbar" className="uk-progress" value="0" max="100" hidden={true} />
             </div>
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="firstname">Country</label>
@@ -184,7 +200,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
                   className={`uk-button uk-button-primary uk-width-1-1 ${isDisabled ? 'disabled' : 'disabled'}`}
                   type="submit"
                 >
-                Sign Up
+                SAVE & NEXT
                 </button>
               }
             </div>
