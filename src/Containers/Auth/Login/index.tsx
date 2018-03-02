@@ -70,11 +70,16 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
       }
     }).then( result => {
       const token = result.data.login.token;
+      const user = result.data.login.user;
       localStorage.setItem(AUTH_TOKEN, token);
       localStorage.setItem(CURRENT_USER, result.data.login.user);
       this.props.refreshToken(token);
       this.setState({loading: false});
-      this.props.history.replace('/');
+      if (user.completedProfile === 1) {
+        this.props.history.replace('/add/profile');
+      } else {
+        this.props.history.replace('/');
+      }
     }).catch( err => {
       this.setState({loading: false});
       UIkit.notification(`Error: ${err.message}`, {status: 'danger', pos: 'top-right'});

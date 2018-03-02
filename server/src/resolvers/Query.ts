@@ -15,20 +15,20 @@ export const Query = {
       }
     }
 
-    return ctx.db.query.posts({ where }, info)
+    return ctx.db.query.posts({ where }, info);
   },
 
   post(parent, { id }, ctx: Context, info) {
-    return ctx.db.query.post({ where: { id: id } }, info)
+    return ctx.db.query.post({ where: { id: id } }, info);
   },
 
   me(parent, args, ctx: Context, info) {
-    const id = getUserId(ctx)
-    return ctx.db.query.user({ where: { id } }, info)
+    const id = getUserId(ctx);
+    return ctx.db.query.user({ where: { id } }, info);
   },
 
   async userExist(parent, { email }, ctx: Context, info) {
-    const user = await ctx.db.exists.User({email: email})
+    const user = await ctx.db.exists.User({email: email});
 
     if (user) {
       return true;
@@ -49,18 +49,18 @@ export const Query = {
       institution: {
         id: idInstitution
       }
-    }}, info)
+    }}, info);
   },
   getInstitution(parent, { idCountry }, ctx: Context, info) {
     return ctx.db.query.institutionses({ where: {
       country: {
         id: idCountry
       }
-    }}, info)
+    }}, info);
   },
 
   getCountry(parent, args, ctx: Context, info) {
-    return ctx.db.query.institutionses({}, info)
+    return ctx.db.query.countries({}, info);
   },
 
 };

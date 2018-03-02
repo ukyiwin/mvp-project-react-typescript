@@ -7,14 +7,15 @@ type Query {
   post(id: ID!): Post!
   me: User
   userExist(email: String!): Boolean!
-  getCountry: Country
-  getInstitution(idCountry: ID!): Institutions
-  getDepartment(idInstitutions: ID!): Department
+  getCountry: [Country!]
+  getInstitution(idCountry: ID!): [Institutions!]
+  getDepartment(idInstitutions: ID!): [Department!]
 }
 
 type Mutation {
   signup(email: String!, password: String!, username: String!, firstname: String!,
    lastname: String!, type: String!, gender: String! ): AuthPayload!
+  addProfile(countryId: ID!, institutionId: ID!, courseId: ID!): User!
   login(email: String!, password: String!): AuthPayload!
   createDraft(title: String!, text: String!): Post!
   publish(id: ID!): Post!

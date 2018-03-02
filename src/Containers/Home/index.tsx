@@ -1,13 +1,16 @@
 import * as React from 'react';
 import WriteModal from 'Components/WriteModal';
 import ArticleList from 'Components/ArticleList';
+import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { User } from 'CustomTypings/schema';
 
 import './style.css';
 // import ArcticleListComponent from 'Components/ArticleList';
+
 type Props = {
-  me?: User
+  me?: User,
+  // history: any
 };
 
 class Home extends React.Component<Props> {
@@ -20,7 +23,9 @@ class Home extends React.Component<Props> {
 
   componentDidMount() {
     if (this.props.me) {
-      // if (this.props.me.)
+      /*if (this.props.me.completedProfile === 1 || completedProfile === 0){
+        this.props.hostory.replace('/add/profile');
+      }*/
     }
   }
 
@@ -41,4 +46,4 @@ class Home extends React.Component<Props> {
   }
 }
 
-export default Home;
+export default withRouter(Home);

@@ -332,25 +332,6 @@ export type DiscussionOrderByInput = (
     "private_DESC"
 );
 
-export type FacultyOrderByInput = (
-
-    "id_ASC" |
-
-    "id_DESC" |
-
-    "createdAt_ASC" |
-
-    "createdAt_DESC" |
-
-    "updatedAt_ASC" |
-
-    "updatedAt_DESC" |
-
-    "name_ASC" |
-
-    "name_DESC"
-);
-
 export type FileOrderByInput = (
 
     "id_ASC" |
@@ -459,11 +440,7 @@ export type InterestOrderByInput = (
 
     "name_ASC" |
 
-    "name_DESC" |
-
-    "avatar_ASC" |
-
-    "avatar_DESC"
+    "name_DESC"
 );
 
 export type MutationType = (
@@ -519,25 +496,6 @@ export type PostOrderByInput = (
     "text_ASC" |
 
     "text_DESC"
-);
-
-export type SchoolOrderByInput = (
-
-    "id_ASC" |
-
-    "id_DESC" |
-
-    "createdAt_ASC" |
-
-    "createdAt_DESC" |
-
-    "updatedAt_ASC" |
-
-    "updatedAt_DESC" |
-
-    "title_ASC" |
-
-    "title_DESC"
 );
 
 export type UserOrderByInput = (
@@ -798,11 +756,6 @@ export interface AggregateDiscussion {
     count: NonNull<Int>;
 }
 
-export interface AggregateFaculty {
-
-    count: NonNull<Int>;
-}
-
 export interface AggregateFile {
 
     count: NonNull<Int>;
@@ -829,11 +782,6 @@ export interface AggregateOpinions {
 }
 
 export interface AggregatePost {
-
-    count: NonNull<Int>;
-}
-
-export interface AggregateSchool {
 
     count: NonNull<Int>;
 }
@@ -1015,6 +963,8 @@ export interface Country extends Node {
 
     name: NonNull<String>;
 
+    institutions?: List<NonNull<Institutions>>;
+
     users?: List<NonNull<User>>;
 }
 
@@ -1086,7 +1036,7 @@ export interface Department extends Node {
 
     name: NonNull<String>;
 
-    falculty: NonNull<Faculty>;
+    institution: NonNull<Institutions>;
 
     users?: List<NonNull<User>>;
 }
@@ -1234,77 +1184,6 @@ export interface DiscussionSubscriptionPayload {
     updatedFields?: List<NonNull<String>>;
 
     previousValues?: Optional<DiscussionPreviousValues>;
-}
-
-export interface Faculty extends Node {
-
-    id: NonNull<ID>;
-
-    createdAt: NonNull<DateTime>;
-
-    updatedAt: NonNull<DateTime>;
-
-    name: NonNull<String>;
-
-    school: NonNull<School>;
-
-    users?: List<NonNull<User>>;
-}
-
-/**
- * A connection to a list of items.
- */
-export interface FacultyConnection {
-
-    /**
-     * Information to aid in pagination.
-     */
-    pageInfo: NonNull<PageInfo>;
-
-    /**
-     * A list of edges.
-     */
-    edges: NonNull<List<Optional<FacultyEdge>>>;
-
-    aggregate: NonNull<AggregateFaculty>;
-}
-
-/**
- * An edge in a connection.
- */
-export interface FacultyEdge {
-
-    /**
-     * The item at the end of the edge.
-     */
-    node: NonNull<Faculty>;
-
-    /**
-     * A cursor for use in pagination.
-     */
-    cursor: NonNull<String>;
-}
-
-export interface FacultyPreviousValues {
-
-    id: NonNull<ID>;
-
-    createdAt: NonNull<DateTime>;
-
-    updatedAt: NonNull<DateTime>;
-
-    name: NonNull<String>;
-}
-
-export interface FacultySubscriptionPayload {
-
-    mutation: NonNull<MutationType>;
-
-    node?: Optional<Faculty>;
-
-    updatedFields?: List<NonNull<String>>;
-
-    previousValues?: Optional<FacultyPreviousValues>;
 }
 
 export interface File extends Node {
@@ -1479,7 +1358,7 @@ export interface Institutions extends Node {
 
     type: NonNull<InstitutionType>;
 
-    Country: NonNull<Country>;
+    country?: Optional<Country>;
 
     users?: List<NonNull<User>>;
 }
@@ -1552,7 +1431,7 @@ export interface Interest extends Node {
 
     name: NonNull<String>;
 
-    avatar: NonNull<String>;
+    file: NonNull<File>;
 
     users?: List<NonNull<User>>;
 }
@@ -1600,8 +1479,6 @@ export interface InterestPreviousValues {
     updatedAt: NonNull<DateTime>;
 
     name: NonNull<String>;
-
-    avatar: NonNull<String>;
 }
 
 export interface InterestSubscriptionPayload {
@@ -1627,10 +1504,6 @@ export interface Mutation {
 
     createInstitutions: NonNull<Institutions>;
 
-    createSchool: NonNull<School>;
-
-    createFaculty: NonNull<Faculty>;
-
     createDepartment: NonNull<Department>;
 
     createInterest: NonNull<Interest>;
@@ -1654,10 +1527,6 @@ export interface Mutation {
     updateCountry?: Optional<Country>;
 
     updateInstitutions?: Optional<Institutions>;
-
-    updateSchool?: Optional<School>;
-
-    updateFaculty?: Optional<Faculty>;
 
     updateDepartment?: Optional<Department>;
 
@@ -1683,10 +1552,6 @@ export interface Mutation {
 
     deleteInstitutions?: Optional<Institutions>;
 
-    deleteSchool?: Optional<School>;
-
-    deleteFaculty?: Optional<Faculty>;
-
     deleteDepartment?: Optional<Department>;
 
     deleteInterest?: Optional<Interest>;
@@ -1710,10 +1575,6 @@ export interface Mutation {
     upsertCountry: NonNull<Country>;
 
     upsertInstitutions: NonNull<Institutions>;
-
-    upsertSchool: NonNull<School>;
-
-    upsertFaculty: NonNull<Faculty>;
 
     upsertDepartment: NonNull<Department>;
 
@@ -1739,10 +1600,6 @@ export interface Mutation {
 
     updateManyInstitutionses: NonNull<BatchPayload>;
 
-    updateManySchools: NonNull<BatchPayload>;
-
-    updateManyFaculties: NonNull<BatchPayload>;
-
     updateManyDepartments: NonNull<BatchPayload>;
 
     updateManyInterests: NonNull<BatchPayload>;
@@ -1766,10 +1623,6 @@ export interface Mutation {
     deleteManyCountries: NonNull<BatchPayload>;
 
     deleteManyInstitutionses: NonNull<BatchPayload>;
-
-    deleteManySchools: NonNull<BatchPayload>;
-
-    deleteManyFaculties: NonNull<BatchPayload>;
 
     deleteManyDepartments: NonNull<BatchPayload>;
 
@@ -1970,10 +1823,6 @@ export interface Query {
 
     institutionses: NonNull<List<Optional<Institutions>>>;
 
-    schools: NonNull<List<Optional<School>>>;
-
-    faculties: NonNull<List<Optional<Faculty>>>;
-
     departments: NonNull<List<Optional<Department>>>;
 
     interests: NonNull<List<Optional<Interest>>>;
@@ -1997,10 +1846,6 @@ export interface Query {
     country?: Optional<Country>;
 
     institutions?: Optional<Institutions>;
-
-    school?: Optional<School>;
-
-    faculty?: Optional<Faculty>;
 
     department?: Optional<Department>;
 
@@ -2026,10 +1871,6 @@ export interface Query {
 
     institutionsesConnection: NonNull<InstitutionsConnection>;
 
-    schoolsConnection: NonNull<SchoolConnection>;
-
-    facultiesConnection: NonNull<FacultyConnection>;
-
     departmentsConnection: NonNull<DepartmentConnection>;
 
     interestsConnection: NonNull<InterestConnection>;
@@ -2050,77 +1891,6 @@ export interface Query {
     node?: Optional<Node>;
 }
 
-export interface School extends Node {
-
-    id: NonNull<ID>;
-
-    createdAt: NonNull<DateTime>;
-
-    updatedAt: NonNull<DateTime>;
-
-    title: NonNull<String>;
-
-    institution: NonNull<Institutions>;
-
-    users?: List<NonNull<User>>;
-}
-
-/**
- * A connection to a list of items.
- */
-export interface SchoolConnection {
-
-    /**
-     * Information to aid in pagination.
-     */
-    pageInfo: NonNull<PageInfo>;
-
-    /**
-     * A list of edges.
-     */
-    edges: NonNull<List<Optional<SchoolEdge>>>;
-
-    aggregate: NonNull<AggregateSchool>;
-}
-
-/**
- * An edge in a connection.
- */
-export interface SchoolEdge {
-
-    /**
-     * The item at the end of the edge.
-     */
-    node: NonNull<School>;
-
-    /**
-     * A cursor for use in pagination.
-     */
-    cursor: NonNull<String>;
-}
-
-export interface SchoolPreviousValues {
-
-    id: NonNull<ID>;
-
-    createdAt: NonNull<DateTime>;
-
-    updatedAt: NonNull<DateTime>;
-
-    title: NonNull<String>;
-}
-
-export interface SchoolSubscriptionPayload {
-
-    mutation: NonNull<MutationType>;
-
-    node?: Optional<School>;
-
-    updatedFields?: List<NonNull<String>>;
-
-    previousValues?: Optional<SchoolPreviousValues>;
-}
-
 export interface Subscription {
 
     file?: Optional<FileSubscriptionPayload>;
@@ -2132,10 +1902,6 @@ export interface Subscription {
     country?: Optional<CountrySubscriptionPayload>;
 
     institutions?: Optional<InstitutionsSubscriptionPayload>;
-
-    school?: Optional<SchoolSubscriptionPayload>;
-
-    faculty?: Optional<FacultySubscriptionPayload>;
 
     department?: Optional<DepartmentSubscriptionPayload>;
 
@@ -2175,10 +1941,6 @@ export interface User extends Node {
     country?: Optional<Country>;
 
     institution?: Optional<Institutions>;
-
-    school?: Optional<School>;
-
-    falculty?: Optional<Faculty>;
 
     department?: Optional<Department>;
 
@@ -3070,12 +2832,14 @@ export interface CountryCreateInput {
 
     name: NonNull<String>;
 
+    institutions?: Optional<InstitutionsCreateManyWithoutCountryInput>;
+
     users?: Optional<UserCreateManyWithoutCountryInput>;
 }
 
-export interface CountryCreateOneInput {
+export interface CountryCreateOneWithoutInstitutionsInput {
 
-    create?: Optional<CountryCreateInput>;
+    create?: Optional<CountryCreateWithoutInstitutionsInput>;
 
     connect?: Optional<CountryWhereUniqueInput>;
 }
@@ -3087,11 +2851,22 @@ export interface CountryCreateOneWithoutUsersInput {
     connect?: Optional<CountryWhereUniqueInput>;
 }
 
+export interface CountryCreateWithoutInstitutionsInput {
+
+    shortName: NonNull<String>;
+
+    name: NonNull<String>;
+
+    users?: Optional<UserCreateManyWithoutCountryInput>;
+}
+
 export interface CountryCreateWithoutUsersInput {
 
     shortName: NonNull<String>;
 
     name: NonNull<String>;
+
+    institutions?: Optional<InstitutionsCreateManyWithoutCountryInput>;
 }
 
 export interface CountrySubscriptionWhereInput {
@@ -3132,34 +2907,20 @@ export interface CountrySubscriptionWhereInput {
     node?: Optional<CountryWhereInput>;
 }
 
-export interface CountryUpdateDataInput {
-
-    shortName?: Optional<String>;
-
-    name?: Optional<String>;
-
-    users?: Optional<UserUpdateManyWithoutCountryInput>;
-}
-
 export interface CountryUpdateInput {
 
     shortName?: Optional<String>;
 
     name?: Optional<String>;
 
+    institutions?: Optional<InstitutionsUpdateManyWithoutCountryInput>;
+
     users?: Optional<UserUpdateManyWithoutCountryInput>;
 }
 
-export interface CountryUpdateNestedInput {
+export interface CountryUpdateOneWithoutInstitutionsInput {
 
-    where: NonNull<CountryWhereUniqueInput>;
-
-    data: NonNull<CountryUpdateDataInput>;
-}
-
-export interface CountryUpdateOneInput {
-
-    create?: Optional<CountryCreateInput>;
+    create?: Optional<CountryCreateWithoutInstitutionsInput>;
 
     connect?: Optional<CountryWhereUniqueInput>;
 
@@ -3167,9 +2928,9 @@ export interface CountryUpdateOneInput {
 
     delete?: Optional<CountryWhereUniqueInput>;
 
-    update?: Optional<CountryUpdateNestedInput>;
+    update?: Optional<CountryUpdateWithoutInstitutionsInput>;
 
-    upsert?: Optional<CountryUpsertNestedInput>;
+    upsert?: Optional<CountryUpsertWithoutInstitutionsInput>;
 }
 
 export interface CountryUpdateOneWithoutUsersInput {
@@ -3187,11 +2948,29 @@ export interface CountryUpdateOneWithoutUsersInput {
     upsert?: Optional<CountryUpsertWithoutUsersInput>;
 }
 
+export interface CountryUpdateWithoutInstitutionsDataInput {
+
+    shortName?: Optional<String>;
+
+    name?: Optional<String>;
+
+    users?: Optional<UserUpdateManyWithoutCountryInput>;
+}
+
+export interface CountryUpdateWithoutInstitutionsInput {
+
+    where: NonNull<CountryWhereUniqueInput>;
+
+    data: NonNull<CountryUpdateWithoutInstitutionsDataInput>;
+}
+
 export interface CountryUpdateWithoutUsersDataInput {
 
     shortName?: Optional<String>;
 
     name?: Optional<String>;
+
+    institutions?: Optional<InstitutionsUpdateManyWithoutCountryInput>;
 }
 
 export interface CountryUpdateWithoutUsersInput {
@@ -3201,13 +2980,13 @@ export interface CountryUpdateWithoutUsersInput {
     data: NonNull<CountryUpdateWithoutUsersDataInput>;
 }
 
-export interface CountryUpsertNestedInput {
+export interface CountryUpsertWithoutInstitutionsInput {
 
     where: NonNull<CountryWhereUniqueInput>;
 
-    update: NonNull<CountryUpdateDataInput>;
+    update: NonNull<CountryUpdateWithoutInstitutionsDataInput>;
 
-    create: NonNull<CountryCreateInput>;
+    create: NonNull<CountryCreateWithoutInstitutionsInput>;
 }
 
 export interface CountryUpsertWithoutUsersInput {
@@ -3506,6 +3285,12 @@ export interface CountryWhereInput {
      */
     name_not_ends_with?: Optional<String>;
 
+    institutions_every?: Optional<InstitutionsWhereInput>;
+
+    institutions_some?: Optional<InstitutionsWhereInput>;
+
+    institutions_none?: Optional<InstitutionsWhereInput>;
+
     users_every?: Optional<UserWhereInput>;
 
     users_some?: Optional<UserWhereInput>;
@@ -3526,7 +3311,7 @@ export interface DepartmentCreateInput {
 
     name: NonNull<String>;
 
-    falculty: NonNull<FacultyCreateOneInput>;
+    institution: NonNull<InstitutionsCreateOneInput>;
 
     users?: Optional<UserCreateManyWithoutDepartmentInput>;
 }
@@ -3542,7 +3327,7 @@ export interface DepartmentCreateWithoutUsersInput {
 
     name: NonNull<String>;
 
-    falculty: NonNull<FacultyCreateOneInput>;
+    institution: NonNull<InstitutionsCreateOneInput>;
 }
 
 export interface DepartmentSubscriptionWhereInput {
@@ -3587,7 +3372,7 @@ export interface DepartmentUpdateInput {
 
     name?: Optional<String>;
 
-    falculty?: Optional<FacultyUpdateOneInput>;
+    institution?: Optional<InstitutionsUpdateOneInput>;
 
     users?: Optional<UserUpdateManyWithoutDepartmentInput>;
 }
@@ -3611,7 +3396,7 @@ export interface DepartmentUpdateWithoutUsersDataInput {
 
     name?: Optional<String>;
 
-    falculty?: Optional<FacultyUpdateOneInput>;
+    institution?: Optional<InstitutionsUpdateOneInput>;
 }
 
 export interface DepartmentUpdateWithoutUsersInput {
@@ -3850,7 +3635,7 @@ export interface DepartmentWhereInput {
      */
     name_not_ends_with?: Optional<String>;
 
-    falculty?: Optional<FacultyWhereInput>;
+    institution?: Optional<InstitutionsWhereInput>;
 
     users_every?: Optional<UserWhereInput>;
 
@@ -4547,395 +4332,6 @@ export interface DiscussionWhereUniqueInput {
     id?: Optional<ID>;
 }
 
-export interface FacultyCreateInput {
-
-    name: NonNull<String>;
-
-    school: NonNull<SchoolCreateOneInput>;
-
-    users?: Optional<UserCreateManyWithoutFalcultyInput>;
-}
-
-export interface FacultyCreateOneInput {
-
-    create?: Optional<FacultyCreateInput>;
-
-    connect?: Optional<FacultyWhereUniqueInput>;
-}
-
-export interface FacultyCreateOneWithoutUsersInput {
-
-    create?: Optional<FacultyCreateWithoutUsersInput>;
-
-    connect?: Optional<FacultyWhereUniqueInput>;
-}
-
-export interface FacultyCreateWithoutUsersInput {
-
-    name: NonNull<String>;
-
-    school: NonNull<SchoolCreateOneInput>;
-}
-
-export interface FacultySubscriptionWhereInput {
-
-    /**
-     * Logical AND on all given filters.
-     */
-    AND?: List<NonNull<FacultySubscriptionWhereInput>>;
-
-    /**
-     * Logical OR on all given filters.
-     */
-    OR?: List<NonNull<FacultySubscriptionWhereInput>>;
-
-    /**
-     * The subscription event gets dispatched when it's listed in mutation_in
-     */
-    mutation_in?: List<NonNull<MutationType>>;
-
-    /**
-     * The subscription event gets only dispatched when one of the updated fields names 
-     * is included in this list
-     */
-    updatedFields_contains?: Optional<String>;
-
-    /**
-     * The subscription event gets only dispatched when all of the field names included 
-     * in this list have been updated
-     */
-    updatedFields_contains_every?: List<NonNull<String>>;
-
-    /**
-     * The subscription event gets only dispatched when some of the field names 
-     * included in this list have been updated
-     */
-    updatedFields_contains_some?: List<NonNull<String>>;
-
-    node?: Optional<FacultyWhereInput>;
-}
-
-export interface FacultyUpdateDataInput {
-
-    name?: Optional<String>;
-
-    school?: Optional<SchoolUpdateOneInput>;
-
-    users?: Optional<UserUpdateManyWithoutFalcultyInput>;
-}
-
-export interface FacultyUpdateInput {
-
-    name?: Optional<String>;
-
-    school?: Optional<SchoolUpdateOneInput>;
-
-    users?: Optional<UserUpdateManyWithoutFalcultyInput>;
-}
-
-export interface FacultyUpdateNestedInput {
-
-    where: NonNull<FacultyWhereUniqueInput>;
-
-    data: NonNull<FacultyUpdateDataInput>;
-}
-
-export interface FacultyUpdateOneInput {
-
-    create?: Optional<FacultyCreateInput>;
-
-    connect?: Optional<FacultyWhereUniqueInput>;
-
-    disconnect?: Optional<FacultyWhereUniqueInput>;
-
-    delete?: Optional<FacultyWhereUniqueInput>;
-
-    update?: Optional<FacultyUpdateNestedInput>;
-
-    upsert?: Optional<FacultyUpsertNestedInput>;
-}
-
-export interface FacultyUpdateOneWithoutUsersInput {
-
-    create?: Optional<FacultyCreateWithoutUsersInput>;
-
-    connect?: Optional<FacultyWhereUniqueInput>;
-
-    disconnect?: Optional<FacultyWhereUniqueInput>;
-
-    delete?: Optional<FacultyWhereUniqueInput>;
-
-    update?: Optional<FacultyUpdateWithoutUsersInput>;
-
-    upsert?: Optional<FacultyUpsertWithoutUsersInput>;
-}
-
-export interface FacultyUpdateWithoutUsersDataInput {
-
-    name?: Optional<String>;
-
-    school?: Optional<SchoolUpdateOneInput>;
-}
-
-export interface FacultyUpdateWithoutUsersInput {
-
-    where: NonNull<FacultyWhereUniqueInput>;
-
-    data: NonNull<FacultyUpdateWithoutUsersDataInput>;
-}
-
-export interface FacultyUpsertNestedInput {
-
-    where: NonNull<FacultyWhereUniqueInput>;
-
-    update: NonNull<FacultyUpdateDataInput>;
-
-    create: NonNull<FacultyCreateInput>;
-}
-
-export interface FacultyUpsertWithoutUsersInput {
-
-    where: NonNull<FacultyWhereUniqueInput>;
-
-    update: NonNull<FacultyUpdateWithoutUsersDataInput>;
-
-    create: NonNull<FacultyCreateWithoutUsersInput>;
-}
-
-export interface FacultyWhereInput {
-
-    /**
-     * Logical AND on all given filters.
-     */
-    AND?: List<NonNull<FacultyWhereInput>>;
-
-    /**
-     * Logical OR on all given filters.
-     */
-    OR?: List<NonNull<FacultyWhereInput>>;
-
-    id?: Optional<ID>;
-
-    /**
-     * All values that are not equal to given value.
-     */
-    id_not?: Optional<ID>;
-
-    /**
-     * All values that are contained in given list.
-     */
-    id_in?: List<NonNull<ID>>;
-
-    /**
-     * All values that are not contained in given list.
-     */
-    id_not_in?: List<NonNull<ID>>;
-
-    /**
-     * All values less than the given value.
-     */
-    id_lt?: Optional<ID>;
-
-    /**
-     * All values less than or equal the given value.
-     */
-    id_lte?: Optional<ID>;
-
-    /**
-     * All values greater than the given value.
-     */
-    id_gt?: Optional<ID>;
-
-    /**
-     * All values greater than or equal the given value.
-     */
-    id_gte?: Optional<ID>;
-
-    /**
-     * All values containing the given string.
-     */
-    id_contains?: Optional<ID>;
-
-    /**
-     * All values not containing the given string.
-     */
-    id_not_contains?: Optional<ID>;
-
-    /**
-     * All values starting with the given string.
-     */
-    id_starts_with?: Optional<ID>;
-
-    /**
-     * All values not starting with the given string.
-     */
-    id_not_starts_with?: Optional<ID>;
-
-    /**
-     * All values ending with the given string.
-     */
-    id_ends_with?: Optional<ID>;
-
-    /**
-     * All values not ending with the given string.
-     */
-    id_not_ends_with?: Optional<ID>;
-
-    createdAt?: Optional<DateTime>;
-
-    /**
-     * All values that are not equal to given value.
-     */
-    createdAt_not?: Optional<DateTime>;
-
-    /**
-     * All values that are contained in given list.
-     */
-    createdAt_in?: List<NonNull<DateTime>>;
-
-    /**
-     * All values that are not contained in given list.
-     */
-    createdAt_not_in?: List<NonNull<DateTime>>;
-
-    /**
-     * All values less than the given value.
-     */
-    createdAt_lt?: Optional<DateTime>;
-
-    /**
-     * All values less than or equal the given value.
-     */
-    createdAt_lte?: Optional<DateTime>;
-
-    /**
-     * All values greater than the given value.
-     */
-    createdAt_gt?: Optional<DateTime>;
-
-    /**
-     * All values greater than or equal the given value.
-     */
-    createdAt_gte?: Optional<DateTime>;
-
-    updatedAt?: Optional<DateTime>;
-
-    /**
-     * All values that are not equal to given value.
-     */
-    updatedAt_not?: Optional<DateTime>;
-
-    /**
-     * All values that are contained in given list.
-     */
-    updatedAt_in?: List<NonNull<DateTime>>;
-
-    /**
-     * All values that are not contained in given list.
-     */
-    updatedAt_not_in?: List<NonNull<DateTime>>;
-
-    /**
-     * All values less than the given value.
-     */
-    updatedAt_lt?: Optional<DateTime>;
-
-    /**
-     * All values less than or equal the given value.
-     */
-    updatedAt_lte?: Optional<DateTime>;
-
-    /**
-     * All values greater than the given value.
-     */
-    updatedAt_gt?: Optional<DateTime>;
-
-    /**
-     * All values greater than or equal the given value.
-     */
-    updatedAt_gte?: Optional<DateTime>;
-
-    name?: Optional<String>;
-
-    /**
-     * All values that are not equal to given value.
-     */
-    name_not?: Optional<String>;
-
-    /**
-     * All values that are contained in given list.
-     */
-    name_in?: List<NonNull<String>>;
-
-    /**
-     * All values that are not contained in given list.
-     */
-    name_not_in?: List<NonNull<String>>;
-
-    /**
-     * All values less than the given value.
-     */
-    name_lt?: Optional<String>;
-
-    /**
-     * All values less than or equal the given value.
-     */
-    name_lte?: Optional<String>;
-
-    /**
-     * All values greater than the given value.
-     */
-    name_gt?: Optional<String>;
-
-    /**
-     * All values greater than or equal the given value.
-     */
-    name_gte?: Optional<String>;
-
-    /**
-     * All values containing the given string.
-     */
-    name_contains?: Optional<String>;
-
-    /**
-     * All values not containing the given string.
-     */
-    name_not_contains?: Optional<String>;
-
-    /**
-     * All values starting with the given string.
-     */
-    name_starts_with?: Optional<String>;
-
-    /**
-     * All values not starting with the given string.
-     */
-    name_not_starts_with?: Optional<String>;
-
-    /**
-     * All values ending with the given string.
-     */
-    name_ends_with?: Optional<String>;
-
-    /**
-     * All values not ending with the given string.
-     */
-    name_not_ends_with?: Optional<String>;
-
-    school?: Optional<SchoolWhereInput>;
-
-    users_every?: Optional<UserWhereInput>;
-
-    users_some?: Optional<UserWhereInput>;
-
-    users_none?: Optional<UserWhereInput>;
-}
-
-export interface FacultyWhereUniqueInput {
-
-    id?: Optional<ID>;
-}
-
 export interface FileCreateInput {
 
     name: NonNull<String>;
@@ -4947,6 +4343,13 @@ export interface FileCreateInput {
     contentType: NonNull<String>;
 
     url: NonNull<String>;
+}
+
+export interface FileCreateOneInput {
+
+    create?: Optional<FileCreateInput>;
+
+    connect?: Optional<FileWhereUniqueInput>;
 }
 
 export interface FileSubscriptionWhereInput {
@@ -4987,6 +4390,19 @@ export interface FileSubscriptionWhereInput {
     node?: Optional<FileWhereInput>;
 }
 
+export interface FileUpdateDataInput {
+
+    name?: Optional<String>;
+
+    size?: Optional<Int>;
+
+    secret?: Optional<String>;
+
+    contentType?: Optional<String>;
+
+    url?: Optional<String>;
+}
+
 export interface FileUpdateInput {
 
     name?: Optional<String>;
@@ -4998,6 +4414,37 @@ export interface FileUpdateInput {
     contentType?: Optional<String>;
 
     url?: Optional<String>;
+}
+
+export interface FileUpdateNestedInput {
+
+    where: NonNull<FileWhereUniqueInput>;
+
+    data: NonNull<FileUpdateDataInput>;
+}
+
+export interface FileUpdateOneInput {
+
+    create?: Optional<FileCreateInput>;
+
+    connect?: Optional<FileWhereUniqueInput>;
+
+    disconnect?: Optional<FileWhereUniqueInput>;
+
+    delete?: Optional<FileWhereUniqueInput>;
+
+    update?: Optional<FileUpdateNestedInput>;
+
+    upsert?: Optional<FileUpsertNestedInput>;
+}
+
+export interface FileUpsertNestedInput {
+
+    where: NonNull<FileWhereUniqueInput>;
+
+    update: NonNull<FileUpdateDataInput>;
+
+    create: NonNull<FileCreateInput>;
 }
 
 export interface FileWhereInput {
@@ -5836,9 +5283,16 @@ export interface InstitutionsCreateInput {
 
     type: NonNull<InstitutionType>;
 
-    Country: NonNull<CountryCreateOneInput>;
+    country?: Optional<CountryCreateOneWithoutInstitutionsInput>;
 
     users?: Optional<UserCreateManyWithoutInstitutionInput>;
+}
+
+export interface InstitutionsCreateManyWithoutCountryInput {
+
+    create?: List<NonNull<InstitutionsCreateWithoutCountryInput>>;
+
+    connect?: List<NonNull<InstitutionsWhereUniqueInput>>;
 }
 
 export interface InstitutionsCreateOneInput {
@@ -5855,13 +5309,22 @@ export interface InstitutionsCreateOneWithoutUsersInput {
     connect?: Optional<InstitutionsWhereUniqueInput>;
 }
 
+export interface InstitutionsCreateWithoutCountryInput {
+
+    title: NonNull<String>;
+
+    type: NonNull<InstitutionType>;
+
+    users?: Optional<UserCreateManyWithoutInstitutionInput>;
+}
+
 export interface InstitutionsCreateWithoutUsersInput {
 
     title: NonNull<String>;
 
     type: NonNull<InstitutionType>;
 
-    Country: NonNull<CountryCreateOneInput>;
+    country?: Optional<CountryCreateOneWithoutInstitutionsInput>;
 }
 
 export interface InstitutionsSubscriptionWhereInput {
@@ -5908,7 +5371,7 @@ export interface InstitutionsUpdateDataInput {
 
     type?: Optional<InstitutionType>;
 
-    Country?: Optional<CountryUpdateOneInput>;
+    country?: Optional<CountryUpdateOneWithoutInstitutionsInput>;
 
     users?: Optional<UserUpdateManyWithoutInstitutionInput>;
 }
@@ -5919,9 +5382,24 @@ export interface InstitutionsUpdateInput {
 
     type?: Optional<InstitutionType>;
 
-    Country?: Optional<CountryUpdateOneInput>;
+    country?: Optional<CountryUpdateOneWithoutInstitutionsInput>;
 
     users?: Optional<UserUpdateManyWithoutInstitutionInput>;
+}
+
+export interface InstitutionsUpdateManyWithoutCountryInput {
+
+    create?: List<NonNull<InstitutionsCreateWithoutCountryInput>>;
+
+    connect?: List<NonNull<InstitutionsWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<InstitutionsWhereUniqueInput>>;
+
+    delete?: List<NonNull<InstitutionsWhereUniqueInput>>;
+
+    update?: List<NonNull<InstitutionsUpdateWithoutCountryInput>>;
+
+    upsert?: List<NonNull<InstitutionsUpsertWithoutCountryInput>>;
 }
 
 export interface InstitutionsUpdateNestedInput {
@@ -5961,13 +5439,29 @@ export interface InstitutionsUpdateOneWithoutUsersInput {
     upsert?: Optional<InstitutionsUpsertWithoutUsersInput>;
 }
 
+export interface InstitutionsUpdateWithoutCountryDataInput {
+
+    title?: Optional<String>;
+
+    type?: Optional<InstitutionType>;
+
+    users?: Optional<UserUpdateManyWithoutInstitutionInput>;
+}
+
+export interface InstitutionsUpdateWithoutCountryInput {
+
+    where: NonNull<InstitutionsWhereUniqueInput>;
+
+    data: NonNull<InstitutionsUpdateWithoutCountryDataInput>;
+}
+
 export interface InstitutionsUpdateWithoutUsersDataInput {
 
     title?: Optional<String>;
 
     type?: Optional<InstitutionType>;
 
-    Country?: Optional<CountryUpdateOneInput>;
+    country?: Optional<CountryUpdateOneWithoutInstitutionsInput>;
 }
 
 export interface InstitutionsUpdateWithoutUsersInput {
@@ -5984,6 +5478,15 @@ export interface InstitutionsUpsertNestedInput {
     update: NonNull<InstitutionsUpdateDataInput>;
 
     create: NonNull<InstitutionsCreateInput>;
+}
+
+export interface InstitutionsUpsertWithoutCountryInput {
+
+    where: NonNull<InstitutionsWhereUniqueInput>;
+
+    update: NonNull<InstitutionsUpdateWithoutCountryDataInput>;
+
+    create: NonNull<InstitutionsCreateWithoutCountryInput>;
 }
 
 export interface InstitutionsUpsertWithoutUsersInput {
@@ -6232,7 +5735,7 @@ export interface InstitutionsWhereInput {
      */
     type_not_in?: List<NonNull<InstitutionType>>;
 
-    Country?: Optional<CountryWhereInput>;
+    country?: Optional<CountryWhereInput>;
 
     users_every?: Optional<UserWhereInput>;
 
@@ -6250,7 +5753,7 @@ export interface InterestCreateInput {
 
     name: NonNull<String>;
 
-    avatar: NonNull<String>;
+    file: NonNull<FileCreateOneInput>;
 
     users?: Optional<UserCreateManyWithoutInterestInput>;
 }
@@ -6266,7 +5769,7 @@ export interface InterestCreateWithoutUsersInput {
 
     name: NonNull<String>;
 
-    avatar: NonNull<String>;
+    file: NonNull<FileCreateOneInput>;
 }
 
 export interface InterestSubscriptionWhereInput {
@@ -6311,7 +5814,7 @@ export interface InterestUpdateInput {
 
     name?: Optional<String>;
 
-    avatar?: Optional<String>;
+    file?: Optional<FileUpdateOneInput>;
 
     users?: Optional<UserUpdateManyWithoutInterestInput>;
 }
@@ -6335,7 +5838,7 @@ export interface InterestUpdateWithoutUsersDataInput {
 
     name?: Optional<String>;
 
-    avatar?: Optional<String>;
+    file?: Optional<FileUpdateOneInput>;
 }
 
 export interface InterestUpdateWithoutUsersInput {
@@ -6574,72 +6077,7 @@ export interface InterestWhereInput {
      */
     name_not_ends_with?: Optional<String>;
 
-    avatar?: Optional<String>;
-
-    /**
-     * All values that are not equal to given value.
-     */
-    avatar_not?: Optional<String>;
-
-    /**
-     * All values that are contained in given list.
-     */
-    avatar_in?: List<NonNull<String>>;
-
-    /**
-     * All values that are not contained in given list.
-     */
-    avatar_not_in?: List<NonNull<String>>;
-
-    /**
-     * All values less than the given value.
-     */
-    avatar_lt?: Optional<String>;
-
-    /**
-     * All values less than or equal the given value.
-     */
-    avatar_lte?: Optional<String>;
-
-    /**
-     * All values greater than the given value.
-     */
-    avatar_gt?: Optional<String>;
-
-    /**
-     * All values greater than or equal the given value.
-     */
-    avatar_gte?: Optional<String>;
-
-    /**
-     * All values containing the given string.
-     */
-    avatar_contains?: Optional<String>;
-
-    /**
-     * All values not containing the given string.
-     */
-    avatar_not_contains?: Optional<String>;
-
-    /**
-     * All values starting with the given string.
-     */
-    avatar_starts_with?: Optional<String>;
-
-    /**
-     * All values not starting with the given string.
-     */
-    avatar_not_starts_with?: Optional<String>;
-
-    /**
-     * All values ending with the given string.
-     */
-    avatar_ends_with?: Optional<String>;
-
-    /**
-     * All values not ending with the given string.
-     */
-    avatar_not_ends_with?: Optional<String>;
+    file?: Optional<FileWhereInput>;
 
     users_every?: Optional<UserWhereInput>;
 
@@ -7399,395 +6837,6 @@ export interface PostWhereUniqueInput {
     id?: Optional<ID>;
 }
 
-export interface SchoolCreateInput {
-
-    title: NonNull<String>;
-
-    institution: NonNull<InstitutionsCreateOneInput>;
-
-    users?: Optional<UserCreateManyWithoutSchoolInput>;
-}
-
-export interface SchoolCreateOneInput {
-
-    create?: Optional<SchoolCreateInput>;
-
-    connect?: Optional<SchoolWhereUniqueInput>;
-}
-
-export interface SchoolCreateOneWithoutUsersInput {
-
-    create?: Optional<SchoolCreateWithoutUsersInput>;
-
-    connect?: Optional<SchoolWhereUniqueInput>;
-}
-
-export interface SchoolCreateWithoutUsersInput {
-
-    title: NonNull<String>;
-
-    institution: NonNull<InstitutionsCreateOneInput>;
-}
-
-export interface SchoolSubscriptionWhereInput {
-
-    /**
-     * Logical AND on all given filters.
-     */
-    AND?: List<NonNull<SchoolSubscriptionWhereInput>>;
-
-    /**
-     * Logical OR on all given filters.
-     */
-    OR?: List<NonNull<SchoolSubscriptionWhereInput>>;
-
-    /**
-     * The subscription event gets dispatched when it's listed in mutation_in
-     */
-    mutation_in?: List<NonNull<MutationType>>;
-
-    /**
-     * The subscription event gets only dispatched when one of the updated fields names 
-     * is included in this list
-     */
-    updatedFields_contains?: Optional<String>;
-
-    /**
-     * The subscription event gets only dispatched when all of the field names included 
-     * in this list have been updated
-     */
-    updatedFields_contains_every?: List<NonNull<String>>;
-
-    /**
-     * The subscription event gets only dispatched when some of the field names 
-     * included in this list have been updated
-     */
-    updatedFields_contains_some?: List<NonNull<String>>;
-
-    node?: Optional<SchoolWhereInput>;
-}
-
-export interface SchoolUpdateDataInput {
-
-    title?: Optional<String>;
-
-    institution?: Optional<InstitutionsUpdateOneInput>;
-
-    users?: Optional<UserUpdateManyWithoutSchoolInput>;
-}
-
-export interface SchoolUpdateInput {
-
-    title?: Optional<String>;
-
-    institution?: Optional<InstitutionsUpdateOneInput>;
-
-    users?: Optional<UserUpdateManyWithoutSchoolInput>;
-}
-
-export interface SchoolUpdateNestedInput {
-
-    where: NonNull<SchoolWhereUniqueInput>;
-
-    data: NonNull<SchoolUpdateDataInput>;
-}
-
-export interface SchoolUpdateOneInput {
-
-    create?: Optional<SchoolCreateInput>;
-
-    connect?: Optional<SchoolWhereUniqueInput>;
-
-    disconnect?: Optional<SchoolWhereUniqueInput>;
-
-    delete?: Optional<SchoolWhereUniqueInput>;
-
-    update?: Optional<SchoolUpdateNestedInput>;
-
-    upsert?: Optional<SchoolUpsertNestedInput>;
-}
-
-export interface SchoolUpdateOneWithoutUsersInput {
-
-    create?: Optional<SchoolCreateWithoutUsersInput>;
-
-    connect?: Optional<SchoolWhereUniqueInput>;
-
-    disconnect?: Optional<SchoolWhereUniqueInput>;
-
-    delete?: Optional<SchoolWhereUniqueInput>;
-
-    update?: Optional<SchoolUpdateWithoutUsersInput>;
-
-    upsert?: Optional<SchoolUpsertWithoutUsersInput>;
-}
-
-export interface SchoolUpdateWithoutUsersDataInput {
-
-    title?: Optional<String>;
-
-    institution?: Optional<InstitutionsUpdateOneInput>;
-}
-
-export interface SchoolUpdateWithoutUsersInput {
-
-    where: NonNull<SchoolWhereUniqueInput>;
-
-    data: NonNull<SchoolUpdateWithoutUsersDataInput>;
-}
-
-export interface SchoolUpsertNestedInput {
-
-    where: NonNull<SchoolWhereUniqueInput>;
-
-    update: NonNull<SchoolUpdateDataInput>;
-
-    create: NonNull<SchoolCreateInput>;
-}
-
-export interface SchoolUpsertWithoutUsersInput {
-
-    where: NonNull<SchoolWhereUniqueInput>;
-
-    update: NonNull<SchoolUpdateWithoutUsersDataInput>;
-
-    create: NonNull<SchoolCreateWithoutUsersInput>;
-}
-
-export interface SchoolWhereInput {
-
-    /**
-     * Logical AND on all given filters.
-     */
-    AND?: List<NonNull<SchoolWhereInput>>;
-
-    /**
-     * Logical OR on all given filters.
-     */
-    OR?: List<NonNull<SchoolWhereInput>>;
-
-    id?: Optional<ID>;
-
-    /**
-     * All values that are not equal to given value.
-     */
-    id_not?: Optional<ID>;
-
-    /**
-     * All values that are contained in given list.
-     */
-    id_in?: List<NonNull<ID>>;
-
-    /**
-     * All values that are not contained in given list.
-     */
-    id_not_in?: List<NonNull<ID>>;
-
-    /**
-     * All values less than the given value.
-     */
-    id_lt?: Optional<ID>;
-
-    /**
-     * All values less than or equal the given value.
-     */
-    id_lte?: Optional<ID>;
-
-    /**
-     * All values greater than the given value.
-     */
-    id_gt?: Optional<ID>;
-
-    /**
-     * All values greater than or equal the given value.
-     */
-    id_gte?: Optional<ID>;
-
-    /**
-     * All values containing the given string.
-     */
-    id_contains?: Optional<ID>;
-
-    /**
-     * All values not containing the given string.
-     */
-    id_not_contains?: Optional<ID>;
-
-    /**
-     * All values starting with the given string.
-     */
-    id_starts_with?: Optional<ID>;
-
-    /**
-     * All values not starting with the given string.
-     */
-    id_not_starts_with?: Optional<ID>;
-
-    /**
-     * All values ending with the given string.
-     */
-    id_ends_with?: Optional<ID>;
-
-    /**
-     * All values not ending with the given string.
-     */
-    id_not_ends_with?: Optional<ID>;
-
-    createdAt?: Optional<DateTime>;
-
-    /**
-     * All values that are not equal to given value.
-     */
-    createdAt_not?: Optional<DateTime>;
-
-    /**
-     * All values that are contained in given list.
-     */
-    createdAt_in?: List<NonNull<DateTime>>;
-
-    /**
-     * All values that are not contained in given list.
-     */
-    createdAt_not_in?: List<NonNull<DateTime>>;
-
-    /**
-     * All values less than the given value.
-     */
-    createdAt_lt?: Optional<DateTime>;
-
-    /**
-     * All values less than or equal the given value.
-     */
-    createdAt_lte?: Optional<DateTime>;
-
-    /**
-     * All values greater than the given value.
-     */
-    createdAt_gt?: Optional<DateTime>;
-
-    /**
-     * All values greater than or equal the given value.
-     */
-    createdAt_gte?: Optional<DateTime>;
-
-    updatedAt?: Optional<DateTime>;
-
-    /**
-     * All values that are not equal to given value.
-     */
-    updatedAt_not?: Optional<DateTime>;
-
-    /**
-     * All values that are contained in given list.
-     */
-    updatedAt_in?: List<NonNull<DateTime>>;
-
-    /**
-     * All values that are not contained in given list.
-     */
-    updatedAt_not_in?: List<NonNull<DateTime>>;
-
-    /**
-     * All values less than the given value.
-     */
-    updatedAt_lt?: Optional<DateTime>;
-
-    /**
-     * All values less than or equal the given value.
-     */
-    updatedAt_lte?: Optional<DateTime>;
-
-    /**
-     * All values greater than the given value.
-     */
-    updatedAt_gt?: Optional<DateTime>;
-
-    /**
-     * All values greater than or equal the given value.
-     */
-    updatedAt_gte?: Optional<DateTime>;
-
-    title?: Optional<String>;
-
-    /**
-     * All values that are not equal to given value.
-     */
-    title_not?: Optional<String>;
-
-    /**
-     * All values that are contained in given list.
-     */
-    title_in?: List<NonNull<String>>;
-
-    /**
-     * All values that are not contained in given list.
-     */
-    title_not_in?: List<NonNull<String>>;
-
-    /**
-     * All values less than the given value.
-     */
-    title_lt?: Optional<String>;
-
-    /**
-     * All values less than or equal the given value.
-     */
-    title_lte?: Optional<String>;
-
-    /**
-     * All values greater than the given value.
-     */
-    title_gt?: Optional<String>;
-
-    /**
-     * All values greater than or equal the given value.
-     */
-    title_gte?: Optional<String>;
-
-    /**
-     * All values containing the given string.
-     */
-    title_contains?: Optional<String>;
-
-    /**
-     * All values not containing the given string.
-     */
-    title_not_contains?: Optional<String>;
-
-    /**
-     * All values starting with the given string.
-     */
-    title_starts_with?: Optional<String>;
-
-    /**
-     * All values not starting with the given string.
-     */
-    title_not_starts_with?: Optional<String>;
-
-    /**
-     * All values ending with the given string.
-     */
-    title_ends_with?: Optional<String>;
-
-    /**
-     * All values not ending with the given string.
-     */
-    title_not_ends_with?: Optional<String>;
-
-    institution?: Optional<InstitutionsWhereInput>;
-
-    users_every?: Optional<UserWhereInput>;
-
-    users_some?: Optional<UserWhereInput>;
-
-    users_none?: Optional<UserWhereInput>;
-}
-
-export interface SchoolWhereUniqueInput {
-
-    id?: Optional<ID>;
-}
-
 export interface UserCreateInput {
 
     email: NonNull<String>;
@@ -7820,10 +6869,6 @@ export interface UserCreateInput {
 
     institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
 
-    school?: Optional<SchoolCreateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
-
     department?: Optional<DepartmentCreateOneWithoutUsersInput>;
 
     interest?: Optional<InterestCreateOneWithoutUsersInput>;
@@ -7855,13 +6900,6 @@ export interface UserCreateManyWithoutDepartmentInput {
     connect?: List<NonNull<UserWhereUniqueInput>>;
 }
 
-export interface UserCreateManyWithoutFalcultyInput {
-
-    create?: List<NonNull<UserCreateWithoutFalcultyInput>>;
-
-    connect?: List<NonNull<UserWhereUniqueInput>>;
-}
-
 export interface UserCreateManyWithoutFavouritesInput {
 
     create?: List<NonNull<UserCreateWithoutFavouritesInput>>;
@@ -7879,13 +6917,6 @@ export interface UserCreateManyWithoutInstitutionInput {
 export interface UserCreateManyWithoutInterestInput {
 
     create?: List<NonNull<UserCreateWithoutInterestInput>>;
-
-    connect?: List<NonNull<UserWhereUniqueInput>>;
-}
-
-export interface UserCreateManyWithoutSchoolInput {
-
-    create?: List<NonNull<UserCreateWithoutSchoolInput>>;
 
     connect?: List<NonNull<UserWhereUniqueInput>>;
 }
@@ -7964,10 +6995,6 @@ export interface UserCreateWithoutArticlesInput {
 
     institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
 
-    school?: Optional<SchoolCreateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
-
     department?: Optional<DepartmentCreateOneWithoutUsersInput>;
 
     interest?: Optional<InterestCreateOneWithoutUsersInput>;
@@ -8014,10 +7041,6 @@ export interface UserCreateWithoutConectFromInput {
     country?: Optional<CountryCreateOneWithoutUsersInput>;
 
     institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
-
-    school?: Optional<SchoolCreateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
 
     department?: Optional<DepartmentCreateOneWithoutUsersInput>;
 
@@ -8066,10 +7089,6 @@ export interface UserCreateWithoutConnectToInput {
 
     institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
 
-    school?: Optional<SchoolCreateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
-
     department?: Optional<DepartmentCreateOneWithoutUsersInput>;
 
     interest?: Optional<InterestCreateOneWithoutUsersInput>;
@@ -8114,10 +7133,6 @@ export interface UserCreateWithoutCountryInput {
     completedProfile?: Optional<Int>;
 
     institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
-
-    school?: Optional<SchoolCreateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
 
     department?: Optional<DepartmentCreateOneWithoutUsersInput>;
 
@@ -8168,61 +7183,6 @@ export interface UserCreateWithoutDepartmentInput {
 
     institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
 
-    school?: Optional<SchoolCreateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
-
-    interest?: Optional<InterestCreateOneWithoutUsersInput>;
-
-    favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
-
-    myDiscussions?: Optional<DiscussionCreateOneWithoutAuthorInput>;
-
-    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
-
-    ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
-
-    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
-
-    opinions?: Optional<OpinionsCreateManyWithoutAuthorInput>;
-}
-
-export interface UserCreateWithoutFalcultyInput {
-
-    email: NonNull<String>;
-
-    username?: Optional<String>;
-
-    password: NonNull<String>;
-
-    firstname: NonNull<String>;
-
-    lastname: NonNull<String>;
-
-    gender: NonNull<String>;
-
-    type?: Optional<String>;
-
-    userType?: Optional<String>;
-
-    newConnectNot?: Optional<Boolean>;
-
-    newCommentNot?: Optional<Boolean>;
-
-    newMessageNot?: Optional<Boolean>;
-
-    newProfileNot?: Optional<Boolean>;
-
-    completedProfile?: Optional<Int>;
-
-    country?: Optional<CountryCreateOneWithoutUsersInput>;
-
-    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
-
-    school?: Optional<SchoolCreateOneWithoutUsersInput>;
-
-    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
-
     interest?: Optional<InterestCreateOneWithoutUsersInput>;
 
     favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
@@ -8270,10 +7230,6 @@ export interface UserCreateWithoutFavouritesInput {
 
     institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
 
-    school?: Optional<SchoolCreateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
-
     department?: Optional<DepartmentCreateOneWithoutUsersInput>;
 
     interest?: Optional<InterestCreateOneWithoutUsersInput>;
@@ -8318,10 +7274,6 @@ export interface UserCreateWithoutInstitutionInput {
     completedProfile?: Optional<Int>;
 
     country?: Optional<CountryCreateOneWithoutUsersInput>;
-
-    school?: Optional<SchoolCreateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
 
     department?: Optional<DepartmentCreateOneWithoutUsersInput>;
 
@@ -8372,10 +7324,6 @@ export interface UserCreateWithoutInterestInput {
 
     institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
 
-    school?: Optional<SchoolCreateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
-
     department?: Optional<DepartmentCreateOneWithoutUsersInput>;
 
     favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
@@ -8422,10 +7370,6 @@ export interface UserCreateWithoutMyDiscussionsInput {
     country?: Optional<CountryCreateOneWithoutUsersInput>;
 
     institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
-
-    school?: Optional<SchoolCreateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
 
     department?: Optional<DepartmentCreateOneWithoutUsersInput>;
 
@@ -8474,10 +7418,6 @@ export interface UserCreateWithoutOpinionsInput {
 
     institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
 
-    school?: Optional<SchoolCreateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
-
     department?: Optional<DepartmentCreateOneWithoutUsersInput>;
 
     interest?: Optional<InterestCreateOneWithoutUsersInput>;
@@ -8491,57 +7431,6 @@ export interface UserCreateWithoutOpinionsInput {
     ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
-}
-
-export interface UserCreateWithoutSchoolInput {
-
-    email: NonNull<String>;
-
-    username?: Optional<String>;
-
-    password: NonNull<String>;
-
-    firstname: NonNull<String>;
-
-    lastname: NonNull<String>;
-
-    gender: NonNull<String>;
-
-    type?: Optional<String>;
-
-    userType?: Optional<String>;
-
-    newConnectNot?: Optional<Boolean>;
-
-    newCommentNot?: Optional<Boolean>;
-
-    newMessageNot?: Optional<Boolean>;
-
-    newProfileNot?: Optional<Boolean>;
-
-    completedProfile?: Optional<Int>;
-
-    country?: Optional<CountryCreateOneWithoutUsersInput>;
-
-    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyCreateOneWithoutUsersInput>;
-
-    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
-
-    interest?: Optional<InterestCreateOneWithoutUsersInput>;
-
-    favourites?: Optional<DiscussionCreateManyWithoutFavouritesInput>;
-
-    myDiscussions?: Optional<DiscussionCreateOneWithoutAuthorInput>;
-
-    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
-
-    ConectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
-
-    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
-
-    opinions?: Optional<OpinionsCreateManyWithoutAuthorInput>;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -8614,10 +7503,6 @@ export interface UserUpdateDataInput {
 
     institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
 
-    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
-
     department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
 
     interest?: Optional<InterestUpdateOneWithoutUsersInput>;
@@ -8667,10 +7552,6 @@ export interface UserUpdateInput {
 
     institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
 
-    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
-
     department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
 
     interest?: Optional<InterestUpdateOneWithoutUsersInput>;
@@ -8718,21 +7599,6 @@ export interface UserUpdateManyWithoutDepartmentInput {
     upsert?: List<NonNull<UserUpsertWithoutDepartmentInput>>;
 }
 
-export interface UserUpdateManyWithoutFalcultyInput {
-
-    create?: List<NonNull<UserCreateWithoutFalcultyInput>>;
-
-    connect?: List<NonNull<UserWhereUniqueInput>>;
-
-    disconnect?: List<NonNull<UserWhereUniqueInput>>;
-
-    delete?: List<NonNull<UserWhereUniqueInput>>;
-
-    update?: List<NonNull<UserUpdateWithoutFalcultyInput>>;
-
-    upsert?: List<NonNull<UserUpsertWithoutFalcultyInput>>;
-}
-
 export interface UserUpdateManyWithoutFavouritesInput {
 
     create?: List<NonNull<UserCreateWithoutFavouritesInput>>;
@@ -8776,21 +7642,6 @@ export interface UserUpdateManyWithoutInterestInput {
     update?: List<NonNull<UserUpdateWithoutInterestInput>>;
 
     upsert?: List<NonNull<UserUpsertWithoutInterestInput>>;
-}
-
-export interface UserUpdateManyWithoutSchoolInput {
-
-    create?: List<NonNull<UserCreateWithoutSchoolInput>>;
-
-    connect?: List<NonNull<UserWhereUniqueInput>>;
-
-    disconnect?: List<NonNull<UserWhereUniqueInput>>;
-
-    delete?: List<NonNull<UserWhereUniqueInput>>;
-
-    update?: List<NonNull<UserUpdateWithoutSchoolInput>>;
-
-    upsert?: List<NonNull<UserUpsertWithoutSchoolInput>>;
 }
 
 export interface UserUpdateNestedInput {
@@ -8922,10 +7773,6 @@ export interface UserUpdateWithoutArticlesDataInput {
 
     institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
 
-    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
-
     department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
 
     interest?: Optional<InterestUpdateOneWithoutUsersInput>;
@@ -8979,10 +7826,6 @@ export interface UserUpdateWithoutConectFromDataInput {
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
 
     institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
-
-    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
 
     department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
 
@@ -9038,10 +7881,6 @@ export interface UserUpdateWithoutConnectToDataInput {
 
     institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
 
-    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
-
     department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
 
     interest?: Optional<InterestUpdateOneWithoutUsersInput>;
@@ -9093,10 +7932,6 @@ export interface UserUpdateWithoutCountryDataInput {
     completedProfile?: Optional<Int>;
 
     institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
-
-    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
 
     department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
 
@@ -9154,10 +7989,6 @@ export interface UserUpdateWithoutDepartmentDataInput {
 
     institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
 
-    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
-
     interest?: Optional<InterestUpdateOneWithoutUsersInput>;
 
     favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
@@ -9178,64 +8009,6 @@ export interface UserUpdateWithoutDepartmentInput {
     where: NonNull<UserWhereUniqueInput>;
 
     data: NonNull<UserUpdateWithoutDepartmentDataInput>;
-}
-
-export interface UserUpdateWithoutFalcultyDataInput {
-
-    email?: Optional<String>;
-
-    username?: Optional<String>;
-
-    password?: Optional<String>;
-
-    firstname?: Optional<String>;
-
-    lastname?: Optional<String>;
-
-    gender?: Optional<String>;
-
-    type?: Optional<String>;
-
-    userType?: Optional<String>;
-
-    newConnectNot?: Optional<Boolean>;
-
-    newCommentNot?: Optional<Boolean>;
-
-    newMessageNot?: Optional<Boolean>;
-
-    newProfileNot?: Optional<Boolean>;
-
-    completedProfile?: Optional<Int>;
-
-    country?: Optional<CountryUpdateOneWithoutUsersInput>;
-
-    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
-
-    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
-
-    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
-
-    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
-
-    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
-
-    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
-
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
-
-    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
-
-    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
-
-    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
-}
-
-export interface UserUpdateWithoutFalcultyInput {
-
-    where: NonNull<UserWhereUniqueInput>;
-
-    data: NonNull<UserUpdateWithoutFalcultyDataInput>;
 }
 
 export interface UserUpdateWithoutFavouritesDataInput {
@@ -9269,10 +8042,6 @@ export interface UserUpdateWithoutFavouritesDataInput {
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
 
     institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
-
-    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
 
     department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
 
@@ -9325,10 +8094,6 @@ export interface UserUpdateWithoutInstitutionDataInput {
     completedProfile?: Optional<Int>;
 
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
-
-    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
 
     department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
 
@@ -9386,10 +8151,6 @@ export interface UserUpdateWithoutInterestDataInput {
 
     institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
 
-    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
-
     department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
 
     favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
@@ -9443,10 +8204,6 @@ export interface UserUpdateWithoutMyDiscussionsDataInput {
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
 
     institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
-
-    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
 
     department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
 
@@ -9502,10 +8259,6 @@ export interface UserUpdateWithoutOpinionsDataInput {
 
     institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
 
-    school?: Optional<SchoolUpdateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
-
     department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
 
     interest?: Optional<InterestUpdateOneWithoutUsersInput>;
@@ -9526,64 +8279,6 @@ export interface UserUpdateWithoutOpinionsInput {
     where: NonNull<UserWhereUniqueInput>;
 
     data: NonNull<UserUpdateWithoutOpinionsDataInput>;
-}
-
-export interface UserUpdateWithoutSchoolDataInput {
-
-    email?: Optional<String>;
-
-    username?: Optional<String>;
-
-    password?: Optional<String>;
-
-    firstname?: Optional<String>;
-
-    lastname?: Optional<String>;
-
-    gender?: Optional<String>;
-
-    type?: Optional<String>;
-
-    userType?: Optional<String>;
-
-    newConnectNot?: Optional<Boolean>;
-
-    newCommentNot?: Optional<Boolean>;
-
-    newMessageNot?: Optional<Boolean>;
-
-    newProfileNot?: Optional<Boolean>;
-
-    completedProfile?: Optional<Int>;
-
-    country?: Optional<CountryUpdateOneWithoutUsersInput>;
-
-    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
-
-    falculty?: Optional<FacultyUpdateOneWithoutUsersInput>;
-
-    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
-
-    interest?: Optional<InterestUpdateOneWithoutUsersInput>;
-
-    favourites?: Optional<DiscussionUpdateManyWithoutFavouritesInput>;
-
-    myDiscussions?: Optional<DiscussionUpdateOneWithoutAuthorInput>;
-
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
-
-    ConectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
-
-    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
-
-    opinions?: Optional<OpinionsUpdateManyWithoutAuthorInput>;
-}
-
-export interface UserUpdateWithoutSchoolInput {
-
-    where: NonNull<UserWhereUniqueInput>;
-
-    data: NonNull<UserUpdateWithoutSchoolDataInput>;
 }
 
 export interface UserUpsertNestedInput {
@@ -9640,15 +8335,6 @@ export interface UserUpsertWithoutDepartmentInput {
     create: NonNull<UserCreateWithoutDepartmentInput>;
 }
 
-export interface UserUpsertWithoutFalcultyInput {
-
-    where: NonNull<UserWhereUniqueInput>;
-
-    update: NonNull<UserUpdateWithoutFalcultyDataInput>;
-
-    create: NonNull<UserCreateWithoutFalcultyInput>;
-}
-
 export interface UserUpsertWithoutFavouritesInput {
 
     where: NonNull<UserWhereUniqueInput>;
@@ -9692,15 +8378,6 @@ export interface UserUpsertWithoutOpinionsInput {
     update: NonNull<UserUpdateWithoutOpinionsDataInput>;
 
     create: NonNull<UserCreateWithoutOpinionsInput>;
-}
-
-export interface UserUpsertWithoutSchoolInput {
-
-    where: NonNull<UserWhereUniqueInput>;
-
-    update: NonNull<UserUpdateWithoutSchoolDataInput>;
-
-    create: NonNull<UserCreateWithoutSchoolInput>;
 }
 
 export interface UserWhereInput {
@@ -10460,10 +9137,6 @@ export interface UserWhereInput {
     country?: Optional<CountryWhereInput>;
 
     institution?: Optional<InstitutionsWhereInput>;
-
-    school?: Optional<SchoolWhereInput>;
-
-    falculty?: Optional<FacultyWhereInput>;
 
     department?: Optional<DepartmentWhereInput>;
 

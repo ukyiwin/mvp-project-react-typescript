@@ -96,11 +96,12 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
         gender
       }
     }).then( result => {
-      localStorage.setItem(AUTH_TOKEN, result.data.login.token);
-      localStorage.setItem(CURRENT_USER, result.data.login.user);
-      this.props.refreshToken(result.data.login.token);
+      const token = result.data.signup.token;
+      localStorage.setItem(AUTH_TOKEN, token);
+      localStorage.setItem(CURRENT_USER, result.data.signup.user);
+      this.props.refreshToken(token);
       this.setState({loading: false});
-      this.props.history.replace('/signup/profile');
+      this.props.history.replace('/add/profile');
     }).catch( err => {
       this.setState({loading: false}); 
       UIkit.notification(`${err.message}`, {status: 'danger', pos: 'top-right'});

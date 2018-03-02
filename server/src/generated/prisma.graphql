@@ -31,6 +31,7 @@ type Country implements Node {
   updatedAt: DateTime!
   shortName: String!
   name: String!
+  institutions(where: InstitutionsWhereInput, orderBy: InstitutionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Institutions!]
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
@@ -39,7 +40,7 @@ type Department implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  institution(where: InstitutionsWhereInput): Institutions!
+  institution(where: InstitutionsWhereInput): Institutions
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
@@ -84,8 +85,9 @@ type Institutions implements Node {
   updatedAt: DateTime!
   title: String!
   type: InstitutionType!
-  country(where: CountryWhereInput): Country!
+  country(where: CountryWhereInput): Country
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  departments(where: DepartmentWhereInput, orderBy: DepartmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Department!]
 }
 
 type Interest implements Node {
@@ -921,11 +923,12 @@ type CountryConnection {
 input CountryCreateInput {
   shortName: String!
   name: String!
+  institutions: InstitutionsCreateManyWithoutCountryInput
   users: UserCreateManyWithoutCountryInput
 }
 
-input CountryCreateOneInput {
-  create: CountryCreateInput
+input CountryCreateOneWithoutInstitutionsInput {
+  create: CountryCreateWithoutInstitutionsInput
   connect: CountryWhereUniqueInput
 }
 
@@ -934,9 +937,16 @@ input CountryCreateOneWithoutUsersInput {
   connect: CountryWhereUniqueInput
 }
 
+input CountryCreateWithoutInstitutionsInput {
+  shortName: String!
+  name: String!
+  users: UserCreateManyWithoutCountryInput
+}
+
 input CountryCreateWithoutUsersInput {
   shortName: String!
   name: String!
+  institutions: InstitutionsCreateManyWithoutCountryInput
 }
 
 """
@@ -1009,30 +1019,20 @@ input CountrySubscriptionWhereInput {
   node: CountryWhereInput
 }
 
-input CountryUpdateDataInput {
-  shortName: String
-  name: String
-  users: UserUpdateManyWithoutCountryInput
-}
-
 input CountryUpdateInput {
   shortName: String
   name: String
+  institutions: InstitutionsUpdateManyWithoutCountryInput
   users: UserUpdateManyWithoutCountryInput
 }
 
-input CountryUpdateNestedInput {
-  where: CountryWhereUniqueInput!
-  data: CountryUpdateDataInput!
-}
-
-input CountryUpdateOneInput {
-  create: CountryCreateInput
+input CountryUpdateOneWithoutInstitutionsInput {
+  create: CountryCreateWithoutInstitutionsInput
   connect: CountryWhereUniqueInput
   disconnect: CountryWhereUniqueInput
   delete: CountryWhereUniqueInput
-  update: CountryUpdateNestedInput
-  upsert: CountryUpsertNestedInput
+  update: CountryUpdateWithoutInstitutionsInput
+  upsert: CountryUpsertWithoutInstitutionsInput
 }
 
 input CountryUpdateOneWithoutUsersInput {
@@ -1044,9 +1044,21 @@ input CountryUpdateOneWithoutUsersInput {
   upsert: CountryUpsertWithoutUsersInput
 }
 
+input CountryUpdateWithoutInstitutionsDataInput {
+  shortName: String
+  name: String
+  users: UserUpdateManyWithoutCountryInput
+}
+
+input CountryUpdateWithoutInstitutionsInput {
+  where: CountryWhereUniqueInput!
+  data: CountryUpdateWithoutInstitutionsDataInput!
+}
+
 input CountryUpdateWithoutUsersDataInput {
   shortName: String
   name: String
+  institutions: InstitutionsUpdateManyWithoutCountryInput
 }
 
 input CountryUpdateWithoutUsersInput {
@@ -1054,10 +1066,10 @@ input CountryUpdateWithoutUsersInput {
   data: CountryUpdateWithoutUsersDataInput!
 }
 
-input CountryUpsertNestedInput {
+input CountryUpsertWithoutInstitutionsInput {
   where: CountryWhereUniqueInput!
-  update: CountryUpdateDataInput!
-  create: CountryCreateInput!
+  update: CountryUpdateWithoutInstitutionsDataInput!
+  create: CountryCreateWithoutInstitutionsInput!
 }
 
 input CountryUpsertWithoutUsersInput {
@@ -1292,6 +1304,9 @@ input CountryWhereInput {
   All values not ending with the given string.
   """
   name_not_ends_with: String
+  institutions_every: InstitutionsWhereInput
+  institutions_some: InstitutionsWhereInput
+  institutions_none: InstitutionsWhereInput
   users_every: UserWhereInput
   users_some: UserWhereInput
   users_none: UserWhereInput
@@ -1322,8 +1337,13 @@ type DepartmentConnection {
 
 input DepartmentCreateInput {
   name: String!
-  institution: InstitutionsCreateOneInput!
+  institution: InstitutionsCreateOneWithoutDepartmentsInput
   users: UserCreateManyWithoutDepartmentInput
+}
+
+input DepartmentCreateManyWithoutInstitutionInput {
+  create: [DepartmentCreateWithoutInstitutionInput!]
+  connect: [DepartmentWhereUniqueInput!]
 }
 
 input DepartmentCreateOneWithoutUsersInput {
@@ -1331,9 +1351,14 @@ input DepartmentCreateOneWithoutUsersInput {
   connect: DepartmentWhereUniqueInput
 }
 
+input DepartmentCreateWithoutInstitutionInput {
+  name: String!
+  users: UserCreateManyWithoutDepartmentInput
+}
+
 input DepartmentCreateWithoutUsersInput {
   name: String!
-  institution: InstitutionsCreateOneInput!
+  institution: InstitutionsCreateOneWithoutDepartmentsInput
 }
 
 """
@@ -1405,8 +1430,17 @@ input DepartmentSubscriptionWhereInput {
 
 input DepartmentUpdateInput {
   name: String
-  institution: InstitutionsUpdateOneInput
+  institution: InstitutionsUpdateOneWithoutDepartmentsInput
   users: UserUpdateManyWithoutDepartmentInput
+}
+
+input DepartmentUpdateManyWithoutInstitutionInput {
+  create: [DepartmentCreateWithoutInstitutionInput!]
+  connect: [DepartmentWhereUniqueInput!]
+  disconnect: [DepartmentWhereUniqueInput!]
+  delete: [DepartmentWhereUniqueInput!]
+  update: [DepartmentUpdateWithoutInstitutionInput!]
+  upsert: [DepartmentUpsertWithoutInstitutionInput!]
 }
 
 input DepartmentUpdateOneWithoutUsersInput {
@@ -1418,14 +1452,30 @@ input DepartmentUpdateOneWithoutUsersInput {
   upsert: DepartmentUpsertWithoutUsersInput
 }
 
+input DepartmentUpdateWithoutInstitutionDataInput {
+  name: String
+  users: UserUpdateManyWithoutDepartmentInput
+}
+
+input DepartmentUpdateWithoutInstitutionInput {
+  where: DepartmentWhereUniqueInput!
+  data: DepartmentUpdateWithoutInstitutionDataInput!
+}
+
 input DepartmentUpdateWithoutUsersDataInput {
   name: String
-  institution: InstitutionsUpdateOneInput
+  institution: InstitutionsUpdateOneWithoutDepartmentsInput
 }
 
 input DepartmentUpdateWithoutUsersInput {
   where: DepartmentWhereUniqueInput!
   data: DepartmentUpdateWithoutUsersDataInput!
+}
+
+input DepartmentUpsertWithoutInstitutionInput {
+  where: DepartmentWhereUniqueInput!
+  update: DepartmentUpdateWithoutInstitutionDataInput!
+  create: DepartmentCreateWithoutInstitutionInput!
 }
 
 input DepartmentUpsertWithoutUsersInput {
@@ -3041,12 +3091,18 @@ type InstitutionsConnection {
 input InstitutionsCreateInput {
   title: String!
   type: InstitutionType!
-  country: CountryCreateOneInput!
+  country: CountryCreateOneWithoutInstitutionsInput
   users: UserCreateManyWithoutInstitutionInput
+  departments: DepartmentCreateManyWithoutInstitutionInput
 }
 
-input InstitutionsCreateOneInput {
-  create: InstitutionsCreateInput
+input InstitutionsCreateManyWithoutCountryInput {
+  create: [InstitutionsCreateWithoutCountryInput!]
+  connect: [InstitutionsWhereUniqueInput!]
+}
+
+input InstitutionsCreateOneWithoutDepartmentsInput {
+  create: InstitutionsCreateWithoutDepartmentsInput
   connect: InstitutionsWhereUniqueInput
 }
 
@@ -3055,10 +3111,25 @@ input InstitutionsCreateOneWithoutUsersInput {
   connect: InstitutionsWhereUniqueInput
 }
 
+input InstitutionsCreateWithoutCountryInput {
+  title: String!
+  type: InstitutionType!
+  users: UserCreateManyWithoutInstitutionInput
+  departments: DepartmentCreateManyWithoutInstitutionInput
+}
+
+input InstitutionsCreateWithoutDepartmentsInput {
+  title: String!
+  type: InstitutionType!
+  country: CountryCreateOneWithoutInstitutionsInput
+  users: UserCreateManyWithoutInstitutionInput
+}
+
 input InstitutionsCreateWithoutUsersInput {
   title: String!
   type: InstitutionType!
-  country: CountryCreateOneInput!
+  country: CountryCreateOneWithoutInstitutionsInput
+  departments: DepartmentCreateManyWithoutInstitutionInput
 }
 
 """
@@ -3131,32 +3202,30 @@ input InstitutionsSubscriptionWhereInput {
   node: InstitutionsWhereInput
 }
 
-input InstitutionsUpdateDataInput {
-  title: String
-  type: InstitutionType
-  country: CountryUpdateOneInput
-  users: UserUpdateManyWithoutInstitutionInput
-}
-
 input InstitutionsUpdateInput {
   title: String
   type: InstitutionType
-  country: CountryUpdateOneInput
+  country: CountryUpdateOneWithoutInstitutionsInput
   users: UserUpdateManyWithoutInstitutionInput
+  departments: DepartmentUpdateManyWithoutInstitutionInput
 }
 
-input InstitutionsUpdateNestedInput {
-  where: InstitutionsWhereUniqueInput!
-  data: InstitutionsUpdateDataInput!
+input InstitutionsUpdateManyWithoutCountryInput {
+  create: [InstitutionsCreateWithoutCountryInput!]
+  connect: [InstitutionsWhereUniqueInput!]
+  disconnect: [InstitutionsWhereUniqueInput!]
+  delete: [InstitutionsWhereUniqueInput!]
+  update: [InstitutionsUpdateWithoutCountryInput!]
+  upsert: [InstitutionsUpsertWithoutCountryInput!]
 }
 
-input InstitutionsUpdateOneInput {
-  create: InstitutionsCreateInput
+input InstitutionsUpdateOneWithoutDepartmentsInput {
+  create: InstitutionsCreateWithoutDepartmentsInput
   connect: InstitutionsWhereUniqueInput
   disconnect: InstitutionsWhereUniqueInput
   delete: InstitutionsWhereUniqueInput
-  update: InstitutionsUpdateNestedInput
-  upsert: InstitutionsUpsertNestedInput
+  update: InstitutionsUpdateWithoutDepartmentsInput
+  upsert: InstitutionsUpsertWithoutDepartmentsInput
 }
 
 input InstitutionsUpdateOneWithoutUsersInput {
@@ -3168,10 +3237,35 @@ input InstitutionsUpdateOneWithoutUsersInput {
   upsert: InstitutionsUpsertWithoutUsersInput
 }
 
+input InstitutionsUpdateWithoutCountryDataInput {
+  title: String
+  type: InstitutionType
+  users: UserUpdateManyWithoutInstitutionInput
+  departments: DepartmentUpdateManyWithoutInstitutionInput
+}
+
+input InstitutionsUpdateWithoutCountryInput {
+  where: InstitutionsWhereUniqueInput!
+  data: InstitutionsUpdateWithoutCountryDataInput!
+}
+
+input InstitutionsUpdateWithoutDepartmentsDataInput {
+  title: String
+  type: InstitutionType
+  country: CountryUpdateOneWithoutInstitutionsInput
+  users: UserUpdateManyWithoutInstitutionInput
+}
+
+input InstitutionsUpdateWithoutDepartmentsInput {
+  where: InstitutionsWhereUniqueInput!
+  data: InstitutionsUpdateWithoutDepartmentsDataInput!
+}
+
 input InstitutionsUpdateWithoutUsersDataInput {
   title: String
   type: InstitutionType
-  country: CountryUpdateOneInput
+  country: CountryUpdateOneWithoutInstitutionsInput
+  departments: DepartmentUpdateManyWithoutInstitutionInput
 }
 
 input InstitutionsUpdateWithoutUsersInput {
@@ -3179,10 +3273,16 @@ input InstitutionsUpdateWithoutUsersInput {
   data: InstitutionsUpdateWithoutUsersDataInput!
 }
 
-input InstitutionsUpsertNestedInput {
+input InstitutionsUpsertWithoutCountryInput {
   where: InstitutionsWhereUniqueInput!
-  update: InstitutionsUpdateDataInput!
-  create: InstitutionsCreateInput!
+  update: InstitutionsUpdateWithoutCountryDataInput!
+  create: InstitutionsCreateWithoutCountryInput!
+}
+
+input InstitutionsUpsertWithoutDepartmentsInput {
+  where: InstitutionsWhereUniqueInput!
+  update: InstitutionsUpdateWithoutDepartmentsDataInput!
+  create: InstitutionsCreateWithoutDepartmentsInput!
 }
 
 input InstitutionsUpsertWithoutUsersInput {
@@ -3381,6 +3481,9 @@ input InstitutionsWhereInput {
   users_every: UserWhereInput
   users_some: UserWhereInput
   users_none: UserWhereInput
+  departments_every: DepartmentWhereInput
+  departments_some: DepartmentWhereInput
+  departments_none: DepartmentWhereInput
 }
 
 input InstitutionsWhereUniqueInput {

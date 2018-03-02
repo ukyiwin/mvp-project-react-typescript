@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { asyncComponent } from 'react-async-component';
 import { Helmet } from 'react-helmet';
 import NotFound from '../NotFound';
@@ -70,10 +70,10 @@ const Home = asyncComponent({
 
 type Props = {
   // tslint:disable-next-line:no-any
-  client?: any
+  client?: any,
+  // tslint:disable-next-line:no-any
+  history?: any
 };
-
-const supportsHistory = 'pushState' in window.history;
 
 type Response = {
   me: User
@@ -108,6 +108,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
         this.setState({isAuthenticated: true});
         this.setState({token: token});
         this.setState({expireToken: expired});
+        this.loadMe();
       } else {
         localStorage.removeItem(AUTH_TOKEN);
         this.setState({isAuthenticated: false});
@@ -132,6 +133,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
       this.setState({
         isAuthenticated : true,
       });
+      this.loadMe();
     }
   }
 
@@ -157,11 +159,11 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     }).then(({ data }) => {
 
       // tslint:disable-next-line:no-console
-      console.log(data);
+      console.log(data.me);
       this.setState({me: data.me});
 
-      if (data.me.completedProfile === 1 || data.me.completedProfile === null) {
-        // ghghgh
+      if (data.me.completedProfile === 1) {
+        this.props.history.replace('/add/profile');
       }
 
     }).catch((error) => {
@@ -174,12 +176,8 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     const { isAuthenticated } = this.state;
     // const userAuthed = token ? true : false;
     // tslint:disable-next-line:no-unused-expression
-    isAuthenticated ? this.loadMe() : null;
 
     return (
-      <BrowserRouter
-        forceRefresh={!supportsHistory}
-      >
         <div className="uk-offcanvas-content uk-background-muted">
           <Helmet>
             <title>Unizonn</title>
@@ -225,7 +223,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
               isAuthenticated={isAuthenticated}  
             />
             <EmptyLayout component={SignupPhoto} path="/signup/photo" isAuthenticated={isAuthenticated} />
-            <PublicLayout 
+            <EmptyLayout 
               exact={true} 
               component={SignupProfile} 
               path="/add/profile" 
@@ -247,12 +245,11 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
           </Switch>
           <SideBar />
         </div>
-      </BrowserRouter>
     );
   }
 }
 
-export default compose(
+export default  withRouter(compose(
   withApollo,
   graphql<Response, {}>(ME)
-)(App);
+)(App));

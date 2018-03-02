@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './Containers/App';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
+import { BrowserRouter } from 'react-router-dom';
 // import { setContext } from 'apollo-link-context';
 // import QueueLink from 'apollo-link-queue';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -13,11 +13,13 @@ import { getMainDefinition } from 'apollo-utilities';
 import  { RetryLink } from 'apollo-link-retry';
 import { onError } from 'apollo-link-error';
 import { ApolloProvider } from 'react-apollo';
+import resolvers from 'Graphql/Resolvers';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
-import resolvers from 'Graphql/Resolvers';
+import App from './Containers/App';
 
 const AUTH_TOKEN = 'token';
+const supportsHistory = 'pushState' in window.history;
 
 // const queueLink = new QueueLink();
 
@@ -95,7 +97,9 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <BrowserRouter forceRefresh={!supportsHistory} >
+      <App />
+    </BrowserRouter>
   </ApolloProvider>
   // tslint:disable-next-line:align
   , document.getElementById('root') as HTMLElement

@@ -1,21 +1,104 @@
 mutation {
   createUser(data: {
-    email: "developer@example.com"
+    email: "sciencedaily@unizonn.com"
     password: "$2a$10$hACwQ5/HQI6FhbIISOUVeusy3sKyUDhSq36fF5d/54aAdiygJPFzm" # plaintext password: "nooneknows"
-    name: "Sarah"
-    posts: {
-      create: [{
-        title: "Hello World"
-        text: "This is my first blog post ever!"
-        isPublished: true
+    firstname: "Science"
+    lastname: "Daily"
+    username: "sciencedaily"
+    type: "Editor"
+    userType: "Editor"
+    gender: "Male"
+  }) {
+    id
+  },
+  createCountry(data: {
+    name: "United Kigndom"
+    shortName: "UK"
+    institutions: {
+      create : [{
+        title: "University of Aberdeen"
+        type: University
+
       }, {
-        title: "My Second Post"
-        text: "My first post was good, but this one is better!"
-        isPublished: true
+        title: "Abertay University"
+        type: University
       }, {
-        title: "Solving World Hunger"
-        text: "This is a draft..."
-        isPublished: false
+        title: "Aberystwyth University"
+        type: University
+      }, {
+        title: "Anglia Ruskin University"
+        type: University
+      }, {
+        title: "Arden University"
+        type: University
+      }, {
+        title: "Aston University"
+        type: University
+      }, {
+        title: "University of Birmingham"
+        type: University
+      }, {
+        title: "University of Bradford"
+        type: University
+      }, {
+        title: "University of Liverpool"
+        type: University
+      }, {
+        title: "University of London"
+        type: University
+      }, {
+        title: "University of Bristol"
+        type: University
+      }, {
+        title: "University of Birmingham"
+        type: University
+      }, {
+        title: "University of Bolton"
+        type: University
+      }, {
+        title: "University of Brighton"
+        type: University
+      }, {
+        title: "Falmouth University"
+        type: University
+      }, {
+        title: "University of Edinburgh"
+        type: University
+      }, {
+        title: "University of Derby"
+        type: University
+      }, {
+        title: "University of Dunbee"
+        type: University
+      }, {
+        title: "Lancaster University"
+        type: University
+      }, {
+        title: "University of Manchester"
+        type: University
+        departments: {
+          create : [{
+            name: "Accounting"
+          }, {
+            name: "Accounting and Finance"
+          }, {
+            name: "Aerospace Engineering"
+          }, {
+            name: "Actuarial Science and Mathematics"
+          }, {
+            name: "American Studies"
+          }, {
+            name: "Adult Nursing"
+          }, {
+            name: "Ancient History"
+          }, {
+            name: "Archaeology"
+          }, {
+            name: "Architecture"
+          }, {
+            name: "Artificial Intelligence"
+          }]
+        }
       }]
     }
   }) {

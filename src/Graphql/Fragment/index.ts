@@ -11,5 +11,12 @@ export const USER_FRAGMENT = gql`
     username
     email
     gender
+    type
+    userType
+    newConnectNot
+    newCommentNot
+    newMessageNot
+    newProfileNot
+    completedProfile
   }
 `;
