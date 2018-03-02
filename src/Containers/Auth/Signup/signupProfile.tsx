@@ -97,10 +97,10 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
   }
 
   getDepartment(value: string) {
-    this.props.department({
+    this.props.client.query({
       query: ALL_DEPARTMENTS,
       variables: {
-        idInstitution: value
+        idInstitutions: value
       }
     })
     .then( result => {
