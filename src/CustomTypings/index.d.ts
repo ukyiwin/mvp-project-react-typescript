@@ -9,3 +9,7 @@ interface MyFormEvent<T> extends React.FormEvent<T> {
 interface InputProps extends React.HTMLProps<Input> {
   onChange?: React.EventHandler<MyFormEvent<Input>>;
 }
+
+declare const System: {
+  import: (path: string) => Promise<any>;
+};

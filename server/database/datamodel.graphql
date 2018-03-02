@@ -35,6 +35,7 @@ type Country {
   updatedAt: DateTime!
   shortName: String! @unique
   name: String! @unique
+  institutions: [Institutions!]!  @relation(name: "CountryInstitution")
   users: [User!]! @relation(name: "UserCountry")
 }
 
@@ -44,8 +45,9 @@ type Institutions {
   updatedAt: DateTime!
   title: String!
   type: InstitutionType!
-  country: Country!
+  country: Country  @relation(name: "CountryInstitution")
   users: [User!]! @relation(name: "UserInstitution")
+  departments: [Department!]! @relation(name: "InstDepartment")
 }
 
 type Department {
@@ -53,7 +55,7 @@ type Department {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  institution: Institutions!
+  institution: Institutions @relation(name: "InstDepartment")
   users: [User!]! @relation(name: "UserDepartment")
 }
 

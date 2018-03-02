@@ -1,8 +1,10 @@
+import * as React from 'react';
 
 type Props = {
   url: string,
   size?: number,
-  circle?: boolean
+  circle?: boolean,
+  presence: boolean
 };
 
 // tslint:disable-next-line:typedef
@@ -14,7 +16,9 @@ const Avatar = (props: Props) => {
         height={props.size} 
         src={props.url} 
       />
-      <i className="avatar-presence online"/>
+      {props.presence ? <i className="avatar-presence online"/> : null}
     </figure>
   );
 };
+
+export default Avatar;

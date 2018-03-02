@@ -1,28 +1,38 @@
 import * as React from 'react';
 
-export const ErrorComponent = props => (
-  <span>
-    Something went wrong, you can try to
-    <button onClick={props.refetch}>refetch</button>
-  </span>
-);
+type Props = {
+  // tslint:disable-next-line:no-any
+  refresh?: any;
+};
 
-export const EmptyComponent = props => (
+export const ErrorComponent = (props: Props) => (
   <div className="empty">
     <div className="empty-icon">
       <i className="icon icon-people" />
     </div>
-    <p className="empty-title h5">You have no new messages</p>
-    <p className="empty-subtitle">Click the button to start a conversation.</p>
+    <p className="empty-title h5">There was an error loading content</p>
+    <p className="empty-subtitle">Click the button to refresh.</p>
     <div className="empty-action">
-      <button className="btn btn-primary">Send a message</button>
+      <button className="btn btn-primary" onClick={() => props.refresh}>Refresh</button>
+    </div>
+  </div>
+);
+
+export const EmptyComponent = props => (
+  <div className="empty uk-flex-stretch uk-align-center">
+    <div className="empty-icon">
+      <i className="icon icon-people" />
+    </div>
+    <p className="empty-title h5">You have no new article</p>
+    <p className="empty-subtitle">Click the button to find topics or people to connect to.</p>
+    <div className="empty-action">
+      <button className="btn btn-primary">Connect</button>
     </div>
   </div>
 );
 
 export const LoadingComponent = props => (
-  <span>
-    Something went wrong, you can try to
-    <button onClick={props.refetch}>refetch</button>
-  </span>
+  <div style={{ justifyContent: 'center', alignSelf: 'center' }}>
+    Loading
+  </div>
 );

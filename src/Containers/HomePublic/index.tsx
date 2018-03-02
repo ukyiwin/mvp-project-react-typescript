@@ -49,20 +49,20 @@ class HomePublic extends React.Component<Props> {
               <InputBoxLogin hisory={this.props.history} />  
             </div>
         </div>
-        <div 
+        <div
           className="uk-flex uk-width-1-1 uk-flex-stretch uk-height-large backgroundTwo"
           style={{height: '100vh'}}
         >
           <div 
             className="uk-container uk-container-expand uk-flex"
-            style={{marginTop: 80}}
+            style={{marginTop: 80, elevation: 3, padding: 5, borderRadius: 8}}
           >
           <iframe 
-            src="//www.youtube.com/embed/YE7VzlLtp-4?autoplay=0&amp;showinfo=0
+            src="//www.youtube.com/embed/a_ONcLi8tfY?autoplay=0&amp;showinfo=0
             &amp;rel=0&amp;modestbranding=1&amp;playsinline=1" 
             width="560" 
             height="315" 
-            frameBorder="0"
+            frameBorder="1"
             data-uk-responsive={true}
             uk-video="automute: true; autoplay: false" 
           />

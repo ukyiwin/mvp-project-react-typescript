@@ -1,21 +1,13 @@
 import * as React from 'react';
-import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import { asyncComponent } from 'react-async-component';
 import { Helmet } from 'react-helmet';
-import Home from '../Home';
-import PublicHome from '../HomePublic';
 import NotFound from '../NotFound';
 import { PublicLayout, PrivateLayout, EmptyLayout, ProfileLayout } from 'Components/Layouts/MainLayout';
-import Maps from 'Containers/Maps';
-import Forum from 'Containers/Forum';
-import Message from 'Containers/Message';
-import Signup from 'Containers/Auth/Signup';
-import SignupPhoto from 'Containers/Auth/Signup/signupPhoto';
-import SignupProfile from 'Containers/Auth/Signup/signupProfile';
-import Interest from 'Containers/Auth/Signup/interest';
-import Login from 'Containers/Auth/Login';
 import { isTokenExpired } from 'Utils/jwtHelper';
 import { AUTH_TOKEN } from '../../constants';
 import { PrivateHeader } from 'Components/Layouts/Header';
+import LoadingComponent from 'Components/Loading';
 import SideBar from 'Components/Layouts/SideBar';
 import Compose from 'Containers/ComposeArticle';
 import { User } from 'CustomTypings/schema';
@@ -25,12 +17,63 @@ import Profile from 'Containers/Profile';
 import './style.css';
 // const customHistory = createBrowserHistory();
 
+const Login = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Login'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const Message = asyncComponent({
+  resolve: () => System.import('Containers/Message'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const Interest = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Signup/interest'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const SignupProfile = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Signup/signupProfile'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const SignupPhoto = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Signup/signupPhoto'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const Signup = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Signup'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const Forum = asyncComponent({
+  resolve: () => System.import('Containers/Forum'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const Maps = asyncComponent({
+  resolve: () => System.import('Containers/Maps'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const PublicHome = asyncComponent({
+  resolve: () => System.import('Containers/HomePublic'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+const Home = asyncComponent({
+  resolve: () => System.import('Containers/Home'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+
 type Props = {
   // tslint:disable-next-line:no-any
-  client?: any
+  client?: any,
+  // tslint:disable-next-line:no-any
+  history?: any
 };
-
-const supportsHistory = 'pushState' in window.history;
 
 type Response = {
   me: User
@@ -65,6 +108,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
         this.setState({isAuthenticated: true});
         this.setState({token: token});
         this.setState({expireToken: expired});
+        this.loadMe();
       } else {
         localStorage.removeItem(AUTH_TOKEN);
         this.setState({isAuthenticated: false});
@@ -89,6 +133,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
       this.setState({
         isAuthenticated : true,
       });
+      this.loadMe();
     }
   }
 
@@ -114,11 +159,11 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     }).then(({ data }) => {
 
       // tslint:disable-next-line:no-console
-      console.log(data);
+      console.log(data.me);
       this.setState({me: data.me});
 
-      if (data.me.completedProfile === 1 || data.me.completedProfile === null) {
-        // ghghgh
+      if (data.me.completedProfile === 1) {
+        this.props.history.replace('/add/profile');
       }
 
     }).catch((error) => {
@@ -131,18 +176,14 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     const { isAuthenticated } = this.state;
     // const userAuthed = token ? true : false;
     // tslint:disable-next-line:no-unused-expression
-    isAuthenticated ? this.loadMe() : null;
 
     return (
-      <BrowserRouter
-        forceRefresh={!supportsHistory}
-      >
         <div className="uk-offcanvas-content uk-background-muted">
           <Helmet>
             <title>Unizonn</title>
             <meta name="an inclusive community" content="Unizonn community" />
           </Helmet>
-          <PrivateHeader isAuthenticated={isAuthenticated} />
+          <PrivateHeader isAuthenticated={isAuthenticated} logout={this._logout} />
           <Switch>
             <Route 
               exact={true}
@@ -182,8 +223,13 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
               isAuthenticated={isAuthenticated}  
             />
             <EmptyLayout component={SignupPhoto} path="/signup/photo" isAuthenticated={isAuthenticated} />
-            <EmptyLayout component={SignupProfile} path="/signup/profile" isAuthenticated={isAuthenticated}/>
-            <EmptyLayout component={Interest} path="/signup/interest" isAuthenticated={isAuthenticated} />
+            <EmptyLayout 
+              exact={true} 
+              component={SignupProfile} 
+              path="/add/profile" 
+              isAuthenticated={isAuthenticated}
+            />
+            <EmptyLayout component={Interest} path="/add/interest" isAuthenticated={isAuthenticated} />
             <EmptyLayout component={Maps} path="/library" isAuthenticated={isAuthenticated} />
             <EmptyLayout component={Message} path="/message" isAuthenticated={isAuthenticated} />
             <PrivateLayout component={Forum} path="/Forum" isAuthenticated={isAuthenticated} />
@@ -199,12 +245,11 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
           </Switch>
           <SideBar />
         </div>
-      </BrowserRouter>
     );
   }
 }
 
-export default compose(
+export default  withRouter(compose(
   withApollo,
   graphql<Response, {}>(ME)
-)(App);
+)(App));

@@ -1,20 +1,17 @@
 import * as React from 'react';
-// import Editor from 'Components/Editor';
-// import UIkit from 'uikit/src/js/uikit';
+import Avatar from 'Components/Avatar';
+import { User } from 'CustomTypings/schema';
 // import { Link } from 'react-router-dom';
 
 type Props = {
-  classes?: object,
+  me?: User,
 };
 
 // tslint:disable-next-line:no-any
-class WriteModal extends React.Component<Props> {
-
-  componentDidMount() {
-    // UIkit.notification('MyMessage', 'danger');
-  }
+class WriteModal extends React.PureComponent<Props> {
 
   render() {
+    const { me } = this.props;
     return (
       <div 
         className="uk-card uk-card-small uk-card-default uk-width-1-1 uk-margin-bottom"
@@ -23,15 +20,16 @@ class WriteModal extends React.Component<Props> {
         <div className="uk-padding-small">
           <div className="uk-grid-small uk-flex" uk-grid={true} >
             <div className="uk-width-auto">
-                <img 
-                  className="uk-border-circle" 
-                  width="40" 
-                  height="40"
-                  src="https://getuikit.com/docs/images/avatar.jpg"
+                <Avatar 
+                  url="https://getuikit.com/docs/images/avatar.jpg"
+                  presence={false}
+                  size={20}
                 />
             </div>
             <div className="uk-width-auto">
-                <h5 className="uk-card-title uk-margin-remove-bottom">Gustavo Benedito Costa</h5>
+                <p className="uk-card-title uk-margin-remove-bottom">
+                {me ? `${me.firstname} ${me.lastname}` : ''}
+                </p>
             </div>
           </div>
         </div>

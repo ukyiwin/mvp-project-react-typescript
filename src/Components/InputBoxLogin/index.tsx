@@ -53,20 +53,23 @@ class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildP
     return (
       <div className="">
         <h1 className="uk-heading-primary uk-text-bold uk-text-uppercase">Welcome <br/>to unizonn</h1>
-        <p style={{marginTop: 20}}>Friendly and inclusive community for students and academia</p>
-        <div style={{ display: 'table' }}>
+        <p style={{marginTop: 20, marginBottom: 15}}>Friendly and inclusive community for students and academia</p>
+        <div className="uk-flex-stretch">
           <form 
             onSubmit={this.checkUser} 
-            className="uk-margin" 
+            className="uk-margin uk-flex-stretch" 
             // tslint:disable-next-line:jsx-boolean-value
             uk-margin
           >
             <div 
-              className="uk-margin uk-width-1-1" 
+              className="uk-margin uk-flex uk-width-1-1" 
               // tslint:disable-next-line:jsx-boolean-value
               uk-margin
             >
-              <div uk-form-custom="target: true">
+              <div 
+                uk-form-custom="target: true"
+                className="uk-width-3-4@m uk-width-1-1@s"
+              >
                 <input
                   type="email" 
                   onChange={e => this.setState({text: e.target.value})}
@@ -76,7 +79,10 @@ class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildP
                   placeholder="Enter email to signin or signup"
                 />
               </div>
-            { loading ? 
+              <div
+                className="uk-width-1-4@m uk-width-1-1@s"
+              >
+            { loading ?
               <div 
                 data-uk-spinner="ratio: 1"
                 style={{ marginLeft: 15, color: 'green'}}
@@ -85,8 +91,9 @@ class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildP
                 className="uk-button uk-button-primary uk-button-large"
                 type="submit"
               >
-                GET STARTED
+                GETSTARTED
               </button>}
+              </div>
             </div>
           </form>
         </div>

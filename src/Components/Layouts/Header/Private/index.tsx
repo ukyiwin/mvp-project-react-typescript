@@ -1,31 +1,17 @@
 import * as React from 'react';
 // import UIkit from 'uikit/src/js/uikit';
-import { Link, Redirect } from 'react-router-dom';
-import { AUTH_TOKEN } from '../../../../constants';
+import { Link } from 'react-router-dom';
 // import * as Logo from 'Assets/logo.png';
 
 type Props = {
   classes?: object,
-  isAuthenticated: boolean
+  isAuthenticated: boolean,
+  // tslint:disable-next-line:no-any
+  logout: any,
 };
 
 // tslint:disable-next-line:no-any
-class PrivateHeader extends React.Component<Props> {
-
-  componentDidMount() {
-    // UIkit.notification('MyMessage', 'danger');
-  }
-
-  _logout = () => {
-    // tslint:disable-next-line:no-console
-    console.log('here again its calling');
-    localStorage.removeItem(AUTH_TOKEN);
-    return (
-      <Redirect to="/" />
-    );
-  }
-
-  render() {
+const PrivateHeader = (props: Props) => {
     return (
       <div
         data-uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky"
@@ -69,7 +55,7 @@ class PrivateHeader extends React.Component<Props> {
                   placeholder="Search unizonn..."
                 />
               </form>
-              {this.props.isAuthenticated ? <React.Fragment>
+              {props.isAuthenticated ? <React.Fragment>
               <ul className="uk-iconnav">
                 <li className="uk-animation-toggle">
                   <Link className="uk-animation-shake" to="/message" uk-icon="icon: calendar; ratio: 1.5"/>
@@ -101,7 +87,7 @@ class PrivateHeader extends React.Component<Props> {
                         <li><Link to="/message" className="uk-text-bold">Privacy</Link></li>
                         <li className="uk-nav-divider" />
                         <li><Link to="/message" className="uk-text-bold">Support</Link></li>
-                        <li><a onClick={this._logout} className="uk-text-bold">Logout</a></li>
+                        <li><a onClick={props.logout} className="uk-text-bold">Logout</a></li>
                     </ul>
                 </div>
                 </li>
@@ -116,7 +102,7 @@ class PrivateHeader extends React.Component<Props> {
               </div>}
             </div>
             <div className="uk-navbar-right uk-hidden@s">
-            {this.props.isAuthenticated ? 
+            {props.isAuthenticated ? 
               <div className="uk-navbar-nav uk-padding-small">
                 <Link to="/write" className="uk-button uk-button-primary uk-button-small">Write</Link>
               </div>
@@ -132,8 +118,6 @@ class PrivateHeader extends React.Component<Props> {
         </nav>
       </div>
     );
-  }
-  
-}
+};
 
 export default PrivateHeader;

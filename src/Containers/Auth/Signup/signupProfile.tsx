@@ -1,17 +1,20 @@
 import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { compose, withApollo } from 'react-apollo';
+import { compose, withApollo, graphql } from 'react-apollo';
 // import { ChildProps } from 'react-apollo/types';
-// import { SIGNUP_USER } from 'Graphql/Mutation';
+import { ALL_COUNTRIES, ALL_DEPARTMENTS, ALL_INSTITUTION } from 'Graphql/Query';
 // import { User } from 'CustomTypings/schema';
 import { validateProfile } from 'Utils/helpers';
 // import * as UIkit from 'uikit';
 
 import './style.css';
+import { Country, Institutions, Department, User } from 'CustomTypings/schema';
+import { ADD_PROFILE } from 'Graphql/Mutation';
 
 type Props = {
-  // tslint:disable-next-line:no-any
-  signup: any,
+  country: Country,
+  institution: Institutions,
+  department: Department,
   // tslint:disable-next-line:no-any
   refreshToken?: any,
   // tslint:disable-next-line:no-any
@@ -22,12 +25,13 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
   state = { 
     show: false,
     country: '',
-    faculty: '',
+    countryList: [],
     institution: '',
-    school: '',
+    institutionList: [],
     department: '',
-    everFocusedEmail: false,
-    everFocusedPassword: false,
+    departmentList: [],
+    everFocusedInstitution: false,
+    everFocusedCountry: false,
     inFocus: '',
     loading: false
   };
@@ -42,6 +46,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
   
   handleCountryChange = (evt) => {
     this.setState({ country: evt.target.value });
+    this.getInstitution(evt.target.value);
   }
 
   handleSubmit = (evt) => {
@@ -59,11 +64,58 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
     return !isDisabled;
   }
 
+  getCountry() {
+    this.props.client.query({
+      query: ALL_COUNTRIES,
+    })
+    .then( result => {
+      // tslint:disable-next-line:no-console
+      console.log(result.data.getCountry);
+      this.setState({countryList: result.data.getCountry});
+    })
+    .catch(err => {
+      // jkjk
+    });
+  }
+
+  getInstitution(value: string) {
+    this.props.client.query({
+      query: ALL_INSTITUTION,
+      variables: {
+        idCountry: value
+      }
+    })
+    .then( result => {
+      // tslint:disable-next-line:no-console
+      console.log(result);
+      this.setState({institutionList: result.data.getInstitution});
+    })
+    .catch(err => {
+      // jkjk
+    });
+  }
+
+  getDepartment(value: string) {
+    this.props.department({
+      query: ALL_DEPARTMENTS,
+      variables: {
+        idInstitution: value
+      }
+    })
+    .then( result => {
+      // jhjh
+    })
+    .catch(err => {
+      // jkjk
+    });
+  }
+
   componentWillMount() {
     const email = this.props.location.email;
     if (email) {
       this.setState({email: email});
     }
+    this.getCountry();
   }
   
   render() {
@@ -79,7 +131,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
         data-uk-grid
         style={{height: '100vh', backgroundColor: '#ffffff'}}
       >
-        <div className="uk-width-2-5 sideBg uk-flex uk-flex-middle " id="sideBg">
+        <div className="uk-width-2-5 uk-visible@m sideBg uk-flex uk-flex-middle " id="sideBg">
           <div 
             className="uk-position-relative uk-visible-toggle uk-light"
             data-uk-slideshow="animation: scale"
@@ -126,13 +178,32 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
             />
           </div>
         </div>
-        <div className="uk-container uk-width-3-5 uk-flex uk-flex-stretch uk-flex-middle uk-box-shadow-small">
+        <div 
+          className="uk-container uk-width-3-5@m uk-width-1-1@s uk-flex 
+          uk-flex-stretch uk-flex-middle uk-box-shadow-small"
+        >
           <form 
             className="uk-form-horizontal uk-width-1-1 uk-margin-large uk-padding-large uk-padding-remove-vertical"
             onSubmit={this.handleSubmit}
           >
             <div className="uk-margin">
-              <h3 className="uk-heading-primary uk-align-center">We want to know you more </h3>
+              <h3 className="uk-heading-primary uk-align-center">You're Almost done </h3>
+            </div>
+            <div className="uk-margin">
+              <div className="js-upload uk-placeholder uk-text-center">
+                  <span uk-icon="icon: cloud-upload"/>
+                  <span className="uk-text-middle">Attach photo by dropping it here or </span>
+                  <div
+                    uk-form-custom=""
+                  >
+                    <input 
+                      type="file" 
+                      multiple={false}
+                    />
+                    <span className="uk-link">selecting one</span>
+                  </div>
+              </div>
+              <progress id="js-progressbar" className="uk-progress" value="0" max="100" hidden={true} />
             </div>
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="firstname">Country</label>
@@ -144,7 +215,10 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
                   onChange={this.handleCountryChange}
                 >
                   <option value="">Select country</option>
-                  <option value="uk">United Kingdom</option>
+                  {this.state.countryList.map((country: Country, i) =>
+                    // tslint:disable-next-line:jsx-key
+                    <option key={i} value={country.id}>{country.name}</option>
+                  )}
                 </select>
               </div>
             </div>
@@ -158,6 +232,10 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
                   onChange={this.handleInstChange}
                 >
                   <option value="">Select institution</option>
+                  {this.state.institutionList.map((institution: Institutions, i) =>
+                    // tslint:disable-next-line:jsx-key
+                    <option key={i} value={institution.id}>{institution.title}</option>
+                  )}
                 </select>
               </div>
             </div>
@@ -171,6 +249,10 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
                   onChange={this.handleDeptChange}
                 >
                   <option value="">Select course</option>
+                  {this.state.departmentList.map((course: Department, i) =>
+                    // tslint:disable-next-line:jsx-key
+                    <option key={i} value={course.id}>{course.name}</option>
+                  )}
                 </select>
               </div>
             </div>
@@ -184,7 +266,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
                   className={`uk-button uk-button-primary uk-width-1-1 ${isDisabled ? 'disabled' : 'disabled'}`}
                   type="submit"
                 >
-                Sign Up
+                SAVE & NEXT
                 </button>
               }
             </div>
@@ -197,5 +279,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
 }
 
 export default withRouter(compose(
-  withApollo
+  withApollo,
+  graphql<Country, {}, Props>(ALL_COUNTRIES, {name: 'country'}),
+  graphql<User, {}, Props>(ADD_PROFILE, {name: 'addProfile'})
 )(SignupProfile));

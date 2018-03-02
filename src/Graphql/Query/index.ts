@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { USER_FRAGMENT } from 'Graphql/Fragment';
 
 /**
  * @description user registration for graphql mutation
@@ -69,13 +70,7 @@ export const ARTICLES = gql`
 export const ME = gql`
   query me {
     me{
-      id
-      email
-      username
-      password
-      firstname
-      lastname
-      gender
+      ...userFragment
       favourites{
         id
         title
@@ -98,12 +93,49 @@ export const ME = gql`
           username
         }
       }
-      type
       articles{
         id
         title
         body
       }
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+/**
+ * @description get all countries
+ */
+export const ALL_COUNTRIES = gql`
+  query allcountries{
+    getCountry{
+      id
+      name
+      shortName
+    }
+  }
+`;
+
+/**
+ * @description get all departments in institution
+ */
+export const ALL_DEPARTMENTS = gql`
+  query getDepartment($idInstitutions: ID!){
+    getDepartment(idInstitutions: $idInstitutions){
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * @description get all departments
+ */
+export const ALL_INSTITUTION = gql`
+  query getInstitution($idCountry: ID!){
+    getInstitution(idCountry: $idCountry){
+      id
+      title
     }
   }
 `;
