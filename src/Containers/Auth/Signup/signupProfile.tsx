@@ -38,6 +38,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
 
   handleInstChange = (evt) => {
     this.setState({ institution: evt.target.value });
+    this.getDepartment(evt.target.value);
   }
   
   handleDeptChange = (evt) => {
@@ -103,7 +104,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
       }
     })
     .then( result => {
-      // jhjh
+      this.setState({departmentList: result.data.getDepartment});
     })
     .catch(err => {
       // jkjk
