@@ -37,50 +37,16 @@ const ProfileLayout: React.SFC<DefaultProps> = (props) => {
                 className="uk-blend-hard-darken"
               />
             </div> 
-            <div className="uk-card uk-card-default uk-padding">
-              <div className="uk-align-right">
-                <ul 
-                  // tslint:disable-next-line:jsx-boolean-value
-                  data-uk-tab 
-                  style={{paddingTop: 1}}
-                >
-                  <li>
-                    <a>
-                      <div>
-                        Articles
-                        <br/>
-                        <span className="">
-                        20
-                        </span>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a>
-                      <div>
-                        Connections
-                        <br/>
-                        <span className="">
-                        20
-                        </span>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a>
-                      <div>
-                        Likes
-                        <br/>
-                        <span className="">
-                        20
-                        </span>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <button className="uk-button uk-button-secondary uk-button-small">Edit Profile</button>
-                  </li>
-                </ul>
+            <div className="uk-card uk-card-default uk-padding-small">
+              <div className="uk-text-right">
+                <div uk-switcher="animation: uk-animation-fade">
+                  <button className="uk-button uk-button-text uk-margin-right" type="button">Post</button>
+                  <button className="uk-button uk-button-text uk-margin-right" type="button">Connections</button>
+                  <button className="uk-button uk-button-text uk-margin-right" type="button">Activity</button>
+                  <button className="uk-button uk-button-secondary uk-button-small">
+                    Edit Profile
+                  </button>
+                </div>
               </div>
             </div>
             <div className="uk-flex uk-flex-stretch uk-width-1-1">

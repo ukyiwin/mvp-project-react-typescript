@@ -14,7 +14,9 @@ import  { RetryLink } from 'apollo-link-retry';
 import { onError } from 'apollo-link-error';
 import { ApolloProvider } from 'react-apollo';
 import resolvers from 'Graphql/Resolvers';
+import { MuiThemeProvider } from 'material-ui/styles';
 import registerServiceWorker from './registerServiceWorker';
+
 import './index.css';
 import App from './Containers/App';
 
@@ -23,7 +25,7 @@ const supportsHistory = 'pushState' in window.history;
 
 // const queueLink = new QueueLink();
 
-const httpLink = new HttpLink({ uri: 'https://uniserver.now.sh/' });
+const httpLink = new HttpLink({ uri: 'https://uniserver.now.sh' });
 
 const defaults = { appState: 'INITIAL' };
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -97,9 +99,11 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <BrowserRouter forceRefresh={!supportsHistory} >
-      <App />
-    </BrowserRouter>
+    <MuiThemeProvider>
+      <BrowserRouter forceRefresh={!supportsHistory} >
+        <App />
+      </BrowserRouter>
+    </MuiThemeProvider>
   </ApolloProvider>
   // tslint:disable-next-line:align
   , document.getElementById('root') as HTMLElement

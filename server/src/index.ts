@@ -2,13 +2,22 @@ import { GraphQLServer } from 'graphql-yoga';
 import { Prisma } from './generated/prisma';
 import resolvers from './resolvers';
 import fileApi from './modules/fileApi';
-var cloudinary = require('cloudinary');
 
-cloudinary.config({ 
-  cloud_name: 'unizonn', 
-  api_key: '355132745339183', 
-  api_secret: '5rEGv7tHw-D8c-x6-Ih6Ti7VzbM' 
-});
+let Parser = require('rss-parser');
+const cron = require('node-cron');
+const cors = require('cors');
+
+const whitelist = ['http://localhost:3000', 'https://uniserver.now.sh', 'https://eu1.prisma.sh/boldsofts/unizonn/dev'];
+const corsOptions = {
+  // tslint:disable-next-line:typedef
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
 
 const getPrismaInstance = () => {
   return new Prisma({
@@ -30,7 +39,7 @@ const server = new GraphQLServer({
     }),
   }),
 });
-
+server.express.use(cors(corsOptions));
 server.express.post(
   '/upload',
   fileApi({
@@ -45,4 +54,34 @@ server.start(() => {
   console.log(`Server is running on http://localhost:4000`);
   // tslint:disable-next-line:no-console
   console.log('==========================================');
+});
+
+/************************************RSS FEEDS SCRAPER********************************/
+let parserSd = new Parser({
+  customFields: {
+    feed: ['description'],
+    item: ['description',
+    ['media:thumbnail ', 'media:thumbnail ', {keepArray: true}], ],
+  }
+});
+cron.schedule('* * * * *', function() {
+  // tslint:disable-next-line:no-console
+  console.log('running a task every minute');
+  (async () => {
+
+    let feed = await parserSd.parseURL('https://www.sciencedaily.com/rss/top/science.xml');
+    // tslint:disable-next-line:no-console
+    console.log(feed.title);
+  
+    feed.items.forEach(item => {
+      // tslint:disable-next-line:no-console
+      // console.log(item.title + ':' + item.link);
+      // tslint:disable-next-line:no-console
+      // console.log(item.content);
+      // tslint:disable-next-line:no-console
+      // console.log(item);
+    });
+    // tslint:disable-next-line:no-console
+    console.log(feed.items[0]);
+  })();
 });

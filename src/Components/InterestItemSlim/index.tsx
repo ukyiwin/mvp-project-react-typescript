@@ -10,12 +10,15 @@ type Props = {
 // tslint:disable-next-line:typedef
 const InterestItemSlim = (props: Props) => {
   return (
-    <div className="uk-flex uk-card uk-card-default un-highlight uk-margin-small">
-      <Avatar url={props.url} size={20} presence={false} />
-      <div style={{ display: 'flex' }}>
+    <a 
+      className="uk-flex uk-flex-stretch un-highlight uk-text-center"
+      style={{paddingLeft: 15, paddingRight: 15}}
+    >
+      <Avatar url={props.url} size={35} presence={false} />
+      <div style={{ display: 'flex', alignSelf: 'center', marginLeft: 15 }}>
         <p>{props.name}</p>
       </div>
-    </div>
+    </a>
   );
 };
 

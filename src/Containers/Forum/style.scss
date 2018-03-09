@@ -1,0 +1,18 @@
+.input-box {
+  background-color: '#ffffff';
+  height: 10vh;
+  bottom: 0;
+  width: 50%;
+  border: 3px solid green;
+  text-align: center;
+  vertical-align: middle;
+  position: fixed; 
+  display: inline;
+  margin: auto;
+}
+
+.raised {
+ box-shadow: 0px 10px 6px -6px rgba(119, 119, 119, 0.8);
+ -webkit-box-shadow: 0px 10px 6px -6px rgba(119, 119, 119, 0.8);
+ -moz-box-shadow: 0px 10px 6px -6px rgba(119, 119, 119, 0.8);
+}

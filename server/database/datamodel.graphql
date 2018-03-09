@@ -64,7 +64,7 @@ type Interest {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  file: File!
+  avatar: String!
   users: [User!]! @relation(name: "UserInterest")
 }
 
@@ -74,6 +74,7 @@ type User {
   updatedAt: DateTime!
   email: String! @unique
   username: String @unique
+  avatar: File
   password: String!
   firstname: String!
   lastname: String!
@@ -81,7 +82,7 @@ type User {
   country: Country @relation(name: "UserCountry")
   institution: Institutions @relation(name: "UserInstitution")
   department: Department @relation(name: "UserDepartment")
-  interest: Interest @relation(name: "UserInterest")
+  interest: [Interest!]! @relation(name: "UserInterest")
   favourites: [Discussion!]! @relation(name: "UserFavDiscussion")
   myDiscussions: Discussion @relation(name: "DiscussionOnUser")
   connectTo: [Connect!]! @relation(name: "ConectTo")
@@ -89,7 +90,6 @@ type User {
   type: String @default(value: "Student")
   userType: String
   articles: [Article!]!  @relation(name: "ArticleOwner")
-  opinions: [Opinions!]!
   newConnectNot: Boolean @default(value: true)
   newCommentNot: Boolean @default(value: true)
   newMessageNot: Boolean @default(value: true)
@@ -106,12 +106,11 @@ type Connect {
   accepted: Boolean! @default(value: "false")
 }
 
-type Forum {
+type Channels {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
-  slug: String
   author: User!
   private: Boolean! @default(value: "false")
 }
@@ -127,17 +126,8 @@ type Discussion {
   favourites: [User!]! @relation(name: "UserFavDiscussion")
   author: User! @relation(name: "DiscussionOnUser")
   private: Boolean! @default(value: "false")
-  opinions: [Opinions!]!
 }
 
-type Opinions {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  content: String!
-  author: User!
-  discussion: Discussion!
-}
 
 enum Usertype{
   Student

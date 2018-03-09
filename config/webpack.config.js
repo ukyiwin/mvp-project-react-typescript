@@ -120,7 +120,7 @@ module.exports = {
         name: 'static/media/[name].[hash:8].[ext]',
       },
     }, {
-      test: /\.(png|jpg|gif)$/,
+      test: /\.(png|jpg|gif|svg|jpeg)$/,
       use: [
         {
           loader: 'url-loader',

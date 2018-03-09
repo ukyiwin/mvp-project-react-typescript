@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Route, Redirect, withRouter } from 'react-router-dom';
+import { Route, Redirect, withRouter, Link } from 'react-router-dom';
 import Calendar from 'Components/Calender';
 import './style.css';
 import { User } from 'CustomTypings/schema';
 import InterestItemSlim from 'Components/InterestItemSlim';
 import ConnectBox from 'Components/ConnectBox';
+import glamorous from 'glamorous';
 
 interface DefaultProps {
   // tslint:disable-next-line:no-any
@@ -18,6 +19,11 @@ interface DefaultProps {
   me?: User;
 }
 
+const A = glamorous.a({
+  fontFamily: 'brandon-grotesque',
+  color: '#000000'
+});
+
 const PublicLayout: React.SFC<DefaultProps & Response> = (props) => {
   const { component: Component, isAuthenticated, ...rest } = props;
 
@@ -29,26 +35,51 @@ const PublicLayout: React.SFC<DefaultProps & Response> = (props) => {
         isAuthenticated ?
           ( <div className="uk-flex uk-padding-small">
               <div className="uk-width-1-5 uk-margin-right uk-margin-left uk-visible@m">
-                <div className="uk-card uk-card-default uk-card-body uk-width-1-1">
-                  <h3 className="uk-card-title">Default</h3>
-                  <p>Lorem ipsum <a href="#">dolor</a> sit amet, consectetur
-                     adipiscing elit, sed do eiusmod tempor
-                  </p>
+                <div 
+                  className="uk-card uk-card-small uk-card-default un-highlight uk-width-1-1"
+                  style={{marginBottom: 10, padding: 0, paddingTop: 10}}
+                >
+                  <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Csharp" />
+                  <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Csharp" />
+                  <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Csharp" />
+                  <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Csharp" />
+                  <button className="uk-button uk-button-primary uk-width-1-1">See More Interest</button>
                 </div>
-                <InterestItemSlim url="hghjhj" name="Csharp" />
-                <InterestItemSlim url="hghjhj" name="Csharp" />
-                <InterestItemSlim url="hghjhj" name="Csharp" />
+                <div className="uk-card uk-card-default uk-width-1-1 uk-padding-small">
+                    <div><p>Copyright @ 2018, All Rights Reserved, Unizonn</p></div>
+                    <ul className="listItem uk-text-center">
+                        <li>
+                          <A href="#">Terms</A>
+                        </li>
+                        <li>
+                          <A color={'#000'} href="#">Privacy</A>
+                        </li>
+                        <li>
+                          <A href="#">About</A>
+                        </li>
+                        <li>
+                          <A href="#">Support</A>
+                        </li>
+                    </ul>
+                </div>
               </div>
-              <div className="uk-width-expand">
+              <div className="uk-flex uk-width-expand">
                 <Component {...matctProps} />
               </div>
-              <div className="uk-width-1-5 uk-margin-right uk-margin-left uk-visible@m">
+              <div 
+                className="uk-width-1-5 uk-margin-right uk-margin-left uk-visible@m"
+                style={{marginBottom: 10}}
+              > 
+                {!isAuthenticated ?
                 <div className="uk-card uk-card-default uk-card-body uk-width-1-1 uk-padding-small">
-                    <h3 className="uk-card-title">Hi {props.me ? props.me.firstname : ''}</h3>
-                    <p>Lorem ipsum <a href="#">dolor</a> sit amet, consectetur
-                      adipiscing elit, sed do eiusmod tempor
+                    <h3 className="uk-card-title">Hello {props.me ? props.me.firstname : ''}</h3>
+                    <p>Please signup or login to get the Unizonn experience.
+                      It will only take a few steps
                     </p>
+                    <Link to="/login" className="uk-button uk-button-primary">Login</Link>
                 </div>
+                : null 
+                }
                 <ConnectBox />
                 <Calendar
                 />

@@ -1,2 +1,5 @@
 .un-highlight :hover {
   border-color: 'grey'; }
+
+.un-highlight :link {
+  background-color: black; }

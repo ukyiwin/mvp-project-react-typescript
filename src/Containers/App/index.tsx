@@ -37,8 +37,8 @@ const SignupProfile = asyncComponent({
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
-const SignupPhoto = asyncComponent({
-  resolve: () => System.import('Containers/Auth/Signup/signupPhoto'),
+const FinishSignup = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Signup/finishSignup'),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
@@ -144,15 +144,6 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     this.setState({expireToken: false});
   }
 
-  // tslint:disable-next-line:typedef
-  onStorage(data) {
-      // Receive changes in the localStorage
-  }
-  // tslint:disable-next-line:typedef
-  componentDidUpdate(prevProps, prevState, prevContext) {
-    // jhjhjhj
-  }
-
   loadMe() {
     this.props.client.query({
       query: ME
@@ -164,11 +155,15 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
 
       if (data.me.completedProfile === 1) {
         this.props.history.replace('/add/profile');
+      } else if (data.me.completedProfile === 2) {
+        this.props.history.replace('/add/interest');
       }
 
     }).catch((error) => {
-      // tslint:disable-next-line:no-console
-      console.log(JSON.stringify(error));
+      // localStorage.removeItem(AUTH_TOKEN);
+      this.setState({isAuthenticated: false});
+      this.setState({token: ''});
+      this.setState({expireToken: false});
     });
   }
 
@@ -222,7 +217,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
               path="/signup/:email" 
               isAuthenticated={isAuthenticated}  
             />
-            <EmptyLayout component={SignupPhoto} path="/signup/photo" isAuthenticated={isAuthenticated} />
+            <EmptyLayout component={FinishSignup} path="/signup/complete" isAuthenticated={isAuthenticated} />
             <EmptyLayout 
               exact={true} 
               component={SignupProfile} 
@@ -232,7 +227,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
             <EmptyLayout component={Interest} path="/add/interest" isAuthenticated={isAuthenticated} />
             <EmptyLayout component={Maps} path="/library" isAuthenticated={isAuthenticated} />
             <EmptyLayout component={Message} path="/message" isAuthenticated={isAuthenticated} />
-            <PrivateLayout component={Forum} path="/Forum" isAuthenticated={isAuthenticated} />
+            <EmptyLayout component={Forum} path="/Forum" isAuthenticated={isAuthenticated} />
             <EmptyLayout component={Compose} path="/write" isAuthenticated={isAuthenticated} />
             <ProfileLayout component={Profile} path="/profile" isAuthenticated={isAuthenticated}/>
             <ProfileLayout component={Profile} path="/profile/:id" isAuthenticated={isAuthenticated}/>

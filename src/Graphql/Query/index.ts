@@ -139,3 +139,17 @@ export const ALL_INSTITUTION = gql`
     }
   }
 `;
+
+/**
+ * @description get all interest
+ */
+export const ALL_INTEREST = gql`
+  query allInterest{
+    allInterest{
+      id
+      name
+      avatar
+      createdAt
+    }
+  }
+`;

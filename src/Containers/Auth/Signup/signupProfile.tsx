@@ -1,15 +1,13 @@
 import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { compose, withApollo, graphql } from 'react-apollo';
-// import { ChildProps } from 'react-apollo/types';
+import * as UIkit from 'uikit';
+import { Country, Institutions, Department, User } from 'CustomTypings/schema';
 import { ALL_COUNTRIES, ALL_DEPARTMENTS, ALL_INSTITUTION } from 'Graphql/Query';
-// import { User } from 'CustomTypings/schema';
 import { validateProfile } from 'Utils/helpers';
-// import * as UIkit from 'uikit';
+import { ADD_PROFILE } from 'Graphql/Mutation';
 
 import './style.css';
-import { Country, Institutions, Department, User } from 'CustomTypings/schema';
-import { ADD_PROFILE } from 'Graphql/Mutation';
 
 type Props = {
   country: Country,
@@ -19,12 +17,16 @@ type Props = {
   refreshToken?: any,
   // tslint:disable-next-line:no-any
   client?: any
+  // tslint:disable-next-line:no-any
+  addProfile?: any
 };
 
 class SignupProfile extends React.Component<RouteComponentProps & Props> {
   state = { 
     show: false,
     country: '',
+    photo: '',
+    url: '',
     countryList: [],
     institution: '',
     institutionList: [],
@@ -38,6 +40,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
 
   handleInstChange = (evt) => {
     this.setState({ institution: evt.target.value });
+    this.getDepartment(evt.target.value);
   }
   
   handleDeptChange = (evt) => {
@@ -55,11 +58,23 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
       return;
     }
     this.setState({loading: true});
+    this.props.addProfile({
+      variables: {
+        photoId: this.state.photo,
+        countryId: this.state.country,
+        institutionId: this.state.institution,
+        departmentId: this.state.department,
+      }
+    }).then(result => {
+      this.props.history.replace('/add/interest');
+    }).catch(err => {
+      // Err catch block
+    });
   }
   
   canBeSubmitted() {
-    const errors =  validateProfile(
-      this.state.country, this.state.institution, this.state.department);
+    const errors =  validateProfile(this.state.photo, this.state.country, 
+                                    this.state.institution, this.state.department);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
     return !isDisabled;
   }
@@ -96,14 +111,14 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
   }
 
   getDepartment(value: string) {
-    this.props.department({
+    this.props.client.query({
       query: ALL_DEPARTMENTS,
       variables: {
-        idInstitution: value
+        idInstitutions: value
       }
     })
     .then( result => {
-      // jhjh
+      this.setState({departmentList: result.data.getDepartment});
     })
     .catch(err => {
       // jkjk
@@ -118,10 +133,86 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
     this.getCountry();
   }
   
+  componentDidMount() {
+    let bar = document.getElementById('js-progressbar') as HTMLInputElement;
+
+    UIkit.upload('.js-upload', {
+
+        url: 'https://uniserver.now.sh/upload',
+        multiple: false,
+        name: 'data',
+        dataType: 'json',
+
+        beforeSend: function () {
+            // fd
+        },
+        beforeAll: function () {
+            // fd
+        },
+        load: function () {
+            // fd
+        },
+        error: function () {
+            // tslint:disable-next-line:no-console
+            console.log('error', arguments);
+        },
+        complete: function () {
+            // tslint:disable-next-line:no-console
+            console.log('complete', arguments);
+        },
+
+        // tslint:disable-next-line:typedef
+        loadStart: function (e) {
+            // tslint:disable-next-line:no-console
+            console.log('loadStart', arguments);
+            if (bar) {
+              bar.removeAttribute('hidden');
+              bar.max = e.total;
+              bar.value = e.loaded;
+            }
+        },
+
+        // tslint:disable-next-line:typedef
+        progress: function (e) {
+            // tslint:disable-next-line:no-console
+            console.log('progress', arguments);
+            if (bar) {
+              bar.max = e.total;
+              bar.value = e.loaded;
+            }
+        },
+
+        // tslint:disable-next-line:typedef
+        loadEnd: function (e) {
+            // tslint:disable-next-line:no-console
+            console.log('loadEnd', arguments);
+
+            if (bar) {
+              bar.max = e.total;
+              bar.value = e.loaded;
+            }
+        },
+
+        completeAll: (result, response) => {
+            // tslint:disable-next-line:no-console
+            console.log('completeAll', result.response);
+            let data = JSON.parse(result.response);
+            this.setState({photo: data.id, url: data.url});
+
+            setTimeout(function () {
+                if (bar) {
+                  bar.setAttribute('hidden', 'hidden');
+                }
+            },         1000);
+        }
+
+    });
+  }
+
   render() {
 
-    const errors =  validateProfile(
-      this.state.country, this.state.institution, this.state.department);
+    const errors =  validateProfile(this.state.photo, this.state.country, 
+                                    this.state.institution, this.state.department);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
 
     return(
@@ -203,8 +294,10 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
                     <span className="uk-link">selecting one</span>
                   </div>
               </div>
+              <img className="uk-border-circle" src={this.state.url} width="90" height="90" />
               <progress id="js-progressbar" className="uk-progress" value="0" max="100" hidden={true} />
             </div>
+            {this.state.department}
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="firstname">Country</label>
               <div className="uk-form-controls">
@@ -264,6 +357,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
               :
                 <button 
                   className={`uk-button uk-button-primary uk-width-1-1 ${isDisabled ? 'disabled' : 'disabled'}`}
+                  disabled={isDisabled}
                   type="submit"
                 >
                 SAVE & NEXT
@@ -281,5 +375,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
 export default withRouter(compose(
   withApollo,
   graphql<Country, {}, Props>(ALL_COUNTRIES, {name: 'country'}),
-  graphql<User, {}, Props>(ADD_PROFILE, {name: 'addProfile'})
+  graphql<User, {}, Props>(ADD_PROFILE, {name: 'addProfile'}),
+  graphql<Response, InputProps, Props>(ADD_PROFILE, {
+    name: 'addProfile' })
 )(SignupProfile));

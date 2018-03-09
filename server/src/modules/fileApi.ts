@@ -62,7 +62,7 @@ export default ({ prisma }) => (req, res) => {
               size,
               url,
             };
-            return res.status(200).send(result);
+            return res.status(200).send(file);
           } catch (err) {
             // tslint:disable-next-line:no-console
             console.log(err);
