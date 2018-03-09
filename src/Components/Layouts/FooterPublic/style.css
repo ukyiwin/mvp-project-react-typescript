@@ -80,7 +80,8 @@ li.active a{
 
 #footerList li {
   display: inline-block;
-  margin: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
   color: #ffffff;
   -webkit-border-radius: 10px;
   border-radius: 10px; }

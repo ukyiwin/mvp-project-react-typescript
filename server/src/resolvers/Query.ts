@@ -63,4 +63,8 @@ export const Query = {
     return ctx.db.query.countries({}, info);
   },
 
+  allInterest(parent, args, ctx: Context, info) {
+    return ctx.db.query.interests({}, info);
+  },
+
 };

@@ -104,4 +104,10 @@ mutation {
   }) {
     id
   }
+  createInterest(data: {
+    name: "Technology"
+    avatar: "http://www.grip.com/a.png"
+  }) {
+    id
+  },
 }

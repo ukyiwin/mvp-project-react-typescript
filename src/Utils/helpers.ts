@@ -23,9 +23,10 @@ export function validateSignup(email: string, password: string, username: string
   };
 }
 
-export function validateProfile(country: string, institution: string, department: string) {
+export function validateProfile(photo: string, country: string, institution: string, department: string) {
   // true means invalid, so our conditions got reversed
   return {
+    photo: photo.length === 0,
     country: country.length === 0,
     institution: institution.length === 0,
     department: department.length === 0,

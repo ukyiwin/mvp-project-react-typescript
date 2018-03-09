@@ -34,8 +34,17 @@ export const LOGIN_USER = gql`
 `;
 
 export const ADD_PROFILE = gql`
-  mutation addProfile($countryId: ID!, $institutionId: ID!, $departmentId: ID!){
-    addProfile(countryId: $countryId, institutionId: $institutionId, courseId: $departmentId){
+  mutation addProfile($photoId: ID!, $countryId: ID!, $institutionId: ID!, $departmentId: ID!){
+    addProfile(photoId: $photoId, countryId: $countryId, institutionId: $institutionId, departmentId: $departmentId){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const ADD_INTERESTS = gql`
+  mutation addInterest($interests: [String!]!){
+    addInterest(interests: $interests){
       ...userFragment
     }
   }

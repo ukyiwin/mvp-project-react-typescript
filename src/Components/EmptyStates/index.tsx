@@ -6,15 +6,17 @@ type Props = {
 };
 
 export const ErrorComponent = (props: Props) => (
-  <div className="empty">
+  <div className="uk-flex uk-flex-stretch uk-width-1-1">
+  <div className="empty uk-text-center">
     <div className="empty-icon">
       <i className="icon icon-people" />
     </div>
     <p className="empty-title h5">There was an error loading content</p>
     <p className="empty-subtitle">Click the button to refresh.</p>
     <div className="empty-action">
-      <button className="btn btn-primary" onClick={() => props.refresh}>Refresh</button>
+      <button className="uk-button uk-button-primary" onClick={() => props.refresh}>Refresh</button>
     </div>
+  </div>
   </div>
 );
 
@@ -32,7 +34,10 @@ export const EmptyComponent = props => (
 );
 
 export const LoadingComponent = props => (
-  <div style={{ justifyContent: 'center', alignSelf: 'center' }}>
-    Loading
+  <div 
+    className=" uk-flex-stretch uk-text-center uk-width-1-1"
+    style={{ justifyContent: 'center', alignSelf: 'center' }}
+  >
+    <p>Loading</p>
   </div>
 );

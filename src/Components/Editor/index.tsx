@@ -1,18 +1,12 @@
 /* tslint:disable */
 import * as React from 'react';
-// import { Editor, editorStateToHtml, editorStateFromText,} from 'last-draft'
-// import { fromJS } from 'immutable';
-/*
-import video from 'ld-video'
-import color from 'ld-color-picker'
-import emoji from 'ld-emoji'
-import gif from 'ld-gif'
-import mention from 'ld-mention'
-import audio from 'ld-audio'
-import sticker from 'ld-sticker'
-import html from 'ld-html'
-import todo from 'ld-todo'
-let plugins = [video, color, emoji, gif, mention]*/
+import Editor from 'draft-js-plugins-editor';
+import createEmojiPlugin from 'draft-js-emoji-plugin';
+import {EditorState} from 'draft-js';
+
+const emojiPlugin = createEmojiPlugin();
+// const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
+import 'draft-js-emoji-plugin/lib/plugin.css';
 
 type Props = {
 
@@ -21,13 +15,21 @@ type Props = {
 type State = {
   editorState: any
 }
+
+/*const plugins = [
+  hashtagPlugin,
+  linkifyPlugin,
+];*/
+
  // const INITIAL_STATE = editorStateFromText('this is a cooel editor... 🏄🌠🏀')
 export default class Editors extends React.Component<Props, State> {
 
   // state = { editorState: INITIAL_STATE }
 
   constructor(props) {
-    super(props)
+    super(props);
+    this.state = {editorState: EditorState.createEmpty()};
+    this.onChange = (editorState) => this.setState({editorState});
   }
 
   onChange = (editorState) => {
@@ -41,7 +43,7 @@ export default class Editors extends React.Component<Props, State> {
       
       return(
         <div>
-          ghgh
+          <Editor editorState={this.state.editorState} onChange={this.onChange} plugin={emojiPlugin} />
         </div>
       );
     }

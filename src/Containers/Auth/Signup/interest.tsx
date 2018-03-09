@@ -1,115 +1,123 @@
 import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { compose, withApollo } from 'react-apollo';
-// import { ChildProps } from 'react-apollo/types';
-// import { SIGNUP_USER } from 'Graphql/Mutation';
-// import { User } from 'CustomTypings/schema';
+import { compose, withApollo, graphql } from 'react-apollo';
+import StackGrid from 'react-stack-grid';
 import * as UIkit from 'uikit';
-
-import { AUTH_TOKEN, CURRENT_USER } from '../../../constants';
+import { ALL_INTEREST } from 'Graphql/Query';
+// import { User } from 'CustomTypings/schema';
+import InterestItem from 'Components/InterestItem';
+import { Interest } from 'CustomTypings/schema';
+import { ADD_INTERESTS } from 'Graphql/Mutation';
 import './style.css';
 
 type Props = {
   // tslint:disable-next-line:no-any
-  signup: any,
+  interests: any[],
+  // tslint:disable-next-line:no-any
+  addInterests: any,
   // tslint:disable-next-line:no-any
   refreshToken?: any,
   // tslint:disable-next-line:no-any
   client?: any
 };
 
-class Interest extends React.Component<RouteComponentProps & Props> {
+type State = {
+  loading: boolean,
+  // tslint:disable-next-line:no-any
+  selected: string[],
+  show: boolean
+};
+class InterestPage extends React.Component<RouteComponentProps & Props, State> {
+  
   state = { 
     show: false,
-    email: '',
-    password: '',
-    confirmPassword: '',
-    gender: '',
-    userType: '',
-    firstname: '',
-    lastname: '',
-    everFocusedEmail: false,
-    everFocusedPassword: false,
-    inFocus: '',
+    selected: ['1'],
     loading: false
   };
 
-  handleEmailChange = (evt) => {
-    this.setState({ email: evt.target.value });
-  }
-  
-  handlePasswordChange = (evt) => {
-    this.setState({ password: evt.target.value });
-  }
-  
-  handleConPasswordChange = (evt) => {
-    this.setState({ confirmPassword: evt.target.value });
+  onSelectAdd = (id) => {
+    let temp = this.state.selected;
+    let index = this.state.selected.indexOf(id);
+
+    if (index === -1) {
+      temp.push(id);
+    } else {
+      temp.splice(index, 1);
+    }
+    this.setState({selected: temp});
   }
 
-  handleFnameChange = (evt) => {
-    this.setState({ firstname: evt.target.value });
+  onSelectRemove = (id) => {
+    this.state.selected.indexOf(id);
   }
   
-  handleLnameChange = (evt) => {
-    this.setState({ lastname: evt.target.value });
-  }
-
-  handleUserTypeChange = (evt) => {
-    this.setState({ userType: evt.target.value });
-  }
-  
-  handleGenderChange = (evt) => {
-    this.setState({ gender: evt.target.value });
-  }
-  
-  handleSubmit = (evt) => {
-    evt.preventDefault();
-
-    this.setState({loading: true});
-    const { email, password, firstname, lastname, gender, userType } = this.state;
-    this.props.signup({
+  // tslint:disable-next-line:no-any
+  save(): any {
+    // tslint:disable-next-line:no-console
+    console.log(this.state.selected);
+    let inter: string[] = [];
+    inter = this.state.selected;
+    this.props.client.mutate({
+      mutation: ADD_INTERESTS,
       variables: {
-        email,
-        password,
-        firstname,
-        lastname,
-        userType,
-        gender
+        interests: inter
       }
     }).then( result => {
-      localStorage.setItem(AUTH_TOKEN, result.data.login.token);
-      localStorage.setItem(CURRENT_USER, result.data.login.user);
-      this.props.refreshToken(result.data.login.token);
-      this.setState({loading: false});
-      this.props.history.replace('/');
-    }).catch( err => {
-      this.setState({loading: false}); 
-      UIkit.notification(`Error: ${err.message}`, {status: 'danger', pos: 'top-right'});
+      this.props.history.push('/signup/complete');
+    }).catch(err => {
+      UIkit.notification(`${err.message}`, {status: 'danger', pos: 'top-right'});
     });
   }
-  
-  componentWillMount() {
-    const email = this.props.location.email;
-    if (email) {
-      this.setState({email: email});
-    }
-  }
-  
+
   render() {
+    // tslint:disable-next-line:no-console
+    console.log(this.props.interests.allInterest);
+    if (this.props.interests.loading) {
+      return <div>Loading</div>;
+    }
 
     return(
-      <div 
-        className="uk-flex uk-flex-stretch" 
-        // tslint:disable-next-line:jsx-boolean-value
-        data-uk-grid
+      <div
+        className="uk-width-1-1"
         style={{height: '100vh', backgroundColor: '#ffffff'}}
       >
-      hjhjhj
+        <h1 
+          className="uk-postion-top-center uk-text-center"
+          style={{marginTop: 50}}
+        >
+          Lets pick your interest
+        </h1>
+        <p className="uk-postion-top-center uk-text-center uk-padding">Select minimum of 5 interest</p>
+        <StackGrid
+          columnWidth={200}
+        >
+        {this.props.interests.allInterest.map((data, i) =>
+          <InterestItem 
+            key={i} 
+            name={data.name}
+            id={data.id}
+            url={data.avatar} 
+            checked={this.state.selected.indexOf(data.id) === -1 ? false : true} 
+            onClickAdd={this.onSelectAdd} 
+          />
+        )}
+        </StackGrid>
+        <div className="uk-padding-small" style={{position: 'fixed', bottom: 0, right: 40}}>
+        <button 
+          className="uk-button uk-button-primary" 
+          disabled={this.state.selected.length > 1 ? false : true}
+          onClick={() => this.save()}
+        >
+          SAVE INTEREST
+        </button>
+        </div>
       </div>
     );
   }
 }
 
 export default withRouter(compose(
-  withApollo
-)(Interest));
+  withApollo,
+  graphql<Interest, {}, Props>(ALL_INTEREST, {name: 'interests'}),
+  graphql<Interest, {}, Props>(ADD_INTERESTS, {name: 'addInterests'})
+)(InterestPage));

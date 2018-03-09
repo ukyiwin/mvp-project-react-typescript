@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Avatar from 'Components/Avatar';
 import { User } from 'CustomTypings/schema';
+import Editor from 'Components/Editor';
 // import { Link } from 'react-router-dom';
 
 type Props = {
@@ -11,34 +12,32 @@ type Props = {
 class WriteModal extends React.PureComponent<Props> {
 
   render() {
-    const { me } = this.props;
+    // const { me } = this.props;
     return (
       <div 
         className="uk-card uk-card-small uk-card-default uk-width-1-1 uk-margin-bottom"
-        style={{ borderRadius: 5 }}
+        style={{ borderRadius: 1, padding: 0 }}
       >
         <div className="uk-padding-small">
-          <div className="uk-grid-small uk-flex" uk-grid={true} >
-            <div className="uk-width-auto">
-                <Avatar 
-                  url="https://getuikit.com/docs/images/avatar.jpg"
-                  presence={false}
-                  size={20}
-                />
-            </div>
-            <div className="uk-width-auto">
-                <p className="uk-card-title uk-margin-remove-bottom">
-                {me ? `${me.firstname} ${me.lastname}` : ''}
-                </p>
-            </div>
+          <div className="uk-grid-small uk-flex uk-text-center" uk-grid={true} >
+              <Avatar 
+                url="https://getuikit.com/docs/images/avatar.jpg"
+                presence={false}
+                size={50}
+              />
+              <a data-uk-toggle="target: #modal-close-default">
+                <p className="uk-text-lead">Write something...</p>
+              </a>
           </div>
         </div>
         <div 
-          className="uk-card-body"
+          className="uk-card-body" 
+          style={{padding: 0}}
         >
-          <a data-uk-toggle="target: #modal-close-default">
-            <p className="uk-text-lead">Write something...</p>
-          </a>
+         <button className="uk-button uk-button-secondary uk-width-1-4" type="button">Photo</button>
+         <button className="uk-button uk-button-primary uk-width-1-4" type="button">Video</button>
+         <button className="uk-button uk-button-danger uk-width-1-4" type="button">Podcast</button>
+         <button className="uk-button uk-button-primary uk-width-1-4" type="button">Write</button>
         </div>
         
         <div id="modal-close-default"data-uk-modal={true}>
@@ -47,17 +46,12 @@ class WriteModal extends React.PureComponent<Props> {
               className="uk-modal-dialog uk-modal-body
                uk-overflow-hidden uk-article uk-padding"
             >
-                <button className="uk-modal-close-default" type="button" data-uk-close={true} />
-                
-                <input 
-                  className="uk-article-meta" 
-                  placeholder="Tags"  
-                  style={{marginTop: 70, marginBottom: 10}}
-                />
-                <div className="uk-width-1-1">
-                  <button className="uk-button uk-button-default" type="button">Save Draft</button>
-                  <button className="uk-button uk-button-primary uk-align-right" type="button">Publish</button>
-                </div>
+              <button className="uk-modal-close-default" type="button" data-uk-close={true} />
+              <Editor />
+              <div className="uk-width-1-1">
+                <button className="uk-button uk-button-default" type="button">Save Draft</button>
+                <button className="uk-button uk-button-primary uk-align-right" type="button">Publish</button>
+              </div>
             </div>
         </div>
       </div>

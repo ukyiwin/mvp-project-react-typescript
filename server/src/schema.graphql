@@ -10,12 +10,14 @@ type Query {
   getCountry: [Country!]
   getInstitution(idCountry: ID!): [Institutions!]
   getDepartment(idInstitutions: ID!): [Department!]
+  allInterest: [Interest!]!
 }
 
 type Mutation {
   signup(email: String!, password: String!, username: String!, firstname: String!,
    lastname: String!, type: String!, gender: String! ): AuthPayload!
-  addProfile(countryId: ID!, institutionId: ID!, courseId: ID!): User!
+  addProfile(photoId: ID!, countryId: ID!, institutionId: ID!, departmentId: ID!): User!
+  addInterest(interests: [String!]!): User!
   login(email: String!, password: String!): AuthPayload!
   createDraft(title: String!, text: String!): Post!
   publish(id: ID!): Post!
