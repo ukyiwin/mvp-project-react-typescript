@@ -34,10 +34,10 @@ class WriteModal extends React.PureComponent<Props> {
           className="uk-card-body" 
           style={{padding: 0}}
         >
-         <button className="uk-button uk-button-secondary uk-width-1-4" type="button">Photo</button>
-         <button className="uk-button uk-button-primary uk-width-1-4" type="button">Video</button>
-         <button className="uk-button uk-button-danger uk-width-1-4" type="button">Podcast</button>
-         <button className="uk-button uk-button-primary uk-width-1-4" type="button">Write</button>
+         <button className="uk-button uk-button-default uk-width-1-4" type="button">Photo</button>
+         <button className="uk-button uk-button-default uk-width-1-4" type="button">Video</button>
+         <button className="uk-button uk-button-default uk-width-1-4" type="button">Podcast</button>
+         <button className="uk-button uk-button-default uk-width-1-4" type="button">Write</button>
         </div>
         
         <div id="modal-close-default"data-uk-modal={true}>

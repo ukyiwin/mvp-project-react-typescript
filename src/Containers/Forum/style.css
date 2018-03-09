@@ -11,6 +11,6 @@
   margin: auto; }
 
 .raised {
-  box-shadow: 0px 3px 3px 3px #ccc;
-  -webkit-box-shadow: 0px 3px 3px 3px #ccc;
-  -moz-box-shadow: 0px 3px 3px 3px #ccc; }
+  box-shadow: 0px 10px 6px -6px rgba(119, 119, 119, 0.8);
+  -webkit-box-shadow: 0px 10px 6px -6px rgba(119, 119, 119, 0.8);
+  -moz-box-shadow: 0px 10px 6px -6px rgba(119, 119, 119, 0.8); }

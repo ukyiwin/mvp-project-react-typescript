@@ -160,7 +160,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
       }
 
     }).catch((error) => {
-      localStorage.removeItem(AUTH_TOKEN);
+      // localStorage.removeItem(AUTH_TOKEN);
       this.setState({isAuthenticated: false});
       this.setState({token: ''});
       this.setState({expireToken: false});
