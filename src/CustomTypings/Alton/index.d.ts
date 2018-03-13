@@ -1,6 +1,7 @@
 interface JQuery {
   alton(options?: any) : any;
   fullpage(options: any): any;
+  timeago() : any;
 }
 
 declare module '*.png'
@@ -12,6 +13,13 @@ declare module '*.svg'
 
 declare global {
   interface Window { anima(): any; effects: any; slideshow: any; }
+  interface String {
+    truncString(lstr: string, add: number) : string;
+  }
 }
 
 interface Window { anima(): any;  effects: any; slideshow: any; }
+
+interface String {
+  truncString(lstr: string, add: number) : string;
+}

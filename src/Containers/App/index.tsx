@@ -14,6 +14,7 @@ import { User } from 'CustomTypings/schema';
 import { ME } from 'Graphql/Query';
 import { withApollo, graphql, compose, ChildProps } from 'react-apollo';
 import Profile from 'Containers/Profile';
+import '../../Theme/application.css';
 import './style.css';
 // const customHistory = createBrowserHistory();
 
@@ -184,7 +185,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     console.log(isAuthenticated);
 
     return (
-        <div className="uk-offcanvas-content bg-muted" style={{height: '91vh', backgroundColor: '#e1eaf1'}}>
+        <div className="uk-offcanvas-content bg-muted" style={{ backgroundColor: '#f5f7f8'}}>
           <Helmet>
             <title>Unizonn</title>
             <meta name="an inclusive community" content="Unizonn community" />

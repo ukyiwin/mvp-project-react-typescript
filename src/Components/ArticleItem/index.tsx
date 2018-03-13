@@ -1,5 +1,9 @@
 import * as React from 'react';
 import { Article } from 'CustomTypings/schema';
+import Avatar from 'Components/Avatar';
+import Likebutton from 'Components/LikeButton';
+import PopoverLink from 'Components/PopoverLink';
+import TimeAgo from 'react-timeago';
 // import UIkit from 'uikit/src/js/uikit';
 // import { Link } from 'react-router-dom';
 
@@ -19,46 +23,51 @@ class ArticleItem extends React.Component<Props> {
     const {author} = article;
     return (
       <div 
-        className="uk-card uk-card-small uk-card-default uk-width-1-1 uk-margin-bottom"
-        style={{ borderRadius: 5 }}
+        className="uk-card uk-card-small uk-card-default uk-width-1-1"
+        style={{ borderRadius: 1, marginBottom: 5 }}
       >
-        <div className="uk-card-header">
+        <div className="post-metadata uk-padding-remove-bottom uk-padding-small">
           <div className="uk-grid-small uk-flex" uk-grid={true} >
             <div className="uk-width-auto">
-                <figure className="avatar avatar-xl">
-                  <img 
-                    width="40" 
-                    height="40"
-                    src="https://getuikit.com/docs/images/avatar.jpg"
-                  />
-                  <i className="avatar-presence online"/>
-                </figure>
+                <Avatar url={'https://getuikit.com/docs/images/avatar.jpg'} size={40} presence={false}  />
             </div>
-            <div className="uk-width-auto">
-                <h3 className="uk-card-title uk-margin-remove-bottom">{author.firstname} {author.lastname}</h3>
+            <div className="uk-width-auto post-info">
+                <PopoverLink>{author.firstname} {author.lastname}</PopoverLink>
                 <p className="uk-text-meta uk-margin-remove-top">
-                  <time dateTime="2016-04-01T19:00">March 01, 2018</time>
+                  <time dateTime={article.createdAt}><TimeAgo className="timeago" date={article.createdAt} /></time>
                 </p>
             </div>
           </div>
         </div>
         <div 
-          className="uk-card-body uk-padding-remove-vertical uk-padding-top-small"
-          style={{paddingTop: 10, borderBottom: 1 }}
+          className="uk-card-body uk-padding-remove-vertical"
+          style={{paddingTop: 6, borderBottom: 1 }}
         >
           <h5 
             className="uk-text-medium uk-text-bold uk-text-break"
-            style={{fontSize: 23, marginBottom: 15, marginTop: 10}}
-          >{article.title}
+            style={{fontSize: 25}}
+          >{article.title.truncString('...', 140)}
           </h5>
-          <p style={{color: '#212121'}}>
-            {article.body}
+          <p style={{color: '#212121', fontSize: 19}}>
+            {article.body.truncString('...', 140)}
           </p>
+          <a className="uk-button-text read-more">Read More</a>
         </div>
-        <div className="uk-padding-small" style={{paddingTop: 1, paddingBottom: 1}}>
-          <a href="#" className="uk-button uk-button-text uk-padding-small">Love</a>
-          <a href="#" className="uk-button uk-button-text uk-padding-small">Comment</a>
-          <a href="#" className="uk-button uk-button-text uk-padding-small uk-text-right">Share</a>
+        <div 
+          className="post-stats clearfix uk-padding-small uk-padding-remove-horizontal" 
+          style={{paddingTop: 1, paddingBottom: 1}}
+        >
+          <div className="pull-left uk-padding-small">
+            <Likebutton liked={false} likeCount={2} />
+          </div>
+
+          <div className="pull-right uk-padding-small">
+            0
+          </div>
+
+          <div className="response-count pull-right uk-padding-small">
+            <a className="response-count">Comments </a>
+          </div>
         </div>
       </div>
     );
