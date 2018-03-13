@@ -27,7 +27,7 @@ export default ArticleList(({ loading, articles, error }) => {
     >
         {articles.map((article, i) =>
             <div key={article.id}>
-              <ArticleItem />
+              <ArticleItem article={article} />
             </div>
         )}
     </InfiniteScroll>

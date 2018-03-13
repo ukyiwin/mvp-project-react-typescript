@@ -8946,6 +8946,9 @@ button {
 .bg-muted {
   background-color: #e1eaf1; }
 
+body {
+  background-color: #e1eaf1; }
+
 .icon {
   box-sizing: border-box;
   display: inline-block;

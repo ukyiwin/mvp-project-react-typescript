@@ -48,18 +48,27 @@ export const ARTICLES = gql`
   query articles {
     articles{
       id
+      tags
+      category{
+        name
+        avatar
+        id
+      }
+      link
+      description
+      author{
+        firstname
+        lastname
+        username
+        id
+        email
+      }
       title
       body
       type
       isPublished
       createdAt
       updatedAt
-      author{
-        email
-        id
-        firstname
-        lastname
-      }
     }
   }
 `;
