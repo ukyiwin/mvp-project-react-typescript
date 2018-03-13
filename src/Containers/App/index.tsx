@@ -184,7 +184,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     console.log(isAuthenticated);
 
     return (
-        <div className="uk-offcanvas-content bg-muted" style={{height: '91vh'}}>
+        <div className="uk-offcanvas-content bg-muted" style={{height: '91vh', backgroundColor: '#e1eaf1'}}>
           <Helmet>
             <title>Unizonn</title>
             <meta name="an inclusive community" content="Unizonn community" />
