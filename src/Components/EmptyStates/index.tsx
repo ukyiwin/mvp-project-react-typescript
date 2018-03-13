@@ -38,6 +38,10 @@ export const LoadingComponent = props => (
     className=" uk-flex-stretch uk-text-center uk-width-1-1"
     style={{ justifyContent: 'center', alignSelf: 'center' }}
   >
-    <p>Loading</p>
+    <div className="loader uk-margin-small">
+            <div className="bullet" />
+            <div className="bullet"/>
+            <div className="bullet"/>
+            <div className="bullet"/></div>
   </div>
 );

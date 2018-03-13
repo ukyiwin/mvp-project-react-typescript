@@ -23,7 +23,11 @@ export default ArticleList(({ loading, articles, error }) => {
     <InfiniteScroll
           pageStart={0}
           hasMore={true || false}
-          loader={<div className="loader" key={0}>Loading ...</div>}
+          loader={<div className="loader uk-margin-small">
+            <div className="bullet" />
+            <div className="bullet"/>
+            <div className="bullet"/>
+            <div className="bullet"/></div>}
     >
         {articles.map((article, i) =>
             <div key={article.id}>
