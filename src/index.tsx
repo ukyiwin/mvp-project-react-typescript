@@ -97,6 +97,11 @@ const client = new ApolloClient({
   connectToDevTools: true
 });
 
+String.prototype.truncString = function (this: string, add: string, max: number) {
+  add = add || '...';
+  return (this.length > max ? this.substring(0, max ) + add : this);
+};
+
 ReactDOM.render(
   <ApolloProvider client={client}>
     <MuiThemeProvider>
