@@ -1,18 +1,32 @@
 .input-box {
-  background-color: '#ffffff';
-  height: 10vh;
+  background-color: ivory;
   bottom: 0;
-  width: 50%;
-  border: 3px solid green;
-  text-align: center;
-  vertical-align: middle;
+  width: 75vw;
   position: fixed; 
-  display: inline;
   margin: auto;
 }
 
 .raised {
- box-shadow: 0px 10px 6px -6px rgba(119, 119, 119, 0.8);
- -webkit-box-shadow: 0px 10px 6px -6px rgba(119, 119, 119, 0.8);
- -moz-box-shadow: 0px 10px 6px -6px rgba(119, 119, 119, 0.8);
+ box-shadow: 0px 5px 3px -6px rgba(119, 119, 119, 0.8);
+ -webkit-box-shadow: 0px 5px 3px -6px rgba(119, 119, 119, 0.8);
+ -moz-box-shadow: 0px 5px 3px -6px rgba(119, 119, 119, 0.8);
+}
+
+.un-border-bottom {
+  border-bottom: 1px solid rgb(134, 134, 134);
+  box-shadow: 0px 5px 3px -3px rgba(119, 119, 119, 0.7);
+  -webkit-box-shadow: 0px 5px 3px -3px rgba(119, 119, 119, 0.7);
+  -moz-box-shadow: 0px 5px 3px -3px rgba(119, 119, 119, 0.7);
+}
+.un-border-right {
+  border-right: 1px solid rgb(134, 134, 134);
+  box-shadow: 5px 0px 3px -3px rgba(119, 119, 119, 0.8);
+  -webkit-box-shadow: 5px 0px 3px -3px rgba(119, 119, 119, 0.8);
+  -moz-box-shadow: 5px 0px 3px -3px rgba(119, 119, 119, 0.8);
+}
+.un-border-left {
+  border-left: 1px solid rgb(134, 134, 134);
+  box-shadow: -5px 0px 3px -3px rgba(119, 119, 119, 0.8);
+  -webkit-box-shadow: -5px 0px 3px -3px rgba(119, 119, 119, 0.8);
+  -moz-box-shadow: -5px 0px 3px -3px rgba(119, 119, 119, 0.8);
 }

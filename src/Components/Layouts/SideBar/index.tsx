@@ -1,7 +1,8 @@
 import * as React from 'react';
 // import UIkit from 'uikit/src/js/uikit';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import * as Logo from 'Assets/logo.png';
+import './style.css';
 
 type Props = {
   classes?: object,
@@ -16,34 +17,36 @@ class SideBar extends React.Component<Props> {
 
   render() {
     return (
-      <div id="offcanvas-nav" uk-offcanvas="overlay: true">
-        <div className="uk-offcanvas-bar">
-
-            <ul className="uk-nav uk-nav-default">
-                <li className="uk-nav-header">UNIZONN</li>
+      <div 
+        id="offcanvas-nav" 
+        uk-offcanvas="overlay: true"
+      >
+        <div 
+          className="uk-offcanvas-bar un-sidebar-container"
+          style={{margin: 0, padding: 0, color: '#000'}}
+        >
+            <ul 
+              className="uk-nav"
+              style={{margin: 0, padding: 0, color: '#000'}}
+            >
                 <li>
-                  <a href="#">
+                  <Link to="/home" className="uk-light">
                     <span className="uk-margin-small-right" uk-icon="icon: home"/> Articles
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#">
-                    <span className="uk-margin-small-right" uk-icon="icon: rss"/> Stories
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
+                  <Link to="/forum">
                     <span className="uk-margin-small-right" uk-icon="icon: thumbnails"/> Forums
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#">
+                  <Link to="/library">
                     <span className="uk-margin-small-right" uk-icon="icon: location"/> Library
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a href="#">
-                    <span className="uk-margin-small-right" uk-icon="icon: mail"/> Messages
+                    <span className="uk-margin-small-right" uk-icon="icon: rss"/> Connections
                   </a>
                 </li>
                 <li>
@@ -53,24 +56,24 @@ class SideBar extends React.Component<Props> {
                 </li>
                 <li className="uk-nav-divider" />
                 <li>
-                  <a href="#">
+                  <Link to="/">
                     <span className="uk-margin-small-right" uk-icon="icon: thumbnails"/> Unizonn
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#">
+                  <Link to="/support">
                     <span className="uk-margin-small-right" uk-icon="icon: question"/> Support
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#">
+                  <Link to="/about">
                     <span className="uk-margin-small-right" uk-icon="icon: info"/> About
-                  </a>
+                  </Link>
                 </li>
             </ul>
 
         </div>
-    </div>
+      </div>
     );
   }
   

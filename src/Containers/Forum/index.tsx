@@ -1,48 +1,102 @@
 import * as React from 'react';
+import { Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { asyncComponent } from 'react-async-component';
+import { LoadingComponent } from 'Components/EmptyStates';
+import ThemeProvider from 'anchor-ui/theme-provider';
+import SearchBox from 'anchor-ui/search-box';
+import List from 'anchor-ui/list';
+import ListItem from 'anchor-ui/list-item';
+import ChannelHeader from 'anchor-ui/channel-header';
+import Button from 'anchor-ui/button';
+import IconChannels from 'anchor-ui/icons/icon-channels';
+import IconPeople from 'anchor-ui/icons/icon-people';
 import './style.css';
 
+const ChatDetail = asyncComponent({
+  resolve: () => System.import('Containers/ChatDetail'),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+
+const items = [{
+  primaryText: 'Rex Raphael',
+  secondaryText: 'Been long brava',
+  image: 'http://www.ghgh.gh/hjh.png'
+}, {
+  primaryText: 'Rex Raphael',
+  secondaryText: 'Been long brava',
+  image: 'http://www.ghgh.gh/hjh.png'
+}, {
+  primaryText: 'Rex Raphael',
+  secondaryText: 'Been long brava',
+  image: 'http://www.ghgh.gh/hjh.png'
+}];
 export default class Forum extends React.Component {
   render() {
     return (
-      <div className="App">
-        <Helmet>
-          <title>Unizonn | Forum</title>
-          <meta name="an inclusive community" content="Unizonn community" />
-        </Helmet>
-        <div 
-          style={{height: '91vh', width: '100vw'}}
-          className="uk-width-1-1 uk-flex"
-        >
-          <div className="uk-width-1-4" style={{backgroundColor: '#000000'}}>
-            hjjhj
-          </div>
-          <div className="uk-width-expand">
-            <div className="uk-width-1-1 raised" style={{backgroundColor: 'green', height: '8vh'}} />
-            <div className="uk-width-1-1 uk-flex" style={{}}>
-              <div className="uk-width-expand">
-                <div 
-                  className="uk-width-5-6 uk-flex input-box"
-                >
-                  <button style={{ display: 'inline-block'}}>+</button>
-                  <input 
-                    style={{ display: 'inline-block'}} 
-                    placeholder="Write message.." 
-                    className="uk-width-auto" 
-                  />
-                  <button style={{ display: 'inline-block'}}>Send</button>
-                </div>
-              </div>
-              <div
-                className="uk-height-1-1"
-                style={{backgroundColor: 'black', width: '15vw', height: '83vh'}}
+      <ThemeProvider color="#f2912c">
+        <div className="App">
+          <Helmet>
+            <title>Unizonn | Forum</title>
+            <meta name="an inclusive community" content="Unizonn community" />
+          </Helmet>
+          <div 
+            style={{height: '91vh', width: '100vw'}}
+            className="uk-width-1-1 uk-flex"
+          >
+            <div className="uk-width-1-4 un-border-right" style={{backgroundColor: '#ffffff'}}>
+              
+              <SearchBox placeholder="Search for channels and chat" />
+              <List
+                header="Channels"
+                style={{height: '43.3vh'}}
               >
-                hhhjkj
+                {items.map((item, index) => (
+                  <ListItem
+                    key={index}
+                    primaryText={item.primaryText}
+                    avatar={item.image}
+                  />
+                ))}
+              </List>
+              <List
+                header="Direct Chat"
+                style={{height: '40vh'}}
+              >
+                {items.map((item, index) => (
+                  <ListItem
+                    key={index}
+                    primaryText={item.primaryText}
+                    secondaryText={item.secondaryText}
+                    avatar={item.image}
+                  />
+                ))}
+              </List>
+            </div>
+            <div className="uk-width-expand">
+              <ChannelHeader
+                name="Channel"
+                rightButton={
+                  // tslint:disable-next-line:jsx-boolean-value
+                  <Button iconButton>
+                    <IconPeople />
+                  </Button>
+                }
+                leftButton={
+                  // tslint:disable-next-line:jsx-boolean-value
+                  <Button iconButton>
+                    <IconChannels />
+                  </Button>
+                }
+              />
+              <div className="uk-width-1-1 uk-flex" style={{}}>
+                <Route component={ChatDetail} exact={true} path="/forum/:id" />
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </ThemeProvider>
     );
   }
 }

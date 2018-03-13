@@ -52,6 +52,7 @@ class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildP
     const { loading } = this.state;
     return (
       <div className="">
+        <h1 className="uk-heading-primary uk-text-bold uk-text-uppercase">unizonn</h1>
         <p className=" uk-text-center uk-margin uk-text-bold">
           Friendly and inclusive community for students and academia</p>
         <div className="uk-flex-stretch">

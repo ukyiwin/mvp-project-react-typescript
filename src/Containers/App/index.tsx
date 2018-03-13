@@ -84,14 +84,16 @@ interface State {
   token: string;
   expireToken: boolean;
   me: object;
+  avatar: string;
 }
 
 class App extends React.Component<Props & ChildProps<Response, {}>, State> {
 
   state = {
-    isAuthenticated: false,
+    isAuthenticated: true,
     token: '',
     expireToken: false,
+    avatar: '',
     me: {
       id: '',
       firstname: '',
@@ -133,7 +135,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
       this.setState({
         isAuthenticated : true,
       });
-      this.loadMe();
+      // this.loadMe();
     }
   }
 
@@ -159,26 +161,35 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
         this.props.history.replace('/add/interest');
       }
 
-    }).catch((error) => {
+      this.setState({avatar: data.me.avata.url});
+      // tslint:disable-next-line:no-console
+      console.log(this.state.avatar);
+      
+    }).catch(error => {
       // localStorage.removeItem(AUTH_TOKEN);
-      this.setState({isAuthenticated: false});
-      this.setState({token: ''});
-      this.setState({expireToken: false});
+      if (error) {
+        // tslint:disable-next-line:no-console
+        console.log('grooom');
+        // this.setState({isAuthenticated: false});
+        this.setState({token: ''});
+        this.setState({expireToken: false});
+      }
     });
   }
 
   render() {
     const { isAuthenticated } = this.state;
     // const userAuthed = token ? true : false;
-    // tslint:disable-next-line:no-unused-expression
+    // tslint:disable-next-line:no-console
+    console.log(isAuthenticated);
 
     return (
-        <div className="uk-offcanvas-content uk-background-muted">
+        <div className="uk-offcanvas-content bg-muted" style={{height: '91vh'}}>
           <Helmet>
             <title>Unizonn</title>
             <meta name="an inclusive community" content="Unizonn community" />
           </Helmet>
-          <PrivateHeader isAuthenticated={isAuthenticated} logout={this._logout} />
+          <PrivateHeader avatar={this.state.avatar} isAuthenticated={isAuthenticated} logout={this._logout} />
           <Switch>
             <Route 
               exact={true}

@@ -7,7 +7,8 @@ let Parser = require('rss-parser');
 const cron = require('node-cron');
 const cors = require('cors');
 
-const whitelist = ['http://localhost:3000', 'https://uniserver.now.sh', 'https://eu1.prisma.sh/boldsofts/unizonn/dev'];
+const whitelist = ['http://localhost:3000', 'https://uniserver.now.sh', 
+'https://eu1.prisma.sh/boldsofts/unizonn/dev', 'https://unizonn.herokuapp.com', 'https://unizonn.com'];
 const corsOptions = {
   // tslint:disable-next-line:typedef
   origin: function (origin, callback) {
@@ -39,7 +40,9 @@ const server = new GraphQLServer({
     }),
   }),
 });
-server.express.use(cors(corsOptions));
+
+server.express.use(cors());
+
 server.express.post(
   '/upload',
   fileApi({
@@ -70,6 +73,28 @@ cron.schedule('* * * * *', function() {
   (async () => {
 
     let feed = await parserSd.parseURL('https://www.sciencedaily.com/rss/top/science.xml');
+    // tslint:disable-next-line:no-console
+    console.log(feed.title);
+  
+    feed.items.forEach(item => {
+      // tslint:disable-next-line:no-console
+      // console.log(item.title + ':' + item.link);
+      // tslint:disable-next-line:no-console
+      // console.log(item.content);
+      // tslint:disable-next-line:no-console
+      // console.log(item);
+    });
+    // tslint:disable-next-line:no-console
+    console.log(feed.items[0]);
+  })();
+});
+
+cron.schedule('* * * * *', function() {
+  // tslint:disable-next-line:no-console
+  console.log('running a task every minute');
+  (async () => {
+
+    let feed = await parserSd.parseURL('https://www.techradar.com/rss');
     // tslint:disable-next-line:no-console
     console.log(feed.title);
   

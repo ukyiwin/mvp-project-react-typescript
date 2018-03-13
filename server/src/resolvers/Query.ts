@@ -38,10 +38,7 @@ export const Query = {
   },
 
   articles(parent, args, ctx: Context, info) {
-    return ctx.db.query.articles({ where: { 
-        isPublished: true
-      } 
-    }, info);
+    return ctx.db.query.articles({}, info);
   },
 
   getDepartment(parent, { idInstitution }, ctx: Context, info) {
@@ -67,4 +64,61 @@ export const Query = {
     return ctx.db.query.interests({}, info);
   },
 
+  getChannelChat(parent, args, ctx: Context, info) {
+    const id = getUserId(ctx);
+    return ctx.db.query.channelses({
+      where: {
+        participants_every: {
+          id
+        },
+        type: 'Channel'
+      }
+    }, info);
+  },
+
+  getDirectChat(parent, args, ctx: Context, info) {
+    const id = getUserId(ctx);
+    return ctx.db.query.channelses({
+      where: {
+        participants_every: {
+          id
+        },
+        type: 'Direct'
+      }
+    }, info);
+  },
+
+  getMessages(parent, {channelId}, ctx: Context, info) {
+    const id = getUserId(ctx);
+    return ctx.db.query.messages({
+      where: {
+        cahnnel: {
+          id: channelId
+        }
+      }
+    }, info);
+  },
+  /*
+  getLibrary(parent, {channelId}, ctx: Context, info) {
+    const id = getUserId(ctx);
+    return ctx.db.query.messages({
+      where: {
+        cahnnel: {
+          id: channelId
+        }
+      }
+    }, info);
+  },
+
+  getConnections(parent, {channelId}, ctx: Context, info) {
+    const id = getUserId(ctx);
+    return ctx.db.query.messages({
+      where: {
+        cahnnel: {
+          id: channelId
+        }
+      }
+    }, info);
+  }
+  */
 };

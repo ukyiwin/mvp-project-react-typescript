@@ -1,13 +1,70 @@
 mutation {
+  createInterest(data: {
+    name: "Technology"
+    avatar: "http://www.grip.com/a.png"
+  }) {
+    id
+  },
   createUser(data: {
-    email: "sciencedaily@unizonn.com"
+    email: "techradar@unizonn.com"
     password: "$2a$10$hACwQ5/HQI6FhbIISOUVeusy3sKyUDhSq36fF5d/54aAdiygJPFzm" # plaintext password: "nooneknows"
-    firstname: "Science"
-    lastname: "Daily"
-    username: "sciencedaily"
+    firstname: "Tech"
+    lastname: "Radar"
+    username: "techradar"
     type: "Editor"
     userType: "Editor"
     gender: "Male"
+    interest: {
+      create: [{
+        name: "Research"
+        avatar: "http://www.grip.com/a.png"
+      }, {
+        name: "Business"
+        avatar: "http://www.grip.com/a.png"
+      }, {
+        name: "Education"
+        avatar: "http://www.grip.com/a.png"
+      }, {
+        name: "Sculpting"
+        avatar: "http://www.grip.com/a.png"
+      }, {
+        name: "Photography"
+        avatar: "http://www.grip.com/a.png"
+      }, {
+        name: "Traveling"
+        avatar: "http://www.grip.com/a.png"
+      }, {
+        name: "Social networking"
+        avatar: "http://www.grip.com/a.png"
+      }, {
+        name: "Real Estate"
+        avatar: "http://www.grip.com/a.png"
+      }
+      ]
+    }
+    articles: {
+      create: [{
+        title: "The best 13-inch laptop 2018: the top 13-inch laptops we've reviewed"
+        link: "http://www.techradar.com/news/mobile-computing/laptops/best-13-inch-laptops-which-is-right-for-you-901574"
+        body: "In 2018, there are millions of reasons to own a laptop, but only one to own the best 13-inch laptop money can buy: the 15-inch laptops are too big. that gives you tablet mode? What about a machine that runs macOS High Sierra instead of Windows 10?"
+        description: "Need a small laptop that's full of features? Check out the best 13-inch laptops."
+        category: {
+          connect: {
+            name: "Technology"
+          }
+        }
+      },  {
+        title: "Apple Maps will make getting around easier with new bike-sharing feature"
+        link: "http://www.techradar.com/news/apple-maps-will-make-getting-around-easier-with-new-bike-sharing-feature"
+        body: "Life just got easier for commuters and adventurers who like having bikes available without needing to own one. Apple Maps has been updated to include data from Ito World, which means it now knows where stations are for 176 bike share systems in 179 cities around the world. be a big help there. Hitting the road? Don&apos;t forget to take the best road trip planner apps along with you!"
+        description: "Apple Maps can now help you find bike-sharing stations in 179 cities."
+        category: {
+          connect: {
+            name: "Technology"
+          }
+        }
+      }]
+    }
   }) {
     id
   },
@@ -104,10 +161,4 @@ mutation {
   }) {
     id
   }
-  createInterest(data: {
-    name: "Technology"
-    avatar: "http://www.grip.com/a.png"
-  }) {
-    id
-  },
 }

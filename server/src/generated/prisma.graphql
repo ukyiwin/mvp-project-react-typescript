@@ -12,7 +12,11 @@ type Article implements Node {
   isPublished: Boolean!
   title: String!
   body: String!
+  tags: [String!]
+  category(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Interest!]
   type: Arcticletype
+  link: String
+  description: String
   author(where: UserWhereInput): User!
 }
 
@@ -21,8 +25,11 @@ type Channels implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
+  avatar: String
   author(where: UserWhereInput): User!
-  private: Boolean!
+  type: ChannelType
+  messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message!]
+  participants(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
 type Connect implements Node {
@@ -51,19 +58,6 @@ type Department implements Node {
   name: String!
   institution(where: InstitutionsWhereInput): Institutions
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
-}
-
-type Discussion implements Node {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-  slug: String
-  content: String!
-  tags: [String!]
-  favourites(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
-  author(where: UserWhereInput): User!
-  private: Boolean!
 }
 
 type File implements Node {
@@ -97,6 +91,33 @@ type Interest implements Node {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
+type Library implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  location(where: LocationWhereInput): Location!
+  name: String!
+  description: String
+}
+
+type Location implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  longitude: Float!
+  latitude: Float!
+  type: String!
+}
+
+type Message implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  cahnnel(where: ChannelsWhereInput): Channels!
+  text: String!
+  user(where: UserWhereInput): User!
+}
+
 type Post implements Node {
   id: ID!
   createdAt: DateTime!
@@ -121,18 +142,20 @@ type User implements Node {
   institution(where: InstitutionsWhereInput): Institutions
   department(where: DepartmentWhereInput): Department
   interest(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Interest!]
-  favourites(where: DiscussionWhereInput, orderBy: DiscussionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Discussion!]
-  myDiscussions(where: DiscussionWhereInput): Discussion
+  messages(where: MessageWhereInput): Message
   connectTo(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect!]
   ConectFrom(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect!]
   type: String
   userType: String
   articles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article!]
+  channels(where: ChannelsWhereInput, orderBy: ChannelsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Channels!]
+  myChannels(where: ChannelsWhereInput, orderBy: ChannelsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Channels!]
   newConnectNot: Boolean
   newCommentNot: Boolean
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
 }
 
 
@@ -160,10 +183,6 @@ type AggregateDepartment {
   count: Int!
 }
 
-type AggregateDiscussion {
-  count: Int!
-}
-
 type AggregateFile {
   count: Int!
 }
@@ -173,6 +192,18 @@ type AggregateInstitutions {
 }
 
 type AggregateInterest {
+  count: Int!
+}
+
+type AggregateLibrary {
+  count: Int!
+}
+
+type AggregateLocation {
+  count: Int!
+}
+
+type AggregateMessage {
   count: Int!
 }
 
@@ -209,6 +240,10 @@ input ArticleCreateInput {
   title: String!
   body: String!
   type: Arcticletype
+  link: String
+  description: String
+  tags: ArticleCreatetagsInput
+  category: InterestCreateManyInput
   author: UserCreateOneWithoutArticlesInput!
 }
 
@@ -217,11 +252,19 @@ input ArticleCreateManyWithoutAuthorInput {
   connect: [ArticleWhereUniqueInput!]
 }
 
+input ArticleCreatetagsInput {
+  set: [String!]
+}
+
 input ArticleCreateWithoutAuthorInput {
   isPublished: Boolean
   title: String!
   body: String!
   type: Arcticletype
+  link: String
+  description: String
+  tags: ArticleCreatetagsInput
+  category: InterestCreateManyInput
 }
 
 """
@@ -253,6 +296,10 @@ enum ArticleOrderByInput {
   body_DESC
   type_ASC
   type_DESC
+  link_ASC
+  link_DESC
+  description_ASC
+  description_DESC
 }
 
 type ArticlePreviousValues {
@@ -262,7 +309,10 @@ type ArticlePreviousValues {
   isPublished: Boolean!
   title: String!
   body: String!
+  tags: [String!]
   type: Arcticletype
+  link: String
+  description: String
 }
 
 type ArticleSubscriptionPayload {
@@ -305,6 +355,10 @@ input ArticleUpdateInput {
   title: String
   body: String
   type: Arcticletype
+  link: String
+  description: String
+  tags: ArticleUpdatetagsInput
+  category: InterestUpdateManyInput
   author: UserUpdateOneWithoutArticlesInput
 }
 
@@ -317,11 +371,19 @@ input ArticleUpdateManyWithoutAuthorInput {
   upsert: [ArticleUpsertWithWhereUniqueWithoutAuthorInput!]
 }
 
+input ArticleUpdatetagsInput {
+  set: [String!]
+}
+
 input ArticleUpdateWithoutAuthorDataInput {
   isPublished: Boolean
   title: String
   body: String
   type: Arcticletype
+  link: String
+  description: String
+  tags: ArticleUpdatetagsInput
+  category: InterestUpdateManyInput
 }
 
 input ArticleUpdateWithWhereUniqueWithoutAuthorInput {
@@ -579,11 +641,121 @@ input ArticleWhereInput {
   All values that are not contained in given list.
   """
   type_not_in: [Arcticletype!]
+  link: String
+  """
+  All values that are not equal to given value.
+  """
+  link_not: String
+  """
+  All values that are contained in given list.
+  """
+  link_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  link_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  link_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  link_lte: String
+  """
+  All values greater than the given value.
+  """
+  link_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  link_gte: String
+  """
+  All values containing the given string.
+  """
+  link_contains: String
+  """
+  All values not containing the given string.
+  """
+  link_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  link_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  link_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  link_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  link_not_ends_with: String
+  description: String
+  """
+  All values that are not equal to given value.
+  """
+  description_not: String
+  """
+  All values that are contained in given list.
+  """
+  description_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  description_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  description_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  description_lte: String
+  """
+  All values greater than the given value.
+  """
+  description_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  description_gte: String
+  """
+  All values containing the given string.
+  """
+  description_contains: String
+  """
+  All values not containing the given string.
+  """
+  description_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  description_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  description_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  description_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  description_not_ends_with: String
+  category_every: InterestWhereInput
+  category_some: InterestWhereInput
+  category_none: InterestWhereInput
   author: UserWhereInput
 }
 
 input ArticleWhereUniqueInput {
   id: ID
+  link: String
 }
 
 type BatchPayload {
@@ -610,8 +782,50 @@ type ChannelsConnection {
 
 input ChannelsCreateInput {
   title: String!
-  private: Boolean
-  author: UserCreateOneInput!
+  avatar: String
+  type: ChannelType
+  author: UserCreateOneWithoutMyChannelsInput!
+  messages: MessageCreateManyWithoutCahnnelInput
+  participants: UserCreateManyWithoutChannelsInput
+}
+
+input ChannelsCreateManyWithoutAuthorInput {
+  create: [ChannelsCreateWithoutAuthorInput!]
+  connect: [ChannelsWhereUniqueInput!]
+}
+
+input ChannelsCreateManyWithoutParticipantsInput {
+  create: [ChannelsCreateWithoutParticipantsInput!]
+  connect: [ChannelsWhereUniqueInput!]
+}
+
+input ChannelsCreateOneWithoutMessagesInput {
+  create: ChannelsCreateWithoutMessagesInput
+  connect: ChannelsWhereUniqueInput
+}
+
+input ChannelsCreateWithoutAuthorInput {
+  title: String!
+  avatar: String
+  type: ChannelType
+  messages: MessageCreateManyWithoutCahnnelInput
+  participants: UserCreateManyWithoutChannelsInput
+}
+
+input ChannelsCreateWithoutMessagesInput {
+  title: String!
+  avatar: String
+  type: ChannelType
+  author: UserCreateOneWithoutMyChannelsInput!
+  participants: UserCreateManyWithoutChannelsInput
+}
+
+input ChannelsCreateWithoutParticipantsInput {
+  title: String!
+  avatar: String
+  type: ChannelType
+  author: UserCreateOneWithoutMyChannelsInput!
+  messages: MessageCreateManyWithoutCahnnelInput
 }
 
 """
@@ -637,8 +851,10 @@ enum ChannelsOrderByInput {
   updatedAt_DESC
   title_ASC
   title_DESC
-  private_ASC
-  private_DESC
+  avatar_ASC
+  avatar_DESC
+  type_ASC
+  type_DESC
 }
 
 type ChannelsPreviousValues {
@@ -646,7 +862,8 @@ type ChannelsPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
-  private: Boolean!
+  avatar: String
+  type: ChannelType
 }
 
 type ChannelsSubscriptionPayload {
@@ -686,8 +903,89 @@ input ChannelsSubscriptionWhereInput {
 
 input ChannelsUpdateInput {
   title: String
-  private: Boolean
-  author: UserUpdateOneInput
+  avatar: String
+  type: ChannelType
+  author: UserUpdateOneWithoutMyChannelsInput
+  messages: MessageUpdateManyWithoutCahnnelInput
+  participants: UserUpdateManyWithoutChannelsInput
+}
+
+input ChannelsUpdateManyWithoutAuthorInput {
+  create: [ChannelsCreateWithoutAuthorInput!]
+  connect: [ChannelsWhereUniqueInput!]
+  disconnect: [ChannelsWhereUniqueInput!]
+  delete: [ChannelsWhereUniqueInput!]
+  update: [ChannelsUpdateWithWhereUniqueWithoutAuthorInput!]
+  upsert: [ChannelsUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input ChannelsUpdateManyWithoutParticipantsInput {
+  create: [ChannelsCreateWithoutParticipantsInput!]
+  connect: [ChannelsWhereUniqueInput!]
+  disconnect: [ChannelsWhereUniqueInput!]
+  delete: [ChannelsWhereUniqueInput!]
+  update: [ChannelsUpdateWithWhereUniqueWithoutParticipantsInput!]
+  upsert: [ChannelsUpsertWithWhereUniqueWithoutParticipantsInput!]
+}
+
+input ChannelsUpdateOneWithoutMessagesInput {
+  create: ChannelsCreateWithoutMessagesInput
+  connect: ChannelsWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ChannelsUpdateWithoutMessagesDataInput
+  upsert: ChannelsUpsertWithoutMessagesInput
+}
+
+input ChannelsUpdateWithoutAuthorDataInput {
+  title: String
+  avatar: String
+  type: ChannelType
+  messages: MessageUpdateManyWithoutCahnnelInput
+  participants: UserUpdateManyWithoutChannelsInput
+}
+
+input ChannelsUpdateWithoutMessagesDataInput {
+  title: String
+  avatar: String
+  type: ChannelType
+  author: UserUpdateOneWithoutMyChannelsInput
+  participants: UserUpdateManyWithoutChannelsInput
+}
+
+input ChannelsUpdateWithoutParticipantsDataInput {
+  title: String
+  avatar: String
+  type: ChannelType
+  author: UserUpdateOneWithoutMyChannelsInput
+  messages: MessageUpdateManyWithoutCahnnelInput
+}
+
+input ChannelsUpdateWithWhereUniqueWithoutAuthorInput {
+  where: ChannelsWhereUniqueInput!
+  data: ChannelsUpdateWithoutAuthorDataInput!
+}
+
+input ChannelsUpdateWithWhereUniqueWithoutParticipantsInput {
+  where: ChannelsWhereUniqueInput!
+  data: ChannelsUpdateWithoutParticipantsDataInput!
+}
+
+input ChannelsUpsertWithoutMessagesInput {
+  update: ChannelsUpdateWithoutMessagesDataInput!
+  create: ChannelsCreateWithoutMessagesInput!
+}
+
+input ChannelsUpsertWithWhereUniqueWithoutAuthorInput {
+  where: ChannelsWhereUniqueInput!
+  update: ChannelsUpdateWithoutAuthorDataInput!
+  create: ChannelsCreateWithoutAuthorInput!
+}
+
+input ChannelsUpsertWithWhereUniqueWithoutParticipantsInput {
+  where: ChannelsWhereUniqueInput!
+  update: ChannelsUpdateWithoutParticipantsDataInput!
+  create: ChannelsCreateWithoutParticipantsInput!
 }
 
 input ChannelsWhereInput {
@@ -863,16 +1161,89 @@ input ChannelsWhereInput {
   All values not ending with the given string.
   """
   title_not_ends_with: String
-  private: Boolean
+  avatar: String
   """
   All values that are not equal to given value.
   """
-  private_not: Boolean
+  avatar_not: String
+  """
+  All values that are contained in given list.
+  """
+  avatar_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  avatar_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  avatar_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  avatar_lte: String
+  """
+  All values greater than the given value.
+  """
+  avatar_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  avatar_gte: String
+  """
+  All values containing the given string.
+  """
+  avatar_contains: String
+  """
+  All values not containing the given string.
+  """
+  avatar_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  avatar_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  avatar_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  avatar_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  avatar_not_ends_with: String
+  type: ChannelType
+  """
+  All values that are not equal to given value.
+  """
+  type_not: ChannelType
+  """
+  All values that are contained in given list.
+  """
+  type_in: [ChannelType!]
+  """
+  All values that are not contained in given list.
+  """
+  type_not_in: [ChannelType!]
   author: UserWhereInput
+  messages_every: MessageWhereInput
+  messages_some: MessageWhereInput
+  messages_none: MessageWhereInput
+  participants_every: UserWhereInput
+  participants_some: UserWhereInput
+  participants_none: UserWhereInput
 }
 
 input ChannelsWhereUniqueInput {
   id: ID
+}
+
+enum ChannelType {
+  Group
+  Direct
+  Channel
 }
 
 """
@@ -1919,500 +2290,6 @@ input DepartmentWhereUniqueInput {
 """
 A connection to a list of items.
 """
-type DiscussionConnection {
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-  """
-  A list of edges.
-  """
-  edges: [DiscussionEdge]!
-  aggregate: AggregateDiscussion!
-}
-
-input DiscussionCreateInput {
-  title: String!
-  slug: String
-  content: String!
-  private: Boolean
-  tags: DiscussionCreatetagsInput
-  favourites: UserCreateManyWithoutFavouritesInput
-  author: UserCreateOneWithoutMyDiscussionsInput!
-}
-
-input DiscussionCreateManyWithoutFavouritesInput {
-  create: [DiscussionCreateWithoutFavouritesInput!]
-  connect: [DiscussionWhereUniqueInput!]
-}
-
-input DiscussionCreateOneWithoutAuthorInput {
-  create: DiscussionCreateWithoutAuthorInput
-  connect: DiscussionWhereUniqueInput
-}
-
-input DiscussionCreatetagsInput {
-  set: [String!]
-}
-
-input DiscussionCreateWithoutAuthorInput {
-  title: String!
-  slug: String
-  content: String!
-  private: Boolean
-  tags: DiscussionCreatetagsInput
-  favourites: UserCreateManyWithoutFavouritesInput
-}
-
-input DiscussionCreateWithoutFavouritesInput {
-  title: String!
-  slug: String
-  content: String!
-  private: Boolean
-  tags: DiscussionCreatetagsInput
-  author: UserCreateOneWithoutMyDiscussionsInput!
-}
-
-"""
-An edge in a connection.
-"""
-type DiscussionEdge {
-  """
-  The item at the end of the edge.
-  """
-  node: Discussion!
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-}
-
-enum DiscussionOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  title_ASC
-  title_DESC
-  slug_ASC
-  slug_DESC
-  content_ASC
-  content_DESC
-  private_ASC
-  private_DESC
-}
-
-type DiscussionPreviousValues {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-  slug: String
-  content: String!
-  tags: [String!]
-  private: Boolean!
-}
-
-type DiscussionSubscriptionPayload {
-  mutation: MutationType!
-  node: Discussion
-  updatedFields: [String!]
-  previousValues: DiscussionPreviousValues
-}
-
-input DiscussionSubscriptionWhereInput {
-  """
-  Logical AND on all given filters.
-  """
-  AND: [DiscussionSubscriptionWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
-  OR: [DiscussionSubscriptionWhereInput!]
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: DiscussionWhereInput
-}
-
-input DiscussionUpdateInput {
-  title: String
-  slug: String
-  content: String
-  private: Boolean
-  tags: DiscussionUpdatetagsInput
-  favourites: UserUpdateManyWithoutFavouritesInput
-  author: UserUpdateOneWithoutMyDiscussionsInput
-}
-
-input DiscussionUpdateManyWithoutFavouritesInput {
-  create: [DiscussionCreateWithoutFavouritesInput!]
-  connect: [DiscussionWhereUniqueInput!]
-  disconnect: [DiscussionWhereUniqueInput!]
-  delete: [DiscussionWhereUniqueInput!]
-  update: [DiscussionUpdateWithWhereUniqueWithoutFavouritesInput!]
-  upsert: [DiscussionUpsertWithWhereUniqueWithoutFavouritesInput!]
-}
-
-input DiscussionUpdateOneWithoutAuthorInput {
-  create: DiscussionCreateWithoutAuthorInput
-  connect: DiscussionWhereUniqueInput
-  disconnect: Boolean
-  delete: Boolean
-  update: DiscussionUpdateWithoutAuthorDataInput
-  upsert: DiscussionUpsertWithoutAuthorInput
-}
-
-input DiscussionUpdatetagsInput {
-  set: [String!]
-}
-
-input DiscussionUpdateWithoutAuthorDataInput {
-  title: String
-  slug: String
-  content: String
-  private: Boolean
-  tags: DiscussionUpdatetagsInput
-  favourites: UserUpdateManyWithoutFavouritesInput
-}
-
-input DiscussionUpdateWithoutFavouritesDataInput {
-  title: String
-  slug: String
-  content: String
-  private: Boolean
-  tags: DiscussionUpdatetagsInput
-  author: UserUpdateOneWithoutMyDiscussionsInput
-}
-
-input DiscussionUpdateWithWhereUniqueWithoutFavouritesInput {
-  where: DiscussionWhereUniqueInput!
-  data: DiscussionUpdateWithoutFavouritesDataInput!
-}
-
-input DiscussionUpsertWithoutAuthorInput {
-  update: DiscussionUpdateWithoutAuthorDataInput!
-  create: DiscussionCreateWithoutAuthorInput!
-}
-
-input DiscussionUpsertWithWhereUniqueWithoutFavouritesInput {
-  where: DiscussionWhereUniqueInput!
-  update: DiscussionUpdateWithoutFavouritesDataInput!
-  create: DiscussionCreateWithoutFavouritesInput!
-}
-
-input DiscussionWhereInput {
-  """
-  Logical AND on all given filters.
-  """
-  AND: [DiscussionWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
-  OR: [DiscussionWhereInput!]
-  id: ID
-  """
-  All values that are not equal to given value.
-  """
-  id_not: ID
-  """
-  All values that are contained in given list.
-  """
-  id_in: [ID!]
-  """
-  All values that are not contained in given list.
-  """
-  id_not_in: [ID!]
-  """
-  All values less than the given value.
-  """
-  id_lt: ID
-  """
-  All values less than or equal the given value.
-  """
-  id_lte: ID
-  """
-  All values greater than the given value.
-  """
-  id_gt: ID
-  """
-  All values greater than or equal the given value.
-  """
-  id_gte: ID
-  """
-  All values containing the given string.
-  """
-  id_contains: ID
-  """
-  All values not containing the given string.
-  """
-  id_not_contains: ID
-  """
-  All values starting with the given string.
-  """
-  id_starts_with: ID
-  """
-  All values not starting with the given string.
-  """
-  id_not_starts_with: ID
-  """
-  All values ending with the given string.
-  """
-  id_ends_with: ID
-  """
-  All values not ending with the given string.
-  """
-  id_not_ends_with: ID
-  createdAt: DateTime
-  """
-  All values that are not equal to given value.
-  """
-  createdAt_not: DateTime
-  """
-  All values that are contained in given list.
-  """
-  createdAt_in: [DateTime!]
-  """
-  All values that are not contained in given list.
-  """
-  createdAt_not_in: [DateTime!]
-  """
-  All values less than the given value.
-  """
-  createdAt_lt: DateTime
-  """
-  All values less than or equal the given value.
-  """
-  createdAt_lte: DateTime
-  """
-  All values greater than the given value.
-  """
-  createdAt_gt: DateTime
-  """
-  All values greater than or equal the given value.
-  """
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  """
-  All values that are not equal to given value.
-  """
-  updatedAt_not: DateTime
-  """
-  All values that are contained in given list.
-  """
-  updatedAt_in: [DateTime!]
-  """
-  All values that are not contained in given list.
-  """
-  updatedAt_not_in: [DateTime!]
-  """
-  All values less than the given value.
-  """
-  updatedAt_lt: DateTime
-  """
-  All values less than or equal the given value.
-  """
-  updatedAt_lte: DateTime
-  """
-  All values greater than the given value.
-  """
-  updatedAt_gt: DateTime
-  """
-  All values greater than or equal the given value.
-  """
-  updatedAt_gte: DateTime
-  title: String
-  """
-  All values that are not equal to given value.
-  """
-  title_not: String
-  """
-  All values that are contained in given list.
-  """
-  title_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
-  title_not_in: [String!]
-  """
-  All values less than the given value.
-  """
-  title_lt: String
-  """
-  All values less than or equal the given value.
-  """
-  title_lte: String
-  """
-  All values greater than the given value.
-  """
-  title_gt: String
-  """
-  All values greater than or equal the given value.
-  """
-  title_gte: String
-  """
-  All values containing the given string.
-  """
-  title_contains: String
-  """
-  All values not containing the given string.
-  """
-  title_not_contains: String
-  """
-  All values starting with the given string.
-  """
-  title_starts_with: String
-  """
-  All values not starting with the given string.
-  """
-  title_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
-  title_ends_with: String
-  """
-  All values not ending with the given string.
-  """
-  title_not_ends_with: String
-  slug: String
-  """
-  All values that are not equal to given value.
-  """
-  slug_not: String
-  """
-  All values that are contained in given list.
-  """
-  slug_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
-  slug_not_in: [String!]
-  """
-  All values less than the given value.
-  """
-  slug_lt: String
-  """
-  All values less than or equal the given value.
-  """
-  slug_lte: String
-  """
-  All values greater than the given value.
-  """
-  slug_gt: String
-  """
-  All values greater than or equal the given value.
-  """
-  slug_gte: String
-  """
-  All values containing the given string.
-  """
-  slug_contains: String
-  """
-  All values not containing the given string.
-  """
-  slug_not_contains: String
-  """
-  All values starting with the given string.
-  """
-  slug_starts_with: String
-  """
-  All values not starting with the given string.
-  """
-  slug_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
-  slug_ends_with: String
-  """
-  All values not ending with the given string.
-  """
-  slug_not_ends_with: String
-  content: String
-  """
-  All values that are not equal to given value.
-  """
-  content_not: String
-  """
-  All values that are contained in given list.
-  """
-  content_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
-  content_not_in: [String!]
-  """
-  All values less than the given value.
-  """
-  content_lt: String
-  """
-  All values less than or equal the given value.
-  """
-  content_lte: String
-  """
-  All values greater than the given value.
-  """
-  content_gt: String
-  """
-  All values greater than or equal the given value.
-  """
-  content_gte: String
-  """
-  All values containing the given string.
-  """
-  content_contains: String
-  """
-  All values not containing the given string.
-  """
-  content_not_contains: String
-  """
-  All values starting with the given string.
-  """
-  content_starts_with: String
-  """
-  All values not starting with the given string.
-  """
-  content_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
-  content_ends_with: String
-  """
-  All values not ending with the given string.
-  """
-  content_not_ends_with: String
-  private: Boolean
-  """
-  All values that are not equal to given value.
-  """
-  private_not: Boolean
-  favourites_every: UserWhereInput
-  favourites_some: UserWhereInput
-  favourites_none: UserWhereInput
-  author: UserWhereInput
-}
-
-input DiscussionWhereUniqueInput {
-  id: ID
-}
-
-"""
-A connection to a list of items.
-"""
 type FileConnection {
   """
   Information to aid in pagination.
@@ -3347,6 +3224,11 @@ input InterestCreateInput {
   users: UserCreateManyWithoutInterestInput
 }
 
+input InterestCreateManyInput {
+  create: [InterestCreateInput!]
+  connect: [InterestWhereUniqueInput!]
+}
+
 input InterestCreateManyWithoutUsersInput {
   create: [InterestCreateWithoutUsersInput!]
   connect: [InterestWhereUniqueInput!]
@@ -3427,10 +3309,25 @@ input InterestSubscriptionWhereInput {
   node: InterestWhereInput
 }
 
+input InterestUpdateDataInput {
+  name: String
+  avatar: String
+  users: UserUpdateManyWithoutInterestInput
+}
+
 input InterestUpdateInput {
   name: String
   avatar: String
   users: UserUpdateManyWithoutInterestInput
+}
+
+input InterestUpdateManyInput {
+  create: [InterestCreateInput!]
+  connect: [InterestWhereUniqueInput!]
+  disconnect: [InterestWhereUniqueInput!]
+  delete: [InterestWhereUniqueInput!]
+  update: [InterestUpdateWithWhereUniqueNestedInput!]
+  upsert: [InterestUpsertWithWhereUniqueNestedInput!]
 }
 
 input InterestUpdateManyWithoutUsersInput {
@@ -3447,9 +3344,20 @@ input InterestUpdateWithoutUsersDataInput {
   avatar: String
 }
 
+input InterestUpdateWithWhereUniqueNestedInput {
+  where: InterestWhereUniqueInput!
+  data: InterestUpdateDataInput!
+}
+
 input InterestUpdateWithWhereUniqueWithoutUsersInput {
   where: InterestWhereUniqueInput!
   data: InterestUpdateWithoutUsersDataInput!
+}
+
+input InterestUpsertWithWhereUniqueNestedInput {
+  where: InterestWhereUniqueInput!
+  update: InterestUpdateDataInput!
+  create: InterestCreateInput!
 }
 
 input InterestUpsertWithWhereUniqueWithoutUsersInput {
@@ -3691,6 +3599,699 @@ input InterestWhereInput {
 
 input InterestWhereUniqueInput {
   id: ID
+  name: String
+}
+
+"""
+A connection to a list of items.
+"""
+type LibraryConnection {
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
+  edges: [LibraryEdge]!
+  aggregate: AggregateLibrary!
+}
+
+input LibraryCreateInput {
+  name: String!
+  description: String
+  location: LocationCreateOneInput!
+}
+
+"""
+An edge in a connection.
+"""
+type LibraryEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Library!
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+}
+
+enum LibraryOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  name_ASC
+  name_DESC
+  description_ASC
+  description_DESC
+}
+
+type LibraryPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String
+}
+
+type LibrarySubscriptionPayload {
+  mutation: MutationType!
+  node: Library
+  updatedFields: [String!]
+  previousValues: LibraryPreviousValues
+}
+
+input LibrarySubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
+  AND: [LibrarySubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
+  OR: [LibrarySubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: LibraryWhereInput
+}
+
+input LibraryUpdateInput {
+  name: String
+  description: String
+  location: LocationUpdateOneInput
+}
+
+input LibraryWhereInput {
+  """
+  Logical AND on all given filters.
+  """
+  AND: [LibraryWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
+  OR: [LibraryWhereInput!]
+  id: ID
+  """
+  All values that are not equal to given value.
+  """
+  id_not: ID
+  """
+  All values that are contained in given list.
+  """
+  id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
+  id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
+  id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
+  id_lte: ID
+  """
+  All values greater than the given value.
+  """
+  id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
+  id_gte: ID
+  """
+  All values containing the given string.
+  """
+  id_contains: ID
+  """
+  All values not containing the given string.
+  """
+  id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
+  id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
+  id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
+  id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
+  id_not_ends_with: ID
+  createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
+  createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
+  createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
+  createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
+  createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
+  createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
+  createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
+  updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
+  updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
+  updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
+  updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
+  updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
+  updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
+  updatedAt_gte: DateTime
+  name: String
+  """
+  All values that are not equal to given value.
+  """
+  name_not: String
+  """
+  All values that are contained in given list.
+  """
+  name_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  name_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  name_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  name_lte: String
+  """
+  All values greater than the given value.
+  """
+  name_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  name_gte: String
+  """
+  All values containing the given string.
+  """
+  name_contains: String
+  """
+  All values not containing the given string.
+  """
+  name_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  name_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  name_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  name_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  name_not_ends_with: String
+  description: String
+  """
+  All values that are not equal to given value.
+  """
+  description_not: String
+  """
+  All values that are contained in given list.
+  """
+  description_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  description_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  description_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  description_lte: String
+  """
+  All values greater than the given value.
+  """
+  description_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  description_gte: String
+  """
+  All values containing the given string.
+  """
+  description_contains: String
+  """
+  All values not containing the given string.
+  """
+  description_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  description_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  description_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  description_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  description_not_ends_with: String
+  location: LocationWhereInput
+}
+
+input LibraryWhereUniqueInput {
+  id: ID
+}
+
+"""
+A connection to a list of items.
+"""
+type LocationConnection {
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
+  edges: [LocationEdge]!
+  aggregate: AggregateLocation!
+}
+
+input LocationCreateInput {
+  longitude: Float!
+  latitude: Float!
+  type: String!
+}
+
+input LocationCreateOneInput {
+  create: LocationCreateInput
+  connect: LocationWhereUniqueInput
+}
+
+"""
+An edge in a connection.
+"""
+type LocationEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Location!
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+}
+
+enum LocationOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  longitude_ASC
+  longitude_DESC
+  latitude_ASC
+  latitude_DESC
+  type_ASC
+  type_DESC
+}
+
+type LocationPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  longitude: Float!
+  latitude: Float!
+  type: String!
+}
+
+type LocationSubscriptionPayload {
+  mutation: MutationType!
+  node: Location
+  updatedFields: [String!]
+  previousValues: LocationPreviousValues
+}
+
+input LocationSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
+  AND: [LocationSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
+  OR: [LocationSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: LocationWhereInput
+}
+
+input LocationUpdateDataInput {
+  longitude: Float
+  latitude: Float
+  type: String
+}
+
+input LocationUpdateInput {
+  longitude: Float
+  latitude: Float
+  type: String
+}
+
+input LocationUpdateOneInput {
+  create: LocationCreateInput
+  connect: LocationWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: LocationUpdateDataInput
+  upsert: LocationUpsertNestedInput
+}
+
+input LocationUpsertNestedInput {
+  update: LocationUpdateDataInput!
+  create: LocationCreateInput!
+}
+
+input LocationWhereInput {
+  """
+  Logical AND on all given filters.
+  """
+  AND: [LocationWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
+  OR: [LocationWhereInput!]
+  id: ID
+  """
+  All values that are not equal to given value.
+  """
+  id_not: ID
+  """
+  All values that are contained in given list.
+  """
+  id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
+  id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
+  id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
+  id_lte: ID
+  """
+  All values greater than the given value.
+  """
+  id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
+  id_gte: ID
+  """
+  All values containing the given string.
+  """
+  id_contains: ID
+  """
+  All values not containing the given string.
+  """
+  id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
+  id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
+  id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
+  id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
+  id_not_ends_with: ID
+  createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
+  createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
+  createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
+  createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
+  createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
+  createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
+  createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
+  updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
+  updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
+  updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
+  updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
+  updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
+  updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
+  updatedAt_gte: DateTime
+  longitude: Float
+  """
+  All values that are not equal to given value.
+  """
+  longitude_not: Float
+  """
+  All values that are contained in given list.
+  """
+  longitude_in: [Float!]
+  """
+  All values that are not contained in given list.
+  """
+  longitude_not_in: [Float!]
+  """
+  All values less than the given value.
+  """
+  longitude_lt: Float
+  """
+  All values less than or equal the given value.
+  """
+  longitude_lte: Float
+  """
+  All values greater than the given value.
+  """
+  longitude_gt: Float
+  """
+  All values greater than or equal the given value.
+  """
+  longitude_gte: Float
+  latitude: Float
+  """
+  All values that are not equal to given value.
+  """
+  latitude_not: Float
+  """
+  All values that are contained in given list.
+  """
+  latitude_in: [Float!]
+  """
+  All values that are not contained in given list.
+  """
+  latitude_not_in: [Float!]
+  """
+  All values less than the given value.
+  """
+  latitude_lt: Float
+  """
+  All values less than or equal the given value.
+  """
+  latitude_lte: Float
+  """
+  All values greater than the given value.
+  """
+  latitude_gt: Float
+  """
+  All values greater than or equal the given value.
+  """
+  latitude_gte: Float
+  type: String
+  """
+  All values that are not equal to given value.
+  """
+  type_not: String
+  """
+  All values that are contained in given list.
+  """
+  type_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  type_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  type_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  type_lte: String
+  """
+  All values greater than the given value.
+  """
+  type_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  type_gte: String
+  """
+  All values containing the given string.
+  """
+  type_contains: String
+  """
+  All values not containing the given string.
+  """
+  type_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  type_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  type_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  type_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  type_not_ends_with: String
+}
+
+input LocationWhereUniqueInput {
+  id: ID
 }
 
 """
@@ -3699,9 +4300,346 @@ Long can represent values between -(2^63) and 2^63 - 1.
 """
 scalar Long
 
+"""
+A connection to a list of items.
+"""
+type MessageConnection {
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
+  edges: [MessageEdge]!
+  aggregate: AggregateMessage!
+}
+
+input MessageCreateInput {
+  text: String!
+  cahnnel: ChannelsCreateOneWithoutMessagesInput!
+  user: UserCreateOneInput!
+}
+
+input MessageCreateManyWithoutCahnnelInput {
+  create: [MessageCreateWithoutCahnnelInput!]
+  connect: [MessageWhereUniqueInput!]
+}
+
+input MessageCreateOneInput {
+  create: MessageCreateInput
+  connect: MessageWhereUniqueInput
+}
+
+input MessageCreateWithoutCahnnelInput {
+  text: String!
+  user: UserCreateOneInput!
+}
+
+"""
+An edge in a connection.
+"""
+type MessageEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Message!
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+}
+
+enum MessageOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  text_ASC
+  text_DESC
+}
+
+type MessagePreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  text: String!
+}
+
+type MessageSubscriptionPayload {
+  mutation: MutationType!
+  node: Message
+  updatedFields: [String!]
+  previousValues: MessagePreviousValues
+}
+
+input MessageSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
+  AND: [MessageSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
+  OR: [MessageSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: MessageWhereInput
+}
+
+input MessageUpdateDataInput {
+  text: String
+  cahnnel: ChannelsUpdateOneWithoutMessagesInput
+  user: UserUpdateOneInput
+}
+
+input MessageUpdateInput {
+  text: String
+  cahnnel: ChannelsUpdateOneWithoutMessagesInput
+  user: UserUpdateOneInput
+}
+
+input MessageUpdateManyWithoutCahnnelInput {
+  create: [MessageCreateWithoutCahnnelInput!]
+  connect: [MessageWhereUniqueInput!]
+  disconnect: [MessageWhereUniqueInput!]
+  delete: [MessageWhereUniqueInput!]
+  update: [MessageUpdateWithWhereUniqueWithoutCahnnelInput!]
+  upsert: [MessageUpsertWithWhereUniqueWithoutCahnnelInput!]
+}
+
+input MessageUpdateOneInput {
+  create: MessageCreateInput
+  connect: MessageWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: MessageUpdateDataInput
+  upsert: MessageUpsertNestedInput
+}
+
+input MessageUpdateWithoutCahnnelDataInput {
+  text: String
+  user: UserUpdateOneInput
+}
+
+input MessageUpdateWithWhereUniqueWithoutCahnnelInput {
+  where: MessageWhereUniqueInput!
+  data: MessageUpdateWithoutCahnnelDataInput!
+}
+
+input MessageUpsertNestedInput {
+  update: MessageUpdateDataInput!
+  create: MessageCreateInput!
+}
+
+input MessageUpsertWithWhereUniqueWithoutCahnnelInput {
+  where: MessageWhereUniqueInput!
+  update: MessageUpdateWithoutCahnnelDataInput!
+  create: MessageCreateWithoutCahnnelInput!
+}
+
+input MessageWhereInput {
+  """
+  Logical AND on all given filters.
+  """
+  AND: [MessageWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
+  OR: [MessageWhereInput!]
+  id: ID
+  """
+  All values that are not equal to given value.
+  """
+  id_not: ID
+  """
+  All values that are contained in given list.
+  """
+  id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
+  id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
+  id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
+  id_lte: ID
+  """
+  All values greater than the given value.
+  """
+  id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
+  id_gte: ID
+  """
+  All values containing the given string.
+  """
+  id_contains: ID
+  """
+  All values not containing the given string.
+  """
+  id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
+  id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
+  id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
+  id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
+  id_not_ends_with: ID
+  createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
+  createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
+  createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
+  createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
+  createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
+  createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
+  createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
+  updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
+  updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
+  updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
+  updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
+  updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
+  updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
+  updatedAt_gte: DateTime
+  text: String
+  """
+  All values that are not equal to given value.
+  """
+  text_not: String
+  """
+  All values that are contained in given list.
+  """
+  text_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  text_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  text_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  text_lte: String
+  """
+  All values greater than the given value.
+  """
+  text_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  text_gte: String
+  """
+  All values containing the given string.
+  """
+  text_contains: String
+  """
+  All values not containing the given string.
+  """
+  text_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  text_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  text_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  text_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  text_not_ends_with: String
+  cahnnel: ChannelsWhereInput
+  user: UserWhereInput
+}
+
+input MessageWhereUniqueInput {
+  id: ID
+}
+
 type Mutation {
   createFile(data: FileCreateInput!): File!
   createPost(data: PostCreateInput!): Post!
+  createLibrary(data: LibraryCreateInput!): Library!
+  createLocation(data: LocationCreateInput!): Location!
   createArticle(data: ArticleCreateInput!): Article!
   createCountry(data: CountryCreateInput!): Country!
   createInstitutions(data: InstitutionsCreateInput!): Institutions!
@@ -3710,9 +4648,11 @@ type Mutation {
   createUser(data: UserCreateInput!): User!
   createConnect(data: ConnectCreateInput!): Connect!
   createChannels(data: ChannelsCreateInput!): Channels!
-  createDiscussion(data: DiscussionCreateInput!): Discussion!
+  createMessage(data: MessageCreateInput!): Message!
   updateFile(data: FileUpdateInput!, where: FileWhereUniqueInput!): File
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
+  updateLibrary(data: LibraryUpdateInput!, where: LibraryWhereUniqueInput!): Library
+  updateLocation(data: LocationUpdateInput!, where: LocationWhereUniqueInput!): Location
   updateArticle(data: ArticleUpdateInput!, where: ArticleWhereUniqueInput!): Article
   updateCountry(data: CountryUpdateInput!, where: CountryWhereUniqueInput!): Country
   updateInstitutions(data: InstitutionsUpdateInput!, where: InstitutionsWhereUniqueInput!): Institutions
@@ -3721,9 +4661,11 @@ type Mutation {
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateConnect(data: ConnectUpdateInput!, where: ConnectWhereUniqueInput!): Connect
   updateChannels(data: ChannelsUpdateInput!, where: ChannelsWhereUniqueInput!): Channels
-  updateDiscussion(data: DiscussionUpdateInput!, where: DiscussionWhereUniqueInput!): Discussion
+  updateMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
   deleteFile(where: FileWhereUniqueInput!): File
   deletePost(where: PostWhereUniqueInput!): Post
+  deleteLibrary(where: LibraryWhereUniqueInput!): Library
+  deleteLocation(where: LocationWhereUniqueInput!): Location
   deleteArticle(where: ArticleWhereUniqueInput!): Article
   deleteCountry(where: CountryWhereUniqueInput!): Country
   deleteInstitutions(where: InstitutionsWhereUniqueInput!): Institutions
@@ -3732,9 +4674,11 @@ type Mutation {
   deleteUser(where: UserWhereUniqueInput!): User
   deleteConnect(where: ConnectWhereUniqueInput!): Connect
   deleteChannels(where: ChannelsWhereUniqueInput!): Channels
-  deleteDiscussion(where: DiscussionWhereUniqueInput!): Discussion
+  deleteMessage(where: MessageWhereUniqueInput!): Message
   upsertFile(where: FileWhereUniqueInput!, create: FileCreateInput!, update: FileUpdateInput!): File!
   upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
+  upsertLibrary(where: LibraryWhereUniqueInput!, create: LibraryCreateInput!, update: LibraryUpdateInput!): Library!
+  upsertLocation(where: LocationWhereUniqueInput!, create: LocationCreateInput!, update: LocationUpdateInput!): Location!
   upsertArticle(where: ArticleWhereUniqueInput!, create: ArticleCreateInput!, update: ArticleUpdateInput!): Article!
   upsertCountry(where: CountryWhereUniqueInput!, create: CountryCreateInput!, update: CountryUpdateInput!): Country!
   upsertInstitutions(where: InstitutionsWhereUniqueInput!, create: InstitutionsCreateInput!, update: InstitutionsUpdateInput!): Institutions!
@@ -3743,9 +4687,11 @@ type Mutation {
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertConnect(where: ConnectWhereUniqueInput!, create: ConnectCreateInput!, update: ConnectUpdateInput!): Connect!
   upsertChannels(where: ChannelsWhereUniqueInput!, create: ChannelsCreateInput!, update: ChannelsUpdateInput!): Channels!
-  upsertDiscussion(where: DiscussionWhereUniqueInput!, create: DiscussionCreateInput!, update: DiscussionUpdateInput!): Discussion!
+  upsertMessage(where: MessageWhereUniqueInput!, create: MessageCreateInput!, update: MessageUpdateInput!): Message!
   updateManyFiles(data: FileUpdateInput!, where: FileWhereInput!): BatchPayload!
   updateManyPosts(data: PostUpdateInput!, where: PostWhereInput!): BatchPayload!
+  updateManyLibraries(data: LibraryUpdateInput!, where: LibraryWhereInput!): BatchPayload!
+  updateManyLocations(data: LocationUpdateInput!, where: LocationWhereInput!): BatchPayload!
   updateManyArticles(data: ArticleUpdateInput!, where: ArticleWhereInput!): BatchPayload!
   updateManyCountries(data: CountryUpdateInput!, where: CountryWhereInput!): BatchPayload!
   updateManyInstitutionses(data: InstitutionsUpdateInput!, where: InstitutionsWhereInput!): BatchPayload!
@@ -3754,9 +4700,11 @@ type Mutation {
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput!): BatchPayload!
   updateManyConnects(data: ConnectUpdateInput!, where: ConnectWhereInput!): BatchPayload!
   updateManyChannelses(data: ChannelsUpdateInput!, where: ChannelsWhereInput!): BatchPayload!
-  updateManyDiscussions(data: DiscussionUpdateInput!, where: DiscussionWhereInput!): BatchPayload!
+  updateManyMessages(data: MessageUpdateInput!, where: MessageWhereInput!): BatchPayload!
   deleteManyFiles(where: FileWhereInput!): BatchPayload!
   deleteManyPosts(where: PostWhereInput!): BatchPayload!
+  deleteManyLibraries(where: LibraryWhereInput!): BatchPayload!
+  deleteManyLocations(where: LocationWhereInput!): BatchPayload!
   deleteManyArticles(where: ArticleWhereInput!): BatchPayload!
   deleteManyCountries(where: CountryWhereInput!): BatchPayload!
   deleteManyInstitutionses(where: InstitutionsWhereInput!): BatchPayload!
@@ -3765,7 +4713,7 @@ type Mutation {
   deleteManyUsers(where: UserWhereInput!): BatchPayload!
   deleteManyConnects(where: ConnectWhereInput!): BatchPayload!
   deleteManyChannelses(where: ChannelsWhereInput!): BatchPayload!
-  deleteManyDiscussions(where: DiscussionWhereInput!): BatchPayload!
+  deleteManyMessages(where: MessageWhereInput!): BatchPayload!
 }
 
 enum MutationType {
@@ -4146,6 +5094,8 @@ input PostWhereUniqueInput {
 type Query {
   files(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File]!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
+  libraries(where: LibraryWhereInput, orderBy: LibraryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Library]!
+  locations(where: LocationWhereInput, orderBy: LocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Location]!
   articles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article]!
   countries(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Country]!
   institutionses(where: InstitutionsWhereInput, orderBy: InstitutionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Institutions]!
@@ -4154,9 +5104,11 @@ type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   connects(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect]!
   channelses(where: ChannelsWhereInput, orderBy: ChannelsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Channels]!
-  discussions(where: DiscussionWhereInput, orderBy: DiscussionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Discussion]!
+  messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message]!
   file(where: FileWhereUniqueInput!): File
   post(where: PostWhereUniqueInput!): Post
+  library(where: LibraryWhereUniqueInput!): Library
+  location(where: LocationWhereUniqueInput!): Location
   article(where: ArticleWhereUniqueInput!): Article
   country(where: CountryWhereUniqueInput!): Country
   institutions(where: InstitutionsWhereUniqueInput!): Institutions
@@ -4165,9 +5117,11 @@ type Query {
   user(where: UserWhereUniqueInput!): User
   connect(where: ConnectWhereUniqueInput!): Connect
   channels(where: ChannelsWhereUniqueInput!): Channels
-  discussion(where: DiscussionWhereUniqueInput!): Discussion
+  message(where: MessageWhereUniqueInput!): Message
   filesConnection(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
+  librariesConnection(where: LibraryWhereInput, orderBy: LibraryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LibraryConnection!
+  locationsConnection(where: LocationWhereInput, orderBy: LocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LocationConnection!
   articlesConnection(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ArticleConnection!
   countriesConnection(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CountryConnection!
   institutionsesConnection(where: InstitutionsWhereInput, orderBy: InstitutionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InstitutionsConnection!
@@ -4176,7 +5130,7 @@ type Query {
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   connectsConnection(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ConnectConnection!
   channelsesConnection(where: ChannelsWhereInput, orderBy: ChannelsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChannelsConnection!
-  discussionsConnection(where: DiscussionWhereInput, orderBy: DiscussionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DiscussionConnection!
+  messagesConnection(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MessageConnection!
   """
   Fetches an object given its ID
   """
@@ -4189,6 +5143,8 @@ type Query {
 type Subscription {
   file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
+  library(where: LibrarySubscriptionWhereInput): LibrarySubscriptionPayload
+  location(where: LocationSubscriptionWhereInput): LocationSubscriptionPayload
   article(where: ArticleSubscriptionWhereInput): ArticleSubscriptionPayload
   country(where: CountrySubscriptionWhereInput): CountrySubscriptionPayload
   institutions(where: InstitutionsSubscriptionWhereInput): InstitutionsSubscriptionPayload
@@ -4197,7 +5153,7 @@ type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   connect(where: ConnectSubscriptionWhereInput): ConnectSubscriptionPayload
   channels(where: ChannelsSubscriptionWhereInput): ChannelsSubscriptionPayload
-  discussion(where: DiscussionSubscriptionWhereInput): DiscussionSubscriptionPayload
+  message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
 }
 
 """
@@ -4229,16 +5185,23 @@ input UserCreateInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileCreateOneInput
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateManyWithoutUsersInput
-  favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  channels: ChannelsCreateManyWithoutParticipantsInput
+  myChannels: ChannelsCreateManyWithoutAuthorInput
+}
+
+input UserCreateManyWithoutChannelsInput {
+  create: [UserCreateWithoutChannelsInput!]
+  connect: [UserWhereUniqueInput!]
 }
 
 input UserCreateManyWithoutCountryInput {
@@ -4248,11 +5211,6 @@ input UserCreateManyWithoutCountryInput {
 
 input UserCreateManyWithoutDepartmentInput {
   create: [UserCreateWithoutDepartmentInput!]
-  connect: [UserWhereUniqueInput!]
-}
-
-input UserCreateManyWithoutFavouritesInput {
-  create: [UserCreateWithoutFavouritesInput!]
   connect: [UserWhereUniqueInput!]
 }
 
@@ -4286,8 +5244,8 @@ input UserCreateOneWithoutConnectToInput {
   connect: UserWhereUniqueInput
 }
 
-input UserCreateOneWithoutMyDiscussionsInput {
-  create: UserCreateWithoutMyDiscussionsInput
+input UserCreateOneWithoutMyChannelsInput {
+  create: UserCreateWithoutMyChannelsInput
   connect: UserWhereUniqueInput
 }
 
@@ -4305,15 +5263,44 @@ input UserCreateWithoutArticlesInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileCreateOneInput
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateManyWithoutUsersInput
-  favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
+  channels: ChannelsCreateManyWithoutParticipantsInput
+  myChannels: ChannelsCreateManyWithoutAuthorInput
+}
+
+input UserCreateWithoutChannelsInput {
+  email: String!
+  username: String
+  password: String!
+  firstname: String!
+  lastname: String!
+  gender: String!
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  verified: Boolean
+  avatar: FileCreateOneInput
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateManyWithoutUsersInput
+  messages: MessageCreateOneInput
+  connectTo: ConnectCreateManyWithoutToInput
+  ConectFrom: ConnectCreateManyWithoutFromInput
+  articles: ArticleCreateManyWithoutAuthorInput
+  myChannels: ChannelsCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutConectFromInput {
@@ -4330,15 +5317,17 @@ input UserCreateWithoutConectFromInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileCreateOneInput
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateManyWithoutUsersInput
-  favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
   articles: ArticleCreateManyWithoutAuthorInput
+  channels: ChannelsCreateManyWithoutParticipantsInput
+  myChannels: ChannelsCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutConnectToInput {
@@ -4355,15 +5344,17 @@ input UserCreateWithoutConnectToInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileCreateOneInput
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateManyWithoutUsersInput
-  favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  messages: MessageCreateOneInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  channels: ChannelsCreateManyWithoutParticipantsInput
+  myChannels: ChannelsCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutCountryInput {
@@ -4380,15 +5371,17 @@ input UserCreateWithoutCountryInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileCreateOneInput
   institution: InstitutionsCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateManyWithoutUsersInput
-  favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  channels: ChannelsCreateManyWithoutParticipantsInput
+  myChannels: ChannelsCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutDepartmentInput {
@@ -4405,40 +5398,17 @@ input UserCreateWithoutDepartmentInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileCreateOneInput
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
   interest: InterestCreateManyWithoutUsersInput
-  favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
-}
-
-input UserCreateWithoutFavouritesInput {
-  email: String!
-  username: String
-  password: String!
-  firstname: String!
-  lastname: String!
-  gender: String!
-  type: String
-  userType: String
-  newConnectNot: Boolean
-  newCommentNot: Boolean
-  newMessageNot: Boolean
-  newProfileNot: Boolean
-  completedProfile: Int
-  avatar: FileCreateOneInput
-  country: CountryCreateOneWithoutUsersInput
-  institution: InstitutionsCreateOneWithoutUsersInput
-  department: DepartmentCreateOneWithoutUsersInput
-  interest: InterestCreateManyWithoutUsersInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
-  connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
-  articles: ArticleCreateManyWithoutAuthorInput
+  channels: ChannelsCreateManyWithoutParticipantsInput
+  myChannels: ChannelsCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutInstitutionInput {
@@ -4455,15 +5425,17 @@ input UserCreateWithoutInstitutionInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileCreateOneInput
   country: CountryCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateManyWithoutUsersInput
-  favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  channels: ChannelsCreateManyWithoutParticipantsInput
+  myChannels: ChannelsCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutInterestInput {
@@ -4480,18 +5452,20 @@ input UserCreateWithoutInterestInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileCreateOneInput
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
-  favourites: DiscussionCreateManyWithoutFavouritesInput
-  myDiscussions: DiscussionCreateOneWithoutAuthorInput
+  messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  channels: ChannelsCreateManyWithoutParticipantsInput
+  myChannels: ChannelsCreateManyWithoutAuthorInput
 }
 
-input UserCreateWithoutMyDiscussionsInput {
+input UserCreateWithoutMyChannelsInput {
   email: String!
   username: String
   password: String!
@@ -4505,15 +5479,17 @@ input UserCreateWithoutMyDiscussionsInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileCreateOneInput
   country: CountryCreateOneWithoutUsersInput
   institution: InstitutionsCreateOneWithoutUsersInput
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateManyWithoutUsersInput
-  favourites: DiscussionCreateManyWithoutFavouritesInput
+  messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  channels: ChannelsCreateManyWithoutParticipantsInput
 }
 
 """
@@ -4563,6 +5539,8 @@ enum UserOrderByInput {
   newProfileNot_DESC
   completedProfile_ASC
   completedProfile_DESC
+  verified_ASC
+  verified_DESC
 }
 
 type UserPreviousValues {
@@ -4582,6 +5560,7 @@ type UserPreviousValues {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
 }
 
 type UserSubscriptionPayload {
@@ -4633,16 +5612,18 @@ input UserUpdateDataInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileUpdateOneInput
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateManyWithoutUsersInput
-  favourites: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  channels: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels: ChannelsUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateInput {
@@ -4659,16 +5640,27 @@ input UserUpdateInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileUpdateOneInput
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateManyWithoutUsersInput
-  favourites: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  channels: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels: ChannelsUpdateManyWithoutAuthorInput
+}
+
+input UserUpdateManyWithoutChannelsInput {
+  create: [UserCreateWithoutChannelsInput!]
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutChannelsInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutChannelsInput!]
 }
 
 input UserUpdateManyWithoutCountryInput {
@@ -4687,15 +5679,6 @@ input UserUpdateManyWithoutDepartmentInput {
   delete: [UserWhereUniqueInput!]
   update: [UserUpdateWithWhereUniqueWithoutDepartmentInput!]
   upsert: [UserUpsertWithWhereUniqueWithoutDepartmentInput!]
-}
-
-input UserUpdateManyWithoutFavouritesInput {
-  create: [UserCreateWithoutFavouritesInput!]
-  connect: [UserWhereUniqueInput!]
-  disconnect: [UserWhereUniqueInput!]
-  delete: [UserWhereUniqueInput!]
-  update: [UserUpdateWithWhereUniqueWithoutFavouritesInput!]
-  upsert: [UserUpsertWithWhereUniqueWithoutFavouritesInput!]
 }
 
 input UserUpdateManyWithoutInstitutionInput {
@@ -4752,13 +5735,13 @@ input UserUpdateOneWithoutConnectToInput {
   upsert: UserUpsertWithoutConnectToInput
 }
 
-input UserUpdateOneWithoutMyDiscussionsInput {
-  create: UserCreateWithoutMyDiscussionsInput
+input UserUpdateOneWithoutMyChannelsInput {
+  create: UserCreateWithoutMyChannelsInput
   connect: UserWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: UserUpdateWithoutMyDiscussionsDataInput
-  upsert: UserUpsertWithoutMyDiscussionsInput
+  update: UserUpdateWithoutMyChannelsDataInput
+  upsert: UserUpsertWithoutMyChannelsInput
 }
 
 input UserUpdateWithoutArticlesDataInput {
@@ -4775,15 +5758,44 @@ input UserUpdateWithoutArticlesDataInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileUpdateOneInput
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateManyWithoutUsersInput
-  favourites: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
+  channels: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels: ChannelsUpdateManyWithoutAuthorInput
+}
+
+input UserUpdateWithoutChannelsDataInput {
+  email: String
+  username: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  verified: Boolean
+  avatar: FileUpdateOneInput
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateManyWithoutUsersInput
+  messages: MessageUpdateOneInput
+  connectTo: ConnectUpdateManyWithoutToInput
+  ConectFrom: ConnectUpdateManyWithoutFromInput
+  articles: ArticleUpdateManyWithoutAuthorInput
+  myChannels: ChannelsUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutConectFromDataInput {
@@ -4800,15 +5812,17 @@ input UserUpdateWithoutConectFromDataInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileUpdateOneInput
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateManyWithoutUsersInput
-  favourites: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  channels: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels: ChannelsUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutConnectToDataInput {
@@ -4825,15 +5839,17 @@ input UserUpdateWithoutConnectToDataInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileUpdateOneInput
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateManyWithoutUsersInput
-  favourites: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  messages: MessageUpdateOneInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  channels: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels: ChannelsUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutCountryDataInput {
@@ -4850,15 +5866,17 @@ input UserUpdateWithoutCountryDataInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileUpdateOneInput
   institution: InstitutionsUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateManyWithoutUsersInput
-  favourites: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  channels: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels: ChannelsUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutDepartmentDataInput {
@@ -4875,40 +5893,17 @@ input UserUpdateWithoutDepartmentDataInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileUpdateOneInput
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
   interest: InterestUpdateManyWithoutUsersInput
-  favourites: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
-}
-
-input UserUpdateWithoutFavouritesDataInput {
-  email: String
-  username: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type: String
-  userType: String
-  newConnectNot: Boolean
-  newCommentNot: Boolean
-  newMessageNot: Boolean
-  newProfileNot: Boolean
-  completedProfile: Int
-  avatar: FileUpdateOneInput
-  country: CountryUpdateOneWithoutUsersInput
-  institution: InstitutionsUpdateOneWithoutUsersInput
-  department: DepartmentUpdateOneWithoutUsersInput
-  interest: InterestUpdateManyWithoutUsersInput
-  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
-  connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
-  articles: ArticleUpdateManyWithoutAuthorInput
+  channels: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels: ChannelsUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutInstitutionDataInput {
@@ -4925,15 +5920,17 @@ input UserUpdateWithoutInstitutionDataInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileUpdateOneInput
   country: CountryUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateManyWithoutUsersInput
-  favourites: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  channels: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels: ChannelsUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutInterestDataInput {
@@ -4950,18 +5947,20 @@ input UserUpdateWithoutInterestDataInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileUpdateOneInput
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
-  favourites: DiscussionUpdateManyWithoutFavouritesInput
-  myDiscussions: DiscussionUpdateOneWithoutAuthorInput
+  messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  channels: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels: ChannelsUpdateManyWithoutAuthorInput
 }
 
-input UserUpdateWithoutMyDiscussionsDataInput {
+input UserUpdateWithoutMyChannelsDataInput {
   email: String
   username: String
   password: String
@@ -4975,15 +5974,22 @@ input UserUpdateWithoutMyDiscussionsDataInput {
   newMessageNot: Boolean
   newProfileNot: Boolean
   completedProfile: Int
+  verified: Boolean
   avatar: FileUpdateOneInput
   country: CountryUpdateOneWithoutUsersInput
   institution: InstitutionsUpdateOneWithoutUsersInput
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateManyWithoutUsersInput
-  favourites: DiscussionUpdateManyWithoutFavouritesInput
+  messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
   ConectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  channels: ChannelsUpdateManyWithoutParticipantsInput
+}
+
+input UserUpdateWithWhereUniqueWithoutChannelsInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutChannelsDataInput!
 }
 
 input UserUpdateWithWhereUniqueWithoutCountryInput {
@@ -4994,11 +6000,6 @@ input UserUpdateWithWhereUniqueWithoutCountryInput {
 input UserUpdateWithWhereUniqueWithoutDepartmentInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutDepartmentDataInput!
-}
-
-input UserUpdateWithWhereUniqueWithoutFavouritesInput {
-  where: UserWhereUniqueInput!
-  data: UserUpdateWithoutFavouritesDataInput!
 }
 
 input UserUpdateWithWhereUniqueWithoutInstitutionInput {
@@ -5031,9 +6032,15 @@ input UserUpsertWithoutConnectToInput {
   create: UserCreateWithoutConnectToInput!
 }
 
-input UserUpsertWithoutMyDiscussionsInput {
-  update: UserUpdateWithoutMyDiscussionsDataInput!
-  create: UserCreateWithoutMyDiscussionsInput!
+input UserUpsertWithoutMyChannelsInput {
+  update: UserUpdateWithoutMyChannelsDataInput!
+  create: UserCreateWithoutMyChannelsInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutChannelsInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutChannelsDataInput!
+  create: UserCreateWithoutChannelsInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutCountryInput {
@@ -5046,12 +6053,6 @@ input UserUpsertWithWhereUniqueWithoutDepartmentInput {
   where: UserWhereUniqueInput!
   update: UserUpdateWithoutDepartmentDataInput!
   create: UserCreateWithoutDepartmentInput!
-}
-
-input UserUpsertWithWhereUniqueWithoutFavouritesInput {
-  where: UserWhereUniqueInput!
-  update: UserUpdateWithoutFavouritesDataInput!
-  create: UserCreateWithoutFavouritesInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutInstitutionInput {
@@ -5659,6 +6660,11 @@ input UserWhereInput {
   All values greater than or equal the given value.
   """
   completedProfile_gte: Int
+  verified: Boolean
+  """
+  All values that are not equal to given value.
+  """
+  verified_not: Boolean
   avatar: FileWhereInput
   country: CountryWhereInput
   institution: InstitutionsWhereInput
@@ -5666,10 +6672,7 @@ input UserWhereInput {
   interest_every: InterestWhereInput
   interest_some: InterestWhereInput
   interest_none: InterestWhereInput
-  favourites_every: DiscussionWhereInput
-  favourites_some: DiscussionWhereInput
-  favourites_none: DiscussionWhereInput
-  myDiscussions: DiscussionWhereInput
+  messages: MessageWhereInput
   connectTo_every: ConnectWhereInput
   connectTo_some: ConnectWhereInput
   connectTo_none: ConnectWhereInput
@@ -5679,6 +6682,12 @@ input UserWhereInput {
   articles_every: ArticleWhereInput
   articles_some: ArticleWhereInput
   articles_none: ArticleWhereInput
+  channels_every: ChannelsWhereInput
+  channels_some: ChannelsWhereInput
+  channels_none: ChannelsWhereInput
+  myChannels_every: ChannelsWhereInput
+  myChannels_some: ChannelsWhereInput
+  myChannels_none: ChannelsWhereInput
 }
 
 input UserWhereUniqueInput {
