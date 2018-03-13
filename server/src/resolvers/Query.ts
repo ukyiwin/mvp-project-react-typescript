@@ -38,10 +38,7 @@ export const Query = {
   },
 
   articles(parent, args, ctx: Context, info) {
-    return ctx.db.query.articles({ where: { 
-        isPublished: true
-      } 
-    }, info);
+    return ctx.db.query.articles({}, info);
   },
 
   getDepartment(parent, { idInstitution }, ctx: Context, info) {

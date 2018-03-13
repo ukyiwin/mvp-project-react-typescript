@@ -90,7 +90,7 @@ interface State {
 class App extends React.Component<Props & ChildProps<Response, {}>, State> {
 
   state = {
-    isAuthenticated: false,
+    isAuthenticated: true,
     token: '',
     expireToken: false,
     avatar: '',
@@ -135,7 +135,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
       this.setState({
         isAuthenticated : true,
       });
-      this.loadMe();
+      // this.loadMe();
     }
   }
 
@@ -155,28 +155,33 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
       console.log(data.me);
       this.setState({me: data.me});
 
-      this.setState({avatar: data.me.avata.url});
-      // tslint:disable-next-line:no-console
-      console.log(this.state.avatar);
-
       if (data.me.completedProfile === 1) {
         this.props.history.replace('/add/profile');
       } else if (data.me.completedProfile === 2) {
         this.props.history.replace('/add/interest');
       }
+
+      this.setState({avatar: data.me.avata.url});
+      // tslint:disable-next-line:no-console
+      console.log(this.state.avatar);
       
-    }).catch((error) => {
+    }).catch(error => {
       // localStorage.removeItem(AUTH_TOKEN);
-      this.setState({isAuthenticated: false});
-      this.setState({token: ''});
-      this.setState({expireToken: false});
+      if (error) {
+        // tslint:disable-next-line:no-console
+        console.log('grooom');
+        // this.setState({isAuthenticated: false});
+        this.setState({token: ''});
+        this.setState({expireToken: false});
+      }
     });
   }
 
   render() {
     const { isAuthenticated } = this.state;
     // const userAuthed = token ? true : false;
-    // tslint:disable-next-line:no-unused-expression
+    // tslint:disable-next-line:no-console
+    console.log(isAuthenticated);
 
     return (
         <div className="uk-offcanvas-content bg-muted" style={{height: '91vh'}}>

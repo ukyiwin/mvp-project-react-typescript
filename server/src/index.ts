@@ -40,7 +40,9 @@ const server = new GraphQLServer({
     }),
   }),
 });
-server.express.use(cors(corsOptions));
+
+server.express.use(cors());
+
 server.express.post(
   '/upload',
   fileApi({
