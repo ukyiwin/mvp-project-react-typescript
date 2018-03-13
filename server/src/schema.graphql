@@ -11,6 +11,9 @@ type Query {
   getInstitution(idCountry: ID!): [Institutions!]
   getDepartment(idInstitutions: ID!): [Department!]
   allInterest: [Interest!]!
+  getChannelChat: [Channels!]!
+  getDirectChat: [Channels!]!
+  getMessages(channelId: ID!): [Message!]!
 }
 
 type Mutation {
@@ -20,7 +23,11 @@ type Mutation {
   addInterest(interests: [String!]!): User!
   login(email: String!, password: String!): AuthPayload!
   createDraft(title: String!, text: String!): Post!
+  createChannel(name: String!): Channels!
+  createDirect(userId: ID!): Channels!
   publish(id: ID!): Post!
+  createArticle(title: String, body: String, tags: [String!]!, category: [String!]!): Article!
+  publishArticle(id: ID!): Article!
   deletePost(id: ID!): Post!
 }
 

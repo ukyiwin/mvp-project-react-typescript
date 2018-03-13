@@ -84,6 +84,7 @@ interface State {
   token: string;
   expireToken: boolean;
   me: object;
+  avatar: string;
 }
 
 class App extends React.Component<Props & ChildProps<Response, {}>, State> {
@@ -92,6 +93,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     isAuthenticated: false,
     token: '',
     expireToken: false,
+    avatar: '',
     me: {
       id: '',
       firstname: '',
@@ -153,12 +155,16 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
       console.log(data.me);
       this.setState({me: data.me});
 
+      this.setState({avatar: data.me.avata.url});
+      // tslint:disable-next-line:no-console
+      console.log(this.state.avatar);
+
       if (data.me.completedProfile === 1) {
         this.props.history.replace('/add/profile');
       } else if (data.me.completedProfile === 2) {
         this.props.history.replace('/add/interest');
       }
-
+      
     }).catch((error) => {
       // localStorage.removeItem(AUTH_TOKEN);
       this.setState({isAuthenticated: false});
@@ -173,12 +179,12 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     // tslint:disable-next-line:no-unused-expression
 
     return (
-        <div className="uk-offcanvas-content uk-background-muted">
+        <div className="uk-offcanvas-content bg-muted" style={{height: '91vh'}}>
           <Helmet>
             <title>Unizonn</title>
             <meta name="an inclusive community" content="Unizonn community" />
           </Helmet>
-          <PrivateHeader isAuthenticated={isAuthenticated} logout={this._logout} />
+          <PrivateHeader avatar={this.state.avatar} isAuthenticated={isAuthenticated} logout={this._logout} />
           <Switch>
             <Route 
               exact={true}

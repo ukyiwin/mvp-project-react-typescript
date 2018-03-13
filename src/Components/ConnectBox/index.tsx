@@ -5,6 +5,7 @@ import { ErrorComponent, LoadingComponent } from 'Components/EmptyStates';
 import { ARTICLES } from 'Graphql/Query';
 import { Article } from 'CustomTypings/schema';
 import PersonItem from 'Components/PersonItem';
+import Label from 'Components/Label';
 
 type Response = {
   articles: Article[];
@@ -20,8 +21,8 @@ export default ConnectBox(({ loading, articles, error, refetch }) => {
   if (loading) { return <LoadingComponent />; }
   if (error) { return <ErrorComponent refresh={refetch} />; }
   return (
-    <div className="uk-card uk-card-default">
-      <p>Suggested Connections</p>
+    <div className="uk-card">
+      <Label text="Suggested Connection" />
       <InfiniteScroll
             pageStart={0}
             hasMore={false}

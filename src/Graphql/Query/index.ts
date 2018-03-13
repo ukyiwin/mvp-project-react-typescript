@@ -71,12 +71,6 @@ export const ME = gql`
   query me {
     me{
       ...userFragment
-      favourites{
-        id
-        title
-        content
-        slug
-      }
       connectTo{
         to{
           email

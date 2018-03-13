@@ -6,6 +6,7 @@ import { User } from 'CustomTypings/schema';
 import InterestItemSlim from 'Components/InterestItemSlim';
 import ConnectBox from 'Components/ConnectBox';
 import glamorous from 'glamorous';
+import Label from 'Components/Label';
 
 interface DefaultProps {
   // tslint:disable-next-line:no-any
@@ -33,20 +34,20 @@ const PublicLayout: React.SFC<DefaultProps & Response> = (props) => {
       exact={true}
       render={matctProps =>
         isAuthenticated ?
-          ( <div className="uk-flex uk-padding-small">
+          ( <div className="uk-flex uk-padding-small@s" style={{paddingTop: 10}}>
               <div className="uk-width-1-5 uk-margin-right uk-margin-left uk-visible@m">
                 <div 
-                  className="uk-card uk-card-small uk-card-default un-highlight uk-width-1-1"
-                  style={{marginBottom: 10, padding: 0, paddingTop: 10}}
+                  className="uk-card uk-width-1-1"
+                  style={{marginBottom: 10, padding: 0}}
                 >
+                  <Label text="My Interests" />
                   <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Csharp" />
                   <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Csharp" />
                   <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Csharp" />
                   <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Csharp" />
-                  <button className="uk-button uk-button-primary uk-width-1-1">See More Interest</button>
                 </div>
                 <div className="uk-card uk-card-default uk-width-1-1 uk-padding-small">
-                    <div><p>Copyright @ 2018, All Rights Reserved, Unizonn</p></div>
+                    <div><p>Copyright @ 2018, Unizonn</p></div>
                     <ul className="listItem uk-text-center">
                         <li>
                           <A href="#">Terms</A>

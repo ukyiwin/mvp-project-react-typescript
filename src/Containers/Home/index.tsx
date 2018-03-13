@@ -37,7 +37,7 @@ class Home extends React.Component<Props> {
           <title>Unizonn | Home</title>
           <meta name="an inclusive community" content="Unizonn community" />
         </Helmet>
-        <WriteModal me={this.props.me} />
+        <WriteModal />
         <div className="uk-flex">
           <ArticleList />
         </div>

@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { compose, withApollo, graphql } from 'react-apollo';
-import StackGrid from 'react-stack-grid';
-import InterestItem from 'Components/InterestItem';
+import { compose, graphql } from 'react-apollo';
 import { User } from 'CustomTypings/schema';
 import { ME } from 'Graphql/Query';
 import './style.css';

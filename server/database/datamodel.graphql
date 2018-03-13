@@ -18,6 +18,24 @@ type Post {
   text: String!
 }
 
+type Library {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  location: Location!
+  name: String!
+  description: String
+}
+
+type Location {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  longitude: Float!
+  latitude: Float!
+  type: String!
+}
+
 type Article {
   id: ID! @unique
   createdAt: DateTime!
@@ -25,7 +43,11 @@ type Article {
   isPublished: Boolean! @default(value: "false")
   title: String!
   body: String!
+  tags: [String!]!
+  category: [Interest!]!
   type: Arcticletype
+  link: String @unique
+  description: String
   author: User! @relation(name: "ArticleOwner")
 }
 
@@ -63,7 +85,7 @@ type Interest {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
-  name: String!
+  name: String! @unique
   avatar: String!
   users: [User!]! @relation(name: "UserInterest")
 }
@@ -83,18 +105,20 @@ type User {
   institution: Institutions @relation(name: "UserInstitution")
   department: Department @relation(name: "UserDepartment")
   interest: [Interest!]! @relation(name: "UserInterest")
-  favourites: [Discussion!]! @relation(name: "UserFavDiscussion")
-  myDiscussions: Discussion @relation(name: "DiscussionOnUser")
+  messages: Message @relation(name: "UserMessage")
   connectTo: [Connect!]! @relation(name: "ConectTo")
   ConectFrom: [Connect!]! @relation(name: "ConectFrom")
   type: String @default(value: "Student")
   userType: String
   articles: [Article!]!  @relation(name: "ArticleOwner")
+  channels: [Channels!]! @relation(name: "ChannelUser")
+  myChannels: [Channels!]! @relation(name: "ChannelOwner")
   newConnectNot: Boolean @default(value: true)
   newCommentNot: Boolean @default(value: true)
   newMessageNot: Boolean @default(value: true)
   newProfileNot: Boolean @default(value: true)
   completedProfile: Int @default(value: 1)
+  verified: Boolean @default(value: false)
 }
 
 type Connect {
@@ -111,21 +135,20 @@ type Channels {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
-  author: User!
-  private: Boolean! @default(value: "false")
+  avatar: String
+  author: User! @relation(name: "ChannelOwner")
+  type: ChannelType
+  messages: [Message!]! @relation(name: "ChannelMessage")
+  participants: [User!]! @relation(name: "ChannelUser")
 }
 
-type Discussion {
+type Message {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
-  title: String!
-  slug: String
-  content: String!
-  tags: [String!]!
-  favourites: [User!]! @relation(name: "UserFavDiscussion")
-  author: User! @relation(name: "DiscussionOnUser")
-  private: Boolean! @default(value: "false")
+  cahnnel: Channels! @relation(name: "ChannelMessage")
+  text: String!
+  user: User! @relation(name: "UserUser")
 }
 
 
@@ -150,4 +173,10 @@ enum Arcticletype{
 enum Gender{
   Male
   Female
+}
+
+enum ChannelType{
+  Group
+  Direct
+  Channel
 }

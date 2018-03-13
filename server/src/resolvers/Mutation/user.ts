@@ -56,7 +56,7 @@ export const user = {
         temp.push(tmp);
       }
     });
-
+    
     return ctx.db.mutation.updateUser(
       {
         where: {

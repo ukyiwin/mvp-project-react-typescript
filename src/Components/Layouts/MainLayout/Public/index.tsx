@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
-import { FooterPublic } from 'Components/Layouts/FooterPublic';
 import './style.css';
 
 interface DefaultProps {
@@ -27,9 +26,6 @@ const PublicLayout: React.SFC<DefaultProps> = (props) => {
         isAuthenticated !== true ?
           (<React.Fragment>
             <Component {...matchProps} refreshToken={refreshToken}/>
-            <div style={{bottom: 0}}>
-              <FooterPublic />
-            </div>
           </React.Fragment>)
           : ( <Redirect to={{ pathname: '/home' }} /> )
       }

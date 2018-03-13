@@ -1,52 +1,37 @@
+/* import * as anime from 'anime';
+// tslint:disable
 /**
- * main.js
- * http://www.codrops.com
- *
- * Licensed under the MIT license.
- * http://www.opensource.org/licenses/mit-license.php
- * 
- * Copyright 2017, Codrops
- * http://www.codrops.com
- */
-;(function(window) {
-
-	'use strict';
-
-	/**
 	 * StackFx: The parent class.
-	 */
-	function StackFx(el) {
-		this.DOM = {};
-		this.DOM.el = el;
-		this.DOM.stack = this.DOM.el.querySelector('.stack');
-		this.DOM.stackItems = [].slice.call(this.DOM.stack.children);
-		this.totalItems = this.DOM.stackItems.length;
-		this.DOM.img = this.DOM.stack.querySelector('.stack__figure > .stack__img');
-		this.DOM.caption = this.DOM.el.querySelector('.grid__item-caption');
-		this.DOM.title = this.DOM.caption.querySelector('.grid__item-title');
-		this.DOM.columns = {left: this.DOM.caption.querySelector('.column--left'), right: this.DOM.caption.querySelector('.column--right')};
-	}
-
-	StackFx.prototype._removeAnimeTargets = function() {
+	 *
+function StackFx(el) {
+		window.DOM = {};
+		window.DOM.el = el;
+		window.DOM.stack = this.DOM.el.querySelector('.stack');
+		window.DOM.stackItems = [].slice.call(this.DOM.stack.children);
+		window.totalItems = this.DOM.stackItems.length;
+		window.DOM.img = this.DOM.stack.querySelector('.stack__figure > .stack__img');
+		window.DOM.caption = this.DOM.el.querySelector('.grid__item-caption');
+		window.DOM.title = this.DOM.caption.querySelector('.grid__item-title');
+    window.DOM.columns = {left: this.DOM.caption.querySelector('.column--left'),
+     right: this.DOM.caption.querySelector('.column--right')};
+}
+StackFx.prototype._removeAnimeTargets = function() {
 		anime.remove(this.DOM.stackItems);
 		anime.remove(this.DOM.img);
 		anime.remove(this.DOM.title);
 		anime.remove(this.DOM.columns.left);
 		anime.remove(this.DOM.columns.right);
-	};
-
-	/************************************************************************
+};
+/************************************************************************
 	 * VegaFx.
-	 ************************************************************************/
-	function VegaFx(el) {
+	 ************************************************************************
+function VegaFx(el) {
 		StackFx.call(this, el);
 		this._initEvents();
-	}
-
-	VegaFx.prototype = Object.create(StackFx.prototype);
-	VegaFx.prototype.constructor = VegaFx;
-
-	VegaFx.prototype._initEvents = function() {
+}
+VegaFx.prototype = Object.create(StackFx.prototype);
+VegaFx.prototype.constructor = VegaFx;
+VegaFx.prototype._initEvents = function() {
 		var self = this;
 		this._mouseenterFn = function() {
 			self._removeAnimeTargets();
@@ -58,13 +43,12 @@
 		};
 		this.DOM.stack.addEventListener('mouseenter', this._mouseenterFn);
 		this.DOM.stack.addEventListener('mouseleave', this._mouseleaveFn);
-	};
-
-	VegaFx.prototype._in = function() {
+};
+VegaFx.prototype._in = function() {
 		var self = this;
 
 		this.DOM.stackItems.map(function(e, i) {
-			e.style.opacity = i !== self.totalItems - 1 ? 0.2*i+0.2 : 1
+			e.style.opacity = i !== self.totalItems - 1 ? 0.2*i+0.2 : 1;
 		});
 
 		anime({
@@ -139,9 +123,8 @@
 				{value: 1, delay: 100, duration: 400, easing: 'linear'}
 			]
 		});
-	};
-
-	VegaFx.prototype._out = function() {
+};
+VegaFx.prototype._out = function() {
 		var self = this;
 
 		anime({
@@ -176,7 +159,7 @@
 			],
 			opacity: {
 				value: function(target, index, cnt) {
-					return index !== cnt - 1 ? 0 : 1
+					return index !== cnt - 1 ? 0 : 1;
 				},
 				duration: 900,
 				delay: 200,
@@ -206,36 +189,31 @@
 			translateY: 0,
 			opacity: 1
 		});
+};
+
+/************************************************************************
+ * CastorFx.
+ ************************************************************************
+function CastorFx(el) {
+	StackFx.call(this, el);
+	this._initEvents();
+}
+CastorFx.prototype = Object.create(StackFx.prototype);
+CastorFx.prototype.constructor = CastorFx;
+CastorFx.prototype._initEvents = function() {
+	var self = this;
+	this._mouseenterFn = function() {
+		self._removeAnimeTargets();
+		self._in();
 	};
-
-	window.VegaFx = VegaFx;
-	
-	/************************************************************************
-	 * CastorFx.
-	 ************************************************************************/
-	function CastorFx(el) {
-		StackFx.call(this, el);
-		this._initEvents();
-	}
-
-	CastorFx.prototype = Object.create(StackFx.prototype);
-	CastorFx.prototype.constructor = CastorFx;
-
-	CastorFx.prototype._initEvents = function() {
-		var self = this;
-		this._mouseenterFn = function() {
-			self._removeAnimeTargets();
-			self._in();
-		};
-		this._mouseleaveFn = function() {
-			self._removeAnimeTargets();
-			self._out();
-		};
-		this.DOM.stack.addEventListener('mouseenter', this._mouseenterFn);
-		this.DOM.stack.addEventListener('mouseleave', this._mouseleaveFn);
+	this._mouseleaveFn = function() {
+		self._removeAnimeTargets();
+		self._out();
 	};
-
-	CastorFx.prototype._in = function() {
+	this.DOM.stack.addEventListener('mouseenter', this._mouseenterFn);
+	this.DOM.stack.addEventListener('mouseleave', this._mouseleaveFn);
+};
+CastorFx.prototype._in = function() {
 		var self = this;
 
 		anime({
@@ -262,7 +240,7 @@
 				easing: 'linear'
 			},
 			delay: function(target, index, cnt) {
-				return (cnt-index-1)*100
+				return (cnt-index-1)*100;
 			}
 		});
 		
@@ -279,61 +257,55 @@
 			easing: 'easeOutExpo',
 			translateZ: 30
 		});
-	};
+};
 
-	CastorFx.prototype._out = function() {
-		var self = this;
+CastorFx.prototype._out = function() {
+  var self = this;
+  
+	anime({
+		targets: this.DOM.stackItems,
+		duration: 1000,
+		easing: 'easeOutExpo',
+		translateZ: 0,
+		opacity: function(target, index, cnt) {
+			return index !== cnt - 1 ? 0 : 1;
+		}
+  });
+  
+	anime({
+		targets: this.DOM.img,
+		duration: 1000,
+		easing: 'easeOutExpo',
+		scale: 1
+	});
+	 anime({
+		targets: this.DOM.title,
+		duration: 1000,
+		easing: 'easeOutExpo',
+		translateZ: 0
+	});
+	 anime({
+		targets: [this.DOM.columns.left, this.DOM.columns.right],
+		duration: 500,
+		easing: 'easeOutExpo',
+		delay: function(target, index) {
+			return index === 0 ? 150 : 200;
+		},
+		translateX: 0,
+		translateY: 0
+	});
+};
 
-		anime({
-			targets: this.DOM.stackItems,
-			duration: 1000,
-			easing: 'easeOutExpo',
-			translateZ: 0,
-			opacity: function(target, index, cnt) {
-				return index !== cnt - 1 ? 0 : 1
-			}
-		});
-
-		anime({
-			targets: this.DOM.img,
-			duration: 1000,
-			easing: 'easeOutExpo',
-			scale: 1
-		});
-
-		anime({
-			targets: this.DOM.title,
-			duration: 1000,
-			easing: 'easeOutExpo',
-			translateZ: 0
-		});
-
-		anime({
-			targets: [this.DOM.columns.left, this.DOM.columns.right],
-			duration: 500,
-			easing: 'easeOutExpo',
-			delay: function(target, index) {
-				return index === 0 ? 150 : 200;
-			},
-			translateX: 0,
-			translateY: 0
-		});
-	};
-
-	window.CastorFx = CastorFx;
-
-	/************************************************************************
+/************************************************************************
 	 * HamalFx.
-	 ************************************************************************/
-	function HamalFx(el) {
-		StackFx.call(this, el);
+	 ************************************************************************
+function HamalFx(el) {
+  StackFx.call(this, el);
 		this._initEvents();
-	}
-
-	HamalFx.prototype = Object.create(StackFx.prototype);
-	HamalFx.prototype.constructor = HamalFx;
-
-	HamalFx.prototype._initEvents = function() {
+}
+HamalFx.prototype = Object.create(StackFx.prototype);
+HamalFx.prototype.constructor = HamalFx;
+HamalFx.prototype._initEvents = function() {
 		var self = this;
 		this._mouseenterFn = function() {
 			self._removeAnimeTargets();
@@ -345,13 +317,12 @@
 		};
 		this.DOM.stack.addEventListener('mouseenter', this._mouseenterFn);
 		this.DOM.stack.addEventListener('mouseleave', this._mouseleaveFn);
-	};
-
-	HamalFx.prototype._in = function() {
+};
+HamalFx.prototype._in = function() {
 		var self = this;
 
 		this.DOM.stackItems.map(function(e, i) {
-			e.style.opacity = i !== self.totalItems - 1 ? 0.2*i+0.2 : 1
+			e.style.opacity = i !== self.totalItems - 1 ? 0.2*i+0.2 : 1;
 		});
 
 		anime({
@@ -378,7 +349,7 @@
 				}
 			},
 			delay: function(target, index, cnt) {
-				return (cnt-index-1)*30
+				return (cnt-index-1)*30;
 			}
 		});
 		
@@ -398,9 +369,8 @@
 			}
 		});
 		
-	};
-
-	HamalFx.prototype._out = function() {
+};
+HamalFx.prototype._out = function() {
 		var self = this;
 
 		anime({
@@ -411,7 +381,7 @@
 			rotate: 0,
 			scale: 1,
 			opacity: function(target, index, cnt) {
-				return index !== cnt - 1 ? 0 : 1
+				return index !== cnt - 1 ? 0 : 1;
 			}
 		});
 
@@ -428,22 +398,17 @@
 			easing: 'easeOutExpo',
 			translateX: 0
 		});
-	};
-
-	window.HamalFx = HamalFx;
-
-	/************************************************************************
-	 * PolarisFx.
-	 ************************************************************************/
-	function PolarisFx(el) {
+};
+/************************************************************************
+ * PolarisFx.
+ ************************************************************************
+function PolarisFx(el) {
 		StackFx.call(this, el);
 		this._initEvents();
-	}
-
-	PolarisFx.prototype = Object.create(StackFx.prototype);
-	PolarisFx.prototype.constructor = PolarisFx;
-
-	PolarisFx.prototype._initEvents = function() {
+}
+PolarisFx.prototype = Object.create(StackFx.prototype);
+PolarisFx.prototype.constructor = PolarisFx;
+PolarisFx.prototype._initEvents = function() {
 		var self = this;
 		this._mouseenterFn = function() {
 			self._removeAnimeTargets();
@@ -455,16 +420,13 @@
 		};
 		this.DOM.stack.addEventListener('mouseenter', this._mouseenterFn);
 		this.DOM.stack.addEventListener('mouseleave', this._mouseleaveFn);
-	};
-
-	PolarisFx.prototype._in = function() {
-		var self = this;
-
-		this.DOM.stackItems.map(function(e, i) {
-			e.style.opacity = i !== self.totalItems - 1 ? 0.2*i+0.2 : 1
-		});
-
-		anime({
+};
+PolarisFx.prototype._in = function() {
+	var self = this;
+	this.DOM.stackItems.map(function(e, i) {
+		e.style.opacity = i !== self.totalItems - 1 ? 0.2*i+0.2 : 1;
+	});
+	anime({
 			targets: this.DOM.stackItems,
 			duration: 1000,
 			easing: 'easeOutElastic',
@@ -472,25 +434,22 @@
 				return index*10;
 			},
 			delay: function(target, index, cnt) {
-				return (cnt-index-1)*20
+				return (cnt-index-1)*20;
 			}
-		});
-
-		anime({
+	});
+	anime({
 			targets: this.DOM.img,
 			duration: 500,
 			easing: 'easeOutExpo',
 			scale: 0.7
-		});
-
-		anime({
+	});
+	anime({
 			targets: this.DOM.title,
 			duration: 1000,
 			easing: 'easeOutElastic',
 			translateZ: 30
-		});
-
-		anime({
+	});
+	anime({
 			targets: [this.DOM.columns.left, this.DOM.columns.right],
 			duration: 1000,
 			easing: 'easeOutElastic',
@@ -498,10 +457,9 @@
 				return index === 0 ? -30 : 30;
 			},
 			translateY: 30
-		});
-	};
-
-	PolarisFx.prototype._out = function() {
+	});
+};
+PolarisFx.prototype._out = function() {
 		var self = this;
 
 		anime({
@@ -510,7 +468,7 @@
 			easing: 'easeOutExpo',
 			translateZ: 0,
 			opacity: function(target, index, cnt) {
-				return index !== cnt - 1 ? 0 : 1
+				return index !== cnt - 1 ? 0 : 1;
 			}
 		});
 
@@ -539,22 +497,17 @@
 			translateX: 0,
 			translateY: 0
 		});
-	};
-
-	window.PolarisFx = PolarisFx;
-
-	/************************************************************************
+};
+/************************************************************************
 	 * AlphardFx.
-	 ************************************************************************/
-	function AlphardFx(el) {
+	 ************************************************************************
+function AlphardFx(el) {
 		StackFx.call(this, el);
 		this._initEvents();
-	}
-
-	AlphardFx.prototype = Object.create(StackFx.prototype);
-	AlphardFx.prototype.constructor = AlphardFx;
-
-	AlphardFx.prototype._initEvents = function() {
+}
+AlphardFx.prototype = Object.create(StackFx.prototype);
+AlphardFx.prototype.constructor = AlphardFx;
+AlphardFx.prototype._initEvents = function() {
 		var self = this;
 		this._mouseenterFn = function() {
 			self._removeAnimeTargets();
@@ -566,25 +519,24 @@
 		};
 		this.DOM.stack.addEventListener('mouseenter', this._mouseenterFn);
 		this.DOM.stack.addEventListener('mouseleave', this._mouseleaveFn);
-	};
-
-	AlphardFx.prototype._in = function() {
+};
+AlphardFx.prototype._in = function() {
 		var self = this;
 
 		this.DOM.stackItems.map(function(e, i) {
-			e.style.opacity = i !== self.totalItems - 1 ? 0.2*i+0.2 : 1
+			e.style.opacity = i !== self.totalItems - 1 ? 0.2*i+0.2 : 1;
 		});
 
 		anime({
 			targets: this.DOM.stackItems,
 			opacity: {
 				value: function(target, index, cnt) {
-					return index !== cnt - 1 ? [0,0.2*index+0.2] : 1
+					return index !== cnt - 1 ? [0,0.2*index+0.2] : 1;
 				},
 				duration: 1,
 				easing: 'linear',
 				delay: function(target, index, cnt) {
-					return (cnt-index-1)*30 + 250
+					return (cnt-index-1)*30 + 250;
 				}
 			},
 			rotate: [
@@ -602,7 +554,7 @@
 				}
 			],
 			delay: function(target, index, cnt) {
-				return (cnt-index-1)*30
+				return (cnt-index-1)*30;
 			}
 		});
 		
@@ -631,9 +583,8 @@
 				return index === 0 ? -5 : 5;
 			}
 		});
-	};
-
-	AlphardFx.prototype._out = function() {
+};
+AlphardFx.prototype._out = function() {
 		var self = this;
 
 		anime({
@@ -642,7 +593,7 @@
 			easing: 'easeOutExpo',
 			rotate: 0,
 			opacity: function(target, index, cnt) {
-				return index !== cnt - 1 ? 0 : 1
+				return index !== cnt - 1 ? 0 : 1;
 			}
 		});
 
@@ -659,22 +610,17 @@
 			easing: 'easeOutExpo',
 			translateY: 0
 		});
-	};
-
-	window.AlphardFx = AlphardFx;
-
-	/************************************************************************
+};
+/************************************************************************
 	 * AltairFx.
-	 ************************************************************************/
-	function AltairFx(el) {
+	 ************************************************************************
+function AltairFx(el) {
 		StackFx.call(this, el);
 		this._initEvents();
-	}
-
-	AltairFx.prototype = Object.create(StackFx.prototype);
-	AltairFx.prototype.constructor = AltairFx;
-
-	AltairFx.prototype._initEvents = function() {
+}
+AltairFx.prototype = Object.create(StackFx.prototype);
+AltairFx.prototype.constructor = AltairFx;
+AltairFx.prototype._initEvents = function() {
 		var self = this;
 		this._mouseenterFn = function() {
 			self._removeAnimeTargets();
@@ -686,13 +632,12 @@
 		};
 		this.DOM.stack.addEventListener('mouseenter', this._mouseenterFn);
 		this.DOM.stack.addEventListener('mouseleave', this._mouseleaveFn);
-	};
-
-	AltairFx.prototype._in = function() {
+};
+AltairFx.prototype._in = function() {
 		var self = this;
 
 		this.DOM.stackItems.map(function(e, i) {
-			e.style.opacity = i !== self.totalItems - 1 ? 0.2*i+0.2 : 1
+			e.style.opacity = i !== self.totalItems - 1 ? 0.2*i+0.2 : 1;
 		});
 
 		anime({
@@ -706,7 +651,7 @@
 				return -1*index*4;
 			},
 			delay: function(target, index, cnt) {
-				return (cnt-index-1)*30
+				return (cnt-index-1)*30;
 			}
 		});
 		
@@ -732,9 +677,8 @@
 				return index === 0 ? 30 : 20;
 			}
 		});
-	};
-
-	AltairFx.prototype._out = function() {
+};
+AltairFx.prototype._out = function() {
 		var self = this;
 
 		anime({
@@ -742,7 +686,7 @@
 			duration: 500,
 			easing: 'easeOutExpo',
 			opacity: function(target, index, cnt) {
-				return index !== cnt - 1 ? 0 : 1
+				return index !== cnt - 1 ? 0 : 1;
 			},
 			translateZ: 0,
 			rotateX: 0
@@ -761,22 +705,17 @@
 			easing: 'easeOutExpo',
 			translateY: 0
 		});
-	};
-
-	window.AltairFx = AltairFx;
-
-	/************************************************************************
+};
+/************************************************************************
 	 * RigelFx.
-	 ************************************************************************/
-	function RigelFx(el) {
+	 ************************************************************************
+function RigelFx(el) {
 		StackFx.call(this, el);
 		this._initEvents();
-	}
-
-	RigelFx.prototype = Object.create(StackFx.prototype);
-	RigelFx.prototype.constructor = RigelFx;
-
-	RigelFx.prototype._initEvents = function() {
+}
+RigelFx.prototype = Object.create(StackFx.prototype);
+RigelFx.prototype.constructor = RigelFx;
+RigelFx.prototype._initEvents = function() {
 		var self = this;
 		this._mouseenterFn = function() {
 			self._removeAnimeTargets();
@@ -788,9 +727,8 @@
 		};
 		this.DOM.stack.addEventListener('mouseenter', this._mouseenterFn);
 		this.DOM.stack.addEventListener('mouseleave', this._mouseleaveFn);
-	};
-
-	RigelFx.prototype._in = function() {
+};
+RigelFx.prototype._in = function() {
 		var self = this;
 
 		anime({
@@ -805,7 +743,7 @@
 			},
 			opacity: {
 				value: function(target, index, cnt) {
-					return index !== cnt - 1 ? [0,0.1*index+0.1] : 1
+					return index !== cnt - 1 ? [0,0.1*index+0.1] : 1;
 				},
 				duration: 1,
 				easing: 'linear',
@@ -885,9 +823,8 @@
 				{value: 1, delay: 300, duration: 400, easing: 'linear'}
 			]
 		});
-	};
-
-	RigelFx.prototype._out = function() {
+};
+RigelFx.prototype._out = function() {
 		var self = this;
 
 		anime({
@@ -896,7 +833,7 @@
 			easing: 'easeOutElastic',
 			translateZ: 0,
 			opacity: function(target, index, cnt) {
-				return index !== cnt - 1 ? 0 : 1
+				return index !== cnt - 1 ? 0 : 1;
 			},
 			translateY: 0
 		});
@@ -923,22 +860,17 @@
 			translateY: 0,
 			opacity: 1
 		});
-	};
-
-	window.RigelFx = RigelFx;
-
-	/************************************************************************
+};
+/************************************************************************
 	 * CanopusFx.
-	 ************************************************************************/
-	function CanopusFx(el) {
+	 ************************************************************************
+function CanopusFx(el) {
 		StackFx.call(this, el);
 		this._initEvents();
-	}
-
-	CanopusFx.prototype = Object.create(StackFx.prototype);
-	CanopusFx.prototype.constructor = CanopusFx;
-
-	CanopusFx.prototype._initEvents = function() {
+}
+CanopusFx.prototype = Object.create(StackFx.prototype);
+CanopusFx.prototype.constructor = CanopusFx;
+CanopusFx.prototype._initEvents = function() {
 		var self = this;
 		this._mouseenterFn = function() {
 			self._removeAnimeTargets();
@@ -950,13 +882,12 @@
 		};
 		this.DOM.stack.addEventListener('mouseenter', this._mouseenterFn);
 		this.DOM.stack.addEventListener('mouseleave', this._mouseleaveFn);
-	};
-
-	CanopusFx.prototype._in = function() {
+};
+CanopusFx.prototype._in = function() {
 		var self = this;
 
 		this.DOM.stackItems.map(function(e, i) {
-			e.style.opacity = i !== self.totalItems - 1 ? 0 : 1
+			e.style.opacity = i !== self.totalItems - 1 ? 0 : 1;
 		});
 
 		var self = this;
@@ -1001,7 +932,7 @@
 			scaleX: [
 				{ 
 					value: function(target, index, cnt) {
-						return index === cnt-1 ? 1.1 : 1;
+						return index === cnt- 1 ? 1.1 : 1;
 					},
 					duration: 200, 
 					easing: 'easeOutExpo' 
@@ -1014,12 +945,12 @@
 			],
 			opacity: {
 				value: function(target, index, cnt) {
-					return index === cnt-1 ? 1 : [0,0.2*index+0.2];
+					return index === cnt - 1 ? 1 : [0,0.2*index + 0.2];
 				},
 				duration: 200,
 				easing: 'linear',
 				delay: function(target, index, cnt) {
-					return (cnt-index-1)*70 + 200;
+					return (cnt-index-1) * 70 + 200;
 				}
 			}
 		});
@@ -1047,9 +978,8 @@
 			translateY: -30,
 			delay: 200
 		});
-	};
-
-	CanopusFx.prototype._out = function() {
+};
+CanopusFx.prototype._out = function() {
 		var self = this;
 
 		anime({
@@ -1061,7 +991,7 @@
 			scaleY: 1,
 			scaleX: 1,
 			opacity: function(target, index, cnt) {
-				return index !== cnt - 1 ? 0 : 1
+				return index !== cnt - 1 ? 0 : 1;
 			}
 		});
 
@@ -1078,22 +1008,17 @@
 			easing: 'easeOutExpo',
 			translateY: 0
 		});
-	};
-
-	window.CanopusFx = CanopusFx;
-
-	/************************************************************************
+};
+/************************************************************************
 	 * PolluxFx.
-	 ************************************************************************/
-	function PolluxFx(el) {
+	 ************************************************************************
+function PolluxFx(el) {
 		StackFx.call(this, el);
 		this._initEvents();
-	}
-
-	PolluxFx.prototype = Object.create(StackFx.prototype);
-	PolluxFx.prototype.constructor = PolluxFx;
-
-	PolluxFx.prototype._initEvents = function() {
+}
+PolluxFx.prototype = Object.create(StackFx.prototype);
+PolluxFx.prototype.constructor = PolluxFx;
+PolluxFx.prototype._initEvents = function() {
 		var self = this;
 		this._mouseenterFn = function() {
 			self._removeAnimeTargets();
@@ -1105,9 +1030,8 @@
 		};
 		this.DOM.stack.addEventListener('mouseenter', this._mouseenterFn);
 		this.DOM.stack.addEventListener('mouseleave', this._mouseleaveFn);
-	};
-
-	PolluxFx.prototype._in = function() {
+};
+PolluxFx.prototype._in = function() {
 		var self = this;
 
 		anime({
@@ -1115,16 +1039,16 @@
 			duration: 1000,
 			opacity: {
 				value: function(target, index, cnt) {
-					return index !== cnt - 1 ? [0,0.1*index+0.1] : 1
+					return index !== cnt - 1 ? [0,0.1*index + 0.1] : 1;
 				},
 				easing: 'linear',
 				delay: function(target, index, cnt) {
-					return (cnt-index-1)*60;
+					return (cnt-index-1) * 60;
 				}
 			},
 			translateY: {
 				value: function(target, index) {
-					return -1*index*10;
+					return -1*index * 10;
 				}, 
 				easing: 'easeInOutCubic'
 			},
@@ -1136,7 +1060,7 @@
 				value: 360,
 				easing: 'easeInOutCubic',
 				delay: function(target, index, cnt) {
-					return (cnt-index-1)*60;
+					return (cnt-index-1) * 60;
 				}
 			}
 		});
@@ -1178,9 +1102,8 @@
 				}
 			]
 		});
-	};
-
-	PolluxFx.prototype._out = function() {
+};
+PolluxFx.prototype._out = function() {
 		var self = this;
 
 		anime({
@@ -1188,11 +1111,11 @@
 			duration: 1000,
 			opacity: {
 				value: function(target, index, cnt) {
-					return index !== cnt - 1 ? 0 : 1
+					return index !== cnt - 1 ? 0 : 1;
 				},
 				easing: 'linear',
 				delay: function(target, index) {
-					return index*60;
+					return index * 60;
 				},
 			},
 			translateY: {
@@ -1207,7 +1130,7 @@
 				value: 0,
 				easing: 'easeInOutCubic',
 				delay: function(target, index, cnt) {
-					return (cnt-index-1)*60;
+					return (cnt-index-1) * 60;
 				}
 			}
 		});
@@ -1226,22 +1149,17 @@
 			rotate: 0,
 			opacity: 1
 		});
-	};
-
-	window.PolluxFx = PolluxFx;
-
-	/************************************************************************
+};
+/************************************************************************
 	 * DenebFx.
-	 ************************************************************************/
-	function DenebFx(el) {
+	 ************************************************************************
+function DenebFx(el) {
 		StackFx.call(this, el);
 		this._initEvents();
-	}
-
-	DenebFx.prototype = Object.create(StackFx.prototype);
-	DenebFx.prototype.constructor = DenebFx;
-
-	DenebFx.prototype._initEvents = function() {
+}
+DenebFx.prototype = Object.create(StackFx.prototype);
+DenebFx.prototype.constructor = DenebFx;
+DenebFx.prototype._initEvents = function() {
 		var self = this;
 		this._mouseenterFn = function() {
 			self._removeAnimeTargets();
@@ -1253,9 +1171,8 @@
 		};
 		this.DOM.stack.addEventListener('mouseenter', this._mouseenterFn);
 		this.DOM.stack.addEventListener('mouseleave', this._mouseleaveFn);
-	};
-
-	DenebFx.prototype._in = function() {
+};
+DenebFx.prototype._in = function() {
 		var self = this;
 
 		anime({
@@ -1264,10 +1181,10 @@
 			easing: [0.2,1,0.3,1],
 			rotate: 360,
 			opacity: function(target, index, cnt) {
-				return index !== cnt - 1 ? [0,0.1*index+0.1] : 1
+				return index !== cnt - 1 ? [0,0.1*index + 0.1] : 1;
 			},
 			delay: function(target, index, cnt) {
-				return (cnt-index-1)*30;
+				return (cnt-index-1) * 30;
 			}
 		});
 
@@ -1288,9 +1205,8 @@
 			rotate: [-20,0],
 			opacity: 1
 		});
-	};
-
-	DenebFx.prototype._out = function() {
+};
+DenebFx.prototype._out = function() {
 		var self = this;
 
 		anime({
@@ -1299,17 +1215,17 @@
 			easing: [0.2,1,0.3,1],
 			rotate: 0,
 			opacity: function(target, index, cnt) {
-				return index !== cnt - 1 ? [0,0.1*index+0.1] : 1
+				return index !== cnt - 1 ? [0,0.1*index + 0.1] : 1;
 			},
 			delay: function(target, index, cnt) {
-				return (cnt-index-1)*30;
+				return (cnt-index-1) * 30;
 			}
 		});
 
 		anime({
 			targets: this.DOM.img,
 			duration: 1750,
-			easing: [0.2,1,0.3,1],
+			easing: [0.2, 1, 0.3, 1],
 			scale: 1,
 			rotate: 0
 		});
@@ -1318,11 +1234,19 @@
 			targets: [this.DOM.columns.left, this.DOM.columns.right],
 			duration: 400,
 			easing: 'easeInCubic',
-			rotate: [0,-10],
+			rotate: [0, -10],
 			opacity: 0
 		});
-	};
-
-	window.DenebFx = DenebFx;
-
-})(window);
+};
+export {
+  DenebFx,
+  PolarisFx,
+  CastorFx,
+  HamalFx,
+  VegaFx,
+  AlphardFx,
+  AltairFx,
+  RigelFx,
+  CanopusFx,
+  PolluxFx
+};*/

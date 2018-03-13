@@ -7,8 +7,8 @@
 
 .listItem li {
 	display: inline-block;
-	margin-left: 5px;
-	margin-right: 5px;
+  margin-right: 5px;
+  align-self: flex-start;
+  border-radius: 10px;
 	-webkit-border-radius: 10px;
-            border-radius: 10px;
 }

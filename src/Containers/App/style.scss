@@ -33,7 +33,9 @@ button {
   border-radius: 67rem
 }
 
-
+.bg-muted {
+  background-color: #e1eaf1;
+}
 
 // Import only the needed components
 @import "spectre.css/src/_variables";
