@@ -1,17 +1,12 @@
 import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { compose, graphql } from 'react-apollo';
-import { User } from 'CustomTypings/schema';
-import { ME } from 'Graphql/Query';
 import './style.css';
 
 type Props = {
   // tslint:disable-next-line:no-any
   me: any,
   // tslint:disable-next-line:no-any
-  refreshToken?: any,
-  // tslint:disable-next-line:no-any
-  client?: any
+  refreshToken?: any
 };
 
 class FinishPage extends React.Component<RouteComponentProps & Props> {
@@ -28,6 +23,4 @@ class FinishPage extends React.Component<RouteComponentProps & Props> {
   }
 }
 
-export default withRouter(compose(
-  graphql<User, {}, Props>(ME, {name: 'me'}),
-)(FinishPage));
+export default withRouter(FinishPage);
