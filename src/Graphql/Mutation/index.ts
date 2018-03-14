@@ -50,3 +50,12 @@ export const ADD_INTERESTS = gql`
   }
   ${USER_FRAGMENT}
 `;
+
+export const CREATE_ARTICLE = gql`
+  mutation createArticle($interests: [String!]!){
+    addInterest(interests: $interests){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;

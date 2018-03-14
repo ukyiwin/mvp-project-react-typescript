@@ -79,10 +79,7 @@ const PrivateHeader = (props: Props) => {
                   />
                 </li>
               </ul>
-                  <div data-uk-drop="mode: click">
-                      <div className="uk-card uk-card-body uk-card-default">Lorem ipsum dolor sit amet, 
-                      consectetur adipiscing elit, sed do eiusmod tempor incididunt.</div>
-                  </div>
+              
               <ul className="uk-navbar-nav">
                 <li>
                   <a href="#">
@@ -123,6 +120,21 @@ const PrivateHeader = (props: Props) => {
                 <li className="uk-animation-toggle">
                   <Link className="uk-animation-shake" to="/message" uk-icon="icon: bell; ratio: 1.5"/>
                 </li>
+                <div data-uk-drop="mode: click" className="uk-width-large uk-width-1-1@s">
+                    <div className="uk-card uk-card-body uk-card-default">
+                    <li className="unread-notification">
+                      <a>
+                        <span />
+                        fgfggfg
+                        <div className="notification-metadata">
+                          ghghghh
+                          <br/>
+                          <small>{'20/2/2018'}</small>
+                        </div>
+                      </a>
+                    </li>
+                    </div>
+                </div>
               </ul>
               <ul className="uk-navbar-nav">
                 <li>
@@ -167,14 +179,14 @@ const PrivateHeader = (props: Props) => {
                 hidden
               >
                 <div className="uk-navbar-item uk-width-expand">
-                    <form className="uk-search uk-search-navbar uk-width-1-1">
-                        <input 
-                          className="uk-search-input" 
-                          type="search" 
-                          placeholder="Search..." 
-                          autoFocus={true}
-                        />
-                    </form>
+                  <form className="uk-search uk-search-navbar uk-width-1-1">
+                      <input 
+                        className="uk-search-input" 
+                        type="search" 
+                        placeholder="Search..." 
+                        autoFocus={true}
+                      />
+                  </form>
                 </div>
                 <a 
                   className="uk-navbar-toggle"

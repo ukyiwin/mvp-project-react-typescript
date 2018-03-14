@@ -10,9 +10,12 @@ type Props = {
 // tslint:disable-next-line:typedef
 const PersonItem = (props: Props) => {
   return (
-    <div className="uk-flex uk-text-center">
+    <div className="uk-flex boxit">
         <Avatar url={props.url} size={40} presence={false}/>
-        <span className="uk-text-middle uk-margin-small" style={{marginLeft: 10}} >{props.name}</span>
+        <div className="" style={{marginLeft: 10}}>
+          <span>{props.name}</span> <br/>
+          <span>I like to eat alot everyday with</span>
+        </div>
     </div>
   );
 };

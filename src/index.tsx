@@ -102,6 +102,18 @@ String.prototype.truncString = function (this: string, add: string, max: number)
   return (this.length > max ? this.substring(0, max ) + add : this);
 };
 
+String.prototype.lenInMin = function (this: string) {
+  
+    let min = this.split(' ').length / 250;
+    if (min <= 0 || min === 0) {
+      return 'less than a minute read';
+    } else if (min <= 0.9 || min === 0.9) {
+      return 'less than a minute read';
+    } else {
+      return `${min} min read`;
+    }
+};
+
 ReactDOM.render(
   <ApolloProvider client={client}>
     <MuiThemeProvider>

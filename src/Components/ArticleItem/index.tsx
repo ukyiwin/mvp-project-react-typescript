@@ -34,7 +34,9 @@ class ArticleItem extends React.Component<Props> {
             <div className="uk-width-auto post-info">
                 <PopoverLink>{author.firstname} {author.lastname}</PopoverLink>
                 <p className="uk-text-meta uk-margin-remove-top">
-                  <time dateTime={article.createdAt}><TimeAgo className="timeago" date={article.createdAt} /></time>
+                  <time dateTime={article.createdAt}>
+                    <TimeAgo className="timeago" date={article.createdAt} /> ago &#149; {article.body.lenInMin()}
+                  </time>
                 </p>
             </div>
           </div>

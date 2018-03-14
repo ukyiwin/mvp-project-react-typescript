@@ -15,6 +15,7 @@ declare global {
   interface Window { anima(): any; effects: any; slideshow: any; }
   interface String {
     truncString(lstr: string, add: number) : string;
+    lenInMin(): string;
   }
 }
 
@@ -22,4 +23,5 @@ interface Window { anima(): any;  effects: any; slideshow: any; }
 
 interface String {
   truncString(lstr: string, add: number) : string;
+  lenInMin(): string;
 }
