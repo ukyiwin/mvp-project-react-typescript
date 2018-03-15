@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Route, Redirect, withRouter, Link } from 'react-router-dom';
 import Calendar from 'Components/Calender';
+import {  } from 'react-apollo';
 import './style.css';
 import { User } from 'CustomTypings/schema';
 import InterestItemSlim from 'Components/InterestItemSlim';
@@ -40,11 +41,14 @@ const PublicLayout: React.SFC<DefaultProps & Response> = (props) => {
                   className="uk-card uk-width-1-1"
                   style={{marginBottom: 10, padding: 0}}
                 >
-                  <Label text="My Interests" />
+                  <Label text="Top Interests" />
+                  <div className="tags-wrapper undefined">
                   <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Technology" />
                   <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Business" />
+                  <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Art" />
                   <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Real Estate" />
                   <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Art" />
+                  </div>
                 </div>
                 <div className="uk-card uk-card-default uk-width-1-1 uk-padding-small">
                     <div><p>Copyright @ 2018, Unizonn</p></div>

@@ -199,7 +199,6 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
 export default withRouter(compose(
   withApollo,
   graphql<Response, InputProps, Props>(LOGIN_USER, {
-    name: 'login',
-    options: { variables: { email: '', password: '' } },
+    name: 'login'
   })
 )(Login));

@@ -12,6 +12,7 @@ import Button from 'anchor-ui/button';
 import IconChannels from 'anchor-ui/icons/icon-channels';
 import IconPeople from 'anchor-ui/icons/icon-people';
 import './style.css';
+// import { compose } from 'react-apollo';
 
 const ChatDetail = asyncComponent({
   resolve: () => System.import('Containers/ChatDetail'),
@@ -31,8 +32,25 @@ const items = [{
   primaryText: 'Rex Raphael',
   secondaryText: 'Been long brava',
   image: 'http://www.ghgh.gh/hjh.png'
+}, {
+  primaryText: 'Rex Raphael',
+  secondaryText: 'Been long brava',
+  image: 'http://www.ghgh.gh/hjh.png'
+}, {
+  primaryText: 'Rex Raphael',
+  secondaryText: 'Been long brava',
+  image: 'http://www.ghgh.gh/hjh.png'
+}, {
+  primaryText: 'Rex Raphael',
+  secondaryText: 'Been long brava',
+  image: 'http://www.ghgh.gh/hjh.png'
+}, {
+  primaryText: 'Rex Raphael',
+  secondaryText: 'Been long brava',
+  image: 'http://www.ghgh.gh/hjh.png'
 }];
 export default class Forum extends React.Component {
+  
   render() {
     return (
       <ThemeProvider color="#f2912c">
@@ -45,12 +63,14 @@ export default class Forum extends React.Component {
             style={{height: '91vh', width: '100vw'}}
             className="uk-width-1-1 uk-flex"
           >
-            <div className="uk-width-1-4 un-border-right" style={{backgroundColor: '#ffffff'}}>
+            <div id="chat-list" className="uk-width-1-4 un-border-right" style={{backgroundColor: '#ffffff'}}>
               
               <SearchBox placeholder="Search for channels and chat" />
               <List
+                id="chat-list"
+
                 header="Channels"
-                style={{height: '43.3vh'}}
+                style={{height: '43.1vh'}}
               >
                 {items.map((item, index) => (
                   <ListItem
@@ -61,6 +81,7 @@ export default class Forum extends React.Component {
                 ))}
               </List>
               <List
+                id="chat-list"
                 header="Direct Chat"
                 style={{height: '40vh'}}
               >
@@ -100,3 +121,9 @@ export default class Forum extends React.Component {
     );
   }
 }
+/*
+export default withRouter(compose(
+  withApollo,
+  graphql<Response, InputProps, Props>(GET_C, {
+    name: 'login'})
+)(Forum));*/

@@ -23,3 +23,37 @@ export const USER_FRAGMENT = gql`
     completedProfile
   }
 `;
+
+/**
+ * @description user graphql fragment
+ */
+export const ARTICLE_FRAGMENT = gql`
+  fragment articleFragment on Article {
+    id
+    title
+    body
+    description
+    isPublished
+    createdAt
+    updatedAt
+    tags
+    author{
+      id
+      username
+      email
+      avatar{
+        url
+      }
+      firstname
+      lastname
+    }
+    category{
+      id
+      name
+      avatar
+      createdAt
+    }
+    link
+    type
+  }
+`;

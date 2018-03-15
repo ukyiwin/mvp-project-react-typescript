@@ -931,7 +931,6 @@ input ChannelsUpdateManyWithoutParticipantsInput {
 input ChannelsUpdateOneWithoutMessagesInput {
   create: ChannelsCreateWithoutMessagesInput
   connect: ChannelsWhereUniqueInput
-  disconnect: Boolean
   delete: Boolean
   update: ChannelsUpdateWithoutMessagesDataInput
   upsert: ChannelsUpsertWithoutMessagesInput
@@ -4046,7 +4045,6 @@ input LocationUpdateInput {
 input LocationUpdateOneInput {
   create: LocationCreateInput
   connect: LocationWhereUniqueInput
-  disconnect: Boolean
   delete: Boolean
   update: LocationUpdateDataInput
   upsert: LocationUpsertNestedInput
@@ -5702,7 +5700,6 @@ input UserUpdateManyWithoutInterestInput {
 input UserUpdateOneInput {
   create: UserCreateInput
   connect: UserWhereUniqueInput
-  disconnect: Boolean
   delete: Boolean
   update: UserUpdateDataInput
   upsert: UserUpsertNestedInput
@@ -5711,7 +5708,6 @@ input UserUpdateOneInput {
 input UserUpdateOneWithoutArticlesInput {
   create: UserCreateWithoutArticlesInput
   connect: UserWhereUniqueInput
-  disconnect: Boolean
   delete: Boolean
   update: UserUpdateWithoutArticlesDataInput
   upsert: UserUpsertWithoutArticlesInput
@@ -5720,7 +5716,6 @@ input UserUpdateOneWithoutArticlesInput {
 input UserUpdateOneWithoutConectFromInput {
   create: UserCreateWithoutConectFromInput
   connect: UserWhereUniqueInput
-  disconnect: Boolean
   delete: Boolean
   update: UserUpdateWithoutConectFromDataInput
   upsert: UserUpsertWithoutConectFromInput
@@ -5729,7 +5724,6 @@ input UserUpdateOneWithoutConectFromInput {
 input UserUpdateOneWithoutConnectToInput {
   create: UserCreateWithoutConnectToInput
   connect: UserWhereUniqueInput
-  disconnect: Boolean
   delete: Boolean
   update: UserUpdateWithoutConnectToDataInput
   upsert: UserUpsertWithoutConnectToInput
@@ -5738,7 +5732,6 @@ input UserUpdateOneWithoutConnectToInput {
 input UserUpdateOneWithoutMyChannelsInput {
   create: UserCreateWithoutMyChannelsInput
   connect: UserWhereUniqueInput
-  disconnect: Boolean
   delete: Boolean
   update: UserUpdateWithoutMyChannelsDataInput
   upsert: UserUpsertWithoutMyChannelsInput

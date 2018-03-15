@@ -88,6 +88,17 @@ export const Query = {
     }, info);
   },
 
+  getAllChat(parent, args, ctx: Context, info) {
+    const id = getUserId(ctx);
+    return ctx.db.query.channelses({
+      where: {
+        participants_every: {
+          id
+        },
+      }
+    }, info);
+  },
+
   getMessages(parent, {channelId}, ctx: Context, info) {
     const id = getUserId(ctx);
     return ctx.db.query.messages({

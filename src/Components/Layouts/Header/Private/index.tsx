@@ -2,6 +2,7 @@ import * as React from 'react';
 // import UIkit from 'uikit/src/js/uikit';
 import { Link } from 'react-router-dom';
 import { User } from 'CustomTypings/schema';
+import SearchContainer from 'Components/SearchContainer';
 // import * as Logo from 'Assets/main/unizonn.png';
 
 type Props = {
@@ -53,20 +54,9 @@ const PrivateHeader = (props: Props) => {
               <li><Link to="/home" className="uk-light">Connections</Link></li>
             </ul>
             <div className="nav-overlay uk-navbar-right uk-visible@s">
-              <form 
-                style={{maxWidth: 250}}
-                className="uk-search uk-search-navbar uk-visible@m"
-              >
-                <span 
-                  // tslint:disable-next-line:jsx-boolean-value
-                  data-uk-search-icon 
-                />
-                <input 
-                  className="uk-search-input" 
-                  type="search" 
-                  placeholder="Search unizonn..."
-                />
-              </form>
+              <div className="main-searchbar">
+              <SearchContainer />
+              </div>
               {props.isAuthenticated ? <React.Fragment>
               <ul className="uk-iconnav">
                 <li className="uk-animation-toggle">
@@ -179,14 +169,7 @@ const PrivateHeader = (props: Props) => {
                 hidden
               >
                 <div className="uk-navbar-item uk-width-expand">
-                  <form className="uk-search uk-search-navbar uk-width-1-1">
-                      <input 
-                        className="uk-search-input" 
-                        type="search" 
-                        placeholder="Search..." 
-                        autoFocus={true}
-                      />
-                  </form>
+                  <SearchContainer />
                 </div>
                 <a 
                   className="uk-navbar-toggle"

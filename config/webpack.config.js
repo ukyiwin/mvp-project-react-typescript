@@ -133,6 +133,14 @@ module.exports = {
     }, { 
       test: /vendor\/.+\.(jsx|js|tsx|ts)$/,
       loader: 'imports?jQuery=jquery,$=jquery,this=>window'
+    }, {
+      test: /\.js$/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['react', 'es2015', 'stage-2']
+        }
+      }
     },
     {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader?mimetype=application/font-woff"},
     {test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader?mimetype=application/font-woff"},
@@ -154,6 +162,10 @@ module.exports = {
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery"
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity,
     }),
     /** common plugins */
     new ProgressBarPlugin({

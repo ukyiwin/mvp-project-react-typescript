@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { asyncComponent } from 'react-async-component';
 import { Helmet } from 'react-helmet';
-import NotFound from '../NotFound';
+import NotFound from 'Containers/NotFound';
 import { PublicLayout, PrivateLayout, EmptyLayout, ProfileLayout } from 'Components/Layouts/MainLayout';
 import { isTokenExpired } from 'Utils/jwtHelper';
 import { AUTH_TOKEN } from '../../constants';
@@ -19,7 +19,15 @@ import './style.css';
 // const customHistory = createBrowserHistory();
 
 const Login = asyncComponent({
-  resolve: () => System.import('Containers/Auth/Login'),
+  resolve: () => new Promise(resolve =>
+    require.ensure(
+      [],
+      (require) => {
+        resolve(require('Containers/Auth/Login'));
+      },
+      'Login'
+    )
+  ),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
@@ -58,13 +66,33 @@ const Maps = asyncComponent({
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
+
 const PublicHome = asyncComponent({
-  resolve: () => System.import('Containers/HomePublic'),
+  resolve: () => new Promise(resolve =>
+    // Webpack's code splitting API w/naming
+    require.ensure(
+      [],
+      (require) => {
+        resolve(require('Containers/HomePublic'));
+      },
+      'HomePublic'
+    )
+  ),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
+
 const Home = asyncComponent({
-  resolve: () => System.import('Containers/Home'),
+  resolve: () => new Promise(resolve =>
+    // Webpack's code splitting API w/naming
+    require.ensure(
+      [],
+      (require) => {
+        resolve(require('Containers/Home'));
+      },
+      'Home'
+    )
+  ),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
@@ -91,7 +119,7 @@ interface State {
 class App extends React.Component<Props & ChildProps<Response, {}>, State> {
 
   state = {
-    isAuthenticated: true,
+    isAuthenticated: false,
     token: '',
     expireToken: false,
     avatar: '',
@@ -185,7 +213,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     console.log(isAuthenticated);
 
     return (
-        <div className="uk-offcanvas-content bg-muted" style={{ backgroundColor: '#f5f7f8'}}>
+        <div className="uk-offcanvas-content bg-muted" style={{ backgroundColor: '#e4e6eb'}}>
           <Helmet>
             <title>Unizonn</title>
             <meta name="an inclusive community" content="Unizonn community" />

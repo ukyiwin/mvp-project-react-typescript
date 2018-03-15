@@ -14,14 +14,14 @@ import  { RetryLink } from 'apollo-link-retry';
 import { onError } from 'apollo-link-error';
 import { ApolloProvider } from 'react-apollo';
 import resolvers from 'Graphql/Resolvers';
-import { MuiThemeProvider } from 'material-ui/styles';
 import registerServiceWorker from './registerServiceWorker';
+import asyncBootstrapper from 'react-async-bootstrapper';
+import { AsyncComponentProvider } from 'react-async-component';
 
 import './index.css';
 import App from './Containers/App';
 
 const AUTH_TOKEN = 'token';
-const supportsHistory = 'pushState' in window.history;
 
 // const queueLink = new QueueLink();
 
@@ -102,7 +102,7 @@ String.prototype.truncString = function (this: string, add: string, max: number)
   return (this.length > max ? this.substring(0, max ) + add : this);
 };
 
-String.prototype.lenInMin = function (this: string) {
+String.prototype.lengthInMinutes = function (this: string) {
   
     let min = this.split(' ').length / 250;
     if (min <= 0 || min === 0) {
@@ -114,15 +114,26 @@ String.prototype.lenInMin = function (this: string) {
     }
 };
 
-ReactDOM.render(
+// Does the user's browser support the HTML5 history API?
+// If the user's browser doesn't support the HTML5 history API then we
+// will force full page refreshes on each page change.
+const supportsHistory = 'pushState' in window.history;
+
+// Get any rehydrateState for the async components.
+// eslint-disable-next-line no-underscore-dangle
+const asyncComponentsRehydrateState = window.__ASYNC_COMPONENTS_REHYDRATE_STATE__;
+
+const app = (
   <ApolloProvider client={client}>
-    <MuiThemeProvider>
+    <AsyncComponentProvider rehydrateState={asyncComponentsRehydrateState}>
       <BrowserRouter forceRefresh={!supportsHistory} >
         <App />
       </BrowserRouter>
-    </MuiThemeProvider>
+    </AsyncComponentProvider>
   </ApolloProvider>
-  // tslint:disable-next-line:align
-  , document.getElementById('root') as HTMLElement
 );
+
+const container = document.getElementById('root') as HTMLElement;
+asyncBootstrapper(app).then(() => ReactDOM.render(app, container));
+
 registerServiceWorker();
