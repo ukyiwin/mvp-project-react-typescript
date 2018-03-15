@@ -24,7 +24,7 @@ class ArticleItem extends React.Component<Props> {
     return (
       <div 
         className="uk-card uk-card-small uk-card-default uk-width-1-1"
-        style={{ borderRadius: 1, marginBottom: 5 }}
+        style={{ borderRadius: 1, marginBottom: 15 }}
       >
         <div className="post-metadata uk-padding-remove-bottom uk-padding-small">
           <div className="uk-grid-small uk-flex" uk-grid={true} >
@@ -34,7 +34,9 @@ class ArticleItem extends React.Component<Props> {
             <div className="uk-width-auto post-info">
                 <PopoverLink>{author.firstname} {author.lastname}</PopoverLink>
                 <p className="uk-text-meta uk-margin-remove-top">
-                  <time dateTime={article.createdAt}><TimeAgo className="timeago" date={article.createdAt} /></time>
+                  <time dateTime={article.createdAt}>
+                    <TimeAgo className="timeago" date={article.createdAt} /> ago &#149; {article.body.lengthInMinutes()}
+                  </time>
                 </p>
             </div>
           </div>
@@ -57,16 +59,29 @@ class ArticleItem extends React.Component<Props> {
           className="post-stats clearfix uk-padding-small uk-padding-remove-horizontal" 
           style={{paddingTop: 1, paddingBottom: 1}}
         >
-          <div className="pull-left uk-padding-small">
+          <div className="uk-flex pull-left uk-padding-small">
             <Likebutton liked={false} likeCount={2} />
+            <a className="response-coun uk-margin-left uk-margin-right">
+              <span uk-icon="icon:  comment; ratio: 1.2"/> Comments (0)
+            </a>
+            <a className="response-count"><span uk-icon="icon:  forward; ratio: 1.2"/>Share</a>
           </div>
 
-          <div className="pull-right uk-padding-small">
-            0
-          </div>
-
-          <div className="response-count pull-right uk-padding-small">
-            <a className="response-count">Comments </a>
+          <div className="uk-flex  response-count pull-right uk-padding-small">
+            
+            <div className="dropdown">
+              <button  className="uk-button uk-button-text uk-margin-right" type="button">
+                <span uk-icon="icon: more; ratio: 1.3"/>
+              </button >
+              <div uk-drop="pos: bottom-right">
+                <ul className="menu">
+                  hello
+                </ul>
+              </div>
+            </div>
+            <button className="uk-button uk-button-text">
+              <span uk-icon="icon: bookmark; ratio: 1.2"/>
+            </button>
           </div>
         </div>
       </div>

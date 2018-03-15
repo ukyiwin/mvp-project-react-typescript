@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { USER_FRAGMENT } from 'Graphql/Fragment';
+import { USER_FRAGMENT, ARTICLE_FRAGMENT } from 'Graphql/Fragment';
 
 /**
  * @description user registration for graphql mutation
@@ -47,30 +47,10 @@ export const USER_EXIST = gql`
 export const ARTICLES = gql`
   query articles {
     articles{
-      id
-      tags
-      category{
-        name
-        avatar
-        id
-      }
-      link
-      description
-      author{
-        firstname
-        lastname
-        username
-        id
-        email
-      }
-      title
-      body
-      type
-      isPublished
-      createdAt
-      updatedAt
+      ...articleFragment
     }
   }
+  ${ARTICLE_FRAGMENT}
 `;
 
 /**
@@ -149,6 +129,20 @@ export const ALL_INSTITUTION = gql`
 export const ALL_INTEREST = gql`
   query allInterest{
     allInterest{
+      id
+      name
+      avatar
+      createdAt
+    }
+  }
+`;
+
+/**
+ * @description get all interest
+ */
+export const ALL_CHAT = gql`
+  query getAllChat{
+    getAllChat{
       id
       name
       avatar

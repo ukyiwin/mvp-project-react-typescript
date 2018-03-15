@@ -935,7 +935,6 @@ input ChannelsUpdateManyWithoutParticipantsInput {
 input ChannelsUpdateOneWithoutMessagesInput {
   create: ChannelsCreateWithoutMessagesInput
   connect: ChannelsWhereUniqueInput
-  disconnect: Boolean
   delete: Boolean
   update: ChannelsUpdateWithoutMessagesDataInput
   upsert: ChannelsUpsertWithoutMessagesInput
@@ -4050,7 +4049,6 @@ input LocationUpdateInput {
 input LocationUpdateOneInput {
   create: LocationCreateInput
   connect: LocationWhereUniqueInput
-  disconnect: Boolean
   delete: Boolean
   update: LocationUpdateDataInput
   upsert: LocationUpsertNestedInput
@@ -5706,7 +5704,6 @@ input UserUpdateManyWithoutInterestInput {
 input UserUpdateOneInput {
   create: UserCreateInput
   connect: UserWhereUniqueInput
-  disconnect: Boolean
   delete: Boolean
   update: UserUpdateDataInput
   upsert: UserUpsertNestedInput
@@ -5715,7 +5712,6 @@ input UserUpdateOneInput {
 input UserUpdateOneWithoutArticlesInput {
   create: UserCreateWithoutArticlesInput
   connect: UserWhereUniqueInput
-  disconnect: Boolean
   delete: Boolean
   update: UserUpdateWithoutArticlesDataInput
   upsert: UserUpsertWithoutArticlesInput
@@ -5724,7 +5720,6 @@ input UserUpdateOneWithoutArticlesInput {
 input UserUpdateOneWithoutConectFromInput {
   create: UserCreateWithoutConectFromInput
   connect: UserWhereUniqueInput
-  disconnect: Boolean
   delete: Boolean
   update: UserUpdateWithoutConectFromDataInput
   upsert: UserUpsertWithoutConectFromInput
@@ -5733,7 +5728,6 @@ input UserUpdateOneWithoutConectFromInput {
 input UserUpdateOneWithoutConnectToInput {
   create: UserCreateWithoutConnectToInput
   connect: UserWhereUniqueInput
-  disconnect: Boolean
   delete: Boolean
   update: UserUpdateWithoutConnectToDataInput
   upsert: UserUpsertWithoutConnectToInput
@@ -5742,7 +5736,6 @@ input UserUpdateOneWithoutConnectToInput {
 input UserUpdateOneWithoutMyChannelsInput {
   create: UserCreateWithoutMyChannelsInput
   connect: UserWhereUniqueInput
-  disconnect: Boolean
   delete: Boolean
   update: UserUpdateWithoutMyChannelsDataInput
   upsert: UserUpsertWithoutMyChannelsInput
@@ -7829,7 +7822,6 @@ export interface ConnectCreateWithoutFromInput {
 export interface UserUpdateOneWithoutArticlesInput {
   create?: UserCreateWithoutArticlesInput
   connect?: UserWhereUniqueInput
-  disconnect?: Boolean
   delete?: Boolean
   update?: UserUpdateWithoutArticlesDataInput
   upsert?: UserUpsertWithoutArticlesInput
@@ -7958,7 +7950,6 @@ export interface ChannelsUpsertWithoutMessagesInput {
 export interface UserUpdateOneWithoutConnectToInput {
   create?: UserCreateWithoutConnectToInput
   connect?: UserWhereUniqueInput
-  disconnect?: Boolean
   delete?: Boolean
   update?: UserUpdateWithoutConnectToDataInput
   upsert?: UserUpsertWithoutConnectToInput
@@ -8081,7 +8072,6 @@ export interface FileCreateInput {
 export interface LocationUpdateOneInput {
   create?: LocationCreateInput
   connect?: LocationWhereUniqueInput
-  disconnect?: Boolean
   delete?: Boolean
   update?: LocationUpdateDataInput
   upsert?: LocationUpsertNestedInput
@@ -9206,7 +9196,6 @@ export interface ConnectWhereUniqueInput {
 export interface ChannelsUpdateOneWithoutMessagesInput {
   create?: ChannelsCreateWithoutMessagesInput
   connect?: ChannelsWhereUniqueInput
-  disconnect?: Boolean
   delete?: Boolean
   update?: ChannelsUpdateWithoutMessagesDataInput
   upsert?: ChannelsUpsertWithoutMessagesInput
@@ -9236,7 +9225,6 @@ export interface UserUpsertWithWhereUniqueWithoutInstitutionInput {
 export interface UserUpdateOneWithoutMyChannelsInput {
   create?: UserCreateWithoutMyChannelsInput
   connect?: UserWhereUniqueInput
-  disconnect?: Boolean
   delete?: Boolean
   update?: UserUpdateWithoutMyChannelsDataInput
   upsert?: UserUpsertWithoutMyChannelsInput
@@ -9325,7 +9313,6 @@ export interface CountryCreateWithoutUsersInput {
 export interface UserUpdateOneWithoutConectFromInput {
   create?: UserCreateWithoutConectFromInput
   connect?: UserWhereUniqueInput
-  disconnect?: Boolean
   delete?: Boolean
   update?: UserUpdateWithoutConectFromDataInput
   upsert?: UserUpsertWithoutConectFromInput
@@ -9655,7 +9642,6 @@ export interface UserUpdateDataInput {
 export interface UserUpdateOneInput {
   create?: UserCreateInput
   connect?: UserWhereUniqueInput
-  disconnect?: Boolean
   delete?: Boolean
   update?: UserUpdateDataInput
   upsert?: UserUpsertNestedInput

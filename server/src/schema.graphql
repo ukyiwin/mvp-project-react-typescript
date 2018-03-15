@@ -13,6 +13,7 @@ type Query {
   allInterest: [Interest!]!
   getChannelChat: [Channels!]!
   getDirectChat: [Channels!]!
+  getAllChat: [Channels!]!
   getMessages(channelId: ID!): [Message!]!
 }
 

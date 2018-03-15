@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { USER_FRAGMENT } from 'Graphql/Fragment';
+import { USER_FRAGMENT, ARTICLE_FRAGMENT } from 'Graphql/Fragment';
 /**
  * @description user registration for graphql mutation
  */
@@ -49,4 +49,22 @@ export const ADD_INTERESTS = gql`
     }
   }
   ${USER_FRAGMENT}
+`;
+
+export const CREATE_ARTICLE = gql`
+  mutation createArticle($title: String, $body: String, $tags: [String!]!, $category: [String!]!){
+    createArticle(title: $title, body: $body, tags: $tags, category: $category ){
+      ...articleFragment
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+export const PUBLISH_ARTICLE = gql`
+  mutation publishArticle($id: ID!){
+    publishArticle(id: $id){
+      ...articleFragment
+    }
+  }
+  ${ARTICLE_FRAGMENT}
 `;

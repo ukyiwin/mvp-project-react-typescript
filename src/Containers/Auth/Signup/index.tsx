@@ -342,7 +342,6 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
 export default withRouter(compose(
   withApollo,
   graphql<Response, InputProps, Props>(SIGNUP_USER, {
-    name: 'signup',
-    options: { variables: { email: '', password: '' } },
+    name: 'signup'
   })
 )(Signup));

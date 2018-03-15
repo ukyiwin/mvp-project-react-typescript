@@ -13,13 +13,15 @@ declare module '*.svg'
 
 declare global {
   interface Window { anima(): any; effects: any; slideshow: any; }
-  interface String {
-    truncString(lstr: string, add: number) : string;
-  }
 }
 
-interface Window { anima(): any;  effects: any; slideshow: any; }
+interface Window { anima(): any;  effects: any; slideshow: any; __ASYNC_COMPONENTS_REHYDRATE_STATE__: any }
 
 interface String {
   truncString(lstr: string, add: number) : string;
+  lengthInMinutes(): string;
+}
+
+interface NodeRequire {
+  ensure: any
 }
