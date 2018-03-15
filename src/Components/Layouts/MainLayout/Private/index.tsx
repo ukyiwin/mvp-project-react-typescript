@@ -4,8 +4,8 @@ import Calendar from 'Components/Calender';
 import {  } from 'react-apollo';
 import './style.css';
 import { User } from 'CustomTypings/schema';
-import InterestItemSlim from 'Components/InterestItemSlim';
 import ConnectBox from 'Components/ConnectBox';
+import TopInterest from 'Components/TopInterest';
 import glamorous from 'glamorous';
 import Label from 'Components/Label';
 
@@ -42,13 +42,7 @@ const PublicLayout: React.SFC<DefaultProps & Response> = (props) => {
                   style={{marginBottom: 10, padding: 0}}
                 >
                   <Label text="Top Interests" />
-                  <div className="tags-wrapper undefined">
-                  <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Technology" />
-                  <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Business" />
-                  <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Art" />
-                  <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Real Estate" />
-                  <InterestItemSlim url="https://getuikit.com/docs/images/avatar.jpg" name="Art" />
-                  </div>
+                  <TopInterest />
                 </div>
                 <div className="uk-card uk-card-default uk-width-1-1 uk-padding-small">
                     <div><p>Copyright @ 2018, Unizonn</p></div>

@@ -101,7 +101,9 @@ type Props = {
   // tslint:disable-next-line:no-any
   client?: any,
   // tslint:disable-next-line:no-any
-  history?: any
+  history?: any,
+  // tslint:disable-next-line:no-any
+  allInterest: any
 };
 
 type Response = {
