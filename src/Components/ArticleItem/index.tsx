@@ -53,7 +53,7 @@ class ArticleItem extends React.Component<Props> {
             <h5 
               className="uk-text-medium uk-text-bold uk-text-break"
               style={{fontSize: this.props.small ? 17 : 23, fontFamily: 'Open Sans'}}
-            >{this.props.small ? article.title.truncString('...', 25) : article.title.truncString('...', 140)}
+            >{this.props.small ? article.title.truncString('...', 36) : article.title.truncString('...', 140)}
             </h5>
           </Link>
           <p style={{color: '#212121', fontSize: this.props.small ? 14 : 17}}>
