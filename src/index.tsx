@@ -25,7 +25,7 @@ const AUTH_TOKEN = 'token';
 
 // const queueLink = new QueueLink();
 
-const httpLink = new HttpLink({ uri: 'http://localhost:4000' });
+const httpLink = new HttpLink({ uri: 'http://uniserver.now.sh' });
 
 const defaults = { appState: 'INITIAL' };
 const errorLink = onError(({ graphQLErrors, networkError }) => {
