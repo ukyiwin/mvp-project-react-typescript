@@ -233,7 +233,15 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
 
   render() {
     if (this.state.loading) {
-      return <div>Loading</div>;
+      // tslint:disable-next-line:jsx-wrap-multiline
+      return <div className="uk-position-center">
+                <div className="loader uk-margin-small">
+                  <div className="bullet" />
+                  <div className="bullet"/>
+                  <div className="bullet"/>
+                  <div className="bullet"/>
+                </div>
+            </div>;
     }
     return (
       <div className="uk-width-1-1 uk-padding">

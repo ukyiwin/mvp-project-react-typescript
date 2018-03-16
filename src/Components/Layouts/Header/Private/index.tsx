@@ -84,15 +84,40 @@ const PrivateHeader = (props: Props) => {
                     </div>
                   </a>
                   <div data-uk-dropdown="mode: click">
-                    <ul className="uk-nav uk-dropdown-nav">
-                        <li><Link to="/profile" className="uk-text-bold">Profile</Link></li>
-                        <li><Link to="/message" className="uk-text-bold">Reading Score</Link></li>
-                        <li><Link to="/message" className="uk-text-bold">Privacy</Link></li>
+                    <ul className="menu uk-dropdown-nav">
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/profile" className="uk-text-bold">
+                            <span uk-icon="icon: plus-circle; ratio: 1" /> Profile
+                          </Link>
+                        </li>
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/favourites" className="uk-text-bold">
+                            <span uk-icon="icon: plus-circle; ratio: 1" /> Favourites
+                          </Link>
+                        </li>
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/score" className="uk-text-bold">
+                            <span uk-icon="icon: plus-circle; ratio: 1" /> Reading Score
+                          </Link>
+                        </li>
                         <li className="uk-nav-divider" />
-                        <li><Link to="/message" className="uk-text-bold">Support</Link></li>
-                        <li><a onClick={props.logout} className="uk-text-bold">Logout</a></li>
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/legal/privacy" className="uk-text-bold">
+                            <span uk-icon="icon: plus-circle; ratio: 1" /> Privacy
+                          </Link>
+                        </li>
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/support" className="uk-text-bold">
+                            <span uk-icon="icon: warning; ratio: 1" /> Support
+                          </Link>
+                        </li>
+                        <li className="menu-item uk-padding-small">
+                          <a onClick={props.logout} className="uk-text-bold">
+                            <span uk-icon="icon: info; ratio: 1" /> Logout
+                          </a>
+                        </li>
                     </ul>
-                </div>
+                  </div>
                 </li>
               </ul>
               <div className="uk-navbar-nav uk-padding-small">
@@ -139,49 +164,42 @@ const PrivateHeader = (props: Props) => {
                     />
                     </div>
                   </a>
+                  
                   <div data-uk-dropdown="mode: click">
-                    <ul className="uk-nav uk-dropdown-nav">
-                        <li><Link to="/profile" className="uk-text-bold">Profile</Link></li>
-                        <li><Link to="/message" className="uk-text-bold">Reading Score</Link></li>
-                        <li><Link to="/message" className="uk-text-bold">Privacy</Link></li>
+                    <ul className="menu uk-dropdown-nav">
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/profile" className="uk-text-bold">
+                            <span uk-icon="icon: plus-circle; ratio: 1" /> Profile
+                          </Link>
+                        </li>
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/favourites" className="uk-text-bold">
+                            <span uk-icon="icon: plus-circle; ratio: 1" /> Favourites
+                          </Link>
+                        </li>
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/score" className="uk-text-bold">
+                            <span uk-icon="icon: plus-circle; ratio: 1" /> Reading Score
+                          </Link>
+                        </li>
                         <li className="uk-nav-divider" />
-                        <li><Link to="/message" className="uk-text-bold">Support</Link></li>
-                        <li><a onClick={props.logout} className="uk-text-bold">Logout</a></li>
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/legal/privacy" className="uk-text-bold">
+                            <span uk-icon="icon: plus-circle; ratio: 1" /> Privacy
+                          </Link>
+                        </li>
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/support" className="uk-text-bold">
+                            <span uk-icon="icon: warning; ratio: 1" /> Support
+                          </Link>
+                        </li>
+                        <li className="menu-item uk-padding-small">
+                          <a onClick={props.logout} className="uk-text-bold">
+                            <span uk-icon="icon: info; ratio: 1" /> Logout
+                          </a>
+                        </li>
                     </ul>
-                    <ul className="menu uk-nav uk-dropdown-nav">
-                      <li className="menu-item uk-padding-small">
-                        <Link to="/profile" className="uk-text-bold">
-                          <span uk-icon="icon: plus-circle; ratio: 1" /> Profile
-                        </Link>
-                      </li>
-                      <li className="menu-item uk-padding-small">
-                        <Link to="/favourites" className="uk-text-bold">
-                          <span uk-icon="icon: plus-circle; ratio: 1" /> Favourites
-                        </Link>
-                      </li>
-                      <li className="menu-item uk-padding-small">
-                        <Link to="/score" className="uk-text-bold">
-                          <span uk-icon="icon: plus-circle; ratio: 1" /> Reading Score
-                        </Link>
-                      </li>
-                      <li className="uk-nav-divider" />
-                      <li className="menu-item uk-padding-small">
-                        <Link to="/legal/privacy" className="uk-text-bold">
-                          <span uk-icon="icon: plus-circle; ratio: 1" /> Privacy
-                        </Link>
-                      </li>
-                      <li className="menu-item uk-padding-small">
-                        <Link to="/support" className="uk-text-bold">
-                          <span uk-icon="icon: warning; ratio: 1" /> Support
-                        </Link>
-                      </li>
-                      <li className="menu-item uk-padding-small">
-                        <a onClick={props.logout} className="uk-text-bold">
-                          <span uk-icon="icon: info; ratio: 1" /> Logout
-                        </a>
-                      </li>
-                    </ul>
-                </div>
+                  </div>
                 </li>
               </ul>
               <div className="uk-navbar-nav uk-padding-small">
