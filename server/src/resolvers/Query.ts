@@ -41,6 +41,18 @@ export const Query = {
     return ctx.db.query.articles({}, info);
   },
 
+  getArticleBySlug(parent, { slug }, ctx: Context, info) {
+    return ctx.db.query.article({where: {
+      id: slug
+    }}, info);
+  },
+
+  getArticleById(parent, { id }, ctx: Context, info) {
+    return ctx.db.query.article({where: {
+      id: id
+    }}, info);
+  },
+
   getDepartment(parent, { idInstitution }, ctx: Context, info) {
     return ctx.db.query.departments({ where: {
       institution: {

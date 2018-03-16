@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { DanteEditor } from "Dante2/es/index.js";//'Dante2';
 import 'Dante2/dist/DanteStyles.css';
-
+import { EditorState, convertToRaw } from 'draft-js';
 import { Map, fromJS } from 'immutable'
 import DanteImagePopover from 'Dante2/es/components/popovers/image.js'
 import DanteAnchorPopover from 'Dante2/es/components/popovers/link.js'
@@ -21,8 +21,10 @@ import {
 var g=document.createElement('div');
 g.setAttribute("id", "map");
 document.body.appendChild(g);
-g.style.marginTop = "5px";
-g.style.paddingTop= "5px";
+g.style.marginTop = "0px";
+g.style.paddingTop= "0px";
+g.style.marginBottom = "0px";
+g.style.paddingBottom = "0px";
 
 type DanteConfig = {
   el: string,
@@ -44,7 +46,7 @@ type DanteConfig = {
 type Props = {
   title?: string,
   config?: any,
-  contentState: any
+  contentState?: any
 };
 
 type Options = {
@@ -59,11 +61,21 @@ type Options = {
 
 export default class Editors extends React.Component<Props> {
 
+  content: any;
   options: DanteConfig;
+  ref: any;
+
+  public refs: {
+    editor: DanteEditor;
+  };
   constructor(props) {
     super(props)
     let config = Map(fromJS(this.defaultOptions(props.config)))
     this.options = config.mergeDeep(props.config).toJS()
+    this.state = {
+      content: EditorState.createEmpty(),
+      contentState: null
+    };
   }
 
   defaultOptions(options) {
@@ -322,15 +334,22 @@ export default class Editors extends React.Component<Props> {
     
   }
 
-  addState(e) {
-    console.log(e);
+  onChange = (editorState) => {
+    this.setState({
+      content: editorState,
+    });
+    console.log(convertToRaw(editorState));
+    console.log("hghghg");
   }
 
   render(){
+    // console.log(this.refs.editor);
     return(
       <DanteEditor
-        content={this.props.contentState}
-        onChange={() => this.addState.bind(this)}
+        ref="editor"
+        content={this.content}
+        editorState={this.content}
+        onChange={() => this.onChange}
         config={ this.options } 
       />
     )

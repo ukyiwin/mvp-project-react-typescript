@@ -38,6 +38,7 @@ type Location {
 
 type Article {
   id: ID! @unique
+  slug: String @unique
   createdAt: DateTime!
   updatedAt: DateTime!
   isPublished: Boolean! @default(value: "false")
@@ -49,6 +50,20 @@ type Article {
   link: String @unique
   description: String
   author: User! @relation(name: "ArticleOwner")
+  viewCount: Int
+  likes: [User!]! @relation(name: "UserLikesArticle")
+  comments: [Comment!]! @relation(name: "ArticleComment")
+}
+
+type Comment {
+  id: ID! @unique
+  slug: String @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  body: String!
+  replies: [Comment!]!
+  article: Article! @relation(name: "ArticleComment")
+  author: User! @relation(name: "CommentAuthor")
 }
 
 type Country {
@@ -113,6 +128,8 @@ type User {
   articles: [Article!]!  @relation(name: "ArticleOwner")
   channels: [Channels!]! @relation(name: "ChannelUser")
   myChannels: [Channels!]! @relation(name: "ChannelOwner")
+  likedArticles: [Article!]! @relation(name: "UserLikesArticle")
+  comments: [Comment!]! @relation(name: "CommentAuthor")
   newConnectNot: Boolean @default(value: true)
   newCommentNot: Boolean @default(value: true)
   newMessageNot: Boolean @default(value: true)

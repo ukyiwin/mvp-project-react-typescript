@@ -9,7 +9,6 @@ import { AUTH_TOKEN } from '../../constants';
 import { PrivateHeader } from 'Components/Layouts/Header';
 import LoadingComponent from 'Components/Loading';
 import SideBar from 'Components/Layouts/SideBar';
-import Compose from 'Containers/ComposeArticle';
 import { User } from 'CustomTypings/schema';
 import { ME } from 'Graphql/Query';
 import { withApollo, graphql, compose, ChildProps } from 'react-apollo';
@@ -31,6 +30,35 @@ const Login = asyncComponent({
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
+
+const ArticleDetail = asyncComponent({
+  resolve: () => new Promise(resolve =>
+    require.ensure(
+      [],
+      (require) => {
+        resolve(require('Containers/ArticleDetail'));
+      },
+      'ArticleDetail'
+    )
+  ),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+
+const Compose = asyncComponent({
+  resolve: () => new Promise(resolve =>
+    require.ensure(
+      [],
+      (require) => {
+        resolve(require('Containers/ComposeArticle'));
+      },
+      'Compose'
+    )
+  ),
+  LoadingComponent: () => <LoadingComponent />, // Optional
+  ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
+});
+
 const Message = asyncComponent({
   resolve: () => System.import('Containers/Message'),
   LoadingComponent: () => <LoadingComponent />, // Optional
@@ -215,7 +243,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     console.log(isAuthenticated);
 
     return (
-        <div className="uk-offcanvas-content bg-muted" style={{ backgroundColor: '#e4e6eb'}}>
+        <div className="uk-offcanvas-content bg-muted" style={{ minHeight: '90vh', backgroundColor: '#e4e6eb'}}>
           <Helmet>
             <title>Unizonn</title>
             <meta name="an inclusive community" content="Unizonn community" />
@@ -265,6 +293,11 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
               component={SignupProfile} 
               path="/add/profile" 
               isAuthenticated={isAuthenticated}
+            />
+            <EmptyLayout 
+              path="/article/:slug"
+              isAuthenticated={isAuthenticated} 
+              component={ArticleDetail}
             />
             <EmptyLayout component={Interest} path="/add/interest" isAuthenticated={isAuthenticated} />
             <EmptyLayout component={Maps} path="/library" isAuthenticated={isAuthenticated} />

@@ -56,20 +56,14 @@ export default class LikeButton extends React.Component<Props> {
   renderLikeButton() {
     if (this.state.liked) {
       return (
-        <button className="unlike-button uk-text-center" onClick={this.onUnlikeClick}>
-          <div className="uk-flex">
-          <i className="fa fa-heart animated bounceIn" />
-          <span className="uk-text-middle uk-text-bold">Unlike</span>
-          </div>
+        <button className="response-count unlike-button uk-text-center" onClick={this.onUnlikeClick}>
+          <i className="fa fa-heart fa-5x animated bounceIn" />
         </button>
       );
     } else {
       return (
-        <button className="like-button uk-text-center" onClick={this.onLikeClick}>
-          <div className="uk-flex">
-          <i className="fa fa-heart-o" />
-          <span className="uk-text-middle uk-text-bold">Bravo</span>
-          </div>
+         <button className="response-count uk-margin-left uk-margin-right" onClick={this.onLikeClick}>
+          <i className="fa fa-heart-o fa-5x animated bounceIn" />
         </button>
       );
     }

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Route, Redirect, withRouter, Link } from 'react-router-dom';
-import Calendar from 'Components/Calender';
 import {  } from 'react-apollo';
 import './style.css';
 import { User } from 'CustomTypings/schema';
@@ -80,8 +79,6 @@ const PublicLayout: React.SFC<DefaultProps & Response> = (props) => {
                 : null 
                 }
                 <ConnectBox />
-                <Calendar
-                />
               </div>
             </div> )
           : ( <Redirect to={{ pathname: '/' }} /> )

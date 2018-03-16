@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Editor from 'Components/Editor';
+import UnizonnEditor from 'Components/Editor2';
 import Select from 'react-select-plus';
 import { ALL_INTEREST } from 'Graphql/Query';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
@@ -63,50 +64,45 @@ class ComposeWrite extends React.Component<RouteComponentProps & Props & ChildPr
     console.log(title);
     
     return (
-      
-      <div 
-        className="uk-flex uk-width-1-1 uk-padding-small" 
-        style={{minHeight: '90vh'}}
-      >
-        <div 
-          className="uk-container uk-card uk-card-default uk-padding 
-            uk-width-1-1 uk-container-expand"
-          style={{textAlign: 'center'}}
-        >
-          <div className="uk-width-1-1 uk-flex uk-flex-stretch">
-            <div className="uk-width-3-4@m uk-width-1-1@s">
-              <Editor contentState={this.state.title} title="Title" config={{debug: true, read_only: false}}  />
-              <Editor contentState={this.state.body} config={{debug: false, read_only: false}} />
-            </div>
-            <div className="uk-width-1-4@m uk-width-1-1@s">
-              <div className="uk-width-1-1 uk-margin-small-bottom">
-              <button 
-                className="uk-button uk-button-default uk-width-1-2" 
-                type="button"
-                style={{borderBottomLeftRadius: 10, borderTopLeftRadius: 10}}
-              >Draft
-              </button>
-              <button 
-                className="uk-button uk-button-primary uk-width-1-2" 
-                type="button"
-                style={{borderBottomRightRadius: 10, borderTopRightRadius: 10}}
-              >
-                Publish
-              </button>
-              </div>
-              {!this.props.allInterest.loading ? <Select
-                name="form-field-name"
-                value={value}
-                onChange={this.handleChange}
-                placeholder="Add categories or interest"
-                multi={true}
-                closeOnSelect={true}
-                removeSelected={this.state.removeSelected}
-                simpleValue={false}
-                options={category}
-              /> : null}
-              
-            </div>
+      <div className="uk-width-1-1">
+        <div className="uk-flex uk-padding-large">
+          <div className="uk-width-2-3@m uk-width-1-1@s">
+                <div className="uk-card uk-card-small uk-card-default" style={{paddingTop: 10}}>
+                  <Editor contentState={this.state.title} title="Title" config={{debug: true, read_only: false}}  />
+                </div>
+                <div 
+                  className="uk-card uk-card-large uk-card-default"
+                  style={{minHeight: '60vh', paddingTop: 10}}
+                >
+                <UnizonnEditor />
+                </div>
+          </div>
+          <div className="uk-width-1-3@m uk-width-1-1@s uk-padding-small uk-padding-remove-vertical">
+                <div className="uk-width-1-1 uk-margin-small-bottom">
+                <button 
+                  className="uk-button uk-button-secondary uk-width-1-2" 
+                  type="button"
+                >Go Back
+                </button>
+                <button 
+                  className="uk-button uk-button-primary uk-width-1-2" 
+                  type="button"
+                >
+                  Publish
+                </button>
+                </div>
+                {!this.props.allInterest.loading ? <Select
+                  name="form-field-name"
+                  value={value}
+                  onChange={this.handleChange}
+                  placeholder="Add categories or interest"
+                  multi={true}
+                  closeOnSelect={true}
+                  removeSelected={this.state.removeSelected}
+                  simpleValue={false}
+                  options={category}
+                /> : null}
+                
           </div>
         </div>
       </div>
