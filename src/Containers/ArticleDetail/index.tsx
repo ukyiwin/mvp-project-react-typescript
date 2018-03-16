@@ -237,7 +237,10 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
     }
     return (
       <div className="uk-width-1-1 uk-padding">
-        <button className="uk-button uk-button-primary uk-button-small uk-margin-bottom-right">
+        <button 
+          className="uk-button uk-button-primary uk-button-small uk-margin-bottom-right"
+          onClick={() => this.props.history.goBack()}
+        >
         Go Back
         </button>
         <div className="uk-width-1-1 uk-grid uk-flex-stretch">
