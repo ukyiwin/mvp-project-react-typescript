@@ -94,7 +94,7 @@
     "start-ts": "react-scripts-ts start",
     "start": "npm-run-all -p watch-css start-ts",
     "build-ts": "react-scripts-ts build",
-    "build": "npm-run-all build-css build-ts  && tsc -p tsconfig.server.json",
+    "build": "npm-run-all build-css build-ts",
     "ssr": "SET BABEL_ENV=development node ssr/bootstrap.js",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
