@@ -32,15 +32,7 @@ const Login = asyncComponent({
 });
 
 const ArticleDetail = asyncComponent({
-  resolve: () => new Promise(resolve =>
-    require.ensure(
-      [],
-      (require) => {
-        resolve(require('Containers/ArticleDetail'));
-      },
-      'ArticleDetail'
-    )
-  ),
+  resolve: () => System.import('Containers/ArticleDetail'),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
