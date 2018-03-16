@@ -14,6 +14,8 @@ type Query {
   getChannelChat: [Channels!]!
   getDirectChat: [Channels!]!
   getAllChat: [Channels!]!
+  getArticleById(id: ID!): Article!
+  getArticleBySlug(slug: String!): Article!
   getMessages(channelId: ID!): [Message!]!
 }
 
@@ -29,6 +31,9 @@ type Mutation {
   publish(id: ID!): Post!
   createArticle(title: String, body: String, tags: [String!]!, category: [String!]!): Article!
   publishArticle(id: ID!): Article!
+  likeArticle(id: ID!): Article!
+  unLikeArticle(id: ID!): Article!
+  commentArticle(articleId: ID, text: String!): Article!
   deletePost(id: ID!): Post!
 }
 

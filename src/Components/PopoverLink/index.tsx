@@ -1,6 +1,12 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
-export default class PopoverLink extends React.Component {
+type Props = {
+  link: string,
+  bigger?: boolean
+};
+
+export default class PopoverLink extends React.Component<Props> {
 
   timeoutID: NodeJS.Timer;
 
@@ -17,15 +23,18 @@ export default class PopoverLink extends React.Component {
   }
 
   render () {
+    
+    const styleIt = this.props.bigger ? {fontSize: 17} : {};
+
     return (
       <span 
         className="popover-link uk-text-bold"
         onMouseEnter={() => this.handleMouseEnter.bind(this)} 
         onMouseLeave={() => this.handleMouseLeave.bind(this)}
       >
-        <a href={'#'}>
+        <Link to={`/${this.props.link}`} style={styleIt}>
           {this.props.children}
-        </a>
+        </Link>
         {this.renderPopover()}
       </span>
     );

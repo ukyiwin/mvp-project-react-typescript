@@ -21,9 +21,9 @@ export default TopInterest(({ loading, allInterest, error }) => {
   return (
     <div className="tags-wrapper undefined">
     {allInterest.map((interest, i) =>
-        <div key={interest.id}>
-          <InterestItemSlim url={interest.avatar} name={interest.name} />
-        </div>
+        
+      <InterestItemSlim key={interest.id} url={interest.avatar} name={interest.name} />
+        
     )}
     </div>
   );

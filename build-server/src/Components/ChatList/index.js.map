@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../src/Components/ChatList/index.tsx"],"names":[],"mappings":";;AAAA,+BAA+B;AAU/B,kCAAkC;AAClC,cAAe,SAAQ,KAAK,CAAC,SAAgB;IAE3C,iBAAiB;QACf,6CAA6C;IAC/C,CAAC;IAED,MAAM;QACJ,MAAM,CAAC,CACL,6BACE,SAAS,EAAC,kEAAkE,EAC5E,KAAK,EAAE,EAAE,YAAY,EAAE,CAAC,EAAE,aAEtB,CACP,CAAC;IACJ,CAAC;CAEF;AAED,kBAAe,QAAQ,CAAC"}

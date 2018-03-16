@@ -25,3 +25,7 @@ interface String {
 interface NodeRequire {
   ensure: any
 }
+
+interface Component {
+  getEditorState(): any;
+}

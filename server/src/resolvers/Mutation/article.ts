@@ -53,4 +53,70 @@ export const article = {
     );
   },
 
+  // tslint:disable-next-line:typedef
+  async likeArticle(parent, { id }, ctx: Context, info) {
+    const userId = getUserId(ctx);
+
+    return ctx.db.mutation.updateArticle(
+      {
+        where: {
+          id: id
+        },
+        data: {
+          likes: {
+            connect: {
+              id: userId
+            }
+          }
+        }
+      },
+      info
+    );
+  },
+
+  // tslint:disable-next-line:typedef
+  async unLikeArticle(parent, { id }, ctx: Context, info) {
+    const userId = getUserId(ctx);
+
+    return ctx.db.mutation.updateArticle(
+      {
+        where: {
+          id: id
+        },
+        data: {
+          likes: {
+            disconnect: {
+              id: userId
+            }
+          }
+        }
+      },
+      info
+    );
+  },
+
+  // tslint:disable-next-line:typedef
+  async commentArticle(parent, { articleId, text }, ctx: Context, info) {
+    const userId = getUserId(ctx);
+
+    return ctx.db.mutation.createComment(
+      {
+        data: {
+          article: {
+            connect: {
+              id: articleId
+            }
+          },
+          author: {
+            connect: {
+              id: userId
+            }
+          },
+          body: text
+        }
+      },
+      info
+    );
+  },
+  
 };

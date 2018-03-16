@@ -7,6 +7,7 @@
 
 type Article implements Node {
   id: ID!
+  slug: String
   createdAt: DateTime!
   updatedAt: DateTime!
   isPublished: Boolean!
@@ -18,6 +19,9 @@ type Article implements Node {
   link: String
   description: String
   author(where: UserWhereInput): User!
+  viewCount: Int
+  likes(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
 }
 
 type Channels implements Node {
@@ -30,6 +34,17 @@ type Channels implements Node {
   type: ChannelType
   messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message!]
   participants(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+}
+
+type Comment implements Node {
+  id: ID!
+  slug: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  body: String!
+  replies(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
+  article(where: ArticleWhereInput): Article!
+  author(where: UserWhereInput): User!
 }
 
 type Connect implements Node {
@@ -150,6 +165,8 @@ type User implements Node {
   articles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article!]
   channels(where: ChannelsWhereInput, orderBy: ChannelsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Channels!]
   myChannels(where: ChannelsWhereInput, orderBy: ChannelsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Channels!]
+  likedArticles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article!]
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   newConnectNot: Boolean
   newCommentNot: Boolean
   newMessageNot: Boolean
@@ -168,6 +185,10 @@ type AggregateArticle {
 }
 
 type AggregateChannels {
+  count: Int!
+}
+
+type AggregateComment {
   count: Int!
 }
 
@@ -236,15 +257,19 @@ type ArticleConnection {
 }
 
 input ArticleCreateInput {
+  slug: String
   isPublished: Boolean
   title: String!
   body: String!
   type: Arcticletype
   link: String
   description: String
+  viewCount: Int
   tags: ArticleCreatetagsInput
   category: InterestCreateManyInput
   author: UserCreateOneWithoutArticlesInput!
+  likes: UserCreateManyWithoutLikedArticlesInput
+  comments: CommentCreateManyWithoutArticleInput
 }
 
 input ArticleCreateManyWithoutAuthorInput {
@@ -252,19 +277,63 @@ input ArticleCreateManyWithoutAuthorInput {
   connect: [ArticleWhereUniqueInput!]
 }
 
+input ArticleCreateManyWithoutLikesInput {
+  create: [ArticleCreateWithoutLikesInput!]
+  connect: [ArticleWhereUniqueInput!]
+}
+
+input ArticleCreateOneWithoutCommentsInput {
+  create: ArticleCreateWithoutCommentsInput
+  connect: ArticleWhereUniqueInput
+}
+
 input ArticleCreatetagsInput {
   set: [String!]
 }
 
 input ArticleCreateWithoutAuthorInput {
+  slug: String
   isPublished: Boolean
   title: String!
   body: String!
   type: Arcticletype
   link: String
   description: String
+  viewCount: Int
   tags: ArticleCreatetagsInput
   category: InterestCreateManyInput
+  likes: UserCreateManyWithoutLikedArticlesInput
+  comments: CommentCreateManyWithoutArticleInput
+}
+
+input ArticleCreateWithoutCommentsInput {
+  slug: String
+  isPublished: Boolean
+  title: String!
+  body: String!
+  type: Arcticletype
+  link: String
+  description: String
+  viewCount: Int
+  tags: ArticleCreatetagsInput
+  category: InterestCreateManyInput
+  author: UserCreateOneWithoutArticlesInput!
+  likes: UserCreateManyWithoutLikedArticlesInput
+}
+
+input ArticleCreateWithoutLikesInput {
+  slug: String
+  isPublished: Boolean
+  title: String!
+  body: String!
+  type: Arcticletype
+  link: String
+  description: String
+  viewCount: Int
+  tags: ArticleCreatetagsInput
+  category: InterestCreateManyInput
+  author: UserCreateOneWithoutArticlesInput!
+  comments: CommentCreateManyWithoutArticleInput
 }
 
 """
@@ -284,6 +353,8 @@ type ArticleEdge {
 enum ArticleOrderByInput {
   id_ASC
   id_DESC
+  slug_ASC
+  slug_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -300,10 +371,13 @@ enum ArticleOrderByInput {
   link_DESC
   description_ASC
   description_DESC
+  viewCount_ASC
+  viewCount_DESC
 }
 
 type ArticlePreviousValues {
   id: ID!
+  slug: String
   createdAt: DateTime!
   updatedAt: DateTime!
   isPublished: Boolean!
@@ -313,6 +387,7 @@ type ArticlePreviousValues {
   type: Arcticletype
   link: String
   description: String
+  viewCount: Int
 }
 
 type ArticleSubscriptionPayload {
@@ -351,15 +426,19 @@ input ArticleSubscriptionWhereInput {
 }
 
 input ArticleUpdateInput {
+  slug: String
   isPublished: Boolean
   title: String
   body: String
   type: Arcticletype
   link: String
   description: String
+  viewCount: Int
   tags: ArticleUpdatetagsInput
   category: InterestUpdateManyInput
   author: UserUpdateOneWithoutArticlesInput
+  likes: UserUpdateManyWithoutLikedArticlesInput
+  comments: CommentUpdateManyWithoutArticleInput
 }
 
 input ArticleUpdateManyWithoutAuthorInput {
@@ -371,19 +450,70 @@ input ArticleUpdateManyWithoutAuthorInput {
   upsert: [ArticleUpsertWithWhereUniqueWithoutAuthorInput!]
 }
 
+input ArticleUpdateManyWithoutLikesInput {
+  create: [ArticleCreateWithoutLikesInput!]
+  connect: [ArticleWhereUniqueInput!]
+  disconnect: [ArticleWhereUniqueInput!]
+  delete: [ArticleWhereUniqueInput!]
+  update: [ArticleUpdateWithWhereUniqueWithoutLikesInput!]
+  upsert: [ArticleUpsertWithWhereUniqueWithoutLikesInput!]
+}
+
+input ArticleUpdateOneWithoutCommentsInput {
+  create: ArticleCreateWithoutCommentsInput
+  connect: ArticleWhereUniqueInput
+  delete: Boolean
+  update: ArticleUpdateWithoutCommentsDataInput
+  upsert: ArticleUpsertWithoutCommentsInput
+}
+
 input ArticleUpdatetagsInput {
   set: [String!]
 }
 
 input ArticleUpdateWithoutAuthorDataInput {
+  slug: String
   isPublished: Boolean
   title: String
   body: String
   type: Arcticletype
   link: String
   description: String
+  viewCount: Int
   tags: ArticleUpdatetagsInput
   category: InterestUpdateManyInput
+  likes: UserUpdateManyWithoutLikedArticlesInput
+  comments: CommentUpdateManyWithoutArticleInput
+}
+
+input ArticleUpdateWithoutCommentsDataInput {
+  slug: String
+  isPublished: Boolean
+  title: String
+  body: String
+  type: Arcticletype
+  link: String
+  description: String
+  viewCount: Int
+  tags: ArticleUpdatetagsInput
+  category: InterestUpdateManyInput
+  author: UserUpdateOneWithoutArticlesInput
+  likes: UserUpdateManyWithoutLikedArticlesInput
+}
+
+input ArticleUpdateWithoutLikesDataInput {
+  slug: String
+  isPublished: Boolean
+  title: String
+  body: String
+  type: Arcticletype
+  link: String
+  description: String
+  viewCount: Int
+  tags: ArticleUpdatetagsInput
+  category: InterestUpdateManyInput
+  author: UserUpdateOneWithoutArticlesInput
+  comments: CommentUpdateManyWithoutArticleInput
 }
 
 input ArticleUpdateWithWhereUniqueWithoutAuthorInput {
@@ -391,10 +521,26 @@ input ArticleUpdateWithWhereUniqueWithoutAuthorInput {
   data: ArticleUpdateWithoutAuthorDataInput!
 }
 
+input ArticleUpdateWithWhereUniqueWithoutLikesInput {
+  where: ArticleWhereUniqueInput!
+  data: ArticleUpdateWithoutLikesDataInput!
+}
+
+input ArticleUpsertWithoutCommentsInput {
+  update: ArticleUpdateWithoutCommentsDataInput!
+  create: ArticleCreateWithoutCommentsInput!
+}
+
 input ArticleUpsertWithWhereUniqueWithoutAuthorInput {
   where: ArticleWhereUniqueInput!
   update: ArticleUpdateWithoutAuthorDataInput!
   create: ArticleCreateWithoutAuthorInput!
+}
+
+input ArticleUpsertWithWhereUniqueWithoutLikesInput {
+  where: ArticleWhereUniqueInput!
+  update: ArticleUpdateWithoutLikesDataInput!
+  create: ArticleCreateWithoutLikesInput!
 }
 
 input ArticleWhereInput {
@@ -459,6 +605,59 @@ input ArticleWhereInput {
   All values not ending with the given string.
   """
   id_not_ends_with: ID
+  slug: String
+  """
+  All values that are not equal to given value.
+  """
+  slug_not: String
+  """
+  All values that are contained in given list.
+  """
+  slug_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  slug_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  slug_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  slug_lte: String
+  """
+  All values greater than the given value.
+  """
+  slug_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  slug_gte: String
+  """
+  All values containing the given string.
+  """
+  slug_contains: String
+  """
+  All values not containing the given string.
+  """
+  slug_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  slug_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  slug_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  slug_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  slug_not_ends_with: String
   createdAt: DateTime
   """
   All values that are not equal to given value.
@@ -747,14 +946,50 @@ input ArticleWhereInput {
   All values not ending with the given string.
   """
   description_not_ends_with: String
+  viewCount: Int
+  """
+  All values that are not equal to given value.
+  """
+  viewCount_not: Int
+  """
+  All values that are contained in given list.
+  """
+  viewCount_in: [Int!]
+  """
+  All values that are not contained in given list.
+  """
+  viewCount_not_in: [Int!]
+  """
+  All values less than the given value.
+  """
+  viewCount_lt: Int
+  """
+  All values less than or equal the given value.
+  """
+  viewCount_lte: Int
+  """
+  All values greater than the given value.
+  """
+  viewCount_gt: Int
+  """
+  All values greater than or equal the given value.
+  """
+  viewCount_gte: Int
   category_every: InterestWhereInput
   category_some: InterestWhereInput
   category_none: InterestWhereInput
   author: UserWhereInput
+  likes_every: UserWhereInput
+  likes_some: UserWhereInput
+  likes_none: UserWhereInput
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
 }
 
 input ArticleWhereUniqueInput {
   id: ID
+  slug: String
   link: String
 }
 
@@ -1243,6 +1478,456 @@ enum ChannelType {
   Group
   Direct
   Channel
+}
+
+"""
+A connection to a list of items.
+"""
+type CommentConnection {
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  A list of edges.
+  """
+  edges: [CommentEdge]!
+  aggregate: AggregateComment!
+}
+
+input CommentCreateInput {
+  slug: String
+  body: String!
+  replies: CommentCreateManyInput
+  article: ArticleCreateOneWithoutCommentsInput!
+  author: UserCreateOneWithoutCommentsInput!
+}
+
+input CommentCreateManyInput {
+  create: [CommentCreateInput!]
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateManyWithoutArticleInput {
+  create: [CommentCreateWithoutArticleInput!]
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateManyWithoutAuthorInput {
+  create: [CommentCreateWithoutAuthorInput!]
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateWithoutArticleInput {
+  slug: String
+  body: String!
+  replies: CommentCreateManyInput
+  author: UserCreateOneWithoutCommentsInput!
+}
+
+input CommentCreateWithoutAuthorInput {
+  slug: String
+  body: String!
+  replies: CommentCreateManyInput
+  article: ArticleCreateOneWithoutCommentsInput!
+}
+
+"""
+An edge in a connection.
+"""
+type CommentEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Comment!
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+}
+
+enum CommentOrderByInput {
+  id_ASC
+  id_DESC
+  slug_ASC
+  slug_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  body_ASC
+  body_DESC
+}
+
+type CommentPreviousValues {
+  id: ID!
+  slug: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  body: String!
+}
+
+type CommentSubscriptionPayload {
+  mutation: MutationType!
+  node: Comment
+  updatedFields: [String!]
+  previousValues: CommentPreviousValues
+}
+
+input CommentSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
+  AND: [CommentSubscriptionWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
+  OR: [CommentSubscriptionWhereInput!]
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: CommentWhereInput
+}
+
+input CommentUpdateDataInput {
+  slug: String
+  body: String
+  replies: CommentUpdateManyInput
+  article: ArticleUpdateOneWithoutCommentsInput
+  author: UserUpdateOneWithoutCommentsInput
+}
+
+input CommentUpdateInput {
+  slug: String
+  body: String
+  replies: CommentUpdateManyInput
+  article: ArticleUpdateOneWithoutCommentsInput
+  author: UserUpdateOneWithoutCommentsInput
+}
+
+input CommentUpdateManyInput {
+  create: [CommentCreateInput!]
+  connect: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  delete: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueNestedInput!]
+  upsert: [CommentUpsertWithWhereUniqueNestedInput!]
+}
+
+input CommentUpdateManyWithoutArticleInput {
+  create: [CommentCreateWithoutArticleInput!]
+  connect: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  delete: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutArticleInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutArticleInput!]
+}
+
+input CommentUpdateManyWithoutAuthorInput {
+  create: [CommentCreateWithoutAuthorInput!]
+  connect: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  delete: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutAuthorInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input CommentUpdateWithoutArticleDataInput {
+  slug: String
+  body: String
+  replies: CommentUpdateManyInput
+  author: UserUpdateOneWithoutCommentsInput
+}
+
+input CommentUpdateWithoutAuthorDataInput {
+  slug: String
+  body: String
+  replies: CommentUpdateManyInput
+  article: ArticleUpdateOneWithoutCommentsInput
+}
+
+input CommentUpdateWithWhereUniqueNestedInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateDataInput!
+}
+
+input CommentUpdateWithWhereUniqueWithoutArticleInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutArticleDataInput!
+}
+
+input CommentUpdateWithWhereUniqueWithoutAuthorInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutAuthorDataInput!
+}
+
+input CommentUpsertWithWhereUniqueNestedInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateDataInput!
+  create: CommentCreateInput!
+}
+
+input CommentUpsertWithWhereUniqueWithoutArticleInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutArticleDataInput!
+  create: CommentCreateWithoutArticleInput!
+}
+
+input CommentUpsertWithWhereUniqueWithoutAuthorInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutAuthorDataInput!
+  create: CommentCreateWithoutAuthorInput!
+}
+
+input CommentWhereInput {
+  """
+  Logical AND on all given filters.
+  """
+  AND: [CommentWhereInput!]
+  """
+  Logical OR on all given filters.
+  """
+  OR: [CommentWhereInput!]
+  id: ID
+  """
+  All values that are not equal to given value.
+  """
+  id_not: ID
+  """
+  All values that are contained in given list.
+  """
+  id_in: [ID!]
+  """
+  All values that are not contained in given list.
+  """
+  id_not_in: [ID!]
+  """
+  All values less than the given value.
+  """
+  id_lt: ID
+  """
+  All values less than or equal the given value.
+  """
+  id_lte: ID
+  """
+  All values greater than the given value.
+  """
+  id_gt: ID
+  """
+  All values greater than or equal the given value.
+  """
+  id_gte: ID
+  """
+  All values containing the given string.
+  """
+  id_contains: ID
+  """
+  All values not containing the given string.
+  """
+  id_not_contains: ID
+  """
+  All values starting with the given string.
+  """
+  id_starts_with: ID
+  """
+  All values not starting with the given string.
+  """
+  id_not_starts_with: ID
+  """
+  All values ending with the given string.
+  """
+  id_ends_with: ID
+  """
+  All values not ending with the given string.
+  """
+  id_not_ends_with: ID
+  slug: String
+  """
+  All values that are not equal to given value.
+  """
+  slug_not: String
+  """
+  All values that are contained in given list.
+  """
+  slug_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  slug_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  slug_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  slug_lte: String
+  """
+  All values greater than the given value.
+  """
+  slug_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  slug_gte: String
+  """
+  All values containing the given string.
+  """
+  slug_contains: String
+  """
+  All values not containing the given string.
+  """
+  slug_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  slug_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  slug_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  slug_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  slug_not_ends_with: String
+  createdAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
+  createdAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
+  createdAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
+  createdAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
+  createdAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
+  createdAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
+  createdAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  """
+  All values that are not equal to given value.
+  """
+  updatedAt_not: DateTime
+  """
+  All values that are contained in given list.
+  """
+  updatedAt_in: [DateTime!]
+  """
+  All values that are not contained in given list.
+  """
+  updatedAt_not_in: [DateTime!]
+  """
+  All values less than the given value.
+  """
+  updatedAt_lt: DateTime
+  """
+  All values less than or equal the given value.
+  """
+  updatedAt_lte: DateTime
+  """
+  All values greater than the given value.
+  """
+  updatedAt_gt: DateTime
+  """
+  All values greater than or equal the given value.
+  """
+  updatedAt_gte: DateTime
+  body: String
+  """
+  All values that are not equal to given value.
+  """
+  body_not: String
+  """
+  All values that are contained in given list.
+  """
+  body_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  body_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  body_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  body_lte: String
+  """
+  All values greater than the given value.
+  """
+  body_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  body_gte: String
+  """
+  All values containing the given string.
+  """
+  body_contains: String
+  """
+  All values not containing the given string.
+  """
+  body_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  body_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  body_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  body_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  body_not_ends_with: String
+  replies_every: CommentWhereInput
+  replies_some: CommentWhereInput
+  replies_none: CommentWhereInput
+  article: ArticleWhereInput
+  author: UserWhereInput
+}
+
+input CommentWhereUniqueInput {
+  id: ID
+  slug: String
 }
 
 """
@@ -4639,6 +5324,7 @@ type Mutation {
   createLibrary(data: LibraryCreateInput!): Library!
   createLocation(data: LocationCreateInput!): Location!
   createArticle(data: ArticleCreateInput!): Article!
+  createComment(data: CommentCreateInput!): Comment!
   createCountry(data: CountryCreateInput!): Country!
   createInstitutions(data: InstitutionsCreateInput!): Institutions!
   createDepartment(data: DepartmentCreateInput!): Department!
@@ -4652,6 +5338,7 @@ type Mutation {
   updateLibrary(data: LibraryUpdateInput!, where: LibraryWhereUniqueInput!): Library
   updateLocation(data: LocationUpdateInput!, where: LocationWhereUniqueInput!): Location
   updateArticle(data: ArticleUpdateInput!, where: ArticleWhereUniqueInput!): Article
+  updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment
   updateCountry(data: CountryUpdateInput!, where: CountryWhereUniqueInput!): Country
   updateInstitutions(data: InstitutionsUpdateInput!, where: InstitutionsWhereUniqueInput!): Institutions
   updateDepartment(data: DepartmentUpdateInput!, where: DepartmentWhereUniqueInput!): Department
@@ -4665,6 +5352,7 @@ type Mutation {
   deleteLibrary(where: LibraryWhereUniqueInput!): Library
   deleteLocation(where: LocationWhereUniqueInput!): Location
   deleteArticle(where: ArticleWhereUniqueInput!): Article
+  deleteComment(where: CommentWhereUniqueInput!): Comment
   deleteCountry(where: CountryWhereUniqueInput!): Country
   deleteInstitutions(where: InstitutionsWhereUniqueInput!): Institutions
   deleteDepartment(where: DepartmentWhereUniqueInput!): Department
@@ -4678,6 +5366,7 @@ type Mutation {
   upsertLibrary(where: LibraryWhereUniqueInput!, create: LibraryCreateInput!, update: LibraryUpdateInput!): Library!
   upsertLocation(where: LocationWhereUniqueInput!, create: LocationCreateInput!, update: LocationUpdateInput!): Location!
   upsertArticle(where: ArticleWhereUniqueInput!, create: ArticleCreateInput!, update: ArticleUpdateInput!): Article!
+  upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
   upsertCountry(where: CountryWhereUniqueInput!, create: CountryCreateInput!, update: CountryUpdateInput!): Country!
   upsertInstitutions(where: InstitutionsWhereUniqueInput!, create: InstitutionsCreateInput!, update: InstitutionsUpdateInput!): Institutions!
   upsertDepartment(where: DepartmentWhereUniqueInput!, create: DepartmentCreateInput!, update: DepartmentUpdateInput!): Department!
@@ -4691,6 +5380,7 @@ type Mutation {
   updateManyLibraries(data: LibraryUpdateInput!, where: LibraryWhereInput!): BatchPayload!
   updateManyLocations(data: LocationUpdateInput!, where: LocationWhereInput!): BatchPayload!
   updateManyArticles(data: ArticleUpdateInput!, where: ArticleWhereInput!): BatchPayload!
+  updateManyComments(data: CommentUpdateInput!, where: CommentWhereInput!): BatchPayload!
   updateManyCountries(data: CountryUpdateInput!, where: CountryWhereInput!): BatchPayload!
   updateManyInstitutionses(data: InstitutionsUpdateInput!, where: InstitutionsWhereInput!): BatchPayload!
   updateManyDepartments(data: DepartmentUpdateInput!, where: DepartmentWhereInput!): BatchPayload!
@@ -4704,6 +5394,7 @@ type Mutation {
   deleteManyLibraries(where: LibraryWhereInput!): BatchPayload!
   deleteManyLocations(where: LocationWhereInput!): BatchPayload!
   deleteManyArticles(where: ArticleWhereInput!): BatchPayload!
+  deleteManyComments(where: CommentWhereInput!): BatchPayload!
   deleteManyCountries(where: CountryWhereInput!): BatchPayload!
   deleteManyInstitutionses(where: InstitutionsWhereInput!): BatchPayload!
   deleteManyDepartments(where: DepartmentWhereInput!): BatchPayload!
@@ -5095,6 +5786,7 @@ type Query {
   libraries(where: LibraryWhereInput, orderBy: LibraryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Library]!
   locations(where: LocationWhereInput, orderBy: LocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Location]!
   articles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article]!
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
   countries(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Country]!
   institutionses(where: InstitutionsWhereInput, orderBy: InstitutionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Institutions]!
   departments(where: DepartmentWhereInput, orderBy: DepartmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Department]!
@@ -5108,6 +5800,7 @@ type Query {
   library(where: LibraryWhereUniqueInput!): Library
   location(where: LocationWhereUniqueInput!): Location
   article(where: ArticleWhereUniqueInput!): Article
+  comment(where: CommentWhereUniqueInput!): Comment
   country(where: CountryWhereUniqueInput!): Country
   institutions(where: InstitutionsWhereUniqueInput!): Institutions
   department(where: DepartmentWhereUniqueInput!): Department
@@ -5121,6 +5814,7 @@ type Query {
   librariesConnection(where: LibraryWhereInput, orderBy: LibraryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LibraryConnection!
   locationsConnection(where: LocationWhereInput, orderBy: LocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LocationConnection!
   articlesConnection(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ArticleConnection!
+  commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
   countriesConnection(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CountryConnection!
   institutionsesConnection(where: InstitutionsWhereInput, orderBy: InstitutionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InstitutionsConnection!
   departmentsConnection(where: DepartmentWhereInput, orderBy: DepartmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DepartmentConnection!
@@ -5144,6 +5838,7 @@ type Subscription {
   library(where: LibrarySubscriptionWhereInput): LibrarySubscriptionPayload
   location(where: LocationSubscriptionWhereInput): LocationSubscriptionPayload
   article(where: ArticleSubscriptionWhereInput): ArticleSubscriptionPayload
+  comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
   country(where: CountrySubscriptionWhereInput): CountrySubscriptionPayload
   institutions(where: InstitutionsSubscriptionWhereInput): InstitutionsSubscriptionPayload
   department(where: DepartmentSubscriptionWhereInput): DepartmentSubscriptionPayload
@@ -5195,6 +5890,8 @@ input UserCreateInput {
   articles: ArticleCreateManyWithoutAuthorInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
+  likedArticles: ArticleCreateManyWithoutLikesInput
+  comments: CommentCreateManyWithoutAuthorInput
 }
 
 input UserCreateManyWithoutChannelsInput {
@@ -5222,6 +5919,11 @@ input UserCreateManyWithoutInterestInput {
   connect: [UserWhereUniqueInput!]
 }
 
+input UserCreateManyWithoutLikedArticlesInput {
+  create: [UserCreateWithoutLikedArticlesInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
 input UserCreateOneInput {
   create: UserCreateInput
   connect: UserWhereUniqueInput
@@ -5229,6 +5931,11 @@ input UserCreateOneInput {
 
 input UserCreateOneWithoutArticlesInput {
   create: UserCreateWithoutArticlesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutCommentsInput {
+  create: UserCreateWithoutCommentsInput
   connect: UserWhereUniqueInput
 }
 
@@ -5272,6 +5979,8 @@ input UserCreateWithoutArticlesInput {
   ConectFrom: ConnectCreateManyWithoutFromInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
+  likedArticles: ArticleCreateManyWithoutLikesInput
+  comments: CommentCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutChannelsInput {
@@ -5299,6 +6008,37 @@ input UserCreateWithoutChannelsInput {
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
+  likedArticles: ArticleCreateManyWithoutLikesInput
+  comments: CommentCreateManyWithoutAuthorInput
+}
+
+input UserCreateWithoutCommentsInput {
+  email: String!
+  username: String
+  password: String!
+  firstname: String!
+  lastname: String!
+  gender: String!
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  verified: Boolean
+  avatar: FileCreateOneInput
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateManyWithoutUsersInput
+  messages: MessageCreateOneInput
+  connectTo: ConnectCreateManyWithoutToInput
+  ConectFrom: ConnectCreateManyWithoutFromInput
+  articles: ArticleCreateManyWithoutAuthorInput
+  channels: ChannelsCreateManyWithoutParticipantsInput
+  myChannels: ChannelsCreateManyWithoutAuthorInput
+  likedArticles: ArticleCreateManyWithoutLikesInput
 }
 
 input UserCreateWithoutConectFromInput {
@@ -5326,6 +6066,8 @@ input UserCreateWithoutConectFromInput {
   articles: ArticleCreateManyWithoutAuthorInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
+  likedArticles: ArticleCreateManyWithoutLikesInput
+  comments: CommentCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutConnectToInput {
@@ -5353,6 +6095,8 @@ input UserCreateWithoutConnectToInput {
   articles: ArticleCreateManyWithoutAuthorInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
+  likedArticles: ArticleCreateManyWithoutLikesInput
+  comments: CommentCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutCountryInput {
@@ -5380,6 +6124,8 @@ input UserCreateWithoutCountryInput {
   articles: ArticleCreateManyWithoutAuthorInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
+  likedArticles: ArticleCreateManyWithoutLikesInput
+  comments: CommentCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutDepartmentInput {
@@ -5407,6 +6153,8 @@ input UserCreateWithoutDepartmentInput {
   articles: ArticleCreateManyWithoutAuthorInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
+  likedArticles: ArticleCreateManyWithoutLikesInput
+  comments: CommentCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutInstitutionInput {
@@ -5434,6 +6182,8 @@ input UserCreateWithoutInstitutionInput {
   articles: ArticleCreateManyWithoutAuthorInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
+  likedArticles: ArticleCreateManyWithoutLikesInput
+  comments: CommentCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutInterestInput {
@@ -5461,6 +6211,37 @@ input UserCreateWithoutInterestInput {
   articles: ArticleCreateManyWithoutAuthorInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
+  likedArticles: ArticleCreateManyWithoutLikesInput
+  comments: CommentCreateManyWithoutAuthorInput
+}
+
+input UserCreateWithoutLikedArticlesInput {
+  email: String!
+  username: String
+  password: String!
+  firstname: String!
+  lastname: String!
+  gender: String!
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  verified: Boolean
+  avatar: FileCreateOneInput
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateManyWithoutUsersInput
+  messages: MessageCreateOneInput
+  connectTo: ConnectCreateManyWithoutToInput
+  ConectFrom: ConnectCreateManyWithoutFromInput
+  articles: ArticleCreateManyWithoutAuthorInput
+  channels: ChannelsCreateManyWithoutParticipantsInput
+  myChannels: ChannelsCreateManyWithoutAuthorInput
+  comments: CommentCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutMyChannelsInput {
@@ -5488,6 +6269,8 @@ input UserCreateWithoutMyChannelsInput {
   ConectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
   channels: ChannelsCreateManyWithoutParticipantsInput
+  likedArticles: ArticleCreateManyWithoutLikesInput
+  comments: CommentCreateManyWithoutAuthorInput
 }
 
 """
@@ -5622,6 +6405,8 @@ input UserUpdateDataInput {
   articles: ArticleUpdateManyWithoutAuthorInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles: ArticleUpdateManyWithoutLikesInput
+  comments: CommentUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateInput {
@@ -5650,6 +6435,8 @@ input UserUpdateInput {
   articles: ArticleUpdateManyWithoutAuthorInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles: ArticleUpdateManyWithoutLikesInput
+  comments: CommentUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateManyWithoutChannelsInput {
@@ -5697,6 +6484,15 @@ input UserUpdateManyWithoutInterestInput {
   upsert: [UserUpsertWithWhereUniqueWithoutInterestInput!]
 }
 
+input UserUpdateManyWithoutLikedArticlesInput {
+  create: [UserCreateWithoutLikedArticlesInput!]
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutLikedArticlesInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutLikedArticlesInput!]
+}
+
 input UserUpdateOneInput {
   create: UserCreateInput
   connect: UserWhereUniqueInput
@@ -5711,6 +6507,14 @@ input UserUpdateOneWithoutArticlesInput {
   delete: Boolean
   update: UserUpdateWithoutArticlesDataInput
   upsert: UserUpsertWithoutArticlesInput
+}
+
+input UserUpdateOneWithoutCommentsInput {
+  create: UserCreateWithoutCommentsInput
+  connect: UserWhereUniqueInput
+  delete: Boolean
+  update: UserUpdateWithoutCommentsDataInput
+  upsert: UserUpsertWithoutCommentsInput
 }
 
 input UserUpdateOneWithoutConectFromInput {
@@ -5762,6 +6566,8 @@ input UserUpdateWithoutArticlesDataInput {
   ConectFrom: ConnectUpdateManyWithoutFromInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles: ArticleUpdateManyWithoutLikesInput
+  comments: CommentUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutChannelsDataInput {
@@ -5789,6 +6595,37 @@ input UserUpdateWithoutChannelsDataInput {
   ConectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles: ArticleUpdateManyWithoutLikesInput
+  comments: CommentUpdateManyWithoutAuthorInput
+}
+
+input UserUpdateWithoutCommentsDataInput {
+  email: String
+  username: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  verified: Boolean
+  avatar: FileUpdateOneInput
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateManyWithoutUsersInput
+  messages: MessageUpdateOneInput
+  connectTo: ConnectUpdateManyWithoutToInput
+  ConectFrom: ConnectUpdateManyWithoutFromInput
+  articles: ArticleUpdateManyWithoutAuthorInput
+  channels: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles: ArticleUpdateManyWithoutLikesInput
 }
 
 input UserUpdateWithoutConectFromDataInput {
@@ -5816,6 +6653,8 @@ input UserUpdateWithoutConectFromDataInput {
   articles: ArticleUpdateManyWithoutAuthorInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles: ArticleUpdateManyWithoutLikesInput
+  comments: CommentUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutConnectToDataInput {
@@ -5843,6 +6682,8 @@ input UserUpdateWithoutConnectToDataInput {
   articles: ArticleUpdateManyWithoutAuthorInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles: ArticleUpdateManyWithoutLikesInput
+  comments: CommentUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutCountryDataInput {
@@ -5870,6 +6711,8 @@ input UserUpdateWithoutCountryDataInput {
   articles: ArticleUpdateManyWithoutAuthorInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles: ArticleUpdateManyWithoutLikesInput
+  comments: CommentUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutDepartmentDataInput {
@@ -5897,6 +6740,8 @@ input UserUpdateWithoutDepartmentDataInput {
   articles: ArticleUpdateManyWithoutAuthorInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles: ArticleUpdateManyWithoutLikesInput
+  comments: CommentUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutInstitutionDataInput {
@@ -5924,6 +6769,8 @@ input UserUpdateWithoutInstitutionDataInput {
   articles: ArticleUpdateManyWithoutAuthorInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles: ArticleUpdateManyWithoutLikesInput
+  comments: CommentUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutInterestDataInput {
@@ -5951,6 +6798,37 @@ input UserUpdateWithoutInterestDataInput {
   articles: ArticleUpdateManyWithoutAuthorInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles: ArticleUpdateManyWithoutLikesInput
+  comments: CommentUpdateManyWithoutAuthorInput
+}
+
+input UserUpdateWithoutLikedArticlesDataInput {
+  email: String
+  username: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  verified: Boolean
+  avatar: FileUpdateOneInput
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateManyWithoutUsersInput
+  messages: MessageUpdateOneInput
+  connectTo: ConnectUpdateManyWithoutToInput
+  ConectFrom: ConnectUpdateManyWithoutFromInput
+  articles: ArticleUpdateManyWithoutAuthorInput
+  channels: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels: ChannelsUpdateManyWithoutAuthorInput
+  comments: CommentUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutMyChannelsDataInput {
@@ -5978,6 +6856,8 @@ input UserUpdateWithoutMyChannelsDataInput {
   ConectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
+  likedArticles: ArticleUpdateManyWithoutLikesInput
+  comments: CommentUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithWhereUniqueWithoutChannelsInput {
@@ -6005,6 +6885,11 @@ input UserUpdateWithWhereUniqueWithoutInterestInput {
   data: UserUpdateWithoutInterestDataInput!
 }
 
+input UserUpdateWithWhereUniqueWithoutLikedArticlesInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutLikedArticlesDataInput!
+}
+
 input UserUpsertNestedInput {
   update: UserUpdateDataInput!
   create: UserCreateInput!
@@ -6013,6 +6898,11 @@ input UserUpsertNestedInput {
 input UserUpsertWithoutArticlesInput {
   update: UserUpdateWithoutArticlesDataInput!
   create: UserCreateWithoutArticlesInput!
+}
+
+input UserUpsertWithoutCommentsInput {
+  update: UserUpdateWithoutCommentsDataInput!
+  create: UserCreateWithoutCommentsInput!
 }
 
 input UserUpsertWithoutConectFromInput {
@@ -6058,6 +6948,12 @@ input UserUpsertWithWhereUniqueWithoutInterestInput {
   where: UserWhereUniqueInput!
   update: UserUpdateWithoutInterestDataInput!
   create: UserCreateWithoutInterestInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutLikedArticlesInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutLikedArticlesDataInput!
+  create: UserCreateWithoutLikedArticlesInput!
 }
 
 input UserWhereInput {
@@ -6681,6 +7577,12 @@ input UserWhereInput {
   myChannels_every: ChannelsWhereInput
   myChannels_some: ChannelsWhereInput
   myChannels_none: ChannelsWhereInput
+  likedArticles_every: ArticleWhereInput
+  likedArticles_some: ArticleWhereInput
+  likedArticles_none: ArticleWhereInput
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
 }
 
 input UserWhereUniqueInput {

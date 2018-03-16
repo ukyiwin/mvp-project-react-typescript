@@ -54,6 +54,30 @@ export const ARTICLES = gql`
 `;
 
 /**
+ * @description get one article by id
+ */
+export const GET_ARTICLE_BY_ID = gql`
+  query getArticleById($id: ID!){
+    getArticleById(id: $id){
+      ...articleFragment
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+/**
+ * @description get one article by slug
+ */
+export const GET_ARTICLE_BY_SLUG = gql`
+  query getArticleBySlug($slug: ID!){
+    getArticleBySlug(slug: $slug){
+      ...articleFragment
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+/**
  * @description check if current user article
  */
 export const ME = gql`
