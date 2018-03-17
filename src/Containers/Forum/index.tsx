@@ -15,7 +15,7 @@ import './style.css';
 // import { compose } from 'react-apollo';
 
 const ChatDetail = asyncComponent({
-  resolve: () => System.import('Containers/ChatDetail'),
+  resolve: () => System.import('../ChatDetail'),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });

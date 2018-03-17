@@ -66,11 +66,11 @@ class ArticleItem extends React.Component<Props> {
         >
           <div className="uk-flex pull-left uk-padding-small">
             <Likebutton liked={true} likeCount={2} />
-            <a className="response-coun uk-margin-left uk-margin-right">
-              <span uk-icon="icon:  comment; ratio: 1.0"/> <div className="uk-hidden@s">Comments</div> (0)
+            <a className="response-count uk-flex uk-inline uk-margin-left uk-margin-right">
+              <span uk-icon="icon: comment; ratio: 1.0"/> <div className="uk-visible@s">Comments</div>
             </a>
-            <a className="response-count">
-              <span uk-icon="icon:  forward; ratio: 1.2"/> <div className="uk-hidden@s">Share</div></a>
+            <a className="response-count uk-flex uk-inline">
+              <span uk-icon="icon: forward; ratio: 1.2"/> <div className="uk-visible@s">Share</div></a>
           </div>
 
           <div className="uk-flex  response-count pull-right uk-padding-small">

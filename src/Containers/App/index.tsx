@@ -2,17 +2,17 @@ import * as React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { asyncComponent } from 'react-async-component';
 import { Helmet } from 'react-helmet';
-import NotFound from 'Containers/NotFound';
-import { PublicLayout, PrivateLayout, EmptyLayout, ProfileLayout } from 'Components/Layouts/MainLayout';
-import { isTokenExpired } from 'Utils/jwtHelper';
+import NotFound from '../NotFound';
+import { PublicLayout, PrivateLayout, EmptyLayout, ProfileLayout } from '../../Components/Layouts/MainLayout';
+import { isTokenExpired } from '../../Utils/jwtHelper';
 import { AUTH_TOKEN } from '../../constants';
-import { PrivateHeader } from 'Components/Layouts/Header';
-import LoadingComponent from 'Components/Loading';
-import SideBar from 'Components/Layouts/SideBar';
-import { User } from 'CustomTypings/schema';
-import { ME } from 'Graphql/Query';
+import { PrivateHeader } from '../../Components/Layouts/Header';
+import LoadingComponent from '../../Components/Loading';
+import SideBar from '../../Components/Layouts/SideBar';
+import { User } from '../../CustomTypings/schema';
+import { ME } from '../../Graphql/Query';
 import { withApollo, graphql, compose, ChildProps } from 'react-apollo';
-import Profile from 'Containers/Profile';
+import Profile from '../Profile';
 import '../../Theme/application.css';
 import './style.css';
 // const customHistory = createBrowserHistory();
@@ -22,7 +22,7 @@ const Login = asyncComponent({
     require.ensure(
       [],
       (require) => {
-        resolve(require('Containers/Auth/Login'));
+        resolve(require('../Auth/Login'));
       },
       'Login'
     )
@@ -32,7 +32,7 @@ const Login = asyncComponent({
 });
 
 const ArticleDetail = asyncComponent({
-  resolve: () => System.import('Containers/ArticleDetail'),
+  resolve: () => System.import('../ArticleDetail'),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
@@ -42,7 +42,7 @@ const Compose = asyncComponent({
     require.ensure(
       [],
       (require) => {
-        resolve(require('Containers/ComposeArticle'));
+        resolve(require('../ComposeArticle'));
       },
       'Compose'
     )
@@ -52,37 +52,37 @@ const Compose = asyncComponent({
 });
 
 const Message = asyncComponent({
-  resolve: () => System.import('Containers/Message'),
+  resolve: () => System.import('../Message'),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
 const Interest = asyncComponent({
-  resolve: () => System.import('Containers/Auth/Signup/interest'),
+  resolve: () => System.import('../Auth/Signup/interest'),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
 const SignupProfile = asyncComponent({
-  resolve: () => System.import('Containers/Auth/Signup/signupProfile'),
+  resolve: () => System.import('../Auth/Signup/signupProfile'),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
 const FinishSignup = asyncComponent({
-  resolve: () => System.import('Containers/Auth/Signup/finishSignup'),
+  resolve: () => System.import('../Auth/Signup/finishSignup'),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
 const Signup = asyncComponent({
-  resolve: () => System.import('Containers/Auth/Signup'),
+  resolve: () => System.import('../Auth/Signup'),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
 const Forum = asyncComponent({
-  resolve: () => System.import('Containers/Forum'),
+  resolve: () => System.import('../Forum'),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
 const Maps = asyncComponent({
-  resolve: () => System.import('Containers/Maps'),
+  resolve: () => System.import('../Maps'),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
@@ -93,7 +93,7 @@ const PublicHome = asyncComponent({
     require.ensure(
       [],
       (require) => {
-        resolve(require('Containers/HomePublic'));
+        resolve(require('../HomePublic'));
       },
       'HomePublic'
     )
@@ -108,7 +108,7 @@ const Home = asyncComponent({
     require.ensure(
       [],
       (require) => {
-        resolve(require('Containers/Home'));
+        resolve(require('../Home'));
       },
       'Home'
     )

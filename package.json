@@ -94,13 +94,16 @@
     "start-ts": "react-scripts-ts start",
     "start": "npm-run-all -p watch-css start-ts",
     "build-ts": "react-scripts-ts build",
-    "build": "npm-run-all build-css build-ts",
     "ssr": "SET BABEL_ENV=development node ssr/bootstrap.js",
+    "build": "webpack --mode production",
+    "watch": "webpack --mode development --watch",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "deploy": "now -e REACT_APP_SECRET_CODE=secretcode",
     "push": "git push origin && now --public && now alias unizonn.now.sh",
-    "generate-schema": "ts-node generate-schema"
+    "generate-schema": "ts-node generate-schema",
+    "serve": "yarn build && node build-server/server.js",
+    "launch": "build-server/src/server.js"
   },
   "devDependencies": {
     "@types/jest": "^22.1.1",
@@ -119,5 +122,14 @@
   },
   "now": {
     "alias": "unizonn"
+  },
+  "_moduleAliases": {
+    "@": "src",
+    "Components": "./src/Components",
+    "Containers": "./src/Components/Containers",
+    "Assets": "./src/Assets",
+    "ReduxApp": "./src/Redux",
+    "Theme": "./src/Theme",
+    "Utils": "./src/Utils"
   }
 }
