@@ -9,29 +9,29 @@ import { validateLogin } from 'Utils/helpers';
 import * as UIkit from 'uikit';
 
 import './style.css';
-import { AUTH_TOKEN, CURRENT_USER } from '../../../constants';
+import { AUTH_TOKEN, CURRENT_USER } from '../../../../constants';
 
-type Props = {
+interface Props {
   // tslint:disable-next-line:no-any
-  login: any,
+  login: any;
   // tslint:disable-next-line:no-any
-  refreshToken?: any,
+  refreshToken?: any;
   // tslint:disable-next-line:no-any
-  client?: any,
-};
+  client?: any;
+}
 
-type InputProps = {
-  email: string,
-  password: string
-};
+interface InputProps {
+  email: string;
+  password: string;
+}
 
-type Response = {
-  token: string,
-  user: User
-};
+interface Response {
+  token: string;
+  user: User;
+}
 
 class Login extends React.Component<RouteComponentProps & Props & ChildProps<Response, InputProps>, {}> {
-  state = { 
+  state = {
     show: false,
     email: '',
     password: '',
@@ -44,15 +44,15 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
   handleEmailChange = (evt) => {
     this.setState({ email: evt.target.value });
   }
-  
+
   handlePasswordChange = (evt) => {
     this.setState({ password: evt.target.value });
   }
-  
+
   componentWillMount() {
     const email = this.props.location.email;
     if (email) {
-      this.setState({email: email});
+      this.setState({email});
     }
   }
 
@@ -68,7 +68,7 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
         email,
         password
       }
-    }).then( result => {
+    }).then(result => {
       const token = result.data.login.token;
       const user = result.data.login.user;
       localStorage.setItem(AUTH_TOKEN, token);
@@ -80,12 +80,12 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
       } else {
         this.props.history.replace('/');
       }
-    }).catch( err => {
+    }).catch(err => {
       this.setState({loading: false});
       UIkit.notification(`Error: ${err.message}`, {status: 'danger', pos: 'top-right'});
     });
   }
-  
+
   canBeSubmitted() {
     const errors = validateLogin(this.state.email, this.state.password);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
@@ -98,8 +98,8 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
     const isDisabled = Object.keys(errors).some(x => errors[x]);
 
     return(
-      <div 
-        className="uk-flex uk-flex-stretch" 
+      <div
+        className="uk-flex uk-flex-stretch"
         // tslint:disable-next-line:jsx-boolean-value
         data-uk-grid
         style={{height: '100vh', backgroundColor: '#ffffff'}}
@@ -113,11 +113,11 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
           .
           </div>
         </div>
-        <div 
-          className="uk-container uk-width-3-5@m uk-width-1-1@s uk-flex 
+        <div
+          className="uk-container uk-width-3-5@m uk-width-1-1@s uk-flex
           uk-flex-stretch uk-flex-middle uk-box-shadow-small"
         >
-          <form 
+          <form
             className="uk-form-vertical uk-width-1-1 uk-margin-large uk-padding-large uk-padding-remove-vertical"
             onSubmit={this.handleSubmit}
           >
@@ -127,8 +127,8 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
             <div className="uk-margin">
                 <div className="uk-inline uk-width-1-1">
                   <span className="uk-form-icon" uk-icon="icon: user" />
-                  <input 
-                    className={`uk-input ${errors.password ? 'uk-form-danger' : ''} `} 
+                  <input
+                    className={`uk-input ${errors.password ? 'uk-form-danger' : ''} `}
                     type="email"
                     value={this.state.email}
                     required={true}
@@ -140,9 +140,9 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
             <div className="uk-margin">
                 <div className="uk-inline uk-width-1-1">
                   <span className="uk-form-icon" uk-icon="icon: lock" />
-                  <input 
-                    className={`uk-input ${errors.password ? 'uk-form-danger' : ''} `} 
-                    type="password" 
+                  <input
+                    className={`uk-input ${errors.password ? 'uk-form-danger' : ''} `}
+                    type="password"
                     value={this.state.password}
                     required={true}
                     onChange={this.handlePasswordChange}
@@ -150,7 +150,7 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
                 </div>
             </div>
             <div className="uk-margin">
-              <a 
+              <a
                 className={`uk-button uk-button-text}`}
               >
               Forgot password?
@@ -158,13 +158,13 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
             </div>
             <div className="uk-margin">
                 {
-                  this.state.loading ? 
+                  this.state.loading ?
                   <div
                     className="uk-spinner uk-icon"
                     data-uk-spinner="ratio: 1"
                     style={{color: 'green'}}
                   /> :
-                  <button 
+                  <button
                     className={`uk-button uk-button-primary uk-width-1-1
                     uk-align-right ${isDisabled ? 'disabled' : 'disabled'}`}
                     type="submit"
@@ -176,12 +176,12 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
             <br/>
             <hr className="uk-divider-icon" />
             <div className="uk-margin">
-              <p 
+              <p
                 className={`uk-button uk-button-text}`}
               >
               Don't have an account?
               </p>
-              <Link 
+              <Link
                 className={`uk-button uk-button-secondary
                  uk-align-right`}
                 to="/signup"

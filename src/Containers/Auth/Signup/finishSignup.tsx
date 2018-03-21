@@ -2,12 +2,12 @@ import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import './style.css';
 
-type Props = {
+interface Props {
   // tslint:disable-next-line:no-any
-  me: any,
+  me: any;
   // tslint:disable-next-line:no-any
-  refreshToken?: any
-};
+  refreshToken?: any;
+}
 
 class FinishPage extends React.Component<RouteComponentProps & Props> {
 

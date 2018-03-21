@@ -6,31 +6,31 @@ import { SIGNUP_USER } from 'Graphql/Mutation';
 import { User } from 'CustomTypings/schema';
 import { validateSignup } from 'Utils/helpers';
 import * as UIkit from 'uikit';
-import { AUTH_TOKEN, CURRENT_USER } from '../../../constants';
+import { AUTH_TOKEN, CURRENT_USER } from '../../../../constants';
 import './style.css';
 
-type InputProps = {
-  email: string,
-  password: string
-};
+interface InputProps {
+  email: string;
+  password: string;
+}
 
-type Response = {
-  token: string,
-  user: User
-};
+interface Response {
+  token: string;
+  user: User;
+}
 
-type Props = {
+interface Props {
   // tslint:disable-next-line:no-any
-  signup: any,
+  signup: any;
   // tslint:disable-next-line:no-any
-  refreshToken?: any,
+  refreshToken?: any;
   // tslint:disable-next-line:no-any
-  client?: any
-};
+  client?: any;
+}
 
 class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Response, InputProps>, {}> {
-  
-  state = { 
+
+  state = {
     show: false,
     email: '',
     username: '',
@@ -49,11 +49,11 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
   handleEmailChange = (evt) => {
     this.setState({ email: evt.target.value });
   }
-  
+
   handlePasswordChange = (evt) => {
     this.setState({ password: evt.target.value });
   }
-  
+
   handleConPasswordChange = (evt) => {
     this.setState({ confirmPassword: evt.target.value });
   }
@@ -65,7 +65,7 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
   handleFnameChange = (evt) => {
     this.setState({ firstname: evt.target.value });
   }
-  
+
   handleLnameChange = (evt) => {
     this.setState({ lastname: evt.target.value });
   }
@@ -73,11 +73,11 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
   handleUserTypeChange = (evt) => {
     this.setState({ userType: evt.target.value });
   }
-  
+
   handleGenderChange = (evt) => {
     this.setState({ gender: evt.target.value });
   }
-  
+
   handleSubmit = (evt) => {
     evt.preventDefault();
     if (!this.canBeSubmitted()) {
@@ -95,22 +95,22 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
         userType,
         gender
       }
-    }).then( result => {
+    }).then(result => {
       const token = result.data.signup.token;
       localStorage.setItem(AUTH_TOKEN, token);
       localStorage.setItem(CURRENT_USER, result.data.signup.user);
       this.props.refreshToken(token);
       this.setState({loading: false});
       this.props.history.replace('/add/profile');
-    }).catch( err => {
-      this.setState({loading: false}); 
+    }).catch(err => {
+      this.setState({loading: false});
       UIkit.notification(`${err.message}`, {status: 'danger', pos: 'top-right'});
     });
   }
-  
+
   canBeSubmitted() {
     const errors =  validateSignup(
-      this.state.email, this.state.password, this.state.username, this.state.confirmPassword, 
+      this.state.email, this.state.password, this.state.username, this.state.confirmPassword,
       this.state.firstname, this.state.lastname, this.state.gender, this.state.userType);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
     return !isDisabled;
@@ -119,76 +119,76 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
   componentWillMount() {
     const email = this.props.location.email;
     if (email) {
-      this.setState({email: email});
+      this.setState({email});
     }
   }
-  
+
   render() {
 
     const errors = validateSignup(
-      this.state.email, this.state.password, this.state.username, this.state.confirmPassword, 
+      this.state.email, this.state.password, this.state.username, this.state.confirmPassword,
       this.state.firstname, this.state.lastname, this.state.gender, this.state.userType);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
-    
+
     return(
-      <div 
-        className="uk-flex uk-flex-stretch" 
+      <div
+        className="uk-flex uk-flex-stretch"
         // tslint:disable-next-line:jsx-boolean-value
         data-uk-grid
         style={{ backgroundColor: '#ffffff'}}
       >
         <div className="uk-width-2-5 uk-visible@m sideBg uk-flex uk-flex-middle " id="sideBg">
-          <div 
+          <div
             className="uk-position-relative uk-visible-toggle uk-light"
             data-uk-slideshow="animation: scale"
           >
           <ul className="uk-slideshow-items">
             <li>
-              <img 
-                src="https://getuikit.com/docs/images/photo.jpg" 
-                alt="" 
+              <img
+                src="https://getuikit.com/docs/images/photo.jpg"
+                alt=""
                 // tslint:disable-next-line:jsx-boolean-value
-                uk-cover 
+                uk-cover
               />
             </li>
             <li>
-              <img 
-                  src="https://getuikit.com/docs/images/dark.jpg" 
-                  alt="" 
+              <img
+                  src="https://getuikit.com/docs/images/dark.jpg"
+                  alt=""
                   // tslint:disable-next-line:jsx-boolean-value
-                  data-uk-cover 
+                  data-uk-cover
               />
             </li>
             <li>
-              <img 
-                  src="https://getuikit.com/docs/images/light.jpg" 
-                  alt="" 
+              <img
+                  src="https://getuikit.com/docs/images/light.jpg"
+                  alt=""
                   // tslint:disable-next-line:jsx-boolean-value
-                  data-uk-cover 
+                  data-uk-cover
               />
             </li>
           </ul>
-            <a 
-              className="uk-position-center-left uk-position-small uk-hidden-hover" 
-              href="#" 
+            <a
+              className="uk-position-center-left uk-position-small uk-hidden-hover"
+              href="#"
               // tslint:disable-next-line:jsx-boolean-value
-              data-uk-slidenav-previous 
-              data-uk-slideshow-item="previous" 
+              data-uk-slidenav-previous
+              data-uk-slideshow-item="previous"
             />
-            <a 
-              className="uk-position-center-right uk-position-small uk-hidden-hover" 
-              href="#" 
+            <a
+              className="uk-position-center-right uk-position-small uk-hidden-hover"
+              href="#"
               // tslint:disable-next-line:jsx-boolean-value
-              data-uk-slidenav-next 
-              data-uk-slideshow-item="next" 
+              data-uk-slidenav-next
+              data-uk-slideshow-item="next"
             />
           </div>
         </div>
-        <div 
-          className="uk-container uk-width-3-5@m uk-width-1-1@s uk-flex 
+        <div
+          className="uk-container uk-width-3-5@m uk-width-1-1@s uk-flex
           uk-flex-stretch uk-flex-middle uk-box-shadow-small"
         >
-          <form 
+          <form
             className="uk-form-horizontal uk-width-1-1 uk-margin-large uk-padding-large uk-padding-remove-vertical"
             onSubmit={this.handleSubmit}
           >
@@ -198,9 +198,9 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="firstname">Username</label>
               <div className="uk-form-controls">
-                <input 
+                <input
                   id="firstname"
-                  className={`uk-input ${errors.username ? 'uk-form-danger' : ''} `} 
+                  className={`uk-input ${errors.username ? 'uk-form-danger' : ''} `}
                   type="text"
                   value={this.state.username}
                   required={true}
@@ -211,9 +211,9 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="firstname">Firstname</label>
               <div className="uk-form-controls">
-                <input 
+                <input
                   id="firstname"
-                  className={`uk-input ${errors.firstname ? 'uk-form-danger' : ''} `} 
+                  className={`uk-input ${errors.firstname ? 'uk-form-danger' : ''} `}
                   type="text"
                   value={this.state.firstname}
                   required={true}
@@ -224,9 +224,9 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="lastname">Lastname</label>
               <div className="uk-form-controls">
-                <input 
+                <input
                   id="lastname"
-                  className={`uk-input ${errors.lastname ? 'uk-form-danger' : ''} `} 
+                  className={`uk-input ${errors.lastname ? 'uk-form-danger' : ''} `}
                   type="text"
                   value={this.state.lastname}
                   required={true}
@@ -237,9 +237,9 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="email">Email</label>
               <div className="uk-form-controls">
-                <input 
+                <input
                   id="email"
-                  className={`uk-input ${errors.email ? 'uk-form-danger' : ''} `} 
+                  className={`uk-input ${errors.email ? 'uk-form-danger' : ''} `}
                   type="email"
                   value={this.state.email}
                   required={true}
@@ -250,9 +250,9 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="form-horizontal-text">Password</label>
               <div className="uk-form-controls">
-                <input 
-                  className={`uk-input ${errors.password ? 'uk-form-danger' : ''} `} 
-                  type="password" 
+                <input
+                  className={`uk-input ${errors.password ? 'uk-form-danger' : ''} `}
+                  type="password"
                   id="password"
                   value={this.state.password}
                   required={true}
@@ -263,9 +263,9 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="confirmPassword">Confirm Password</label>
               <div className="uk-form-controls">
-                <input 
-                  className={`uk-input ${errors.confirmPassword ? 'uk-form-danger' : ''} `} 
-                  type="password" 
+                <input
+                  className={`uk-input ${errors.confirmPassword ? 'uk-form-danger' : ''} `}
+                  type="password"
                   id="confirmPassword"
                   value={this.state.confirmPassword}
                   required={true}
@@ -276,7 +276,7 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="form-horizontal-text">Gender</label>
               <div className="uk-form-controls">
-                <select 
+                <select
                   className="uk-select"
                   value={this.state.gender}
                   required={true}
@@ -291,7 +291,7 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="form-horizontal-text">I am a</label>
               <div className="uk-form-controls">
-                <select 
+                <select
                   className="uk-select"
                   value={this.state.userType}
                   required={true}
@@ -304,12 +304,12 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
               </div>
             </div>
             <div className="uk-margin">
-              { this.state.loading ? 
+              { this.state.loading ?
                 <div
                   data-uk-spinner="ratio: 1"
                 />
               :
-                <button 
+                <button
                   className={`uk-button uk-button-primary uk-width-1-1 ${isDisabled ? 'disabled' : 'disabled'}`}
                   type="submit"
                 >
@@ -319,12 +319,12 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
             </div>
             <hr className="uk-divider-icon" />
             <div className="uk-margin">
-              <p 
+              <p
                 className={`uk-button uk-button-text}`}
               >
               Already have an account?
               </p>
-              <Link 
+              <Link
                 className={`uk-button uk-button-secondary
                  uk-align-right`}
                 to="/login"

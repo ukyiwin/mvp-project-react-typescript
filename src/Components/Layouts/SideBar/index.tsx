@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 // import * as Logo from 'Assets/logo.png';
 import './style.css';
 
-type Props = {
-  classes?: object,
-};
+interface Props {
+  classes?: object;
+}
 
 // tslint:disable-next-line:no-any
 class SideBar extends React.Component<Props> {
@@ -17,15 +17,15 @@ class SideBar extends React.Component<Props> {
 
   render() {
     return (
-      <div 
-        id="offcanvas-nav" 
+      <div
+        id="offcanvas-nav"
         uk-offcanvas="overlay: true"
       >
-        <div 
+        <div
           className="uk-offcanvas-bar un-sidebar-container"
           style={{margin: 0, padding: 0, color: '#000'}}
         >
-            <ul 
+            <ul
               className="uk-nav"
               style={{margin: 0, padding: 0, color: '#000'}}
             >
@@ -76,7 +76,7 @@ class SideBar extends React.Component<Props> {
       </div>
     );
   }
-  
+
 }
 
 export default SideBar;

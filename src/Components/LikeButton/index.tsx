@@ -1,14 +1,14 @@
 import * as React from 'react';
 import OverlayTriggerButton from 'Components/OverlayTriggerButton';
 
-type Props = {
-  liked: boolean,
-  likeCount: number,
-  likeableType?: string,
-  likeableId?: string,
-  disableOverlay?: false,
-  overlayHeading?: string
-};
+interface Props {
+  liked: boolean;
+  likeCount: number;
+  likeableType?: string;
+  likeableId?: string;
+  disableOverlay?: false;
+  overlayHeading?: string;
+}
 
 export default class LikeButton extends React.Component<Props> {
 
@@ -20,7 +20,7 @@ export default class LikeButton extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
 
-    this.state = { 
+    this.state = {
       liked: this.props.liked,
       likeCount: this.props.likeCount
     };
@@ -42,7 +42,7 @@ export default class LikeButton extends React.Component<Props> {
     // PubSub.unsubscribe(this.token);
   }
 
-  render () {
+  render() {
     return (
       <div className="like-button">
         <div className="like-button-wrapper">
@@ -70,16 +70,16 @@ export default class LikeButton extends React.Component<Props> {
   }
 
   renderLikeCount() {
-    if (this.state.likeCount === 0 ) {
-      return;
+    if (this.state.likeCount === 0) {
+      return null;
     }
     if (this.props.disableOverlay) {
       return <span className="like-count">{this.state.likeCount}</span>;
     }
     return (
       <span className="like-count" style={{ cursor: 'pointer' }}>
-          <OverlayTriggerButton 
-            text={this.state.likeCount.toString()} 
+          <OverlayTriggerButton
+            text={this.state.likeCount.toString()}
             overlayHeading={this.props.overlayHeading ? this.props.overlayHeading : ''}
           />
       </span>

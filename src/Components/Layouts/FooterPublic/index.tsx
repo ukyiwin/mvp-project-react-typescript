@@ -49,10 +49,10 @@ const FooterPublic = () => {
           </div>
         </div>
       </div>
-      <div 
+      <div
         className="uk-flex uk-width-1-1 uk-flex-stretch
         uk-section-secondary uk-light uk-padding-small
-        uk-padding-remove-vertical" 
+        uk-padding-remove-vertical"
         style={{ paddingTop: 15 }}
       >
         <div className="uk-width-1-3@m uk-width-1-1@s uk-padding-small" id="footerList">

@@ -1,44 +1,54 @@
 {
   "compilerOptions": {
-    "outDir": "build/dist",
-    "module": "esnext",
-    "target": "es5",
-    "lib": [
-      "esnext", "dom", "es6", "esnext.asynciterable"
-    ],
-    "typeRoots": ["node_modules/@types", "src/CustomTypings"],
-    "baseUrl": "./src",
+    "outDir": "build",
+    "module": "commonjs",
+    "target": "es6",
+    "baseUrl": ".",
+    "typeRoots": ["node_modules/@types", "src/app/CustomTypings"],
     "paths": {
-        "@": ["src"],
-        "Components": ["./src/Components"],
-        "Containers": ["./src/Components/Containers"],
-        "Assets": ["./src/Assets"],
-        "ReduxApp": ["./src/Redux"],
-        "Theme": ["./src/Theme"],
-        "Utils": ["./src/Utils"]
+      "*": [
+        "src/app/*",
+        "src/app/redux/*"
+      ],
+      "@": ["src"],
+      "Components": ["./src/app/Components"],
+      "Containers": ["./src/app/Components/Containers"],
+      "Assets": ["./src/app/Assets"],
+      "Theme": ["./src/app/Theme"],
+      "Utils": ["./src/app/Utils"]
     },
     "skipLibCheck": true,
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "./src",
-    "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": false,
-    "strictNullChecks": true,
+    "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "experimentalDecorators": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": true,
   },
   "exclude": [
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.snap",
     "node_modules",
     "build",
-    "scripts",
-    "acceptance-tests",
-    "webpack",
     "server",
-    "jest",
-    "src/setupTests.ts"
-  ]
+    "typings/main",
+    "typings/main.d.ts"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "useCache": true,
+    "useBabel": true
+  }
 }

@@ -8,10 +8,10 @@ import { User } from 'CustomTypings/schema';
 import './style.css';
 // import ArcticleListComponent from 'Components/ArticleList';
 
-type Props = {
-  me?: User,
+interface Props {
+  me?: User;
   // history: any
-};
+}
 
 class Home extends React.Component<Props> {
 

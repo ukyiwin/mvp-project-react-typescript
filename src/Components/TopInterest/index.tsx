@@ -5,9 +5,9 @@ import { ErrorComponent, LoadingComponent } from 'Components/EmptyStates';
 import { Interest } from 'CustomTypings/schema';
 import { ALL_INTEREST } from 'Graphql/Query';
 
-type Response = {
+interface Response {
   allInterest: Interest[];
-};
+}
 
 type WrappedProps = Response & QueryProps;
 
@@ -21,9 +21,9 @@ export default TopInterest(({ loading, allInterest, error }) => {
   return (
     <div className="tags-wrapper undefined">
     {allInterest.map((interest, i) =>
-        
+
       <InterestItemSlim key={interest.id} url={interest.avatar} name={interest.name} />
-        
+
     )}
     </div>
   );

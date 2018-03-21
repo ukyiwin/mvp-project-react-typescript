@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Editor from 'Components/Editor';
+// import Editor from 'Components/Editor';
 import UnizonnEditor from 'Components/Editor2';
 import Select from 'react-select-plus';
 import { ALL_INTEREST } from 'Graphql/Query';
@@ -11,18 +11,18 @@ import 'react-select-plus/dist/react-select-plus.css';
 import './style.css';
 import { Interest } from 'CustomTypings/schema';
 
-type Props = {
+interface Props {
   // tslint:disable-next-line:no-any
-  allInterest: any,
+  allInterest: any;
   // tslint:disable-next-line:no-any
-  refreshToken?: any,
+  refreshToken?: any;
   // tslint:disable-next-line:no-any
-  client?: any,
-};
+  client?: any;
+}
 
-type Response = {
-  allInterest: Interest[]
-};
+interface Response {
+  allInterest: Interest[];
+}
 
 class ComposeWrite extends React.Component<RouteComponentProps & Props & ChildProps<Response, {}>, {}> {
   state = {
@@ -42,10 +42,10 @@ class ComposeWrite extends React.Component<RouteComponentProps & Props & ChildPr
 
     this.props.client.query({
       query: ALL_INTEREST
-    }).then( result => {
+    }).then((result) => {
       // tslint:disable-next-line:no-any
-      let tempList = [] as any;
-      result.data.allInterest.map(interest => {
+      const tempList = [] as any;
+      result.data.allInterest.map((interest) => {
         const temp = { value: interest.id, label: interest.name };
         tempList.push(temp);
       });
@@ -62,15 +62,15 @@ class ComposeWrite extends React.Component<RouteComponentProps & Props & ChildPr
     const { value, category, title } = this.state;
     // tslint:disable-next-line:no-console
     console.log(title);
-    
+
     return (
       <div className="uk-width-1-1">
         <div className="uk-flex uk-padding-large">
           <div className="uk-width-2-3@m uk-width-1-1@s">
                 <div className="uk-card uk-card-small uk-card-default" style={{paddingTop: 10}}>
-                  <Editor contentState={this.state.title} title="Title" config={{debug: true, read_only: false}}  />
+                jkjk
                 </div>
-                <div 
+                <div
                   className="uk-card uk-card-large uk-card-default"
                   style={{minHeight: '60vh', paddingTop: 10}}
                 >
@@ -79,13 +79,13 @@ class ComposeWrite extends React.Component<RouteComponentProps & Props & ChildPr
           </div>
           <div className="uk-width-1-3@m uk-width-1-1@s uk-padding-small uk-padding-remove-vertical">
                 <div className="uk-width-1-1 uk-margin-small-bottom">
-                <button 
-                  className="uk-button uk-button-secondary uk-width-1-2" 
+                <button
+                  className="uk-button uk-button-secondary uk-width-1-2"
                   type="button"
                 >Go Back
                 </button>
-                <button 
-                  className="uk-button uk-button-primary uk-width-1-2" 
+                <button
+                  className="uk-button uk-button-primary uk-width-1-2"
                   type="button"
                 >
                   Publish
@@ -102,7 +102,7 @@ class ComposeWrite extends React.Component<RouteComponentProps & Props & ChildPr
                   simpleValue={false}
                   options={category}
                 /> : null}
-                
+
           </div>
         </div>
       </div>

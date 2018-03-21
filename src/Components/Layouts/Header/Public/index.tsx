@@ -3,9 +3,9 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 // import * as Logo from 'Assets/logo.png';
 
-type Props = {
-  classes?: object,
-};
+interface Props {
+  classes?: object;
+}
 
 // tslint:disable-next-line:no-any
 class PublicHeader extends React.Component<Props> {
@@ -16,13 +16,13 @@ class PublicHeader extends React.Component<Props> {
 
   render() {
     return (
-      <div 
-        data-uk-sticky="animation: uk-animation-slide-top; 
-        sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky: 
+      <div
+        data-uk-sticky="animation: uk-animation-slide-top;
+        sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky:
         cls-inactive: uk-navbar-transparent; top: 100;"
       >
-        <nav 
-          className="uk-navbar-container uk-margin uk-background-secondary" 
+        <nav
+          className="uk-navbar-container uk-margin uk-background-secondary"
           // tslint:disable-next-line:jsx-boolean-value
           uk-navbar
           style={{ zIndex: 980, elevation: 1}}
@@ -30,18 +30,18 @@ class PublicHeader extends React.Component<Props> {
           <div className="uk-navbar-left">
             <button
               className="uk-navbar-toggle uk-hidden@m"
-              type="button" 
+              type="button"
               // tslint:disable-next-line:jsx-boolean-value
-              uk-navbar-toggle-icon 
+              uk-navbar-toggle-icon
               uk-toggle="target: #offcanvas-nav"
               uk-icon="icon: menu; ratio: 1.5"
             />
             <a className="uk-navbar-item uk-logo" href="#">
-            <img 
+            <img
               src="https://getuikit.com/docs/images/avatar.jpg"
               alt="Logo"
-              width="40" 
-              height="40" 
+              width="40"
+              height="40"
             />  Unizonn
             </a>
             <ul className="uk-navbar-nav uk-visible@m">
@@ -59,11 +59,11 @@ class PublicHeader extends React.Component<Props> {
               <ul className="uk-navbar-nav">
                 <li>
                   <a href="#">
-                    <img 
-                      className="uk-border-circle" 
-                      src="https://getuikit.com/docs/images/avatar.jpg" 
-                      width="40" 
-                      height="40" 
+                    <img
+                      className="uk-border-circle"
+                      src="https://getuikit.com/docs/images/avatar.jpg"
+                      width="40"
+                      height="40"
                       alt="Border circle"
                     />
                   </a>
@@ -100,7 +100,7 @@ class PublicHeader extends React.Component<Props> {
       </div>
     );
   }
-  
+
 }
 
 export default PublicHeader;

@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-type Props = {
-  text: string,
-  overlayHeading: string,
-};
+interface Props {
+  text: string;
+  overlayHeading: string;
+}
 
 export default class OverlayTriggerButton extends React.Component<Props> {
   constructor(props: Props) {
@@ -12,7 +12,7 @@ export default class OverlayTriggerButton extends React.Component<Props> {
     this.handleOpenClick = this.handleOpenClick.bind(this);
   }
 
-  render () {
+  render() {
     return (
       <span>
         <span dangerouslySetInnerHTML={{__html: this.props.text}} onClick={this.handleOpenClick}/>
@@ -26,7 +26,7 @@ export default class OverlayTriggerButton extends React.Component<Props> {
     PubSub.publish('OverlayTriggerButton:onClick', {
       endpoint: this.props.apiEndpoint,
       overlayHeading: this.props.overlayHeading
-    }); 
+    });
     */
   }
 

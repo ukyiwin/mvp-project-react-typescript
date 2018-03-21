@@ -13,7 +13,7 @@ import EmojiMenu from 'anchor-ui/emoji-menu';
 });*/
 
 export default class ChatDetail extends React.Component {
-  
+
   state = {
     open: false,
     emoji: ''
@@ -22,9 +22,9 @@ export default class ChatDetail extends React.Component {
   toggleMenu = () => this.setState({ open: !this.state.open });
 
   sendEmoji = (emoj) => {
-    let tempStr = this.state.emoji + emoj.shortname;
+    const tempStr = this.state.emoji + emoj.shortname;
     this.setState({ emoji: tempStr });
-    
+
   }
 
   handleChange = (evt) => {
@@ -63,11 +63,11 @@ export default class ChatDetail extends React.Component {
             <Message body="Helloo man" />
             <Message body="Helloo man" />
           </MessageList>
-          
+
           <div
             className="input-box uk-width-auto"
           >
-            <MessageInput 
+            <MessageInput
               placeholder="Enter message"
               multiLine={true}
               style={{margin: 0}}
@@ -75,16 +75,16 @@ export default class ChatDetail extends React.Component {
               sendMessage={this.handleSendMessage}
               onChange={event => this.handleChange(event)}
               leftButton={
-                <Button 
+                <Button
                   // tslint:disable-next-line:jsx-boolean-value
-                  iconButton 
-                  onClick={this.toggleMenu} 
+                  iconButton
+                  onClick={this.toggleMenu}
                 >
                   <IconEmoji />
                 </Button>
               }
             />
-          
+
             <section>
               <EmojiMenu
                 sendEmoji={(event, emoj) => this.sendEmoji(emoj)}

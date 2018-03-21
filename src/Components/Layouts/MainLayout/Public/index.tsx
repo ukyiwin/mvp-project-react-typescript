@@ -19,15 +19,15 @@ const PublicLayout: React.SFC<DefaultProps> = (props) => {
   const { component: Component, isAuthenticated, exact, refreshToken, ...rest } = props;
 
   return (
-    <Route 
-      {...rest} 
+    <Route
+      {...rest}
       exact={exact !== null ? exact : true}
-      render={matchProps =>
+      render={(matchProps) =>
         isAuthenticated !== true ?
           (<React.Fragment>
             <Component {...matchProps} refreshToken={refreshToken}/>
           </React.Fragment>)
-          : ( <Redirect to={{ pathname: '/home' }} /> )
+          : (<Redirect to={{ pathname: '/home' }} />)
       }
     />
   );

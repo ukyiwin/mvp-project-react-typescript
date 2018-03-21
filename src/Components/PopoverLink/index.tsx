@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-type Props = {
-  link: string,
-  bigger?: boolean
-};
+interface Props {
+  link: string;
+  bigger?: boolean;
+}
 
 export default class PopoverLink extends React.Component<Props> {
 
@@ -22,14 +22,14 @@ export default class PopoverLink extends React.Component<Props> {
     this.state = { showPopover: false, user: null, position: null };
   }
 
-  render () {
-    
+  render() {
+
     const styleIt = this.props.bigger ? {fontSize: 17} : {};
 
     return (
-      <span 
+      <span
         className="popover-link uk-text-bold"
-        onMouseEnter={() => this.handleMouseEnter.bind(this)} 
+        onMouseEnter={() => this.handleMouseEnter.bind(this)}
         onMouseLeave={() => this.handleMouseLeave.bind(this)}
       >
         <Link to={`/${this.props.link}`} style={styleIt}>
@@ -46,29 +46,30 @@ export default class PopoverLink extends React.Component<Props> {
         <div />
       );
     } else {
-      return;
+      return null;
     }
   }
 
   handleMouseEnter = (event) => {
-    let position;
-    const POPOVER_HEIGHT = 200;
-    if ( POPOVER_HEIGHT + 30 > event.clientY) {
-      position = 'bottom';
-    } else {
-      position = 'top';
-    }
-    this.timeoutID = setTimeout(() => {
-      this.setState({ user: {}, showPopover: true, position: position });
-    },                          450);
+    // let position = 'top';
+    // const POPOVER_HEIGHT = 200;
+    // tslint:disable-next-line:prefer-conditional-expression
+    // if (POPOVER_HEIGHT + 30 > event.clientY) {
+      // position = 'bottom';
+    // } else {
+      // position = 'top';
+    // }
+    // this.timeoutID = setTimeout(() => {
+      // this.setState({ user: {}, showPopover: true, position });
+    // },                          450);
   }
 
   // tslint:disable-next-line:typedef
   handleMouseLeave(event) {
     if (this.timeoutID) {
-      clearTimeout(this.timeoutID);
+      // clearTimeout(this.timeoutID);
       // this.timeoutID = null;
     }
-    setTimeout(() => { this.setState({ showPopover: false, position: null }); }, 180);
+    // setTimeout(() => { this.setState({ showPopover: false, position: null }); }, 180);
   }
 }

@@ -1,6 +1,6 @@
 /* tslint:disable */
 import * as React from 'react';
-import { DanteEditor } from "Dante2/es/index.js";//'Dante2';
+/*import { DanteEditor } from "Dante2/es/index.js";//'Dante2';
 import 'Dante2/dist/DanteStyles.css';
 import { EditorState, convertToRaw } from 'draft-js';
 import { Map, fromJS } from 'immutable'
@@ -13,8 +13,8 @@ import EmbedBlock from 'Dante2/es/components/blocks/embed.js'
 import VideoBlock from 'Dante2/es/components/blocks/video.js'
 import PlaceholderBlock from 'Dante2/es/components/blocks/placeholder.js'
 
-import { 
-  resetBlockWithType, 
+import {
+  resetBlockWithType,
   addNewBlockAt } from 'Dante2/es/model/index.js'
 
 // create base element
@@ -58,9 +58,9 @@ type Options = {
   image_delete_callback?: string,
   image_caption_placeholder?: string,
 }
-
-export default class Editors extends React.Component<Props> {
-
+*/
+export default class Editors extends React.Component {
+/*
   content: any;
   options: DanteConfig;
   ref: any;
@@ -114,7 +114,7 @@ export default class Editors extends React.Component<Props> {
               return "sectionLayout--fullWidth"
             case "fill":
               return "graf--layoutFillWidth"
-            default: 
+            default:
               return "sectionLayout--fullWidth"
           }
         },
@@ -224,28 +224,28 @@ export default class Editors extends React.Component<Props> {
       component: DanteTooltip,
       displayOnSelection: true,
       selectionElements: [
-      "unstyled", 
-      "blockquote", 
-      "ordered-list", 
-      "unordered-list", 
-      "unordered-list-item", 
-      "ordered-list-item", 
-      "code-block", 
-      'header-one', 
-      'header-two', 
-      'header-three', 
+      "unstyled",
+      "blockquote",
+      "ordered-list",
+      "unordered-list",
+      "unordered-list-item",
+      "ordered-list-item",
+      "code-block",
+      'header-one',
+      'header-two',
+      'header-three',
       'header-four'],
       widget_options: {
         block_types: [
         // {label: 'p', style: 'unstyled'},
-        { label: 'h2', style: 'header-one', type: "block" }, 
-        { label: 'h3', style: 'header-two', type: "block" }, 
-        { label: 'h4', style: 'header-three', type: "block" }, 
+        { label: 'h2', style: 'header-one', type: "block" },
+        { label: 'h3', style: 'header-two', type: "block" },
+        { label: 'h4', style: 'header-three', type: "block" },
         { label: 'blockquote', style: 'blockquote', type: "block" },
-        { label: 'insertunorderedlist', style: 'unordered-list-item', type: "block" }, 
-        { label: 'insertorderedlist', style: 'ordered-list-item', type: "block" }, 
-        { label: 'code', style: 'code-block', type: "block" }, 
-        { label: 'bold', style: 'BOLD', type: "inline" }, 
+        { label: 'insertunorderedlist', style: 'unordered-list-item', type: "block" },
+        { label: 'insertorderedlist', style: 'ordered-list-item', type: "block" },
+        { label: 'code', style: 'code-block', type: "block" },
+        { label: 'bold', style: 'BOLD', type: "inline" },
         { label: 'italic', style: 'ITALIC', type: "inline" }]
       }
     }, {
@@ -274,34 +274,34 @@ export default class Editors extends React.Component<Props> {
     }
 
     defaultOptions.default_wrappers = [
-      { className: 'graf--p', block: 'unstyled' }, 
+      { className: 'graf--p', block: 'unstyled' },
       { className: 'graf--h2', block: 'header-one' },
-      { className: 'graf--h3', block: 'header-two' }, 
-      { className: 'graf--h4', block: 'header-three' }, 
-      { className: 'graf--blockquote', block: 'blockquote' }, 
-      { className: 'graf--insertunorderedlist', block: 'unordered-list-item' }, 
-      { className: 'graf--insertorderedlist', block: 'ordered-list-item' }, 
-      { className: 'graf--code', block: 'code-block' }, 
-      { className: 'graf--bold', block: 'BOLD' }, 
+      { className: 'graf--h3', block: 'header-two' },
+      { className: 'graf--h4', block: 'header-three' },
+      { className: 'graf--blockquote', block: 'blockquote' },
+      { className: 'graf--insertunorderedlist', block: 'unordered-list-item' },
+      { className: 'graf--insertorderedlist', block: 'ordered-list-item' },
+      { className: 'graf--code', block: 'code-block' },
+      { className: 'graf--bold', block: 'BOLD' },
       { className: 'graf--italic', block: 'ITALIC' }]
 
       defaultOptions.continuousBlocks = [
-      "unstyled", 
-      "blockquote", 
-      "ordered-list", 
-      "unordered-list", 
-      "unordered-list-item", 
-      "ordered-list-item", 
+      "unstyled",
+      "blockquote",
+      "ordered-list",
+      "unordered-list",
+      "unordered-list-item",
+      "ordered-list-item",
       "code-block"
     ]
 
     defaultOptions.key_commands = {
       "alt-shift": [{ key: 65, cmd: 'add-new-block' }],
-      "alt-cmd": [{ key: 49, cmd: 'toggle_block:header-one' }, 
-                  { key: 50, cmd: 'toggle_block:header-two' }, 
+      "alt-cmd": [{ key: 49, cmd: 'toggle_block:header-one' },
+                  { key: 50, cmd: 'toggle_block:header-two' },
                   { key: 53, cmd: 'toggle_block:blockquote' }],
-      "cmd": [{ key: 66, cmd: 'toggle_inline:BOLD' }, 
-              { key: 73, cmd: 'toggle_inline:ITALIC' }, 
+      "cmd": [{ key: 66, cmd: 'toggle_inline:BOLD' },
+              { key: 73, cmd: 'toggle_inline:ITALIC' },
               { key: 75, cmd: 'insert:link' }]
     }
 
@@ -321,17 +321,17 @@ export default class Editors extends React.Component<Props> {
   }
 
   componentDidMount() {
-    
+
     //  // simple implementation, use the js class
     //
-    //  var article = new Dante({ 
-    //    el: "app", 
+    //  var article = new Dante({
+    //    el: "app",
     //    content: demo,
     //    read_only: true,
     //    debug: true
     //  })
     //  article.render()
-    
+
   }
 
   onChange = (editorState) => {
@@ -341,17 +341,12 @@ export default class Editors extends React.Component<Props> {
     console.log(convertToRaw(editorState));
     console.log("hghghg");
   }
+*/
 
   render(){
     // console.log(this.refs.editor);
     return(
-      <DanteEditor
-        ref="editor"
-        content={this.content}
-        editorState={this.content}
-        onChange={() => this.onChange}
-        config={ this.options } 
-      />
+      <div />
     )
   }
 }

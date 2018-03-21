@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-type Props = {
+interface Props {
   // tslint:disable-next-line:no-any
   refresh?: any;
-};
+}
 
 export const ErrorComponent = (props: Props) => (
   <div className="uk-flex uk-flex-stretch uk-width-1-1">
@@ -20,7 +20,7 @@ export const ErrorComponent = (props: Props) => (
   </div>
 );
 
-export const EmptyComponent = props => (
+export const EmptyComponent = (props) => (
   <div className="empty uk-flex-stretch uk-align-center uk-width-1-1">
     <div className="empty-icon">
       <i className="icon icon-people" />
@@ -33,8 +33,8 @@ export const EmptyComponent = props => (
   </div>
 );
 
-export const LoadingComponent = props => (
-  <div 
+export const LoadingComponent = (props) => (
+  <div
     className=" uk-flex-stretch uk-text-center uk-width-1-1"
     style={{ justifyContent: 'center', alignSelf: 'center' }}
   >

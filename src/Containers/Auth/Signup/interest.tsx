@@ -10,34 +10,34 @@ import { Interest } from 'CustomTypings/schema';
 import { ADD_INTERESTS } from 'Graphql/Mutation';
 import './style.css';
 
-type Props = {
+interface Props {
   // tslint:disable-next-line:no-any
-  interests: any[],
+  interests: any[];
   // tslint:disable-next-line:no-any
-  addInterests: any,
+  addInterests: any;
   // tslint:disable-next-line:no-any
-  refreshToken?: any,
+  refreshToken?: any;
   // tslint:disable-next-line:no-any
-  client?: any
-};
+  client?: any;
+}
 
-type State = {
-  loading: boolean,
+interface State {
+  loading: boolean;
   // tslint:disable-next-line:no-any
-  selected: string[],
-  show: boolean
-};
+  selected: string[];
+  show: boolean;
+}
 class InterestPage extends React.Component<RouteComponentProps & Props, State> {
-  
-  state = { 
+
+  state = {
     show: false,
     selected: ['1'],
     loading: false
   };
 
   onSelectAdd = (id) => {
-    let temp = this.state.selected;
-    let index = this.state.selected.indexOf(id);
+    const temp = this.state.selected;
+    const index = this.state.selected.indexOf(id);
 
     if (index === -1) {
       temp.push(id);
@@ -50,7 +50,7 @@ class InterestPage extends React.Component<RouteComponentProps & Props, State> {
   onSelectRemove = (id) => {
     this.state.selected.indexOf(id);
   }
-  
+
   // tslint:disable-next-line:no-any
   save(): any {
     // tslint:disable-next-line:no-console
@@ -62,7 +62,8 @@ class InterestPage extends React.Component<RouteComponentProps & Props, State> {
       variables: {
         interests: inter
       }
-    }).then( result => {
+    }).then(result => {
+      console.log(result);
       this.props.history.push('/signup/complete');
     }).catch(err => {
       UIkit.notification(`${err.message}`, {status: 'danger', pos: 'top-right'});
@@ -81,7 +82,7 @@ class InterestPage extends React.Component<RouteComponentProps & Props, State> {
         className="uk-width-1-1"
         style={{height: '100vh', backgroundColor: '#ffffff'}}
       >
-        <h1 
+        <h1
           className="uk-postion-top-center uk-text-center"
           style={{marginTop: 50}}
         >
@@ -92,19 +93,19 @@ class InterestPage extends React.Component<RouteComponentProps & Props, State> {
           columnWidth={200}
         >
         {this.props.interests.allInterest.map((data, i) =>
-          <InterestItem 
-            key={i} 
+          <InterestItem
+            key={i}
             name={data.name}
             id={data.id}
-            url={data.avatar} 
-            checked={this.state.selected.indexOf(data.id) === -1 ? false : true} 
-            onClickAdd={this.onSelectAdd} 
+            url={data.avatar}
+            checked={this.state.selected.indexOf(data.id) === -1 ? false : true}
+            onClickAdd={this.onSelectAdd}
           />
         )}
         </StackGrid>
         <div className="uk-padding-small" style={{position: 'fixed', bottom: 0, right: 40}}>
-        <button 
-          className="uk-button uk-button-primary" 
+        <button
+          className="uk-button uk-button-primary"
           disabled={this.state.selected.length > 1 ? false : true}
           onClick={() => this.save()}
         >

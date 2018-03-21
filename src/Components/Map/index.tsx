@@ -2,12 +2,12 @@ import * as React from 'react';
 import { compose, withProps } from 'recompose';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 
-type Props = {
-  isMarkerShown?: boolean,
+interface Props {
+  isMarkerShown?: boolean;
   onMarkerClick?: () => void;
-  lat: number,
-  lng: number,
-};
+  lat: number;
+  lng: number;
+}
 
 const MapComponent = compose(
   withProps({
@@ -21,16 +21,16 @@ const MapComponent = compose(
   )((props: Props) =>
   // tslint:disable-next-line:jsx-wrap-multiline
   <>
-    <GoogleMap 
-      defaultZoom={8} 
-      defaultCenter={{ 
+    <GoogleMap
+      defaultZoom={8}
+      defaultCenter={{
         lat: props.lat,
         lng: props.lng}}
     >
     {props.isMarkerShown &&
-        <Marker 
-          position={{ lat: props.lat, lng: props.lng }} 
-          onClick={props.onMarkerClick} 
+        <Marker
+          position={{ lat: props.lat, lng: props.lng }}
+          onClick={props.onMarkerClick}
         />}
     </GoogleMap>
   </>

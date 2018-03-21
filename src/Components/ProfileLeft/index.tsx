@@ -7,19 +7,19 @@ import { User } from 'CustomTypings/schema';
 
 // import { Link } from 'react-router-dom';
 
-type Props = {
+interface Props {
   // tslint:disable-next-line:no-any
-  client?: any
-  user?: User
-};
+  client?: any;
+  user?: User;
+}
 
-type InputProps = {
-  userId: string
-};
+interface InputProps {
+  userId: string;
+}
 
-type Response = {
-  user?: User
-};
+interface Response {
+  user?: User;
+}
 
 // tslint:disable-next-line:no-any
 class ProfileLeft extends React.Component<RouteComponentProps & Props & ChildProps<Response, InputProps>, {}> {
@@ -37,11 +37,11 @@ class ProfileLeft extends React.Component<RouteComponentProps & Props & ChildPro
         email: this.state.text
       }
     }).then(({ data }) => {
-      data.userExist ? 
+      data.userExist ?
         this.props.history.push({
           pathname: '/login',
           email: this.state.text
-        }) : 
+        }) :
         this.props.history.push({
           pathname: '/signup',
           email: this.state.text
@@ -64,7 +64,7 @@ class ProfileLeft extends React.Component<RouteComponentProps & Props & ChildPro
       </div>
     );
   }
-  
+
 }
 
 export default withRouter(compose(

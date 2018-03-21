@@ -20,18 +20,18 @@ const EmptyLayout: React.SFC<DefaultProps> = (props) => {
   const { component: Component, isAuthenticated, ...rest } = props;
 
   return (
-    <Route 
-      {...rest} 
+    <Route
+      {...rest}
       exact={true}
-      render={matctProps =>
+      render={(matctProps) =>
         isAuthenticated ?
-          ( 
+          (
             <div className="uk-flex uk-height-1-1 ">
               <div className="uk-width-expand  uk-height-1-1 ">
                 <Component {...matctProps} />
               </div>
             </div>)
-          : ( <Redirect to={{ pathname: '/' }} /> )
+          : (<Redirect to={{ pathname: '/' }} />)
       }
     />
   );

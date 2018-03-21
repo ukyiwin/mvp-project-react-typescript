@@ -14,14 +14,15 @@ import './style.css';
 import { GET_ARTICLE_BY_ID } from 'Graphql/Query';
 import Label from 'Components/Label';
 
-type Props = {
+interface Props {
   // tslint:disable-next-line:no-any
-  client?: any,
-};
+  client?: any;
+}
 
 class ArticleDetail extends React.Component<RouteComponentProps & Props> {
 
-  state = { 
+  state = {
+    // tslint:disable-next-line:no-object-literal-type-assertion
     currentArticle: {} as Article,
     loading: true
   };
@@ -37,11 +38,11 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
     }
   }
   // tslint:disable-next-line:typedef
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     // tslint:disable-next-line:no-console
     console.log(prevProps);
-    let oldId = prevProps.match.params.slug;
-    let newId = this.props.match.params.slug;
+    const oldId = prevProps.match.params.slug;
+    const newId = this.props.match.params.slug;
     // tslint:disable-next-line:no-console
     console.log(oldId);
     if (newId !== oldId) {
@@ -49,7 +50,7 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
     }
   }
 
-  fetchArticleandOthers (slugOrId: string) {
+  fetchArticleandOthers(slugOrId: string) {
     this.props.client.query({
       query: GET_ARTICLE_BY_ID,
       variables: {
@@ -66,14 +67,14 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
     });
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     // allows us to ignore
   }
 
   renderArticle(article: Article) {
     const {author} = article;
     return (
-        <div 
+        <div
           className="uk-card uk-card-small uk-width-1-1"
           style={{ borderRadius: 1, marginBottom: 22, padding: 10, backgroundColor: '#fff' }}
         >
@@ -86,9 +87,9 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
                   <PopoverLink bigger={true} link={article.id}>{author.firstname} {author.lastname}</PopoverLink>
                   <p className="uk-text-meta uk-margin-remove-top">
                     <time dateTime={article.createdAt}>
-                      <TimeAgo 
-                        className="timeago" 
-                        date={article.createdAt} 
+                      <TimeAgo
+                        className="timeago"
+                        date={article.createdAt}
                       /> ago &#149; {article.body.lengthInMinutes()}
                     </time>
                   </p>
@@ -98,11 +99,11 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
             <button className="uk-button uk-button-primary uk-button-small">Connect</button>
             </div>
           </div>
-          <div 
+          <div
             className="uk-card-body uk-padding-remove-vertical"
             style={{paddingTop: 10, borderBottom: 1 }}
           >
-            <h5 
+            <h5
               className="uk-text-medium uk-text-bold uk-text-break"
               style={{fontSize: 23, fontFamily: 'Open Sans'}}
             >{article.title}
@@ -114,17 +115,17 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
           <div className="uk-padding-small">
           <TopInterest />
           </div>
-          <div 
-            className="post-stats clearfix uk-padding-small uk-padding-remove-horizontal" 
+          <div
+            className="post-stats clearfix uk-padding-small uk-padding-remove-horizontal"
             style={{paddingTop: 10, paddingBottom: 1}}
           >
             <div className="uk-flex pull-left uk-padding-small">
               <Likebutton liked={true} likeCount={2} />
               <a className="response-count uk-margin-left"><span uk-icon="icon:  forward; ratio: 1.2"/>Share</a>
             </div>
-  
+
             <div className="uk-flex  response-count pull-right uk-padding-small">
-              
+
               <div className="dropdown">
                 <button  className="uk-button uk-button-text uk-margin-right" type="button">
                   <span uk-icon="icon: more; ratio: 1.0"/>
@@ -160,7 +161,7 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
 
   renderCommentBox() {
     return (
-      <div 
+      <div
         className="uk-card uk-card-small uk-width-1-1"
         style={{ borderRadius: 1, marginBottom: 30, padding: 10, backgroundColor: '#fff' }}
       >
@@ -182,13 +183,13 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
 
   renderComment() {
     return (
-      <article 
+      <article
         className="uk-comment uk-visible-toggle uk-padding-small"
         style={{backgroundColor: '#fff', marginBottom: 10}}
       >
           <header className="uk-comment-header uk-position-relative">
-              <div 
-                className="uk-grid-medium uk-flex-middle" 
+              <div
+                className="uk-grid-medium uk-flex-middle"
                 data-uk-grid={true}
               >
                   <div className="uk-width-auto">
@@ -205,8 +206,8 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
                 <a className="uk-link-muted" href="#">Reply</a></div>
           </header>
           <div className="uk-comment-body">
-              <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
-                eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam 
+              <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+                eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
                 voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
                  clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
           </div>
@@ -216,7 +217,7 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
 
   renderCommentList() {
     return (
-      <div 
+      <div
         className="uk-card uk-card-small uk-card-small uk-width-1-1"
         style={{backgroundColor: 'transparent'}}
       >
@@ -245,7 +246,7 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
     }
     return (
       <div className="uk-width-1-1 uk-padding">
-        <button 
+        <button
           className="uk-button uk-button-primary uk-button-small uk-margin-bottom-right"
           onClick={() => this.props.history.goBack()}
         >

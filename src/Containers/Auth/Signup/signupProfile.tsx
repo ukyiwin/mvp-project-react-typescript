@@ -9,20 +9,20 @@ import { ADD_PROFILE } from 'Graphql/Mutation';
 
 import './style.css';
 
-type Props = {
-  country: Country,
-  institution: Institutions,
-  department: Department,
+interface Props {
+  country: Country;
+  institution: Institutions;
+  department: Department;
   // tslint:disable-next-line:no-any
-  refreshToken?: any,
+  refreshToken?: any;
   // tslint:disable-next-line:no-any
-  client?: any
+  client?: any;
   // tslint:disable-next-line:no-any
-  addProfile?: any
-};
+  addProfile?: any;
+}
 
 class SignupProfile extends React.Component<RouteComponentProps & Props> {
-  state = { 
+  state = {
     show: false,
     country: '',
     photo: '',
@@ -42,11 +42,11 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
     this.setState({ institution: evt.target.value });
     this.getDepartment(evt.target.value);
   }
-  
+
   handleDeptChange = (evt) => {
     this.setState({ department: evt.target.value });
   }
-  
+
   handleCountryChange = (evt) => {
     this.setState({ country: evt.target.value });
     this.getInstitution(evt.target.value);
@@ -71,9 +71,9 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
       // Err catch block
     });
   }
-  
+
   canBeSubmitted() {
-    const errors =  validateProfile(this.state.photo, this.state.country, 
+    const errors =  validateProfile(this.state.photo, this.state.country,
                                     this.state.institution, this.state.department);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
     return !isDisabled;
@@ -83,7 +83,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
     this.props.client.query({
       query: ALL_COUNTRIES,
     })
-    .then( result => {
+    .then(result => {
       // tslint:disable-next-line:no-console
       console.log(result.data.getCountry);
       this.setState({countryList: result.data.getCountry});
@@ -100,7 +100,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
         idCountry: value
       }
     })
-    .then( result => {
+    .then(result => {
       // tslint:disable-next-line:no-console
       console.log(result);
       this.setState({institutionList: result.data.getInstitution});
@@ -117,7 +117,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
         idInstitutions: value
       }
     })
-    .then( result => {
+    .then(result => {
       this.setState({departmentList: result.data.getDepartment});
     })
     .catch(err => {
@@ -128,13 +128,13 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
   componentWillMount() {
     const email = this.props.location.email;
     if (email) {
-      this.setState({email: email});
+      this.setState({email});
     }
     this.getCountry();
   }
-  
+
   componentDidMount() {
-    let bar = document.getElementById('js-progressbar') as HTMLInputElement;
+    const bar = document.getElementById('js-progressbar') as HTMLInputElement;
 
     UIkit.upload('.js-upload', {
 
@@ -143,26 +143,26 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
         name: 'data',
         dataType: 'json',
 
-        beforeSend: function () {
+        beforeSend() {
             // fd
         },
-        beforeAll: function () {
+        beforeAll() {
             // fd
         },
-        load: function () {
+        load() {
             // fd
         },
-        error: function () {
+        error() {
             // tslint:disable-next-line:no-console
             console.log('error', arguments);
         },
-        complete: function () {
+        complete() {
             // tslint:disable-next-line:no-console
             console.log('complete', arguments);
         },
 
         // tslint:disable-next-line:typedef
-        loadStart: function (e) {
+        loadStart(e) {
             // tslint:disable-next-line:no-console
             console.log('loadStart', arguments);
             if (bar) {
@@ -173,7 +173,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
         },
 
         // tslint:disable-next-line:typedef
-        progress: function (e) {
+        progress(e) {
             // tslint:disable-next-line:no-console
             console.log('progress', arguments);
             if (bar) {
@@ -183,7 +183,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
         },
 
         // tslint:disable-next-line:typedef
-        loadEnd: function (e) {
+        loadEnd(e) {
             // tslint:disable-next-line:no-console
             console.log('loadEnd', arguments);
 
@@ -196,10 +196,10 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
         completeAll: (result, response) => {
             // tslint:disable-next-line:no-console
             console.log('completeAll', result.response);
-            let data = JSON.parse(result.response);
+            const data = JSON.parse(result.response);
             this.setState({photo: data.id, url: data.url});
 
-            setTimeout(function () {
+            setTimeout(() => {
                 if (bar) {
                   bar.setAttribute('hidden', 'hidden');
                 }
@@ -211,69 +211,69 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
 
   render() {
 
-    const errors =  validateProfile(this.state.photo, this.state.country, 
+    const errors =  validateProfile(this.state.photo, this.state.country,
                                     this.state.institution, this.state.department);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
 
     return(
-      <div 
-        className="uk-flex uk-flex-stretch" 
+      <div
+        className="uk-flex uk-flex-stretch"
         // tslint:disable-next-line:jsx-boolean-value
         data-uk-grid
         style={{height: '100vh', backgroundColor: '#ffffff'}}
       >
         <div className="uk-width-2-5 uk-visible@m sideBg uk-flex uk-flex-middle " id="sideBg">
-          <div 
+          <div
             className="uk-position-relative uk-visible-toggle uk-light"
             data-uk-slideshow="animation: scale"
           >
           <ul className="uk-slideshow-items">
             <li>
-              <img 
-                src="https://getuikit.com/docs/images/photo.jpg" 
-                alt="" 
+              <img
+                src="https://getuikit.com/docs/images/photo.jpg"
+                alt=""
                 // tslint:disable-next-line:jsx-boolean-value
-                uk-cover 
+                uk-cover
               />
             </li>
             <li>
-              <img 
-                  src="https://getuikit.com/docs/images/dark.jpg" 
-                  alt="" 
+              <img
+                  src="https://getuikit.com/docs/images/dark.jpg"
+                  alt=""
                   // tslint:disable-next-line:jsx-boolean-value
-                  data-uk-cover 
+                  data-uk-cover
               />
             </li>
             <li>
-              <img 
-                  src="https://getuikit.com/docs/images/light.jpg" 
-                  alt="" 
+              <img
+                  src="https://getuikit.com/docs/images/light.jpg"
+                  alt=""
                   // tslint:disable-next-line:jsx-boolean-value
-                  data-uk-cover 
+                  data-uk-cover
               />
             </li>
           </ul>
-            <a 
-              className="uk-position-center-left uk-position-small uk-hidden-hover" 
-              href="#" 
+            <a
+              className="uk-position-center-left uk-position-small uk-hidden-hover"
+              href="#"
               // tslint:disable-next-line:jsx-boolean-value
-              data-uk-slidenav-previous 
-              data-uk-slideshow-item="previous" 
+              data-uk-slidenav-previous
+              data-uk-slideshow-item="previous"
             />
-            <a 
-              className="uk-position-center-right uk-position-small uk-hidden-hover" 
-              href="#" 
+            <a
+              className="uk-position-center-right uk-position-small uk-hidden-hover"
+              href="#"
               // tslint:disable-next-line:jsx-boolean-value
-              data-uk-slidenav-next 
-              data-uk-slideshow-item="next" 
+              data-uk-slidenav-next
+              data-uk-slideshow-item="next"
             />
           </div>
         </div>
-        <div 
-          className="uk-container uk-width-3-5@m uk-width-1-1@s uk-flex 
+        <div
+          className="uk-container uk-width-3-5@m uk-width-1-1@s uk-flex
           uk-flex-stretch uk-flex-middle uk-box-shadow-small"
         >
-          <form 
+          <form
             className="uk-form-horizontal uk-width-1-1 uk-margin-large uk-padding-large uk-padding-remove-vertical"
             onSubmit={this.handleSubmit}
           >
@@ -287,8 +287,8 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
                   <div
                     uk-form-custom=""
                   >
-                    <input 
-                      type="file" 
+                    <input
+                      type="file"
                       multiple={false}
                     />
                     <span className="uk-link">selecting one</span>
@@ -301,7 +301,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="firstname">Country</label>
               <div className="uk-form-controls">
-                <select 
+                <select
                   className="uk-select"
                   value={this.state.country}
                   required={true}
@@ -318,7 +318,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="lastname">Institution</label>
               <div className="uk-form-controls">
-                <select 
+                <select
                   className="uk-select"
                   value={this.state.institution}
                   required={true}
@@ -335,7 +335,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
             <div className="uk-margin">
               <label className="uk-form-label" htmlFor="email">Course</label>
               <div className="uk-form-controls">
-                <select 
+                <select
                   className="uk-select"
                   value={this.state.department}
                   required={true}
@@ -350,12 +350,12 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
               </div>
             </div>
             <div className="uk-margin">
-              { this.state.loading ? 
+              { this.state.loading ?
                 <div
                   data-uk-spinner="ratio: 1"
                 />
               :
-                <button 
+                <button
                   className={`uk-button uk-button-primary uk-width-1-1 ${isDisabled ? 'disabled' : 'disabled'}`}
                   disabled={isDisabled}
                   type="submit"

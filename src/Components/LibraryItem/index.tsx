@@ -1,11 +1,11 @@
 import * as React from 'react';
 import './style.css';
 
-type Props = {
-  text?: string,
-  image?: string,
-  distance?: string,
-};
+interface Props {
+  text?: string;
+  image?: string;
+  distance?: string;
+}
 
 // tslint:disable-next-line:typedef
 const LibraryItem = (props: Props) => {
@@ -17,9 +17,9 @@ const LibraryItem = (props: Props) => {
         <div className="stack__deco"/>
         <div className="stack__deco"/>
         <div className="stack__figure">
-          <img 
-            className="stack__img" 
-            src="https://tympanus.net/Development/StackMotionHoverEffects/img/2.png" 
+          <img
+            className="stack__img"
+            src="https://tympanus.net/Development/StackMotionHoverEffects/img/2.png"
             alt="Image"
           />
         </div>

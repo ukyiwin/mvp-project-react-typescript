@@ -21,22 +21,22 @@ const ProfileLayout: React.SFC<DefaultProps> = (props) => {
   const { component: Component, isAuthenticated, exact, refreshToken, ...rest } = props;
 
   return (
-    <EmptyLayout 
-      {...rest} 
+    <EmptyLayout
+      {...rest}
       isAuthenticated={isAuthenticated}
       exact={exact !== null ? exact : true}
-      component={matchProps =>
+      component={(matchProps) =>
         isAuthenticated ?
           (<div className="uk-width-1-1">
             <div className="uk-cover-container uk-height-medium uk-card uk-card-default uk-background-primary">
               <canvas width="" height="" />
-              <img 
-                src="https://getuikit.com/docs/images/photo.jpg" 
-                alt="cover image" 
-                uk-cover="ratio: 1" 
+              <img
+                src="https://getuikit.com/docs/images/photo.jpg"
+                alt="cover image"
+                uk-cover="ratio: 1"
                 className="uk-blend-hard-darken"
               />
-            </div> 
+            </div>
             <div className="uk-card uk-card-default uk-padding-small">
               <div className="uk-text-right">
                 <div uk-switcher="animation: uk-animation-fade">
@@ -58,7 +58,7 @@ const ProfileLayout: React.SFC<DefaultProps> = (props) => {
               </div>
             </div>
           </div>)
-          : ( <Redirect to={{ pathname: '/' }} /> )
+          : (<Redirect to={{ pathname: '/' }} />)
       }
     />
   );
