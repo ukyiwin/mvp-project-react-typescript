@@ -3,34 +3,36 @@ import { Route, Redirect, withRouter } from 'react-router-dom';
 import './style.css';
 
 interface DefaultProps {
-  // tslint:disable-next-line:no-any
-  component: any;
-  path?: string;
-  exact?: boolean;
-  isAuthenticated: boolean;
-  // tslint:disable-next-line:no-any
-  refreshToken: any;
-  match: object;
-  location: object;
-  history: object;
+    // tslint:disable-next-line:no-any
+    component: any;
+    path?: string;
+    exact?: boolean;
+    isAuthenticated: boolean;
+    // tslint:disable-next-line:no-any
+    refreshToken: any;
+    match: object;
+    location: object;
+    history: object;
 }
 
-const PublicLayout: React.SFC<DefaultProps> = (props) => {
-  const { component: Component, isAuthenticated, exact, refreshToken, ...rest } = props;
+const PublicLayout: React.SFC<DefaultProps> = props => {
+    const { component: Component, isAuthenticated, exact, refreshToken, ...rest } = props;
 
-  return (
-    <Route
-      {...rest}
-      exact={exact !== null ? exact : true}
-      render={(matchProps) =>
-        isAuthenticated !== true ?
-          (<React.Fragment>
-            <Component {...matchProps} refreshToken={refreshToken}/>
-          </React.Fragment>)
-          : (<Redirect to={{ pathname: '/home' }} />)
-      }
-    />
-  );
+    return (
+        <Route
+            {...rest}
+            exact={exact !== null ? exact : true}
+            render={matchProps =>
+                isAuthenticated !== true ? (
+                    <React.Fragment>
+                        <Component {...matchProps} refreshToken={refreshToken} />
+                    </React.Fragment>
+                ) : (
+                    <Redirect to={{ pathname: '/home' }} />
+                )
+            }
+        />
+    );
 };
 
 export default withRouter(PublicLayout);

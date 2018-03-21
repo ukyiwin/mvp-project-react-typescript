@@ -60,7 +60,7 @@ type Options = {
 }
 */
 export default class Editors extends React.Component {
-/*
+    /*
   content: any;
   options: DanteConfig;
   ref: any;
@@ -343,10 +343,8 @@ export default class Editors extends React.Component {
   }
 */
 
-  render(){
-    // console.log(this.refs.editor);
-    return(
-      <div />
-    )
-  }
+    render() {
+        // console.log(this.refs.editor);
+        return <div />;
+    }
 }

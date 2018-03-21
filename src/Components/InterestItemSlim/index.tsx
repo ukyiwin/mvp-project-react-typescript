@@ -3,15 +3,13 @@ import * as React from 'react';
 import './style.scss';
 
 interface Props {
-  url: string;
-  name: string;
+    url: string;
+    name: string;
 }
 
 // tslint:disable-next-line:typedef
 const InterestItemSlim = (props: Props) => {
-  return (
-    <a className="tag">{props.name}</a>
-  );
+    return <a className="tag">{props.name}</a>;
 };
 
 export default InterestItemSlim;

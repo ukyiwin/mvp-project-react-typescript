@@ -1,54 +1,54 @@
 {
   "compilerOptions": {
-    "outDir": "build",
-    "module": "commonjs",
-    "target": "es6",
-    "baseUrl": ".",
-    "typeRoots": ["node_modules/@types", "src/app/CustomTypings"],
-    "paths": {
-      "*": [
-        "src/app/*",
-        "src/app/redux/*"
-      ],
-      "@": ["src"],
-      "Components": ["./src/app/Components"],
-      "Containers": ["./src/app/Components/Containers"],
-      "Assets": ["./src/app/Assets"],
-      "Theme": ["./src/app/Theme"],
-      "Utils": ["./src/app/Utils"]
-    },
-    "skipLibCheck": true,
-    "sourceMap": true,
+    "baseUrl": "./",
     "allowJs": true,
+    "allowUnreachableCode": false,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "forceConsistentCasingInFileNames": true,
     "jsx": "react",
+    "lib": ["es6", "es2015", "es2017", "dom"],
+    "module": "esnext",
     "moduleResolution": "node",
+    "noImplicitAny": false,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noImplicitAny": false,
-    "strictNullChecks": false,
+    "noUnusedLocals": false,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "strict": true,
+    "pretty": true,
     "suppressImplicitAnyIndexErrors": true,
+    "target": "es2016",
+    "typeRoots": ["node_modules/@types", "src/CustomTypings", "typings"],
+    "paths": {
+      "*": [
+        "src/*",
+      ],
+      "src": ["src/*"],
+      "Components": ["src/Components"],
+      "Containers": ["src/Components/Containers"],
+      "Assets": ["src/Assets"],
+      "Theme": ["src/Theme"],
+      "Utils": ["src/Utils"]
+    },
+    "skipLibCheck": true,
     "inlineSourceMap": false,
     "inlineSources": false,
     "experimentalDecorators": true,
     "noUnusedParameters": false,
-    "noUnusedLocals": true,
+    
   },
   "exclude": [
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "**/*.snap",
     "node_modules",
     "build",
-    "server",
-    "typings/main",
-    "typings/main.d.ts"
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "razzle.config.js",
+    "server"
   ],
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
-  ],
-  "awesomeTypescriptLoaderOptions": {
-    "useCache": true,
-    "useBabel": true
-  }
+  "types": ["typePatches", "node", "webpack-env"]
 }
