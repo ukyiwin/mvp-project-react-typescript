@@ -20,14 +20,14 @@ export default class ChatDetail extends React.Component {
 
     toggleMenu = () => this.setState({ open: !this.state.open });
 
-    sendEmoji = emoj => {
+    sendEmoji = (emoj) => {
         const tempStr = this.state.emoji + emoj.shortname;
         this.setState({ emoji: tempStr });
-    };
+    }
 
-    handleChange = evt => {
+    handleChange = (evt) => {
         this.setState({ emoji: evt.target.value });
-    };
+    }
 
     // This is called by both enter and click
     handleSendMessage = () => {
@@ -36,7 +36,7 @@ export default class ChatDetail extends React.Component {
         // Grab input value from state. This is set by handleChange
         // const { emoji } = this.state;
         // sendMessage(value);
-    };
+    }
 
     render() {
         const { open, emoji } = this.state;
@@ -67,7 +67,7 @@ export default class ChatDetail extends React.Component {
                             style={{ margin: 0 }}
                             value={emoji}
                             sendMessage={this.handleSendMessage}
-                            onChange={event => this.handleChange(event)}
+                            onChange={(event) => this.handleChange(event)}
                             leftButton={
                                 <Button
                                     // tslint:disable-next-line:jsx-boolean-value

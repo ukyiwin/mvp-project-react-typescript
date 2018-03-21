@@ -34,7 +34,7 @@ class InterestPage extends React.Component<RouteComponentProps & Props, State> {
         loading: false,
     };
 
-    onSelectAdd = id => {
+    onSelectAdd = (id) => {
         const temp = this.state.selected;
         const index = this.state.selected.indexOf(id);
 
@@ -44,11 +44,11 @@ class InterestPage extends React.Component<RouteComponentProps & Props, State> {
             temp.splice(index, 1);
         }
         this.setState({ selected: temp });
-    };
+    }
 
-    onSelectRemove = id => {
+    onSelectRemove = (id) => {
         this.state.selected.indexOf(id);
-    };
+    }
 
     // tslint:disable-next-line:no-any
     save(): any {
@@ -63,11 +63,11 @@ class InterestPage extends React.Component<RouteComponentProps & Props, State> {
                     interests: inter,
                 },
             })
-            .then(result => {
+            .then((result) => {
                 console.log(result);
                 this.props.history.push('/signup/complete');
             })
-            .catch(err => {
+            .catch((err) => {
                 UIkit.notification(`${err.message}`, { status: 'danger', pos: 'top-right' });
             });
     }

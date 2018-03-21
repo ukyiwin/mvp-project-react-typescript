@@ -25,14 +25,14 @@ const A = glamorous.a({
     color: '#000000',
 });
 
-const PrivateLayout: React.SFC<DefaultProps & Response> = props => {
+const PrivateLayout: React.SFC<DefaultProps & Response> = (props) => {
     const { component: Component, isAuthenticated, ...rest } = props;
 
     return (
         <Route
             {...rest}
             exact={true}
-            render={matctProps =>
+            render={(matctProps) =>
                 isAuthenticated ? (
                     <div className="uk-flex uk-padding-small@s" style={{ paddingTop: 10 }}>
                         <div className="uk-width-1-5 uk-margin-right uk-margin-left uk-visible@m">

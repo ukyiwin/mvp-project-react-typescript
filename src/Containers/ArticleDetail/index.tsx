@@ -57,12 +57,12 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
                     id: slugOrId,
                 },
             })
-            .then(result => {
+            .then((result) => {
                 // tslint:disable-next-line:no-console
                 console.log(result.data.getArticleById);
                 this.setState({ currentArticle: result.data.getArticleById, loading: false });
             })
-            .catch(err => {
+            .catch((err) => {
                 // tslint:disable-next-line:no-console
                 console.log(err);
                 this.props.history.replace('/not-found');

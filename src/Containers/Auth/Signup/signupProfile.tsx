@@ -38,21 +38,21 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
         loading: false,
     };
 
-    handleInstChange = evt => {
+    handleInstChange = (evt) => {
         this.setState({ institution: evt.target.value });
         this.getDepartment(evt.target.value);
-    };
+    }
 
-    handleDeptChange = evt => {
+    handleDeptChange = (evt) => {
         this.setState({ department: evt.target.value });
-    };
+    }
 
-    handleCountryChange = evt => {
+    handleCountryChange = (evt) => {
         this.setState({ country: evt.target.value });
         this.getInstitution(evt.target.value);
-    };
+    }
 
-    handleSubmit = evt => {
+    handleSubmit = (evt) => {
         evt.preventDefault();
         if (!this.canBeSubmitted()) {
             return;
@@ -67,13 +67,13 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
                     departmentId: this.state.department,
                 },
             })
-            .then(result => {
+            .then((result) => {
                 this.props.history.replace('/add/interest');
             })
-            .catch(err => {
+            .catch((err) => {
                 // Err catch block
             });
-    };
+    }
 
     canBeSubmitted() {
         const errors = validateProfile(
@@ -82,7 +82,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
             this.state.institution,
             this.state.department,
         );
-        const isDisabled = Object.keys(errors).some(x => errors[x]);
+        const isDisabled = Object.keys(errors).some((x) => errors[x]);
         return !isDisabled;
     }
 
@@ -91,12 +91,12 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
             .query({
                 query: ALL_COUNTRIES,
             })
-            .then(result => {
+            .then((result) => {
                 // tslint:disable-next-line:no-console
                 console.log(result.data.getCountry);
                 this.setState({ countryList: result.data.getCountry });
             })
-            .catch(err => {
+            .catch((err) => {
                 // jkjk
             });
     }
@@ -109,12 +109,12 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
                     idCountry: value,
                 },
             })
-            .then(result => {
+            .then((result) => {
                 // tslint:disable-next-line:no-console
                 console.log(result);
                 this.setState({ institutionList: result.data.getInstitution });
             })
-            .catch(err => {
+            .catch((err) => {
                 // jkjk
             });
     }
@@ -127,10 +127,10 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
                     idInstitutions: value,
                 },
             })
-            .then(result => {
+            .then((result) => {
                 this.setState({ departmentList: result.data.getDepartment });
             })
-            .catch(err => {
+            .catch((err) => {
                 // jkjk
             });
     }
@@ -212,7 +212,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
                     if (bar) {
                         bar.setAttribute('hidden', 'hidden');
                     }
-                }, 1000);
+                },         1000);
             },
         });
     }
@@ -224,7 +224,7 @@ class SignupProfile extends React.Component<RouteComponentProps & Props> {
             this.state.institution,
             this.state.department,
         );
-        const isDisabled = Object.keys(errors).some(x => errors[x]);
+        const isDisabled = Object.keys(errors).some((x) => errors[x]);
 
         return (
             <div

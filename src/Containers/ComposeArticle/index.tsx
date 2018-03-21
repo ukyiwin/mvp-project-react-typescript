@@ -33,20 +33,20 @@ class ComposeWrite extends React.Component<RouteComponentProps & Props & ChildPr
         value: [],
     };
 
-    handleChange = value => {
+    handleChange = (value) => {
         this.setState({ value });
         // console.log(`Selected: ${selectedOption.label}`);
-    };
+    }
 
     addInterestContent() {
         this.props.client
             .query({
                 query: ALL_INTEREST,
             })
-            .then(result => {
+            .then((result) => {
                 // tslint:disable-next-line:no-any
                 const tempList = [] as any;
-                result.data.allInterest.map(interest => {
+                result.data.allInterest.map((interest) => {
                     const temp = { value: interest.id, label: interest.name };
                     tempList.push(temp);
                 });

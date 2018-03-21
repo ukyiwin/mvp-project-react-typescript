@@ -17,7 +17,7 @@ interface DefaultProps {
     history: object;
 }
 
-const ProfileLayout: React.SFC<DefaultProps> = props => {
+const ProfileLayout: React.SFC<DefaultProps> = (props) => {
     const { component: Component, isAuthenticated, exact, refreshToken, ...rest } = props;
 
     return (
@@ -25,7 +25,7 @@ const ProfileLayout: React.SFC<DefaultProps> = props => {
             {...rest}
             isAuthenticated={isAuthenticated}
             exact={exact !== null ? exact : true}
-            component={matchProps =>
+            component={(matchProps) =>
                 isAuthenticated ? (
                     <div className="uk-width-1-1">
                         <div className="uk-cover-container uk-height-medium uk-card uk-card-default uk-background-primary">

@@ -14,7 +14,7 @@ interface Props {
 }
 
 class Home extends React.Component<Props> {
-    tracks: { id: number }[];
+  
     // tslint:disable-next-line:typedef
     constructor(props) {
         super(props);

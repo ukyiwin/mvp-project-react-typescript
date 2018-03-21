@@ -89,14 +89,14 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
             });
             // this.loadMe();
         }
-    };
+    }
 
     _logout = () => {
         localStorage.removeItem(AUTH_TOKEN);
         this.setState({ isAuthenticated: false });
         this.setState({ token: '' });
         this.setState({ expireToken: false });
-    };
+    }
 
     loadMe() {
         this.props.client
@@ -118,7 +118,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                 // tslint:disable-next-line:no-console
                 console.log(this.state.avatar);
             })
-            .catch(error => {
+            .catch((error) => {
                 // localStorage.removeItem(AUTH_TOKEN);
                 if (error) {
                     // tslint:disable-next-line:no-console

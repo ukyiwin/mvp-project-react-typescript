@@ -41,13 +41,13 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
         loading: false,
     };
 
-    handleEmailChange = evt => {
+    handleEmailChange = (evt) => {
         this.setState({ email: evt.target.value });
-    };
+    }
 
-    handlePasswordChange = evt => {
+    handlePasswordChange = (evt) => {
         this.setState({ password: evt.target.value });
-    };
+    }
 
     componentWillMount() {
         const email = this.props.location.email;
@@ -56,7 +56,7 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
         }
     }
 
-    handleSubmit = evt => {
+    handleSubmit = (evt) => {
         evt.preventDefault();
         if (!this.canBeSubmitted()) {
             return;
@@ -70,7 +70,7 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
                     password,
                 },
             })
-            .then(result => {
+            .then((result) => {
                 const token = result.data.login.token;
                 const user = result.data.login.user;
                 localStorage.setItem(AUTH_TOKEN, token);
@@ -83,21 +83,21 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
                     this.props.history.replace('/');
                 }
             })
-            .catch(err => {
+            .catch((err) => {
                 this.setState({ loading: false });
                 UIkit.notification(`Error: ${err.message}`, { status: 'danger', pos: 'top-right' });
             });
-    };
+    }
 
     canBeSubmitted() {
         const errors = validateLogin(this.state.email, this.state.password);
-        const isDisabled = Object.keys(errors).some(x => errors[x]);
+        const isDisabled = Object.keys(errors).some((x) => errors[x]);
         return !isDisabled;
     }
 
     render() {
         const errors = validateLogin(this.state.email, this.state.password);
-        const isDisabled = Object.keys(errors).some(x => errors[x]);
+        const isDisabled = Object.keys(errors).some((x) => errors[x]);
 
         return (
             <div

@@ -45,39 +45,39 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
         loading: false,
     };
 
-    handleEmailChange = evt => {
+    handleEmailChange = (evt) => {
         this.setState({ email: evt.target.value });
-    };
+    }
 
-    handlePasswordChange = evt => {
+    handlePasswordChange = (evt) => {
         this.setState({ password: evt.target.value });
-    };
+    }
 
-    handleConPasswordChange = evt => {
+    handleConPasswordChange = (evt) => {
         this.setState({ confirmPassword: evt.target.value });
-    };
+    }
 
-    handleUsernameChange = evt => {
+    handleUsernameChange = (evt) => {
         this.setState({ username: evt.target.value });
-    };
+    }
 
-    handleFnameChange = evt => {
+    handleFnameChange = (evt) => {
         this.setState({ firstname: evt.target.value });
-    };
+    }
 
-    handleLnameChange = evt => {
+    handleLnameChange = (evt) => {
         this.setState({ lastname: evt.target.value });
-    };
+    }
 
-    handleUserTypeChange = evt => {
+    handleUserTypeChange = (evt) => {
         this.setState({ userType: evt.target.value });
-    };
+    }
 
-    handleGenderChange = evt => {
+    handleGenderChange = (evt) => {
         this.setState({ gender: evt.target.value });
-    };
+    }
 
-    handleSubmit = evt => {
+    handleSubmit = (evt) => {
         evt.preventDefault();
         if (!this.canBeSubmitted()) {
             return;
@@ -96,7 +96,7 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
                     gender,
                 },
             })
-            .then(result => {
+            .then((result) => {
                 const token = result.data.signup.token;
                 localStorage.setItem(AUTH_TOKEN, token);
                 localStorage.setItem(CURRENT_USER, result.data.signup.user);
@@ -104,11 +104,11 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
                 this.setState({ loading: false });
                 this.props.history.replace('/add/profile');
             })
-            .catch(err => {
+            .catch((err) => {
                 this.setState({ loading: false });
                 UIkit.notification(`${err.message}`, { status: 'danger', pos: 'top-right' });
             });
-    };
+    }
 
     canBeSubmitted() {
         const errors = validateSignup(
@@ -121,7 +121,7 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
             this.state.gender,
             this.state.userType,
         );
-        const isDisabled = Object.keys(errors).some(x => errors[x]);
+        const isDisabled = Object.keys(errors).some((x) => errors[x]);
         return !isDisabled;
     }
 
@@ -143,7 +143,7 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
             this.state.gender,
             this.state.userType,
         );
-        const isDisabled = Object.keys(errors).some(x => errors[x]);
+        const isDisabled = Object.keys(errors).some((x) => errors[x]);
 
         return (
             <div
