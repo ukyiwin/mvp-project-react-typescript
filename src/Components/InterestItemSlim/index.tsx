@@ -1,6 +1,6 @@
 import * as React from 'react';
 // import Avatar from 'Components/Avatar';
-import './style.scss';
+// import './style.scss';
 
 interface Props {
     url: string;

@@ -4,7 +4,6 @@ import ArticleList from 'Components/ArticleList';
 import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { User } from 'CustomTypings/schema';
-
 import './style.css';
 // import ArcticleListComponent from 'Components/ArticleList';
 

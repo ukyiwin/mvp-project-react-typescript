@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import InputBoxLogin from 'Components/InputBoxLogin';
-import './style.css';
+import './style.scss';
 
 interface Props {
     classes?: object;
@@ -9,7 +9,7 @@ interface Props {
 }
 
 class HomePublic extends React.Component<Props> {
-    offsetTarget: number;
+    
     state = {
         strokeDashOffset: 0,
         pinPin: false,
@@ -37,13 +37,31 @@ class HomePublic extends React.Component<Props> {
                     <title>Unizonn | Home</title>
                     <meta name="an inclusive community" content="Unizonn community" />
                 </Helmet>
+                <div className="base-slider owl-carousel owl-theme">
+                  <div className="item">
+                    <img src="Assets/img/slider-light.svg" alt="slider" />
+                    <div className="inside">
+                      <h2>Best Web Hosting For Your Website</h2>
+                      <p>get best speed for your website. dont loose more clients.</p>
+                      <a href="service-page.html" className="custom-btn">Get Started Now</a>
+                    </div>
+                  </div>
+                  <div className="item">
+                    <img src="Assets/img/slider-light.svg" alt="slider" />
+                    <div className="inside">
+                      <h2>Best Web Hosting For Your Website</h2>
+                      <p>get best speed for your website. dont loose more clients.</p>
+                      <a href="service-page.html" className="custom-btn">Get Started Now</a>
+                    </div>
+                  </div>
+                </div>
                 <div
                     id="bg1"
                     className="uk-flex uk-width-1-1 uk-flex-stretch uk-height-large backgroundOne"
                     style={{ height: '100vh' }}
                 >
                     <div className="uk-container uk-container-expand uk-position-center-left uk-flex uk-width-1-1">
-                        <InputBoxLogin hisory={this.props.history} />
+                        <InputBoxLogin />
                     </div>
                 </div>
                 <div

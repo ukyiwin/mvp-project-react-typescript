@@ -6,7 +6,7 @@ import { SIGNUP_USER } from 'Graphql/Mutation';
 import { User } from 'CustomTypings/schema';
 import { validateSignup } from 'Utils/helpers';
 import * as UIkit from 'uikit';
-import { AUTH_TOKEN, CURRENT_USER } from '../../../../constants';
+import { AUTH_TOKEN, CURRENT_USER } from '../../../constants';
 import './style.css';
 
 interface InputProps {

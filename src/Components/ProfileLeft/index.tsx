@@ -28,7 +28,7 @@ class ProfileLeft extends React.Component<RouteComponentProps & Props & ChildPro
         loading: false,
     };
 
-    checkUser = e => {
+    checkUser = (e) => {
         e.preventDefault();
         this.setState({ loading: true });
         this.props.client
@@ -50,10 +50,10 @@ class ProfileLeft extends React.Component<RouteComponentProps & Props & ChildPro
                       });
                 this.setState({ loading: false });
             })
-            .catch(error => {
+            .catch((error) => {
                 this.setState({ loading: false });
             });
-    };
+    }
 
     render() {
         // const { loading } = this.state;

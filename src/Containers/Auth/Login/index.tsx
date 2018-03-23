@@ -9,7 +9,7 @@ import { validateLogin } from 'Utils/helpers';
 import * as UIkit from 'uikit';
 
 import './style.css';
-import { AUTH_TOKEN, CURRENT_USER } from '../../../../constants';
+import { AUTH_TOKEN, CURRENT_USER } from '../../../constants';
 
 interface Props {
     // tslint:disable-next-line:no-any
@@ -189,10 +189,10 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
 }
 
 export default withRouter(
-    compose(
-        withApollo,
-        graphql<Response, InputProps, Props>(LOGIN_USER, {
-            name: 'login',
-        }),
-    )(Login),
+  compose(
+    withApollo,
+    graphql<Response, InputProps, Props>(LOGIN_USER, {
+        name: 'login',
+    }),
+  )(Login),
 );

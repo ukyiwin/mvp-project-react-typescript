@@ -24,7 +24,7 @@ class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildP
         loading: false,
     };
 
-    checkUser = e => {
+    checkUser = (e) => {
         e.preventDefault();
         this.setState({ loading: true });
         this.props.client
@@ -46,10 +46,10 @@ class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildP
                       });
                 this.setState({ loading: false });
             })
-            .catch(error => {
+            .catch((error) => {
                 this.setState({ loading: false });
             });
-    };
+    }
 
     render() {
         const { loading } = this.state;
@@ -74,7 +74,7 @@ class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildP
                             <div uk-form-custom="target: true" className="uk-width-3-4@m uk-width-1-1@s">
                                 <input
                                     type="email"
-                                    onChange={e => this.setState({ text: e.target.value })}
+                                    onChange={(e) => this.setState({ text: e.target.value })}
                                     value={this.state.text}
                                     required={true}
                                     className="uk-input uk-box-shadow-hover-small uk-responsive-width uk-form-large"

@@ -3,6 +3,7 @@ const path = require('path');
 const autoprefixer = require("autoprefixer");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const Visualizer = require("webpack-visualizer-plugin");
+const { ReactLoadablePlugin } = require('react-loadable/webpack');
 
 module.exports = {
   modify(baseConfig, { target, dev }, webpack) {
@@ -52,6 +53,8 @@ module.exports = {
       options: {
         // this will make errors clickable in `Problems` tab of VSCode
         visualStudioErrorFormat: true,
+            // disable type checker - we will use it in fork plugin
+            transpileOnly: true,
       },
     };
 
@@ -115,6 +118,11 @@ module.exports = {
           sourceMap: dev
         }
       };
+
+      config.plugins.push(
+        new ReactLoadablePlugin({
+          filename: './build/react-loadable.json',
+        }));
 
       if (dev) {
         // For development, include source map

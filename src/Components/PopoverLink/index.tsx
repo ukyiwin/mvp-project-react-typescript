@@ -7,7 +7,6 @@ interface Props {
 }
 
 export default class PopoverLink extends React.Component<Props> {
-    timeoutID: NodeJS.Timer;
 
     state = {
         showPopover: false,
@@ -46,7 +45,7 @@ export default class PopoverLink extends React.Component<Props> {
         }
     }
 
-    handleMouseEnter = event => {
+    handleMouseEnter = (event) => {
         // let position = 'top';
         // const POPOVER_HEIGHT = 200;
         // tslint:disable-next-line:prefer-conditional-expression
@@ -58,14 +57,14 @@ export default class PopoverLink extends React.Component<Props> {
         // this.timeoutID = setTimeout(() => {
         // this.setState({ user: {}, showPopover: true, position });
         // },                          450);
-    };
+    }
 
     // tslint:disable-next-line:typedef
     handleMouseLeave(event) {
-        if (this.timeoutID) {
+        // if (this.timeoutID) {
             // clearTimeout(this.timeoutID);
             // this.timeoutID = null;
-        }
+        // }
         // setTimeout(() => { this.setState({ showPopover: false, position: null }); }, 180);
     }
 }
