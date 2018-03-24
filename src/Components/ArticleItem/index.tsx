@@ -33,7 +33,7 @@ class ArticleItem extends React.Component<Props> {
               }}
             >
               
-              <div className="uk-padding-small">
+              {this.props.small ? null : (<div className="uk-padding-small">
                 <div
                   data-uk-lightbox="animation: fade; video-autoplay: true;"
                   className="uk-inline-clip uk-transition-toggle"
@@ -50,7 +50,7 @@ class ArticleItem extends React.Component<Props> {
                       />
                     </a>
                 </div>
-              </div>
+              </div>)}
                 {this.props.small ? null : (
                     <div className="post-metadata uk-padding-remove-bottom uk-padding-small">
                         <div className="uk-grid-small uk-flex" uk-grid={true}>

@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "e5cef7797ecd76a8a643"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "e6db08342ccb4cb73e2f"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1004,10 +1004,10 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 padding: 10,
                 backgroundColor: '#fff',
             } },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small" },
+            this.props.small ? null : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "data-uk-lightbox": "animation: fade; video-autoplay: true;", className: "uk-inline-clip uk-transition-toggle" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "uk-inline", href: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("img", { src: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg", className: "img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque", alt: "...", style: { maxHeight: 280 } })))),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("img", { src: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg", className: "img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque", alt: "...", style: { maxHeight: 280 } }))))),
             this.props.small ? null : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "post-metadata uk-padding-remove-bottom uk-padding-small" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-grid-small uk-flex", "uk-grid": true },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-auto" },
