@@ -16,6 +16,7 @@ module.exports = {
     config.resolve.alias.Assets = path.resolve('./src/Assets');
     config.resolve.alias.Utils = path.resolve('./src/Utils');
     config.resolve.alias.jquery = path.resolve('jquery/src/jquery');
+    config.resolve.alias['@material'] = path.resolve('./node_modules/@material');
 
     config.resolve.extensions = config.resolve.extensions.concat([
       '.ts',
@@ -41,7 +42,6 @@ module.exports = {
       rule => rule.options && rule.options.babelrc
     );
 
-    // Get the correct `include` option, since that hasn't changed.
     // This tells Razzle which directories to transform.
     const { include } = config.module.rules[babelLoader];
 
@@ -119,10 +119,10 @@ module.exports = {
         }
       };
 
-      config.plugins.push(
-        new ReactLoadablePlugin({
-          filename: './build/react-loadable.json',
-        }));
+      //config.plugins.push(
+        //new ReactLoadablePlugin({
+          //filename: './build/react-loadable.json',
+        //}));
 
       if (dev) {
         // For development, include source map
@@ -130,6 +130,22 @@ module.exports = {
           test: /.scss$/,
           use: ["style-loader", cssLoader, postCSSLoader, sassLoader]
         });
+
+        // For development, include source map
+        /*config.module.rules.push(
+          {
+            test: /\.svg$/,
+            use: [
+              {
+                loader: "babel-loader"
+              },
+              {
+                loader: 'svg-url-loader'
+              },
+            ]
+          }
+        );*/
+
       } else {
         // For production, extract CSS
         config.module.rules.push({

@@ -4,6 +4,7 @@ import { CookiesProvider, CookieBannerUniversal } from 'react-cookie-banner';
 import { Helmet } from 'react-helmet';
 import { withApollo, graphql, compose, ChildProps } from 'react-apollo';
 import Loadable from 'react-loadable';
+import { asyncComponent } from 'react-async-component';
 import { PublicLayout, PrivateLayout, EmptyLayout, ProfileLayout } from 'Components/Layouts/MainLayout';
 import { isTokenExpired } from 'Utils/jwtHelper';
 import { AUTH_TOKEN } from '../../constants';
@@ -14,73 +15,74 @@ import { User } from 'CustomTypings/schema';
 import { ME } from 'Graphql/Query';
 import 'Theme/application.scss';
 import './style.scss';
-import { cookies } from '../../link';
+import { cookies } from 'link';
+// import { cookies } from '../../link';
 
-const Home = Loadable({
-  loader: () => import('Containers/Home'),
-  loading: () => <LoadingComponent />,
-});
-
-const NotFound = Loadable({
-  loader: () => import('Containers/NotFound'),
-  loading: () => <LoadingComponent />,
+const Home = asyncComponent({
+  resolve: () => System.import('Containers/Home'),
+  LoadingComponent: () => <LoadingComponent />
 });
 
-const Profile = Loadable({
-  loader: () => import('Containers/Profile'),
-  loading: () => <LoadingComponent />,
+const NotFound = asyncComponent({
+  resolve: () => System.import('Containers/NotFound'),
+  LoadingComponent: () => <LoadingComponent />,
 });
 
-const PublicHome = Loadable({
-  loader: () => import('Containers/HomePublic'),
-  loading: () => <LoadingComponent />,
-});
-const Login = Loadable({
-  loader: () => import('Containers/Auth/Login'),
-  loading: () => <LoadingComponent />,
+const Profile = asyncComponent({
+  resolve: () => System.import('Containers/Profile'),
+  LoadingComponent: () => <LoadingComponent />,
 });
 
-const Signup = Loadable({
-  loader: () => import('Containers/Auth/Signup'),
-  loading: () => <LoadingComponent />,
+const PublicHome = asyncComponent({
+  resolve: () => System.import('Containers/HomePublic'),
+  LoadingComponent: () => <LoadingComponent />,
 });
-const ArticleDetail = Loadable({
-  loader: () => import('Containers/ArticleDetail'),
-  loading: () => <LoadingComponent />,
-});
-
-const Interest = Loadable({
-  loader: () => import('Containers/Auth/Signup/interest'),
-  loading: () => <LoadingComponent />,
-});
-const Maps = Loadable({
-  loader: () => import('Containers/Maps'),
-  loading: () => <LoadingComponent />,
+const Login = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Login'),
+  LoadingComponent: () => <LoadingComponent />,
 });
 
-const Compose = Loadable({
-  loader: () => import('Containers/ComposeArticle'),
-  loading: () => <LoadingComponent />,
+const Signup = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Signup'),
+  LoadingComponent: () => <LoadingComponent />,
+});
+const ArticleDetail = asyncComponent({
+  resolve: () => System.import('Containers/ArticleDetail'),
+  LoadingComponent: () => <LoadingComponent />,
 });
 
-const Message = Loadable({
-  loader: () => import('Containers/Message'),
-  loading: () => <LoadingComponent />,
+const Interest = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Signup/interest'),
+  LoadingComponent: () => <LoadingComponent />,
+});
+const Maps = asyncComponent({
+  resolve: () => System.import('Containers/Maps'),
+  LoadingComponent: () => <LoadingComponent />,
 });
 
-const Forum = Loadable({
-  loader: () => import('Containers/Forum'),
-  loading: () => <LoadingComponent />,
+const Compose = asyncComponent({
+  resolve: () => System.import('Containers/ComposeArticle'),
+  LoadingComponent: () => <LoadingComponent />,
 });
 
-const FinishSignup = Loadable({
-  loader: () => import('Containers/Auth/Signup/finishSignup'),
-  loading: () => <LoadingComponent />,
+const Message = asyncComponent({
+  resolve: () => System.import('Containers/Message'),
+  LoadingComponent: () => <LoadingComponent />,
 });
 
-const SignupProfile = Loadable({
-  loader: () => import('Containers/Auth/Signup/signupProfile'),
-  loading: () => <LoadingComponent />,
+const Forum = asyncComponent({
+  resolve: () => System.import('Containers/Forum'),
+  LoadingComponent: () => <LoadingComponent />,
+});
+
+const FinishSignup = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Signup/finishSignup'),
+  LoadingComponent: () => <LoadingComponent />,
+});
+
+const SignupProfile = asyncComponent({
+  resolve: () => System.import('Containers/Auth/Signup/signupProfile'),
+  LoadingComponent: () => <LoadingComponent />,
 });
 
 interface Props {
@@ -119,14 +121,19 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     };
 
     componentWillMount() {
-        /*const token = cookies.get(AUTH_TOKEN);
-        cookies.set('test', 'a', {
+      this.props.client.query({
+        query: ME
+      }).then((res) => {
+        // dhjhj
+      });
+      const token = cookies.get(AUTH_TOKEN);
+        /*cookies.set('test', 'a', {
           expires: new Date(2020-05-04),
           path: '/api',
           domain: '*.example.com',
           secure: true
-        });
-        if (token !== null && token !== undefined) {
+        });*/
+      if (token !== null && token !== undefined) {
             const expired = isTokenExpired(token);
             if (!expired) {
                 this.setState({ isAuthenticated: true });
@@ -139,7 +146,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                 this.setState({ token: '' });
                 this.setState({ expireToken: false });
             }
-        }*/
+        }
     }
 
     componentDidMount() {
@@ -162,7 +169,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     }
 
     _logout = () => {
-        // localStorage.removeItem(AUTH_TOKEN);
+        cookies.remove(AUTH_TOKEN, '', -1);
         this.setState({ isAuthenticated: false });
         this.setState({ token: '' });
         this.setState({ expireToken: false });
@@ -207,16 +214,8 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
         console.log(isAuthenticated);
 
         return (
-            <div className="uk-offcanvas-content bg-muted" style={{ minHeight: '40vh', backgroundColor: '#e4e6eb' }}>
-                <div>
-                <CookiesProvider cookies={cookies}>
-                  <CookieBannerUniversal
-                    message="Yes, we use cookies. If you don't like it change website, we won't miss you!"
-                    // tslint:disable-next-line:no-empty
-                    onAccept={() => {}}
-                    cookie="user-has-accepted-cookies" />
-                </CookiesProvider>
-                </div>
+            <div className="uk-offcanvas-content bg-muted" style={{ backgroundColor: '#e4e6eb' }}>
+                
                 <Helmet>
                     <title>Unizonn</title>
                     <meta name="an inclusive community" content="Unizonn community" />
@@ -294,4 +293,4 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     }
 }
 
-export default withRouter(compose(withApollo, graphql<Response, {}>(ME))(App));
+export default withRouter(compose(withApollo)(App));

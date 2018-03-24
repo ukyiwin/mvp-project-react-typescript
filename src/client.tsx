@@ -12,7 +12,7 @@ import { ApolloLink } from 'apollo-link';
 import Loadable from 'react-loadable';
 import 'isomorphic-fetch';
 // import fetch from 'node-fetch';
-// import asyncBootstrapper from 'react-async-bootstrapper';
+import asyncBootstrapper from 'react-async-bootstrapper';
 // import { AsyncComponentProvider } from 'react-async-component';
 
 import App from './Containers/App';
@@ -23,6 +23,7 @@ import {
   retryLink,
   stateLink
 } from './link';
+import { AsyncComponentProvider } from 'react-async-component';
 
 const links = [
   errorLink,
@@ -117,25 +118,24 @@ String.prototype.lengthInMinutes = function(this: string) {
 
 // Get any rehydrateState for the async components.
 // eslint-disable-next-line no-underscore-dangle
-// const asyncComponentsRehydrateState = window.__ASYNC_COMPONENTS_REHYDRATE_STATE__;
+const asyncComponentsRehydrateState = window.__ASYNC_COMPONENTS_REHYDRATE_STATE__;
 
-// const container = document.getElementById('root') as HTMLElement;
-// asyncBootstrapper(app).then(() => ReactDOM.render(app, container));
+const container = document.getElementById('root') as HTMLElement;
 
 /// registerServiceWorker();
 // import App from './App';
-window.main = () => {
-  Loadable.preloadReady().then(() => {
-    ReactDOM.hydrate(
-      <ApolloProvider client={client}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-      </ApolloProvider>,
-      document.getElementById('root')
-    );
-  });
-};
+
+const app = (
+  <AsyncComponentProvider rehydrateState={asyncComponentsRehydrateState}>
+  <ApolloProvider client={client}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+  </ApolloProvider>
+  </AsyncComponentProvider>
+);
+
+asyncBootstrapper(app).then(() => ReactDOM.render(app, container));
 
 if (module.hot) {
   module.hot.accept();

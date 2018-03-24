@@ -8,8 +8,9 @@ import { User } from 'CustomTypings/schema';
 import { validateLogin } from 'Utils/helpers';
 import * as UIkit from 'uikit';
 
-import './style.css';
+import './style.scss';
 import { AUTH_TOKEN, CURRENT_USER } from '../../../constants';
+import { cookies } from 'link';
 
 interface Props {
     // tslint:disable-next-line:no-any
@@ -58,6 +59,7 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
 
     handleSubmit = (evt) => {
         evt.preventDefault();
+        console.log('error from');
         if (!this.canBeSubmitted()) {
             return;
         }
@@ -73,8 +75,8 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
             .then((result) => {
                 const token = result.data.login.token;
                 const user = result.data.login.user;
-                localStorage.setItem(AUTH_TOKEN, token);
-                localStorage.setItem(CURRENT_USER, result.data.login.user);
+                cookies.set(AUTH_TOKEN, token);
+                cookies.set(CURRENT_USER, result.data.login.user);
                 this.props.refreshToken(token);
                 this.setState({ loading: false });
                 if (user.completedProfile === 1) {

@@ -8,6 +8,7 @@ import { validateSignup } from 'Utils/helpers';
 import * as UIkit from 'uikit';
 import { AUTH_TOKEN, CURRENT_USER } from '../../../constants';
 import './style.css';
+import { cookies } from 'link';
 
 interface InputProps {
     email: string;
@@ -98,8 +99,8 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
             })
             .then((result) => {
                 const token = result.data.signup.token;
-                localStorage.setItem(AUTH_TOKEN, token);
-                localStorage.setItem(CURRENT_USER, result.data.signup.user);
+                cookies.set(AUTH_TOKEN, token);
+                cookies.set(CURRENT_USER, result.data.login.user);
                 this.props.refreshToken(token);
                 this.setState({ loading: false });
                 this.props.history.replace('/add/profile');
@@ -201,7 +202,7 @@ class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Re
                 </div>
                 <div
                     className="uk-container uk-width-3-5@m uk-width-1-1@s uk-flex
-          uk-flex-stretch uk-flex-middle uk-box-shadow-small"
+                      uk-flex-stretch uk-flex-middle uk-box-shadow-small"
                 >
                     <form
                         className="uk-form-horizontal uk-width-1-1 uk-margin-large uk-padding-large uk-padding-remove-vertical"

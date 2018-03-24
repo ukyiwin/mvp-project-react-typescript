@@ -31,7 +31,8 @@
       "Containers": ["src/Components/Containers"],
       "Assets": ["src/Assets"],
       "Theme": ["src/Theme"],
-      "Utils": ["src/Utils"]
+      "Utils": ["src/Utils"],
+      "@material": ["node_modules/@material"]
     },
     "skipLibCheck": true,
     "inlineSourceMap": false,

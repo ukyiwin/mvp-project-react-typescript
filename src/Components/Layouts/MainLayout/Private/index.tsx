@@ -34,7 +34,7 @@ const PrivateLayout: React.SFC<DefaultProps & Response> = (props) => {
             exact={true}
             render={(matctProps) =>
                 isAuthenticated ? (
-                    <div className="uk-flex uk-padding-small@s" style={{ paddingTop: 10 }}>
+                    <div className="uk-flex uk-padding-small@s">
                         <div className="uk-width-1-5 uk-margin-right uk-margin-left uk-visible@m">
                             <div className="uk-card uk-width-1-1" style={{ marginBottom: 10, padding: 0 }}>
                                 <Label text="Top Interests" />

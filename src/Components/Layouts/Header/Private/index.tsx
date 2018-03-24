@@ -3,9 +3,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { User } from 'CustomTypings/schema';
 import SearchContainer from 'Components/SearchContainer';
-import './style.scss';
 // import * as Logo from 'Assets/main/unizonn.png';
-
 interface Props {
   classes?: object;
   isAuthenticated: boolean;
@@ -39,7 +37,7 @@ const PrivateHeader = (props: Props) => {
               uk-toggle="target: #offcanvas-nav"
               uk-icon="icon: menu; ratio: 1.5"
             />
-            <Link to="/" className="uk-navbar-item uk-logo">
+            <Link to="/" className="uk-navbar-item uk-logo" href="#">
               <img 
                 src={require('../../../../Assets/main/logof.png')} 
                 style={{height: 70}}
@@ -47,91 +45,87 @@ const PrivateHeader = (props: Props) => {
                 uk-svg
               />
             </Link>
-            <div className="main-searchbar">
-              <SearchContainer />
-            </div>
+            <ul className="nav-overlay uk-navbar-nav uk-visible@m">
+              <li><Link to="/home" className="uk-light">Articles</Link></li>
+              <li><Link to="/forum" className="uk-light">Forums</Link></li>
+              <li><Link to="/library" className="uk-light">Library</Link></li>
+              <li><Link to="/home" className="uk-light">Connections</Link></li>
+            </ul>
             <div className="nav-overlay uk-navbar-right uk-visible@s">
-              <ul className="nav-overlay uk-navbar-nav uk-visible@m">
-                <li><Link to="/home" className="uk-light uk-text-bold">Articles</Link></li>
-                <li><Link to="/forum" className="uk-light uk-text-bold">Forums</Link></li>
-                <li><Link to="/library" className="uk-light uk-text-bold">Library</Link></li>
-                <li><Link to="/home" className="uk-light uk-text-bold">Connections</Link></li>
+              <div className="main-searchbar">
+              <SearchContainer />
+              </div>
+              {props.isAuthenticated ? <React.Fragment>
+              <ul className="uk-iconnav">
+                <li className="uk-animation-toggle">
+                  <Link className="uk-animation-shake" to="/message" uk-icon="icon: calendar; ratio: 1.5"/>
+                </li>
+                <li className="uk-animation-toggle">
+                  <button 
+                    className="uk-animation-shake"
+                    uk-icon="icon: bell; ratio: 1.5"
+                  />
+                </li>
               </ul>
               
-              { props.isAuthenticated ? 
-                <React.Fragment>
-                  <ul className="uk-iconnav">
-                    <li className="uk-animation-toggle">
-                      <Link className="uk-animation-shake" to="/message" uk-icon="icon: calendar; ratio: 1.5"/>
-                    </li>
-                    <li className="uk-animation-toggle">
-                      <button 
-                        className="uk-animation-shake"
-                        uk-icon="icon: bell; ratio: 1.5"
-                      />
-                    </li>
-                  </ul>
-                  
-                  <ul className="uk-navbar-nav">
-                    <li>
-                      <a href="#">
-                        <div className="uk-animation-toggle">
-                        <img 
-                          className="uk-border-circle uk-animation-kenburns uk-animation-fast" 
-                          src={props.avatar ? props.avatar : maleP} 
-                          width="40" 
-                          height="40" 
-                          alt="img"
-                        />
-                        </div>
-                      </a>
-                      <div data-uk-dropdown="mode: click">
-                        <ul className="menu uk-dropdown-nav">
-                            <li className="menu-item uk-padding-small">
-                              <Link to="/profile" className="uk-text-bold">
-                                <span uk-icon="icon: plus-circle; ratio: 1" /> Profile
-                              </Link>
-                            </li>
-                            <li className="menu-item uk-padding-small">
-                              <Link to="/favourites" className="uk-text-bold">
-                                <span uk-icon="icon: plus-circle; ratio: 1" /> Favourites
-                              </Link>
-                            </li>
-                            <li className="menu-item uk-padding-small">
-                              <Link to="/score" className="uk-text-bold">
-                                <span uk-icon="icon: plus-circle; ratio: 1" /> Reading Score
-                              </Link>
-                            </li>
-                            <li className="uk-nav-divider" />
-                            <li className="menu-item uk-padding-small">
-                              <Link to="/legal/privacy" className="uk-text-bold">
-                                <span uk-icon="icon: plus-circle; ratio: 1" /> Privacy
-                              </Link>
-                            </li>
-                            <li className="menu-item uk-padding-small">
-                              <Link to="/support" className="uk-text-bold">
-                                <span uk-icon="icon: warning; ratio: 1" /> Support
-                              </Link>
-                            </li>
-                            <li className="menu-item uk-padding-small">
-                              <a onClick={props.logout} className="uk-text-bold">
-                                <span uk-icon="icon: info; ratio: 1" /> Logout
-                              </a>
-                            </li>
-                        </ul>
-                      </div>
-                    </li>
-                  </ul>
-                  <div className="uk-navbar-nav uk-padding-small">
-                    <Link to="/write" className="uk-button uk-button-primary uk-button-small">Write</Link>
-                  </div> 
-                </React.Fragment> :
-                <div className="uk-navbar-nav uk-padding-small">
-                  <Link to="/login" className="uk-button uk-button-default uk-button-primary uk-dark uk-button-small">
-                  Get started
-                  </Link>
-                </div>
-              }
+              <ul className="uk-navbar-nav">
+                <li>
+                  <a href="#">
+                    <div className="uk-animation-toggle">
+                    <img 
+                      className="uk-border-circle uk-animation-kenburns uk-animation-fast" 
+                      src={props.avatar ? props.avatar : maleP} 
+                      width="40" 
+                      height="40" 
+                      alt="img"
+                    />
+                    </div>
+                  </a>
+                  <div data-uk-dropdown="mode: click">
+                    <ul className="menu uk-dropdown-nav">
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/profile" className="uk-text-bold">
+                            <span uk-icon="icon: plus-circle; ratio: 1" /> Profile
+                          </Link>
+                        </li>
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/favourites" className="uk-text-bold">
+                            <span uk-icon="icon: plus-circle; ratio: 1" /> Favourites
+                          </Link>
+                        </li>
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/score" className="uk-text-bold">
+                            <span uk-icon="icon: plus-circle; ratio: 1" /> Reading Score
+                          </Link>
+                        </li>
+                        <li className="uk-nav-divider" />
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/legal/privacy" className="uk-text-bold">
+                            <span uk-icon="icon: plus-circle; ratio: 1" /> Privacy
+                          </Link>
+                        </li>
+                        <li className="menu-item uk-padding-small">
+                          <Link to="/support" className="uk-text-bold">
+                            <span uk-icon="icon: warning; ratio: 1" /> Support
+                          </Link>
+                        </li>
+                        <li className="menu-item uk-padding-small">
+                          <a onClick={props.logout} className="uk-text-bold">
+                            <span uk-icon="icon: info; ratio: 1" /> Logout
+                          </a>
+                        </li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+              <div className="uk-navbar-nav uk-padding-small">
+                <Link to="/write" className="uk-button uk-button-primary uk-button-small">Write</Link>
+              </div> </React.Fragment> :
+              <div className="uk-navbar-nav uk-padding-small">
+                <Link to="/login" className="uk-button uk-button-default uk-dark uk-button-small">
+                Get started
+                </Link>
+              </div>}
             </div>
             <div className="nav-overlay uk-navbar-right uk-hidden@s">
             {props.isAuthenticated ? <React.Fragment>
