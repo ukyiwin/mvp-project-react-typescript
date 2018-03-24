@@ -1,3 +1,4 @@
+// tslint:disable-next-line:only-arrow-functions
 export function validateLogin(email: string, password: string) {
   // true means invalid, so our conditions got reversed
   return {
@@ -6,6 +7,7 @@ export function validateLogin(email: string, password: string) {
   };
 }
 
+// tslint:disable-next-line:only-arrow-functions
 export function validateSignup(email: string, password: string, username: string, confirmPassword: string,
                                firstname: string, lastname: string, gender: string,
                                userType: string,
@@ -23,6 +25,7 @@ export function validateSignup(email: string, password: string, username: string
   };
 }
 
+// tslint:disable-next-line:only-arrow-functions
 export function validateProfile(photo: string, country: string, institution: string, department: string) {
   // true means invalid, so our conditions got reversed
   return {

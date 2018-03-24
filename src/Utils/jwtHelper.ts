@@ -1,5 +1,6 @@
 import decode from 'jwt-decode';
 
+// tslint:disable-next-line:only-arrow-functions
 export function getTokenExpirationDate(token: string) {
   const decoded = decode(token);
   if (!decoded.exp) {
@@ -10,6 +11,7 @@ export function getTokenExpirationDate(token: string) {
   return date;
 }
 
+// tslint:disable-next-line:only-arrow-functions
 export function isTokenExpired(token: string) {
   const date = getTokenExpirationDate(token);
   const offsetSeconds = 0;

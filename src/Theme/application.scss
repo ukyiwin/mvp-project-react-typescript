@@ -21,18 +21,18 @@ $screen-md-min: 768px !default;
 $screen-lg-min: 992px !default;
 $screen-lg-min: 1200px !default;
 
-$fa-font-path: "~font-awesome/fonts";
-@import 'font-awesome/scss/font-awesome.scss';
-@import 'bootstrap/scss/bootstrap.scss';
+$fa-font-path: '~font-awesome/fonts';
+@import '~font-awesome/scss/font-awesome.scss';
+@import 'node_modules/bootstrap/scss/bootstrap.scss';
 
-@import "partials/assets";
-@import "partials/variables";
-@import "partials/mixins";
+@import 'partials/assets';
+@import 'partials/variables';
+@import 'partials/mixins';
 @import 'partials/miscellaneous';
 
-@import "partials/base";
-@import "partials/buttons";
-@import "partials/headings";
+@import 'partials/base';
+@import 'partials/buttons';
+@import 'partials/headings';
 
 // Pages (page specific styles)
 @import 'pages/posts.show';

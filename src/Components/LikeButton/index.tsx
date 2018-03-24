@@ -1,98 +1,95 @@
 import * as React from 'react';
 import OverlayTriggerButton from 'Components/OverlayTriggerButton';
 
-type Props = {
-  liked: boolean,
-  likeCount: number,
-  likeableType?: string,
-  likeableId?: string,
-  disableOverlay?: false,
-  overlayHeading?: string
-};
+interface Props {
+    liked: boolean;
+    likeCount: number;
+    likeableType?: string;
+    likeableId?: string;
+    disableOverlay?: false;
+    overlayHeading?: string;
+}
 
 export default class LikeButton extends React.Component<Props> {
-
-  state = {
-    liked: false,
-    likeCount: 0
-  };
-
-  constructor(props: Props) {
-    super(props);
-
-    this.state = { 
-      liked: this.props.liked,
-      likeCount: this.props.likeCount
+    state = {
+        liked: false,
+        likeCount: 0,
     };
 
-    this.onUnlikeClick = this.onUnlikeClick.bind(this);
-    this.onLikeClick = this.onLikeClick.bind(this);
-  }
+    constructor(props: Props) {
+        super(props);
 
-  componentWillMount() {
-    /*const { likeableType, likeableId } = this.props;
+        this.state = {
+            liked: this.props.liked,
+            likeCount: this.props.likeCount,
+        };
+
+        this.onUnlikeClick = this.onUnlikeClick.bind(this);
+        this.onLikeClick = this.onLikeClick.bind(this);
+    }
+
+    componentWillMount() {
+        /*const { likeableType, likeableId } = this.props;
     this.token = PubSub.subscribe('LikeButton:onClick', (msg, data) => {
       if (likeableType === data.type && likeableId === data.id) {
         this.setState({ liked: data.liked, likeCount: data.count });
       }
     });*/
-  }
-
-  componentWillUnmount() {
-    // PubSub.unsubscribe(this.token);
-  }
-
-  render () {
-    return (
-      <div className="like-button">
-        <div className="like-button-wrapper">
-          {this.renderLikeButton()}
-        </div>
-        {this.renderLikeCount()}
-      </div>
-    );
-  }
-
-  renderLikeButton() {
-    if (this.state.liked) {
-      return (
-        <button className="response-count unlike-button uk-text-center" onClick={this.onUnlikeClick}>
-          <i className="fa fa-heart fa-5x animated bounceIn" />
-        </button>
-      );
-    } else {
-      return (
-         <button className="response-count uk-margin-left uk-margin-right" onClick={this.onLikeClick}>
-          <i className="fa fa-heart-o fa-5x animated bounceIn" />
-        </button>
-      );
     }
-  }
 
-  renderLikeCount() {
-    if (this.state.likeCount === 0 ) {
-      return;
+    componentWillUnmount() {
+        // PubSub.unsubscribe(this.token);
     }
-    if (this.props.disableOverlay) {
-      return <span className="like-count">{this.state.likeCount}</span>;
+
+    render() {
+        return (
+            <div className="like-button">
+                <div className="like-button-wrapper">{this.renderLikeButton()}</div>
+                {this.renderLikeCount()}
+            </div>
+        );
     }
-    return (
-      <span className="like-count" style={{ cursor: 'pointer' }}>
-          <OverlayTriggerButton 
-            text={this.state.likeCount.toString()} 
-            overlayHeading={this.props.overlayHeading ? this.props.overlayHeading : ''}
-          />
-      </span>
-    );
-  }
 
-  // tslint:disable-next-line:typedef
-  onUnlikeClick(e) {
-    // this.setState({ liked: data.liked, likeCount: data.count });
-  }
+    renderLikeButton() {
+        if (this.state.liked) {
+            return (
+                <button className="response-count unlike-button uk-text-center" onClick={this.onUnlikeClick}>
+                    <i className="fa fa-heart fa-5x animated bounceIn" />
+                </button>
+            );
+        } else {
+            return (
+                <button className="response-count uk-margin-left uk-margin-right" onClick={this.onLikeClick}>
+                    <i className="fa fa-heart-o fa-5x animated bounceIn" />
+                </button>
+            );
+        }
+    }
 
-  // tslint:disable-next-line:typedef
-  onLikeClick(e) {
-    // this.setState({ liked: data.liked, likeCount: data.count });
-  }
+    renderLikeCount() {
+        if (this.state.likeCount === 0) {
+            return null;
+        }
+        if (this.props.disableOverlay) {
+            return <span className="like-count">{this.state.likeCount}</span>;
+        }
+        return (
+            <span className="like-count" style={{ cursor: 'pointer' }}>
+                <OverlayTriggerButton
+                    text={this.state.likeCount.toString()}
+                    overlayHeading={this.props.overlayHeading ? this.props.overlayHeading : ''}
+                />
+            </span>
+        );
+    }
+
+    // tslint:disable-next-line:typedef
+    onUnlikeClick(e) {
+        // this.setState({ liked: data.liked, likeCount: data.count });
+    }
+
+    // tslint:disable-next-line:typedef
+    onLikeClick(e) {
+        // this.setState({ liked: data.liked, likeCount: data.count });
+    }
 }

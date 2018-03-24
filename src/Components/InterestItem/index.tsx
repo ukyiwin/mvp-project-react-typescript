@@ -1,14 +1,14 @@
 import * as React from 'react';
 
-type Props = {
-  url: string,
-  name: string,
-  id: string | number,
-  checked?: boolean,
-  key: string | number,
+interface Props {
+  url: string;
+  name: string;
+  id: string | number;
+  checked?: boolean;
+  key: string | number;
   // tslint:disable-next-line:no-any
-  onClickAdd: any
-};
+  onClickAdd: any;
+}
 
 // tslint:disable-next-line:typedef
 const InterestItem = (props: Props) => {

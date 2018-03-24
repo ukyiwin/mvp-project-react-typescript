@@ -7,70 +7,74 @@ import { User } from 'CustomTypings/schema';
 
 // import { Link } from 'react-router-dom';
 
-type Props = {
-  // tslint:disable-next-line:no-any
-  client?: any
-  user?: User
-};
+interface Props {
+    // tslint:disable-next-line:no-any
+    client?: any;
+    user?: User;
+}
 
-type InputProps = {
-  userId: string
-};
+interface InputProps {
+    userId: string;
+}
 
-type Response = {
-  user?: User
-};
+interface Response {
+    user?: User;
+}
 
 // tslint:disable-next-line:no-any
 class ProfileLeft extends React.Component<RouteComponentProps & Props & ChildProps<Response, InputProps>, {}> {
-  state = {
-    text: '',
-    loading: false
-  };
+    state = {
+        text: '',
+        loading: false,
+    };
 
-  checkUser = (e) => {
-    e.preventDefault();
-    this.setState({loading: true});
-    this.props.client.query({
-      query: USER_EXIST,
-      variables: {
-        email: this.state.text
-      }
-    }).then(({ data }) => {
-      data.userExist ? 
-        this.props.history.push({
-          pathname: '/login',
-          email: this.state.text
-        }) : 
-        this.props.history.push({
-          pathname: '/signup',
-          email: this.state.text
-        });
-      this.setState({loading: false});
-    }).catch((error) => {
-      this.setState({loading: false});
-    });
-  }
+    checkUser = (e) => {
+        e.preventDefault();
+        this.setState({ loading: true });
+        this.props.client
+            .query({
+                query: USER_EXIST,
+                variables: {
+                    email: this.state.text,
+                },
+            })
+            .then(({ data }) => {
+                data.userExist
+                    ? this.props.history.push({
+                          pathname: '/login',
+                          email: this.state.text,
+                      })
+                    : this.props.history.push({
+                          pathname: '/signup',
+                          email: this.state.text,
+                      });
+                this.setState({ loading: false });
+            })
+            .catch((error) => {
+                this.setState({ loading: false });
+            });
+    }
 
-  render() {
-    // const { loading } = this.state;
-    return (
-      <div>
-        <div className="uk-card uk-card-default uk-width-1-1">
-          <h1>Rex Raphael</h1>
-          <h1>21 Connections</h1>
-          <p>Xfullstack Engineer, Dev Ops Manager, with great love for javascript and nodejs</p>
-        </div>
-      </div>
-    );
-  }
-  
+    render() {
+        // const { loading } = this.state;
+        return (
+            <div>
+                <div className="uk-card uk-card-default uk-width-1-1">
+                    <h1>Rex Raphael</h1>
+                    <h1>21 Connections</h1>
+                    <p>Xfullstack Engineer, Dev Ops Manager, with great love for javascript and nodejs</p>
+                </div>
+            </div>
+        );
+    }
 }
 
-export default withRouter(compose(
-  withApollo,
-  graphql<Response, InputProps, Props>(USER_EXIST, {
-    name: 'user',
-    options: { variables: { email: '' } },
-  })
-)(ProfileLeft));
+export default withRouter(
+    compose(
+        withApollo,
+        graphql<Response, InputProps, Props>(USER_EXIST, {
+            name: 'user',
+            options: { variables: { email: '' } },
+        }),
+    )(ProfileLeft),
+);

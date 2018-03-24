@@ -1,6 +1,12 @@
-# UNIZONN APP BUNDLE
-[![pipeline status](https://gitlab.com/rexraphael/unizonn/badges/master/pipeline.svg)](https://gitlab.com/rexraphael/unizonn/commits/master)
+# Unizonn client built on React, Helmet, SSR, Code Splitting, Typescript, Apollo Client and Razzle
 
-[![coverage report](https://gitlab.com/rexraphael/unizonn/badges/master/coverage.svg)](https://gitlab.com/rexraphael/unizonn/commits/master)
+## How to use
 
-# Will update soon
+```
+
+Install it and run:
+
+```bash
+yarn install
+yarn start
+```

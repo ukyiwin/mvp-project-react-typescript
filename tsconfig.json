@@ -1,35 +1,45 @@
 {
   "compilerOptions": {
-    "outDir": "build/dist",
-    "module": "esnext",
-    "target": "es5",
-    "lib": [
-      "esnext", "dom", "es6", "esnext.asynciterable"
-    ],
-    "typeRoots": ["node_modules/@types", "src/CustomTypings"],
-    "baseUrl": "./src",
-    "paths": {
-        "@": ["src"],
-        "Components": ["./src/Components"],
-        "Containers": ["./src/Components/Containers"],
-        "Assets": ["./src/Assets"],
-        "ReduxApp": ["./src/Redux"],
-        "Theme": ["./src/Theme"],
-        "Utils": ["./src/Utils"]
-    },
-    "skipLibCheck": true,
-    "sourceMap": true,
+    "baseUrl": "./",
     "allowJs": true,
-    "jsx": "react",
-    "moduleResolution": "node",
-    "rootDir": "./src",
+    "allowUnreachableCode": false,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
     "forceConsistentCasingInFileNames": true,
+    "jsx": "react",
+    "lib": ["es6", "es2015", "es2017", "dom"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "sourceMap": true,
     "strictNullChecks": true,
+    "strict": true,
+    "pretty": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "target": "es2016",
+    "typeRoots": ["node_modules/@types", "src/CustomTypings", "typings"],
+    "paths": {
+      "*": [
+        "src/*",
+      ],
+      "src": ["src/*"],
+      "Components": ["src/Components"],
+      "Containers": ["src/Components/Containers"],
+      "Assets": ["src/Assets"],
+      "Theme": ["src/Theme"],
+      "Utils": ["src/Utils"],
+      "@material": ["node_modules/@material"]
+    },
+    "skipLibCheck": true,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "experimentalDecorators": true,
+    "noUnusedParameters": false,
+    
   },
   "exclude": [
     "node_modules",
@@ -37,8 +47,9 @@
     "scripts",
     "acceptance-tests",
     "webpack",
-    "server",
     "jest",
-    "src/setupTests.ts"
-  ]
+    "razzle.config.js",
+    "server"
+  ],
+  "types": ["typePatches", "node", "webpack-env"]
 }
