@@ -4,7 +4,7 @@ import {} from 'react-apollo';
 import './style.css';
 import { User } from 'CustomTypings/schema';
 import ConnectBox from 'Components/ConnectBox';
-import TopInterest from 'Components/TopInterest';
+import LeftSideBar from 'Components/LeftSideBar';
 import glamorous from 'glamorous';
 import Label from 'Components/Label';
 
@@ -34,33 +34,9 @@ const PrivateLayout: React.SFC<DefaultProps & Response> = (props) => {
             exact={true}
             render={(matctProps) =>
                 isAuthenticated ? (
-                    <div className="uk-flex uk-padding-small@s">
+                    <div className="uk-flex uk-padding-large@s uk-padding">
                         <div className="uk-width-1-5 uk-margin-right uk-margin-left uk-visible@m">
-                            <div className="uk-card uk-width-1-1" style={{ marginBottom: 10, padding: 0 }}>
-                                <Label text="Top Interests" />
-                                <TopInterest />
-                            </div>
-                            <div className="uk-card uk-card-default uk-width-1-1 uk-padding-small">
-                                <div>
-                                    <p>Copyright @ 2018, Unizonn</p>
-                                </div>
-                                <ul className="listItem uk-text-center">
-                                    <li>
-                                        <A href="#">Terms</A>
-                                    </li>
-                                    <li>
-                                        <A color={'#000'} href="#">
-                                            Privacy
-                                        </A>
-                                    </li>
-                                    <li>
-                                        <A href="#">About</A>
-                                    </li>
-                                    <li>
-                                        <A href="#">Support</A>
-                                    </li>
-                                </ul>
-                            </div>
+                            <LeftSideBar user={props.me} />
                         </div>
                         <div className="uk-flex uk-width-expand">
                             <Component {...matctProps} />

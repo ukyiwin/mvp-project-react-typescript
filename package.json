@@ -6,10 +6,10 @@
     "start": "NODE_ENV=production node build/server.js",
     "build": "razzle build",
     "test": "razzle test --env=jsdom",
-    "postbuild": "yarn run build",
+    "postbuild": "npm run build",
     "start:prod": "NODE_ENV=production node build/server.js",
     "start:dev": "razzle start",
-    "heroku-postbuild": "yarn run build"
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "@types/jquery": "^3.3.1",

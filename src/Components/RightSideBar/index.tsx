@@ -12,7 +12,7 @@ interface Props {
 }
 
 // tslint:disable-next-line:no-any
-class RightSideBar extends React.Component<RouteComponentProps & Props> {
+class LeftSideBar extends React.Component<RouteComponentProps & Props> {
 
     render() {
         // const { loading } = this.state;
@@ -31,5 +31,5 @@ class RightSideBar extends React.Component<RouteComponentProps & Props> {
 export default withRouter(
     compose(
         withApollo,
-    )(RightSideBar),
+    )(LeftSideBar),
 );

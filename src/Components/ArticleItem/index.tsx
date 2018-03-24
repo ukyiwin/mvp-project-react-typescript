@@ -24,7 +24,7 @@ class ArticleItem extends React.Component<Props> {
         const { author } = article;
         return (
             <div
-              className="uk-card uk-card-small uk-width-1-1"
+              className="uk-card uk-card-default mdl-card uk-card-small uk-width-1-1"
               style={{
                   borderRadius: 1,
                   marginBottom: this.props.small ? 7 : 15,
@@ -32,6 +32,25 @@ class ArticleItem extends React.Component<Props> {
                   backgroundColor: '#fff',
               }}
             >
+              
+              <div className="uk-padding-small">
+                <div
+                  data-uk-lightbox="animation: fade; video-autoplay: true;"
+                  className="uk-inline-clip uk-transition-toggle"
+                >
+                    <a
+                      className="uk-inline"
+                      href="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
+                    >
+                      <img
+                        src="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
+                        className="img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque"
+                        alt="..."
+                        style={{maxHeight: 280 }}
+                      />
+                    </a>
+                </div>
+              </div>
                 {this.props.small ? null : (
                     <div className="post-metadata uk-padding-remove-bottom uk-padding-small">
                         <div className="uk-grid-small uk-flex" uk-grid={true}>
@@ -74,11 +93,12 @@ class ArticleItem extends React.Component<Props> {
                         {this.props.small ? article.body.truncString('...', 70) : article.body.truncString('...', 140)}
                     </p>
                 </div>
+                <hr/>
                 <div
                     className="post-stats clearfix uk-padding-small uk-padding-remove-horizontal"
                     style={{ paddingTop: 1, paddingBottom: 1 }}
                 >
-                    <div className="uk-flex pull-left uk-padding-small">
+                    <div className="uk-flex pull-left">
                         <Likebutton liked={true} likeCount={2} />
                         <a className="response-count uk-flex uk-inline uk-margin-left uk-margin-right">
                             <span uk-icon="icon: comment; ratio: 1.0" /> <div className="uk-visible@s">Comments</div>
@@ -88,7 +108,7 @@ class ArticleItem extends React.Component<Props> {
                         </a>
                     </div>
 
-                    <div className="uk-flex  response-count pull-right uk-padding-small">
+                    <div className="uk-flex  response-count pull-right">
                         <div className="dropdown">
                             <button className="uk-button uk-button-text uk-margin-right" type="button">
                                 <span uk-icon="icon: more; ratio: 1.0" />

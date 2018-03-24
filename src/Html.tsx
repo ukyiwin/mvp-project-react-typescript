@@ -22,7 +22,7 @@ const Html = ({ assets, markup, client: { cache }, asyncState }) => (
       
       <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" crossOrigin="anonymous" />
       <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700" rel="stylesheet" crossOrigin="anonymous" />
-      <link href="node_modules/material-components-web/dist/material-components-web.css" rel="stylesheet" crossOrigin="anonymous" />
+      <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css" rel="stylesheet" crossOrigin="anonymous" />
       <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossOrigin="anonymous" />
       <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.svg" crossOrigin="anonymous" />
 
@@ -63,7 +63,7 @@ const Html = ({ assets, markup, client: { cache }, asyncState }) => (
       <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js" />
       <script src="./crack.js" />
       <script src="./timeago-in-words.js" />
-      <script src="node_modules/material-components-web/dist/material-components-web.js" />
+      <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js" />
       <script>mdc.autoInit()</script>
       <script>
         {

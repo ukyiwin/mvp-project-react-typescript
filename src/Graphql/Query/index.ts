@@ -100,6 +100,10 @@ export const ME = gql`
           username
         }
       }
+      avatar{
+        url
+        name
+      }
       articles{
         id
         title

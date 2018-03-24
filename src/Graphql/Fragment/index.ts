@@ -13,6 +13,7 @@ export const USER_FRAGMENT = gql`
     gender
     avatar{
       url
+      name
     }
     type
     userType

@@ -3,6 +3,8 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { User } from 'CustomTypings/schema';
 import SearchContainer from 'Components/SearchContainer';
+import './style.scss';
+
 // import * as Logo from 'Assets/main/unizonn.png';
 interface Props {
   classes?: object;
@@ -20,10 +22,10 @@ const PrivateHeader = (props: Props) => {
 
     return (
       <div
-        data-uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky"
+        data-uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky mdc-toolbar mdc-toolbar--fixed"
       >
         <nav 
-          className="uk-navbar-container uk-margin uk-background-secondary raised" 
+          className="uk-navbar-container mdc-elevation--z2 uk-margin uk-background-secondary raised mdc-toolbar mdc-toolbar--fixed" 
           // tslint:disable-next-line:jsx-boolean-value
           uk-navbar
           style={{elevation: 5, borderBottomWidth: 1, borderBottomColor: '#212121'}}
@@ -51,14 +53,18 @@ const PrivateHeader = (props: Props) => {
               <li><Link to="/library" className="uk-light bolder">Library</Link></li>
               <li><Link to="/home" className="uk-light bolder">Connections</Link></li>
             </ul>
+            <div className="uk-width-1-3">
+                <SearchContainer />
+            </div>
             <div className="nav-overlay uk-navbar-right uk-visible@s">
-              <div className="main-searchbar">
-              <SearchContainer />
-              </div>
+              
               {props.isAuthenticated ? <React.Fragment>
               <ul className="uk-iconnav">
                 <li className="uk-animation-toggle">
                   <Link className="uk-animation-shake" to="/message" uk-icon="icon: calendar; ratio: 1.5"/>
+                </li>
+                <li className="uk-animation-toggle">
+                  <Link className="uk-animation-shake" to="/message" uk-icon="icon: user; ratio: 1.5"/>
                 </li>
                 <li className="uk-animation-toggle">
                   <button 
@@ -81,38 +87,36 @@ const PrivateHeader = (props: Props) => {
                     />
                     </div>
                   </a>
-                  <div data-uk-dropdown="mode: click">
-                    <ul className="menu uk-dropdown-nav">
-                        <li className="menu-item uk-padding-small">
+                  <div data-uk-dropdown="mode: click" style={{padding: 0}}>
+                    <ul className="mdc-menu__items mdc-list uk-dropdown-nav" style={{padding: 0}}>
+                        <li className="mdc-list-item" role="menuitem">
                           <Link to="/profile" className="uk-text-bold">
                             <span uk-icon="icon: plus-circle; ratio: 1" /> Profile
                           </Link>
                         </li>
-                        <li className="menu-item uk-padding-small">
+                        <li className="mdc-list-item" role="menuitem">
                           <Link to="/favourites" className="uk-text-bold">
                             <span uk-icon="icon: plus-circle; ratio: 1" /> Favourites
                           </Link>
                         </li>
-                        <li className="menu-item uk-padding-small">
+                        <li className="mdc-list-item" role="menuitem">
                           <Link to="/score" className="uk-text-bold">
                             <span uk-icon="icon: plus-circle; ratio: 1" /> Reading Score
                           </Link>
                         </li>
                         <li className="uk-nav-divider" />
-                        <li className="menu-item uk-padding-small">
+                        <li className="mdc-list-item" role="menuitem">
                           <Link to="/legal/privacy" className="uk-text-bold">
                             <span uk-icon="icon: plus-circle; ratio: 1" /> Privacy
                           </Link>
                         </li>
-                        <li className="menu-item uk-padding-small">
+                        <li className="mdc-list-item" role="menuitem">
                           <Link to="/support" className="uk-text-bold">
                             <span uk-icon="icon: warning; ratio: 1" /> Support
                           </Link>
                         </li>
-                        <li className="menu-item uk-padding-small">
-                          <a onClick={props.logout} className="uk-text-bold">
-                            <span uk-icon="icon: info; ratio: 1" /> Logout
-                          </a>
+                        <li className="mdc-list-item" role="menuitem" onClick={props.logout}>
+                          <span uk-icon="icon: info; ratio: 1" />  Logout                        
                         </li>
                     </ul>
                   </div>

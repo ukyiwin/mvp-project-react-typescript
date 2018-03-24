@@ -42,18 +42,18 @@ $fa-font-path: '~font-awesome/fonts';
 @import 'pages/posts.new';
 @import 'pages/sessions.new';
 @import 'pages/stories.drafts';
-@import 'pages/search.show';
+// @import 'pages/search.show';
 
 // Modules
 // @import 'modules/header';
 @import 'modules/post_panel';
 @import 'modules/avatar';
 @import 'modules/post_metadata';
-@import 'modules/sidebar';
+// @import 'modules/sidebar';
 @import 'modules/like_buttons';
 @import 'modules/feed';
 @import 'modules/user_card';
-@import 'modules/searchbar';
+// @import 'modules/searchbar';
 @import 'modules/editor_form';
 @import 'modules/loader';
 @import 'modules/hero';
