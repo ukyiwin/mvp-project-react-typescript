@@ -8,7 +8,7 @@ const razzleHeroku = require("razzle-heroku");
 
 module.exports = {
   modify(baseConfig, { target, dev }, webpack) {
-    const config = razzleHeroku(Object.assign({}, baseConfig));
+    const config = razzleHeroku(baseConfig, {target, dev}, webpack);
     
     config.resolve.modules = ['src', 'node_modules', 'src/Components', 'src/Graphql', 'src/Containers'];
     config.resolve.alias.Components = path.resolve('./src/Components');
