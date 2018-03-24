@@ -46,10 +46,10 @@ const PrivateHeader = (props: Props) => {
               />
             </Link>
             <ul className="nav-overlay uk-navbar-nav uk-visible@m">
-              <li><Link to="/home" className="uk-light">Articles</Link></li>
-              <li><Link to="/forum" className="uk-light">Forums</Link></li>
-              <li><Link to="/library" className="uk-light">Library</Link></li>
-              <li><Link to="/home" className="uk-light">Connections</Link></li>
+              <li><Link to="/home" className="uk-light bolder">Articles</Link></li>
+              <li><Link to="/forum" className="uk-light bolder">Forums</Link></li>
+              <li><Link to="/library" className="uk-light bolder">Library</Link></li>
+              <li><Link to="/home" className="uk-light bolder">Connections</Link></li>
             </ul>
             <div className="nav-overlay uk-navbar-right uk-visible@s">
               <div className="main-searchbar">
