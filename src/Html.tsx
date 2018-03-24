@@ -31,14 +31,14 @@ const Html = ({ assets, markup, client: { cache }, asyncState }) => (
           ? <link rel="stylesheet" href={assets.client.css} />
           : null
       }
-              
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js" />
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js" />
       {
         process.env.NODE_ENV === 'production'
           ? <script src={assets.client.js} defer />
           : <script src={assets.client.js} defer crossOrigin="anonymous" />
       }
+              
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js" />
     </head>
     <body>
       <div id="root">{markup}</div>

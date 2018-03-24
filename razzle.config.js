@@ -4,11 +4,12 @@ const autoprefixer = require("autoprefixer");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const Visualizer = require("webpack-visualizer-plugin");
 const { ReactLoadablePlugin } = require('react-loadable/webpack');
+const razzleHeroku = require("razzle-heroku");
 
 module.exports = {
   modify(baseConfig, { target, dev }, webpack) {
-    const config = Object.assign({}, baseConfig);
-
+    const config = razzleHeroku(Object.assign({}, baseConfig));
+    
     config.resolve.modules = ['src', 'node_modules', 'src/Components', 'src/Graphql', 'src/Containers'];
     config.resolve.alias.Components = path.resolve('./src/Components');
     config.resolve.alias.Graphql = path.resolve('./src/Graphql');
