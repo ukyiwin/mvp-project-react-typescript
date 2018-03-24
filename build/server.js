@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "402ce725bcbd60d7337b"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "e5cef7797ecd76a8a643"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1515,21 +1515,23 @@ const PrivateHeader = (props) => {
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/home", className: "uk-light bolder" }, "Articles")),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/forum", className: "uk-light bolder" }, "Forums")),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/forum", className: "uk-light bolder" }, "Lounge")),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/library", className: "uk-light bolder" }, "Library")),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/home", className: "uk-light bolder" }, "Connections"))),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-3" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-4" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_SearchContainer__["a" /* default */], null)),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "nav-overlay uk-navbar-right uk-visible@s" }, props.isAuthenticated ? __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_0_react__["Fragment"], null,
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("ul", { className: "uk-iconnav" },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "uk-animation-toggle" },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { className: "uk-animation-shake", to: "/message", "uk-icon": "icon: calendar; ratio: 1.5" })),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "uk-animation-toggle" },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { className: "uk-animation-shake", to: "/message", "uk-icon": "icon: user; ratio: 1.5" })),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { className: "uk-animation-shake", to: "/message", "uk-icon": "icon: user; ratio: 1.5" },
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "uk-badge uk-color-danger", style: { backgroundColor: 'black' } }, "0"))),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "uk-animation-toggle" },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-animation-shake", "uk-icon": "icon: bell; ratio: 1.5" }))),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-animation-shake", "uk-icon": "icon: bell; ratio: 1.5" },
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "uk-badge", style: { backgroundColor: 'red' } }, "0")))),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("ul", { className: "uk-navbar-nav" },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { href: "#" },

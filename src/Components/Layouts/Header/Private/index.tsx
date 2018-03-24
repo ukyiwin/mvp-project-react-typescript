@@ -49,11 +49,11 @@ const PrivateHeader = (props: Props) => {
             </Link>
             <ul className="nav-overlay uk-navbar-nav uk-visible@m">
               <li><Link to="/home" className="uk-light bolder">Articles</Link></li>
-              <li><Link to="/forum" className="uk-light bolder">Forums</Link></li>
+              <li><Link to="/forum" className="uk-light bolder">Lounge</Link></li>
               <li><Link to="/library" className="uk-light bolder">Library</Link></li>
               <li><Link to="/home" className="uk-light bolder">Connections</Link></li>
             </ul>
-            <div className="uk-width-1-3">
+            <div className="uk-width-1-4">
                 <SearchContainer />
             </div>
             <div className="nav-overlay uk-navbar-right uk-visible@s">
@@ -64,13 +64,15 @@ const PrivateHeader = (props: Props) => {
                   <Link className="uk-animation-shake" to="/message" uk-icon="icon: calendar; ratio: 1.5"/>
                 </li>
                 <li className="uk-animation-toggle">
-                  <Link className="uk-animation-shake" to="/message" uk-icon="icon: user; ratio: 1.5"/>
+                  <Link className="uk-animation-shake" to="/message" uk-icon="icon: user; ratio: 1.5">
+                  <span className="uk-badge uk-color-danger" style={{backgroundColor: 'black'}}>0</span>
+                  </Link>
                 </li>
                 <li className="uk-animation-toggle">
                   <button 
                     className="uk-animation-shake"
                     uk-icon="icon: bell; ratio: 1.5"
-                  />
+                  ><span className="uk-badge" style={{backgroundColor: 'red'}}>0</span></button>
                 </li>
               </ul>
               
