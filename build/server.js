@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f34bfa86f0cb56bd7cec"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "92ca92d8b8a0b56789fd"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1003,7 +1003,7 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 marginBottom: this.props.small ? 7 : 15,
                 backgroundColor: '#fff',
             } },
-            this.props.small ? null : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "card-image" },
+            this.props.small && (this.props.article.link === null) ? null : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "card-image" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "data-uk-lightbox": "animation: fade; video-autoplay: true;", className: "uk-inline-clip uk-transition-toggle" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "uk-inline", href: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg" },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("img", { src: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg", className: "img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque", alt: "...", style: { maxHeight: 280 } }))))),
@@ -1154,7 +1154,7 @@ const Avatar = (props) => {
         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("img", { className: `mdc-elevation--z2 mdc-elevation-transition uk-border-${props.square ? 'square' : 'circle rcorners'}
                   uk-animation-kenburns uk-animation-fast`, src: `https://gs3.blob.core.windows.net/unizonn/${props.url}`, width: props.size, height: props.size, alt: "img", 
             // tslint:disable-next-line:max-line-length
-            style: { borderRadius: 60, borderImageWidth: 5, height: props.size + 1, width: props.size + 1, borderColor: 'green',
+            style: { borderRadius: 60, borderImageWidth: 5, height: props.size + 1, width: props.size + 1, borderColor: '#454d5d',
                 backgroundColor: 'azure' } }),
         props.presence ? __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "avatar-presence online" }) : null));
 };
@@ -1374,10 +1374,10 @@ class FollowButton extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
     render() {
         if (this.state.liked) {
-            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn btn-primary", onClick: this.onUnlikeClick }, "Connected"));
+            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn btn-primary", onClick: this.onUnlikeClick, style: { padding: 0, margin: 0 } }, "Connected"));
         }
         else {
-            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn btn-default", onClick: this.onLikeClick }, "+ Connect"));
+            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn btn-default", onClick: this.onLikeClick, style: { padding: 0, margin: 0 } }, "+ Connect"));
         }
     }
     // tslint:disable-next-line:typedef
@@ -2615,9 +2615,9 @@ const UserProfileBox = (props) => {
             props.me.lastname),
         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { style: { fontSize: 13 } }, "Founder at Gueva Technologies. Geek, programmer, interest in AI and Machine Learning, Big Data, love basketball."),
         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "btn-group btn-group-block" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn" }, "0 Posts"),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn" }, "0 Connects"),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn" }, "0 Posts"))));
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn uk-light" }, "0 Posts"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn uk-light" }, "0 Connects"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn uk-light" }, "0 Posts"))));
 };
 /* harmony default export */ __webpack_exports__["a"] = (UserProfileBox);
 

@@ -19,7 +19,7 @@ const Avatar = (props: Props) => {
                 height={props.size}
                 alt="img" 
                 // tslint:disable-next-line:max-line-length
-                style={{borderRadius: 60, borderImageWidth: 5, height: props.size + 1, width: props.size + 1, borderColor: 'green', 
+                style={{borderRadius: 60, borderImageWidth: 5, height: props.size + 1, width: props.size + 1, borderColor: '#454d5d', 
                 backgroundColor: 'azure'}}
             />
             {props.presence ? <i className="avatar-presence online" /> : null}

@@ -24,9 +24,9 @@ const UserProfileBox = (props: Props) => {
         <p style={{fontSize: 13}}>Founder at Gueva Technologies. Geek, programmer, interest in AI and Machine Learning, Big Data, love basketball.</p>
         
         <div className="btn-group btn-group-block">
-          <button className="btn">0 Posts</button>
-          <button className="btn">0 Connects</button>
-          <button className="btn">0 Posts</button>
+          <button className="btn uk-light">0 Posts</button>
+          <button className="btn uk-light">0 Connects</button>
+          <button className="btn uk-light">0 Posts</button>
         </div>
     </div>
   );

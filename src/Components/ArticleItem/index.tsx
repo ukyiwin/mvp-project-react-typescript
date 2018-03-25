@@ -31,8 +31,7 @@ class ArticleItem extends React.Component<Props> {
                   backgroundColor: '#fff',
               }}
             >
-              
-              {this.props.small ? null : (
+              {this.props.small && (this.props.article.link === null) ? null : (
                 <div className="card-image">
                   <div
                     data-uk-lightbox="animation: fade; video-autoplay: true;"
