@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "e6db08342ccb4cb73e2f"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "f34bfa86f0cb56bd7cec"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -998,13 +998,12 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     render() {
         const { article } = this.props;
         const { author } = article;
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-card uk-card-default mdl-card uk-card-small uk-width-1-1", style: {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "card uk-width-1-1", style: {
                 borderRadius: 1,
                 marginBottom: this.props.small ? 7 : 15,
-                padding: 10,
                 backgroundColor: '#fff',
             } },
-            this.props.small ? null : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small" },
+            this.props.small ? null : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "card-image" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "data-uk-lightbox": "animation: fade; video-autoplay: true;", className: "uk-inline-clip uk-transition-toggle" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "uk-inline", href: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg" },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("img", { src: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg", className: "img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque", alt: "...", style: { maxHeight: 280 } }))))),
@@ -1023,14 +1022,13 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                                 " \u0095",
                                 ' ',
                                 article.body.lengthInMinutes())))))),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-card-body uk-padding-remove-vertical simple-link", style: { paddingTop: this.props.small ? 0 : 6, borderBottom: 1 } },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "card-body uk-padding-remove-vertical simple-link", style: { paddingTop: this.props.small ? 0 : 6, borderBottom: 1 } },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["Link"], { to: `/article/${article.id}`, className: "simple-link" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h5", { className: "uk-text-medium uk-text-bold uk-text-break", style: { fontSize: this.props.small ? 17 : 23, fontFamily: 'Open Sans' } }, this.props.small
                         ? article.title.truncString('...', 36)
                         : article.title.truncString('...', 140))),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { style: { color: '#212121', fontSize: this.props.small ? 14 : 17 } }, this.props.small ? article.body.truncString('...', 70) : article.body.truncString('...', 140))),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "post-stats clearfix uk-padding-small uk-padding-remove-horizontal", style: { paddingTop: 1, paddingBottom: 1 } },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "post-stats clearfix card-footer" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex pull-left" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__LikeButton__["a" /* default */], { liked: true, likeCount: 2 }),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "response-count uk-flex uk-inline uk-margin-left uk-margin-right" },
@@ -1344,6 +1342,59 @@ const LoadingComponent = (props) => (__WEBPACK_IMPORTED_MODULE_0_react__["create
 
 /***/ }),
 
+/***/ "./src/Components/FollowButton/index.tsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+class FollowButton extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
+    constructor(props) {
+        super(props);
+        this.state = {
+            liked: false
+        };
+        this.state = {
+            liked: this.props.liked
+        };
+        this.onUnlikeClick = this.onUnlikeClick.bind(this);
+        this.onLikeClick = this.onLikeClick.bind(this);
+    }
+    componentWillMount() {
+        /*const { likeableType, likeableId } = this.props;
+    this.token = PubSub.subscribe('LikeButton:onClick', (msg, data) => {
+      if (likeableType === data.type && likeableId === data.id) {
+        this.setState({ liked: data.liked, likeCount: data.count });
+      }
+    });*/
+    }
+    componentWillUnmount() {
+        // PubSub.unsubscribe(this.token);
+    }
+    render() {
+        if (this.state.liked) {
+            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn btn-primary", onClick: this.onUnlikeClick }, "Connected"));
+        }
+        else {
+            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn btn-default", onClick: this.onLikeClick }, "+ Connect"));
+        }
+    }
+    // tslint:disable-next-line:typedef
+    onUnlikeClick(e) {
+        // this.setState({ liked: data.liked, likeCount: data.count });
+    }
+    // tslint:disable-next-line:typedef
+    onLikeClick(e) {
+        // this.setState({ liked: data.liked, likeCount: data.count });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = FollowButton;
+
+
+
+/***/ }),
+
 /***/ "./src/Components/InputBoxLogin/index.tsx":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1505,8 +1556,8 @@ exports.push([module.i, ".un-content {\n  background-color: #ffffff;\n  height: 
 const maleP = 'data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4Ij4KPGNpcmNsZSBzdHlsZT0iZmlsbDojNzFFMkVGOyIgY3g9IjI1NiIgY3k9IjI1NiIgcj0iMjU2Ii8+CjxwYXRoIHN0eWxlPSJmaWxsOiMzOEM2RDk7IiBkPSJNMjI1LjcyNiw0MzkuNTQ2bDY5LjQ2OCw2OS40NjhDNDE3Ljk3NSw0OTAuMTUxLDUxMiwzODQuMDU3LDUxMiwyNTYgIGMwLTAuNjgxLTAuMDIxLTEuMzU4LTAuMDI2LTIuMDM4TDM1OC44NiwxMDAuODQ4TDIyNS43MjYsNDM5LjU0NnoiLz4KPHJlY3QgeD0iMjEzLjMzMyIgeT0iMjkyLjIxOSIgc3R5bGU9ImZpbGw6I0ZDRDA4ODsiIHdpZHRoPSI4NS4zMzMiIGhlaWdodD0iODUuMzMzIi8+CjxyZWN0IHg9IjI1Ni4yOTMiIHk9IjI5Mi4yMTkiIHN0eWxlPSJmaWxsOiNEREFCNjI7IiB3aWR0aD0iNDIuMzc5IiBoZWlnaHQ9Ijg1LjMzMyIvPgo8cGF0aCBzdHlsZT0iZmlsbDojRDlFREVDOyIgZD0iTTM1Ny43NjQsMzYwLjVsLTQ1LjIyLTkuMDQ0bC03Ljk5Mi0xMS42NjZjLTEuNDk2LTIuMTg0LTQuMzI3LTMuMDA3LTYuNzU5LTEuOTY1TDI1NiwzNTUuODMgIGwtNDEuNTQzLTE3Ljk4N2MtMi40MTUtMS4wNTMtNS4yMzktMC4yNjItNi43NTQsMS44OTNsLTguMjQ3LDExLjcxOWwtNDUuMjIsOS4wNDRjLTIzLjAyNCw0LjYwNi0zOS41OTYsMjQuODIxLTM5LjU5Niw0OC4zdjYwLjY0NyAgQzE1NS4xNDgsNDk2LjMyOCwyMDMuNzQsNTEyLDI1Niw1MTJzMTAwLjg1Mi0xNS42NzIsMTQxLjM2LTQyLjU1NXYtNjAuNjQ3QzM5Ny4zNiwzODUuMzE5LDM4MC43ODcsMzY1LjEwNCwzNTcuNzY0LDM2MC41eiIvPgo8cGF0aCBzdHlsZT0iZmlsbDojQzdEOEQ3OyIgZD0iTTM5Ny4zNiw0MDguNzk4YzAtMjMuNDgtMTYuNTc0LTQzLjY5Ni0zOS41OTYtNDguM2wtNDUuMjItOS4wNDRsLTcuOTkyLTExLjY2NiAgYy0xLjQ5Ni0yLjE4NC00LjMyNy0zLjAwNy02Ljc1OS0xLjk2NWwtNDEuNTAzLDE3Ljg4djE1Ni4yODljNTIuMTQ4LTAuMDU3LDEwMC42MzgtMTUuNzE3LDE0MS4wNzItNDIuNTQ5di02MC42NDVIMzk3LjM2eiIvPgo8cGF0aCBzdHlsZT0iZmlsbDojRkZFREI1OyIgZD0iTTM0Ny41MzEsMjA1LjQ0YzAuNDU5LTQuMjQ0LDAuNjk4LTguNDI4LDAuNjk4LTEyLjUwOWMwLTUzLjk3NC00MS4yOTMtOTcuNzI4LTkyLjIyOS05Ny43MjggIHMtOTIuMjI5LDQzLjc1My05Mi4yMjksOTcuNzI4YzAsNC4wOCwwLjI0LDguMjY0LDAuNjk4LDEyLjUwOWMtOC45NDUsMi4zMjYtMTMuMjAyLDE2LjA4Ny05LjUwNiwzMC44MTcgIGMzLjcwOCwxNC43NzYsMTQuMDE0LDI0LjkyMSwyMy4wMTgsMjIuNjYxYzAuODIxLTAuMjA1LDEuNTg2LTAuNTM4LDIuMzI2LTAuOTI3YzE2LjY2NywzMy40NTIsNDQuMzUxLDYwLjU5NCw3NS42OTMsNjAuNTk0ICBzNTkuMDI3LTI3LjEzOSw3NS42OTMtNjAuNTk0YzAuNzQsMC4zOSwxLjUwNSwwLjcyMiwyLjMyNiwwLjkyN2M5LjAwNCwyLjI2LDE5LjMwOS03Ljg4NSwyMy4wMTgtMjIuNjYxICBDMzYwLjczMiwyMjEuNTI3LDM1Ni40NzYsMjA3Ljc2MywzNDcuNTMxLDIwNS40NHoiLz4KPHBhdGggc3R5bGU9ImZpbGw6I0U4Q0Y4OTsiIGQ9Ik0zNDcuNTMxLDIwNS40NGMwLjQ1OS00LjI0NCwwLjY5OC04LjQyOCwwLjY5OC0xMi41MDljMC01My44NzItNDEuMTM4LTk3LjU1Ni05MS45NDEtOTcuNzIxdjIyMy4zNjUgIGMzMS4yMjMtMC4xNjcsNTguNzktMjcuMjM2LDc1LjQwNS02MC41ODVjMC43NCwwLjM5LDEuNTA1LDAuNzIyLDIuMzI2LDAuOTI3YzkuMDA0LDIuMjYsMTkuMzA5LTcuODg1LDIzLjAxOC0yMi42NjEgIEMzNjAuNzMyLDIyMS41MjcsMzU2LjQ3NiwyMDcuNzYzLDM0Ny41MzEsMjA1LjQ0eiIvPgo8cGF0aCBzdHlsZT0iZmlsbDojNDk0OTQ4OyIgZD0iTTIwNC4xNCwxNzAuNjY3YzAsMCw0MC4wODEsMzguMzU3LDEyMS45NjYsMjQuNTY2YzAsMCw3Ljk0LTEuOTk4LDIxLjQyNSwxMC4yMDcgIGMwLDAsMjQuNjkxLTUxLjU4MSwxMS4zMzEtMTA0LjU5MWMwLDAtNDMuNTI5LDUuNjAzLTYyLjkyMy02LjQ2NWMtMTkuMzk0LTEyLjA2Ny03MS4xMTEtMjQuOTk3LTgyLjc0NywxMS4yMDUgIGMwLDAtMzcuNDk1LTQuNzQxLTQ3LjgzOCwzNC4wNDdjLTEwLjM0MywzOC43ODgtMC44ODMsNjUuODAzLTAuODgzLDY1LjgwM1MxODMuODg0LDE1OC41OTksMjA0LjE0LDE3MC42Njd6Ii8+CjxnPgoJPHBhdGggc3R5bGU9ImZpbGw6IzMzMzMzMzsiIGQ9Ik0zNTguODYsMTAwLjg0OGMwLDAtNDMuNTI5LDUuNjAzLTYyLjkyMy02LjQ2NWMtOC44MDktNS40ODItMjQuMjg4LTExLjEyNC0zOS42NS0xMi4yNzZ2MTEyLjUwOSAgIGMxOC4zNTgsMy45MjcsNDEuNjA1LDUuMzY4LDY5LjgxOCwwLjYxNWMwLDAsNy45NC0xLjk5OCwyMS40MjUsMTAuMjA3QzM0Ny41MzEsMjA1LjQ0LDM3Mi4yMjEsMTUzLjg1OSwzNTguODYsMTAwLjg0OHoiLz4KCTxwYXRoIHN0eWxlPSJmaWxsOiMzMzMzMzM7IiBkPSJNMjY3LjkxLDUxMS42OTdjMzAuNDg0LTEuMzk4LDU5LjU2NC04LjEzNSw4Ni4zNTQtMTkuMjg3VjM1OS44bC0zNC45MDctNi45ODJMMjY3LjkxLDUxMS42OTd6Ii8+CjwvZz4KPGc+Cgk8cGF0aCBzdHlsZT0iZmlsbDojNDk0OTQ4OyIgZD0iTTI0NC4wOSw1MTEuNjk3Yy0zMC40ODQtMS4zOTgtNTkuNTY0LTguMTM1LTg2LjM1NC0xOS4yODdWMzU5LjhsMzQuOTA3LTYuOTgyTDI0NC4wOSw1MTEuNjk3eiIvPgoJPHBhdGggc3R5bGU9ImZpbGw6IzQ5NDk0ODsiIGQ9Ik0yOTAuMjQ1LDM1NS45MjRsLTI0LjA2MSw4LjgxNGMtMC4zOTgtMS4yNDUtMS41NTItMi4xNTEtMi45MjktMi4xNTFoLTEzLjY0OCAgIGMtMS4zNywwLTIuNTIsMC45LTIuOTI0LDIuMTM2bC0yNC4wMTctOC43OTljLTQuMTYtMS41MjQtOC41NjYsMS41NTUtOC41NjYsNS45ODV2MzAuMzk2YzAsNC40MjksNC40MDYsNy41MDksOC41NjYsNS45ODUgICBsMjQuMDE3LTguNzk5YzAuNDAzLDEuMjM2LDEuNTUyLDIuMTM2LDIuOTI0LDIuMTM2aDEzLjY0OGMxLjM3NywwLDIuNTI5LTAuOTA3LDIuOTI5LTIuMTUxbDI0LjA2MSw4LjgxNCAgIGM0LjE2LDEuNTI0LDguNTY2LTEuNTU1LDguNTY2LTUuOTg1VjM2MS45MUMyOTguODExLDM1Ny40NzksMjk0LjQwNSwzNTQuNDAxLDI5MC4yNDUsMzU1LjkyNHoiLz4KPC9nPgo8cGF0aCBzdHlsZT0iZmlsbDojMzMzMzMzOyIgZD0iTTI5MC4yNDUsMzU1LjkyNGwtMjQuMDYxLDguODE0Yy0wLjM5OC0xLjI0NS0xLjU1Mi0yLjE1MS0yLjkyOS0yLjE1MWgtNi45Njh2MjkuMDQxaDYuOTY4ICBjMS4zNzcsMCwyLjUyOS0wLjkwNywyLjkyOS0yLjE1MWwyNC4wNjEsOC44MTRjNC4xNiwxLjUyNCw4LjU2Ni0xLjU1NSw4LjU2Ni01Ljk4NVYzNjEuOTEgIEMyOTguODExLDM1Ny40NzksMjk0LjQwNSwzNTQuNDAxLDI5MC4yNDUsMzU1LjkyNHoiLz4KPGc+Cgk8Y2lyY2xlIHN0eWxlPSJmaWxsOiNBREFEQUQ7IiBjeD0iMjU2IiBjeT0iNDEwLjI5IiByPSI0LjMxIi8+Cgk8Y2lyY2xlIHN0eWxlPSJmaWxsOiNBREFEQUQ7IiBjeD0iMjU2IiBjeT0iNDMzLjEzMSIgcj0iNC4zMSIvPgoJPGNpcmNsZSBzdHlsZT0iZmlsbDojQURBREFEOyIgY3g9IjI1NiIgY3k9IjQ1NS45NzMiIHI9IjQuMzEiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K';
 // tslint:disable-next-line:no-any
 const PrivateHeader = (props) => {
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "data-uk-sticky": "sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky mdc-toolbar mdc-toolbar--fixed" },
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("nav", { className: "uk-navbar-container mdc-elevation--z2 uk-margin uk-background-secondary raised mdc-toolbar mdc-toolbar--fixed", "uk-navbar": true, style: { elevation: 5, borderBottomWidth: 1, borderBottomColor: '#212121' } },
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "data-uk-sticky": "sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky mdc-toolbar mdc-toolbar--fixed", style: { marginBottom: 0 } },
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("nav", { className: "uk-navbar-container mdc-elevation--z2 uk-margin uk-background-secondary raised mdc-toolbar mdc-toolbar--fixed", "uk-navbar": true, style: { marginBottom: 0 } },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "nav-overlay uk-navbar-left" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-navbar-toggle nav-overlay uk-hidden@m", type: "button", "uk-navbar-toggle-icon": true, "uk-toggle": "target: #offcanvas-nav", "uk-icon": "icon: menu; ratio: 1.5" }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/", className: "uk-navbar-item uk-logo", href: "#" },
@@ -1527,42 +1578,37 @@ const PrivateHeader = (props) => {
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "uk-animation-toggle" },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { className: "uk-animation-shake", to: "/message", "uk-icon": "icon: calendar; ratio: 1.5" })),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "uk-animation-toggle" },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { className: "uk-animation-shake", to: "/message", "uk-icon": "icon: user; ratio: 1.5" },
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "uk-badge uk-color-danger", style: { backgroundColor: 'black' } }, "0"))),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { className: "uk-animation-shake badge", "data-badge": "8", to: "/message", "uk-icon": "icon: user; ratio: 1.5" })),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "uk-animation-toggle" },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-animation-shake", "uk-icon": "icon: bell; ratio: 1.5" },
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "uk-badge", style: { backgroundColor: 'red' } }, "0")))),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-animation-shake badge", "uk-icon": "icon: bell; ratio: 1.5", "data-badge": "8" }))),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("ul", { className: "uk-navbar-nav" },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { href: "#" },
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-animation-toggle" },
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("img", { className: "uk-border-circle uk-animation-kenburns uk-animation-fast", src: props.avatar ? props.avatar : maleP, width: "40", height: "40", alt: "img" }))),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "data-uk-dropdown": "mode: click", style: { padding: 0 } },
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("ul", { className: "mdc-menu__items mdc-list uk-dropdown-nav", style: { padding: 0 } },
-                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "mdc-list-item", role: "menuitem" },
-                                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/profile", className: "uk-text-bold" },
-                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: plus-circle; ratio: 1" }),
-                                            " Profile")),
-                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "mdc-list-item", role: "menuitem" },
-                                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/favourites", className: "uk-text-bold" },
-                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: plus-circle; ratio: 1" }),
-                                            " Favourites")),
-                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "mdc-list-item", role: "menuitem" },
-                                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/score", className: "uk-text-bold" },
-                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: plus-circle; ratio: 1" }),
-                                            " Reading Score")),
-                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "uk-nav-divider" }),
-                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "mdc-list-item", role: "menuitem" },
-                                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/legal/privacy", className: "uk-text-bold" },
-                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: plus-circle; ratio: 1" }),
-                                            " Privacy")),
-                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "mdc-list-item", role: "menuitem" },
-                                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/support", className: "uk-text-bold" },
-                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: warning; ratio: 1" }),
-                                            " Support")),
-                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "mdc-list-item", role: "menuitem", onClick: props.logout },
-                                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: info; ratio: 1" }),
-                                        "  Logout"))))),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "data-uk-dropdown": "mode: hover", style: { padding: 0 } },
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "popover-container" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "card mdc-menu__items mdc-list uk-dropdown-nav", style: { padding: 0 } },
+                                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "card-header" }, "..."),
+                                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "card-body", style: { padding: 0 } },
+                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "mdc-list-item", role: "menuitem" },
+                                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/profile", className: "uk-text-bold" },
+                                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: plus-circle; ratio: 1" }),
+                                                    " Profile")),
+                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "mdc-list-item", role: "menuitem" },
+                                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/favourites", className: "uk-text-bold" },
+                                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: plus-circle; ratio: 1" }),
+                                                    " Favourites")),
+                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "mdc-list-item", role: "menuitem" },
+                                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/score", className: "uk-text-bold" },
+                                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: plus-circle; ratio: 1" }),
+                                                    " Reading Score"))),
+                                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "card-footer", style: { padding: 0 } },
+                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "mdc-list-item", role: "menuitem" },
+                                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/legal/privacy", className: "uk-text-bold" }, "Privacy")),
+                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "mdc-list-item", role: "menuitem" },
+                                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/support", className: "uk-text-bold" }, "Support")),
+                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "mdc-list-item uk-text-bold", role: "menuitem", onClick: props.logout }, "Logout"))))))),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-navbar-nav uk-padding-small" },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/write", className: "uk-button uk-button-primary uk-button-small" }, "Write")),
                     " ") :
@@ -1735,7 +1781,7 @@ exports.push([module.i, "", ""]);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__style_css__ = __webpack_require__("./src/Components/Layouts/MainLayout/Private/style.css");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__style_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__style_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_Components_ConnectBox__ = __webpack_require__("./src/Components/ConnectBox/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_Components_RightSideBar__ = __webpack_require__("./src/Components/RightSideBar/index.tsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_Components_LeftSideBar__ = __webpack_require__("./src/Components/LeftSideBar/index.tsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_glamorous__ = __webpack_require__("glamorous");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_glamorous___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_glamorous__);
@@ -1760,19 +1806,18 @@ const A = __WEBPACK_IMPORTED_MODULE_5_glamorous___default.a.a({
 });
 const PrivateLayout = (props) => {
     const { component: Component, isAuthenticated } = props, rest = __rest(props, ["component", "isAuthenticated"]);
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Route"], Object.assign({}, rest, { exact: true, render: (matctProps) => isAuthenticated ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex uk-padding-large@s uk-padding" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-5 uk-margin-right uk-margin-left uk-visible@m" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_LeftSideBar__["a" /* default */], { user: props.me })),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex uk-width-expand" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Component, Object.assign({}, matctProps))),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-5 uk-margin-right uk-margin-left uk-visible@m", style: { marginBottom: 10 } },
-                !isAuthenticated ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-card uk-card-default uk-card-body uk-width-1-1 uk-padding-small" },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h3", { className: "uk-card-title" },
-                        "Hello ",
-                        props.me ? props.me.firstname : ''),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", null, "Please signup or login to get the Unizonn experience. It will only take a few steps"),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/login", className: "uk-button uk-button-primary" }, "Login"))) : null,
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_ConnectBox__["a" /* default */], null)))) : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Redirect"], { to: { pathname: '/' } })) })));
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Route"], Object.assign({}, rest, { exact: true, render: (matctProps) => isAuthenticated ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "columns uk-flex uk-padding-large@s uk-padding" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "column col-3 uk-margin-left uk-visible@m" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_LeftSideBar__["a" /* default */], { user: props.me })),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "column col-7 uk-width-expand" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Component, Object.assign({}, matctProps))),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "column col-3 uk-margin-right uk-visible@m", style: { marginBottom: 10 } },
+                    isAuthenticated ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-card uk-card-default uk-card-body uk-width-1-1 uk-padding-small", style: { marginBottom: 10 } },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h3", { className: "uk-card-title" }, "Hello"),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", null, "Please signup or login to get the Unizonn experience. It will only take a few steps"),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/login", className: "uk-button uk-button-primary" }, "Login"))) : null,
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_RightSideBar__["a" /* default */], null))))) : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Redirect"], { to: { pathname: '/' } })) })));
 };
 /* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(PrivateLayout));
 
@@ -2031,6 +2076,11 @@ exports.push([module.i, ".un-sidebar-container {\n  background-color: #fff; }\n\
 const A = __WEBPACK_IMPORTED_MODULE_5_glamorous___default.a.a({
     fontFamily: 'brandon-grotesque',
     color: '#000000',
+    paddingLeft: 5,
+    paddingRight: 5,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    alignSelf: 'center'
 });
 // tslint:disable-next-line:no-any
 class LeftSideBar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
@@ -2041,20 +2091,23 @@ class LeftSideBar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_UserProfileBox__["a" /* default */], { me: this.props.user })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 mdc-elevation--z4 uk-card uk-card-default", style: { marginBottom: 10, padding: 0 } },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_Label__["a" /* default */], { text: "Top Interests" }),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_TopInterest__["a" /* default */], null)),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", null, "Copyright @ 2018, Unizonn")),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("ul", { className: "listItem uk-text-center" },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { href: "#" }, "Terms")),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { color: '#000', href: "#" }, "Privacy")),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { href: "#" }, "About")),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { href: "#" }, "Support"))))));
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_TopInterest__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("ul", { className: "listItem uk-text-center", style: { justifyContent: 'space-evenly', flex: 1 } },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { href: "#" }, "About")),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { href: "#" }, "Terms & Terms")),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { color: '#000', href: "#" }, "Privacy")),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { href: "#" }, "Career")),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { href: "#" }, "Support"))),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", null, "Copyright @ 2018, Unizonn")))),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null)));
     }
 }
 /* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"])(LeftSideBar)));
@@ -2144,7 +2197,12 @@ class LikeButton extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 
 const LoadingComponent = () => {
-    return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { style: { width: '100vw', height: '100vh' } }, "Loading");
+    return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-position-center" },
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "loader uk-margin-small" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "bullet" }),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "bullet" }),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "bullet" }),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "bullet" })));
 };
 /* unused harmony export LoadingComponent */
 
@@ -2222,17 +2280,20 @@ class OverlayTriggerButton extends __WEBPACK_IMPORTED_MODULE_0_react__["Componen
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_Components_Avatar__ = __webpack_require__("./src/Components/Avatar/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_Components_FollowButton__ = __webpack_require__("./src/Components/FollowButton/index.tsx");
+
 
 
 // tslint:disable-next-line:typedef
 const PersonItem = (props) => {
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex boxit" },
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_Avatar__["a" /* default */], { url: props.url, size: 40, presence: false }),
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "", style: { marginLeft: 10 } },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", null, props.name),
-            " ",
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", null, "I like to eat alot everyday with"))));
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "tile tile-centered px-2" },
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "tile-icon" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_Avatar__["a" /* default */], { url: props.url, size: 40, presence: false })),
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "tile-content" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "tile-title" }, props.name),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "tile-subtitle text-gray" }, "I like to eat alot everyday with")),
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "tile-action" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_FollowButton__["a" /* default */], { liked: true }))));
 };
 /* harmony default export */ __webpack_exports__["a"] = (PersonItem);
 
@@ -2276,7 +2337,7 @@ class PopoverLink extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     render() {
         const styleIt = this.props.bigger ? { fontSize: 17 } : {};
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "popover-link uk-text-bold", onMouseEnter: () => this.handleMouseEnter.bind(this), onMouseLeave: () => this.handleMouseLeave.bind(this) },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/${this.props.link}`, style: styleIt }, this.props.children),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/${this.props.link}`, className: "card-title", style: styleIt }, this.props.children),
             this.renderPopover()));
     }
     renderPopover() {
@@ -2365,6 +2426,36 @@ class ProfileLeft extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     name: 'user',
     options: { variables: { email: '' } },
 }))(ProfileLeft)));
+
+
+/***/ }),
+
+/***/ "./src/Components/RightSideBar/index.tsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__("react-router-dom");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_apollo__ = __webpack_require__("react-apollo");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_apollo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_apollo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_Components_ConnectBox__ = __webpack_require__("./src/Components/ConnectBox/index.tsx");
+
+
+
+
+// tslint:disable-next-line:no-any
+class LeftSideBar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
+    render() {
+        // const { loading } = this.state;
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: " uk-width-1-1" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 mdc-elevation--z4 uk-card uk-card-default", style: { marginBottom: 10, padding: 0 } },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_ConnectBox__["a" /* default */], null)),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null)));
+    }
+}
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"])(LeftSideBar)));
 
 
 /***/ }),
@@ -2518,15 +2609,15 @@ const UserProfileBox = (props) => {
         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_Avatar__["a" /* default */], { size: 60, 
             // tslint:disable-next-line:max-line-length
             url: props.me.avatar ? props.me.avatar.name : '', presence: false }),
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { className: "uk-text-bold", style: { fontSize: 19 } },
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { className: "uk-text-bold", style: { fontSize: 17 } },
             props.me.firstname,
             " ",
             props.me.lastname),
         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { style: { fontSize: 13 } }, "Founder at Gueva Technologies. Geek, programmer, interest in AI and Machine Learning, Big Data, love basketball."),
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex uk-flex-around" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-default uk-button-small" }, "0Posts"),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-default uk-button-small" }, "0Connects"),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-default uk-button-small" }, "0Posts"))));
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "btn-group btn-group-block" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn" }, "0 Posts"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn" }, "0 Connects"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn" }, "0 Posts"))));
 };
 /* harmony default export */ __webpack_exports__["a"] = (UserProfileBox);
 
@@ -3902,16 +3993,23 @@ class ComposeWrite extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         // tslint:disable-next-line:no-console
         console.log(title);
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex uk-padding-large" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-2-3@m uk-width-1-1@s" },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-card uk-card-small uk-card-default", style: { paddingTop: 10 } }, "jkjk"),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-card uk-card-large uk-card-default", style: { minHeight: '60vh', paddingTop: 10 } },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_Editor2__["a" /* default */], null))),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-3@m uk-width-1-1@s uk-padding-small uk-padding-remove-vertical" },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-margin-small-bottom" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-secondary uk-width-1-2", type: "button" }, "Go Back"),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-primary uk-width-1-2", type: "button" }, "Publish")),
-                    !this.props.allInterest.loading ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_select_plus___default.a, { name: "form-field-name", value: value, onChange: this.handleChange, placeholder: "Add categories or interest", multi: true, closeOnSelect: true, removeSelected: this.state.removeSelected, simpleValue: false, options: category })) : null))));
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 mdc-elevation--z1 uk-flex uk-flex-between", style: { backgroundColor: '#454d5d', padding: 4 } },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex-around" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-small uk-button-secondary", type: "button" }, "Back")),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex-around" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-light uk-button-small uk-button-default uk-width-1-2", type: "button" }, "Drafts"),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-small uk-button-primary uk-width-1-2", type: "button" }, "Publish"))),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-flex uk-margin-small-bottom", style: { backgroundColor: '#e1eaf1', height: 250 } },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("img", { src: "" })),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-large mdc-card mdc-elevation--z5 uk-padding-remove-vertical" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-large uk-margin-top uk-padding-remove-vertical" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-large uk-margin-top uk-padding-remove-vertical" }, !this.props.allInterest.loading ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_select_plus___default.a, { name: "form-field-name", value: value, onChange: this.handleChange, placeholder: "Add categories or interest", multi: true, closeOnSelect: true, style: { borderWidth: 0 }, removeSelected: this.state.removeSelected, simpleValue: false, options: category })) : null)),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-large uk-padding-remove-vertical uk-margin-top" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-large uk-padding-remove-vertical" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { className: "uk-article-title uk-width-1-1", style: { borderWidth: 0, fontWeight: 'bolder' }, placeholder: "Title of article" }))),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-large uk-padding-remove-vertical", style: { minHeight: '40vh' } },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-large uk-padding-remove-vertical" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_Editor2__["a" /* default */], null))))));
     }
 }
 /* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_4_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_5_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_5_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_5_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_3_Graphql_Query__["d" /* ALL_INTEREST */], {

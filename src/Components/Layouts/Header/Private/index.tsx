@@ -23,12 +23,13 @@ const PrivateHeader = (props: Props) => {
     return (
       <div
         data-uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky mdc-toolbar mdc-toolbar--fixed"
+        style={{marginBottom: 0}}
       >
         <nav 
           className="uk-navbar-container mdc-elevation--z2 uk-margin uk-background-secondary raised mdc-toolbar mdc-toolbar--fixed" 
           // tslint:disable-next-line:jsx-boolean-value
           uk-navbar
-          style={{elevation: 5, borderBottomWidth: 1, borderBottomColor: '#212121'}}
+          style={{marginBottom: 0}}
         >
           <div className="nav-overlay uk-navbar-left">
             <button
@@ -64,15 +65,14 @@ const PrivateHeader = (props: Props) => {
                   <Link className="uk-animation-shake" to="/message" uk-icon="icon: calendar; ratio: 1.5"/>
                 </li>
                 <li className="uk-animation-toggle">
-                  <Link className="uk-animation-shake" to="/message" uk-icon="icon: user; ratio: 1.5">
-                  <span className="uk-badge uk-color-danger" style={{backgroundColor: 'black'}}>0</span>
-                  </Link>
+                  <Link className="uk-animation-shake badge" data-badge="8" to="/message" uk-icon="icon: user; ratio: 1.5"/>
                 </li>
                 <li className="uk-animation-toggle">
                   <button 
-                    className="uk-animation-shake"
+                    className="uk-animation-shake badge"
                     uk-icon="icon: bell; ratio: 1.5"
-                  ><span className="uk-badge" style={{backgroundColor: 'red'}}>0</span></button>
+                    data-badge="8"
+                  />
                 </li>
               </ul>
               
@@ -89,38 +89,46 @@ const PrivateHeader = (props: Props) => {
                     />
                     </div>
                   </a>
-                  <div data-uk-dropdown="mode: click" style={{padding: 0}}>
-                    <ul className="mdc-menu__items mdc-list uk-dropdown-nav" style={{padding: 0}}>
-                        <li className="mdc-list-item" role="menuitem">
-                          <Link to="/profile" className="uk-text-bold">
-                            <span uk-icon="icon: plus-circle; ratio: 1" /> Profile
-                          </Link>
-                        </li>
-                        <li className="mdc-list-item" role="menuitem">
-                          <Link to="/favourites" className="uk-text-bold">
-                            <span uk-icon="icon: plus-circle; ratio: 1" /> Favourites
-                          </Link>
-                        </li>
-                        <li className="mdc-list-item" role="menuitem">
-                          <Link to="/score" className="uk-text-bold">
-                            <span uk-icon="icon: plus-circle; ratio: 1" /> Reading Score
-                          </Link>
-                        </li>
-                        <li className="uk-nav-divider" />
-                        <li className="mdc-list-item" role="menuitem">
-                          <Link to="/legal/privacy" className="uk-text-bold">
-                            <span uk-icon="icon: plus-circle; ratio: 1" /> Privacy
-                          </Link>
-                        </li>
-                        <li className="mdc-list-item" role="menuitem">
-                          <Link to="/support" className="uk-text-bold">
-                            <span uk-icon="icon: warning; ratio: 1" /> Support
-                          </Link>
-                        </li>
-                        <li className="mdc-list-item" role="menuitem" onClick={props.logout}>
-                          <span uk-icon="icon: info; ratio: 1" />  Logout                        
-                        </li>
-                    </ul>
+                  <div data-uk-dropdown="mode: hover" style={{padding: 0}}>
+                    <div className="popover-container">
+                      <div className="card mdc-menu__items mdc-list uk-dropdown-nav" style={{padding: 0}}>
+                        <div className="card-header">
+                          ...
+                        </div>
+                        <div className="card-body" style={{padding: 0}}>
+                          <li className="mdc-list-item" role="menuitem">
+                            <Link to="/profile" className="uk-text-bold">
+                              <span uk-icon="icon: plus-circle; ratio: 1" /> Profile
+                            </Link>
+                          </li>
+                          <li className="mdc-list-item" role="menuitem">
+                            <Link to="/favourites" className="uk-text-bold">
+                              <span uk-icon="icon: plus-circle; ratio: 1" /> Favourites
+                            </Link>
+                          </li>
+                          <li className="mdc-list-item" role="menuitem">
+                            <Link to="/score" className="uk-text-bold">
+                              <span uk-icon="icon: plus-circle; ratio: 1" /> Reading Score
+                            </Link>
+                          </li>
+                        </div>
+                        <div className="card-footer"  style={{padding: 0}}>
+                          <li className="mdc-list-item" role="menuitem">
+                            <Link to="/legal/privacy" className="uk-text-bold">
+                              Privacy
+                            </Link>
+                          </li>
+                          <li className="mdc-list-item" role="menuitem">
+                            <Link to="/support" className="uk-text-bold">
+                              Support
+                            </Link>
+                          </li>
+                          <li className="mdc-list-item uk-text-bold" role="menuitem" onClick={props.logout}>
+                            Logout                        
+                          </li>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </li>
               </ul>

@@ -18,6 +18,11 @@ interface Props {
 const A = glamorous.a({
   fontFamily: 'brandon-grotesque',
   color: '#000000',
+  paddingLeft: 5,
+  paddingRight: 5,
+  fontWeight: 'bold',
+  textAlign: 'center',
+  alignSelf: 'center'
 });
 
 // tslint:disable-next-line:no-any
@@ -33,29 +38,37 @@ class LeftSideBar extends React.Component<RouteComponentProps & Props> {
             <div className="uk-width-1-1 mdc-elevation--z4 uk-card uk-card-default" style={{ marginBottom: 10, padding: 0 }}>
               <Label text="Top Interests" />
               <TopInterest />
-            </div>
-            <hr />
-            <div className="uk-width-1-1 uk-padding-small">
-                <div>
-                    <p>Copyright @ 2018, Unizonn</p>
-                </div>
-                <ul className="listItem uk-text-center">
-                    <li>
-                        <A href="#">Terms</A>
-                    </li>
-                    <li>
-                        <A color={'#000'} href="#">
-                            Privacy
-                        </A>
-                    </li>
+              <hr/>
+              <div className="uk-width-1-1 uk-padding-small">
+                <ul 
+                  className="listItem uk-text-center"
+                  style={{justifyContent: 'space-evenly', flex: 1}}
+                >
                     <li>
                         <A href="#">About</A>
+                    </li>
+                    <li>
+                        <A href="#">Terms & Terms</A>
+                    </li>
+                    <li>
+                      <A color={'#000'} href="#">
+                          Privacy
+                      </A>
+                    </li>
+                    <li>
+                        <A href="#">Career</A>
                     </li>
                     <li>
                         <A href="#">Support</A>
                     </li>
                 </ul>
+                <div>
+                    <p>Copyright @ 2018, Unizonn</p>
+                </div>
             </div>
+            </div>
+            <hr />
+            
           </div>
         );
     }

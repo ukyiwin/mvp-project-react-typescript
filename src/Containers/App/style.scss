@@ -1,7 +1,7 @@
 $global-primary-background: #09d35d !default;
 $navbar-nav-item-height: 55px !default;
 $navbar-nav-item-active-color: #09d35d !default;
-$navbar-nav-item-color: #212121 !default;
+$navbar-nav-item-color: #454d5d !default;
 $navbar-nav-item-hover-color:  #09d35d !default;
 $navbar-nav-item-onclick-color: #09d35d !default;
 // $global-background: #e4e6eb !default;
@@ -44,12 +44,17 @@ body {
 }
 
 // Import only the needed components
+$primary-color: #09d35d !default;
 
 @import "node_modules/spectre.css/src/_variables";
 @import "node_modules/spectre.css/src/_icons";
 @import "node_modules/spectre.css/src/_mixins";
 @import "node_modules/spectre.css/src/_parallax";
 @import "node_modules/spectre.css/src/_utilities";
+@import "node_modules/spectre.css/src/_cards";
+@import "node_modules/spectre.css/src/_tiles";
+@import "node_modules/spectre.css/src/_badges";
+@import "node_modules/spectre.css/src/_labels";
 @import "node_modules/spectre.css/src/_panels";
 @import "node_modules/spectre.css/src/_empty";
 @import "node_modules/spectre.css/src/_menus";

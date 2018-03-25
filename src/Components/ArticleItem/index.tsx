@@ -24,33 +24,34 @@ class ArticleItem extends React.Component<Props> {
         const { author } = article;
         return (
             <div
-              className="uk-card uk-card-default mdl-card uk-card-small uk-width-1-1"
+              className="card uk-width-1-1"
               style={{
                   borderRadius: 1,
                   marginBottom: this.props.small ? 7 : 15,
-                  padding: 10,
                   backgroundColor: '#fff',
               }}
             >
               
-              {this.props.small ? null : (<div className="uk-padding-small">
-                <div
-                  data-uk-lightbox="animation: fade; video-autoplay: true;"
-                  className="uk-inline-clip uk-transition-toggle"
-                >
-                    <a
-                      className="uk-inline"
-                      href="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
-                    >
-                      <img
-                        src="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
-                        className="img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque"
-                        alt="..."
-                        style={{maxHeight: 280 }}
-                      />
-                    </a>
-                </div>
-              </div>)}
+              {this.props.small ? null : (
+                <div className="card-image">
+                  <div
+                    data-uk-lightbox="animation: fade; video-autoplay: true;"
+                    className="uk-inline-clip uk-transition-toggle"
+                  >
+                      <a
+                        className="uk-inline"
+                        href="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
+                      >
+                        <img
+                          src="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
+                          className="img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque"
+                          alt="..."
+                          style={{maxHeight: 280 }}
+                        />
+                      </a>
+                  </div>
+                </div>)
+              }
                 {this.props.small ? null : (
                     <div className="post-metadata uk-padding-remove-bottom uk-padding-small">
                         <div className="uk-grid-small uk-flex" uk-grid={true}>
@@ -76,7 +77,7 @@ class ArticleItem extends React.Component<Props> {
                     </div>
                 )}
                 <div
-                    className="uk-card-body uk-padding-remove-vertical simple-link"
+                    className="card-body uk-padding-remove-vertical simple-link"
                     style={{ paddingTop: this.props.small ? 0 : 6, borderBottom: 1 }}
                 >
                     <Link to={`/article/${article.id}`} className="simple-link">
@@ -93,10 +94,8 @@ class ArticleItem extends React.Component<Props> {
                         {this.props.small ? article.body.truncString('...', 70) : article.body.truncString('...', 140)}
                     </p>
                 </div>
-                <hr/>
                 <div
-                    className="post-stats clearfix uk-padding-small uk-padding-remove-horizontal"
-                    style={{ paddingTop: 1, paddingBottom: 1 }}
+                    className="post-stats clearfix card-footer"
                 >
                     <div className="uk-flex pull-left">
                         <Likebutton liked={true} likeCount={2} />

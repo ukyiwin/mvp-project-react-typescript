@@ -3,7 +3,7 @@ import { Route, Redirect, withRouter, Link } from 'react-router-dom';
 import {} from 'react-apollo';
 import './style.css';
 import { User } from 'CustomTypings/schema';
-import ConnectBox from 'Components/ConnectBox';
+import RightSideBar from 'Components/RightSideBar';
 import LeftSideBar from 'Components/LeftSideBar';
 import glamorous from 'glamorous';
 import Label from 'Components/Label';
@@ -34,20 +34,24 @@ const PrivateLayout: React.SFC<DefaultProps & Response> = (props) => {
             exact={true}
             render={(matctProps) =>
                 isAuthenticated ? (
-                    <div className="uk-flex uk-padding-large@s uk-padding">
-                        <div className="uk-width-1-5 uk-margin-right uk-margin-left uk-visible@m">
+                  <div className="">
+                    <div className="columns uk-flex uk-padding-large@s uk-padding">
+                        <div className="column col-3 uk-margin-left uk-visible@m">
                             <LeftSideBar user={props.me} />
                         </div>
-                        <div className="uk-flex uk-width-expand">
+                        <div className="column col-7 uk-width-expand">
                             <Component {...matctProps} />
                         </div>
                         <div
-                            className="uk-width-1-5 uk-margin-right uk-margin-left uk-visible@m"
+                            className="column col-3 uk-margin-right uk-visible@m"
                             style={{ marginBottom: 10 }}
                         >
-                            {!isAuthenticated ? (
-                                <div className="uk-card uk-card-default uk-card-body uk-width-1-1 uk-padding-small">
-                                    <h3 className="uk-card-title">Hello {props.me ? props.me.firstname : ''}</h3>
+                            {isAuthenticated ? (
+                                <div 
+                                  className="uk-card uk-card-default uk-card-body uk-width-1-1 uk-padding-small"
+                                  style={{marginBottom: 10}}
+                                >
+                                    <h3 className="uk-card-title">Hello</h3>
                                     <p>
                                         Please signup or login to get the Unizonn experience. It will only take a few
                                         steps
@@ -57,9 +61,10 @@ const PrivateLayout: React.SFC<DefaultProps & Response> = (props) => {
                                     </Link>
                                 </div>
                             ) : null}
-                            <ConnectBox />
+                            <RightSideBar />
                         </div>
                     </div>
+                  </div>
                 ) : (
                     <Redirect to={{ pathname: '/' }} />
                 )
