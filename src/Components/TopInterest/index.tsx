@@ -23,7 +23,7 @@ export default TopInterest(({ loading, allInterest, error }) => {
         return <ErrorComponent />;
     }
     return (
-        <div className="tags-wrapper undefined">
+        <div className="tags-wrapper uk-padding-small undefined">
             {allInterest.map((interest, i) => (
                 <InterestItemSlim key={interest.id} url={interest.avatar} name={interest.name} />
             ))}

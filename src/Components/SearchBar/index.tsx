@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './style.scss';
 
 interface Props {
     // tslint:disable-next-line:no-any
@@ -17,25 +18,16 @@ export default class SearchBar extends React.Component<Props> {
 
     render() {
         return (
-            <form action="/search" acceptCharset="UTF-8" method="get" className="uk-search bolder uk-width-1-1">
-                <button name="button" type="submit" className="uk-text-center">
-                    <i className="fa fa-search" />
-                </button>
-                <input
-                    onFocus={() => this.props.showDropdown()}
-                    onBlur={() => this.props.hideDropdown()}
-                    value={this.props.term}
-                    onChange={(event) => {
-                        this.handleInputChange(event.target.value);
-                    }}
-                    placeholder="Search on unizonn"
-                    autoComplete="off"
-                    className="uk-input uk-form-width-large"
-                    type="search"
-                    name="search[q]"
-                    id="search_q"
-                />
-            </form>
+          <form className="uk-search uk-search-default uk-width-1-1">
+              <a 
+                href="" 
+                className="uk-search-icon-flip uk-background-primary"
+                data-uk-icon="icon: search" 
+                data-uk-search-icon 
+                style={{color: '#ffffff'}}
+              />
+              <input className="uk-search-input uk-form-width-large uk-width-1-1" type="search" placeholder="Search..." />
+          </form>
         );
     }
 

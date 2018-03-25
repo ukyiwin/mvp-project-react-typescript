@@ -66,42 +66,62 @@ class ComposeWrite extends React.Component<RouteComponentProps & Props & ChildPr
 
         return (
             <div className="uk-width-1-1">
-                <div className="uk-flex uk-padding-large">
-                    <div className="uk-width-2-3@m uk-width-1-1@s">
-                        <div className="uk-card uk-card-small uk-card-default" style={{ paddingTop: 10 }}>
-                            jkjk
-                        </div>
-                        <div
-                            className="uk-card uk-card-large uk-card-default"
-                            style={{ minHeight: '60vh', paddingTop: 10 }}
-                        >
-                            <UnizonnEditor />
-                        </div>
-                    </div>
-                    <div className="uk-width-1-3@m uk-width-1-1@s uk-padding-small uk-padding-remove-vertical">
-                        <div className="uk-width-1-1 uk-margin-small-bottom">
-                            <button className="uk-button uk-button-secondary uk-width-1-2" type="button">
-                                Go Back
-                            </button>
-                            <button className="uk-button uk-button-primary uk-width-1-2" type="button">
-                                Publish
-                            </button>
-                        </div>
-                        {!this.props.allInterest.loading ? (
-                            <Select
-                                name="form-field-name"
-                                value={value}
-                                onChange={this.handleChange}
-                                placeholder="Add categories or interest"
-                                multi={true}
-                                closeOnSelect={true}
-                                removeSelected={this.state.removeSelected}
-                                simpleValue={false}
-                                options={category}
-                            />
-                        ) : null}
-                    </div>
+              <div className="uk-width-1-1 mdc-elevation--z1 uk-flex uk-flex-between" style={{backgroundColor: '#454d5d', padding: 4}}>
+                <div className="uk-flex-around">
+                  <button className="uk-button uk-button-small uk-button-secondary" type="button">
+                      Back
+                  </button>
                 </div>
+                <div className="uk-flex-around">
+                  <button className="uk-button uk-light uk-button-small uk-button-default uk-width-1-2" type="button">
+                      Drafts
+                  </button>
+                  <button className="uk-button uk-button-small uk-button-primary uk-width-1-2" type="button">
+                      Publish
+                  </button>
+                </div>
+              </div>
+              <div 
+                className="uk-width-1-1 uk-flex uk-margin-small-bottom"
+                style={{backgroundColor: '#e1eaf1', height: 250}}
+                >
+                  <img src="" />
+              </div>
+              <div className="uk-width-1-1 uk-padding-large mdc-card mdc-elevation--z5 uk-padding-remove-vertical">
+                <div className="uk-width-1-1 uk-padding-large uk-margin-top uk-padding-remove-vertical">
+                  <div className="uk-width-1-1 uk-padding-large uk-margin-top uk-padding-remove-vertical">
+                    {!this.props.allInterest.loading ? (
+                        <Select
+                            name="form-field-name"
+                            value={value}
+                            onChange={this.handleChange}
+                            placeholder="Add categories or interest"
+                            multi={true}
+                            closeOnSelect={true}
+                            style={{borderWidth: 0}}
+                            removeSelected={this.state.removeSelected}
+                            simpleValue={false}
+                            options={category}
+                        />
+                    ) : null}
+                  </div>
+                </div>
+                <div className="uk-width-1-1 uk-padding-large uk-padding-remove-vertical uk-margin-top">
+                  <div className="uk-width-1-1 uk-padding-large uk-padding-remove-vertical">
+                      <input 
+                        className="uk-article-title uk-width-1-1" 
+                        style={{borderWidth: 0, fontWeight: 'bolder'}} 
+                        placeholder="Title of article" 
+                      />
+                  </div>
+                </div>
+                <div className="uk-width-1-1 uk-padding-large uk-padding-remove-vertical" style={{ minHeight: '40vh'}} >
+                        
+                        <div className="uk-width-1-1 uk-padding-large uk-padding-remove-vertical">
+                          <UnizonnEditor />
+                        </div>
+                </div>
+              </div>
             </div>
         );
     }

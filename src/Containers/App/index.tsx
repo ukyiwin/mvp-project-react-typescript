@@ -112,19 +112,15 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
         token: '',
         expireToken: false,
         avatar: '',
-        me: {
-            id: '',
-            firstname: '',
-            lastname: '',
-            email: '',
-        },
+        me: {},
     };
 
     componentWillMount() {
       this.props.client.query({
         query: ME
       }).then((res) => {
-        // dhjhj
+        console.log(res.data.me);
+        this.setState({me: res.data.me});
       });
       const token = cookies.get(AUTH_TOKEN);
         /*cookies.set('test', 'a', {
@@ -227,14 +223,14 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                         path="/"
                         render={() =>
                             isAuthenticated ? (
-                                <PrivateLayout component={Home} isAuthenticated={isAuthenticated} />
+                                <PrivateLayout me={this.state.me} component={Home} isAuthenticated={isAuthenticated} />
                             ) : (
-                                <PublicLayout component={PublicHome} isAuthenticated={isAuthenticated} />
+                                <PublicLayout me={this.state.me} component={PublicHome} isAuthenticated={isAuthenticated} />
                             )
                         }
                         // tslint:disable-next-line:jsx-alignment
                     />
-                    <PrivateLayout component={Home} path="/home" isAuthenticated={isAuthenticated} />
+                    <PrivateLayout me={this.state.me} component={Home} path="/home" isAuthenticated={isAuthenticated} />
                     <PublicLayout 
                       component={Login}
                       refreshToken={this.refreshToken}
@@ -265,6 +261,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                     <EmptyLayout 
                       exact={true} 
                       component={SignupProfile} 
+                      me={this.props.me}
                       path="/add/profile" 
                       isAuthenticated={isAuthenticated}
                     />

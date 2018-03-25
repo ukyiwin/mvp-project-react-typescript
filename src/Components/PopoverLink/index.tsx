@@ -29,7 +29,7 @@ export default class PopoverLink extends React.Component<Props> {
                 onMouseEnter={() => this.handleMouseEnter.bind(this)}
                 onMouseLeave={() => this.handleMouseLeave.bind(this)}
             >
-                <Link to={`/${this.props.link}`} style={styleIt}>
+                <Link to={`/${this.props.link}`} className="card-title" style={styleIt}>
                     {this.props.children}
                 </Link>
                 {this.renderPopover()}
