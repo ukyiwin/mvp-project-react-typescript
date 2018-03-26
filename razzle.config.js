@@ -132,29 +132,11 @@ module.exports = {
           use: ["style-loader", cssLoader, postCSSLoader, sassLoader]
         });
 
-        // For development, include source map
-        /*config.module.rules.push(
-          {
-            test: /\.svg$/,
-            use: [
-              {
-                loader: "babel-loader"
-              },
-              {
-                loader: 'svg-url-loader'
-              },
-            ]
-          }
-        );*/
-
       } else {
         // For production, extract CSS
         config.module.rules.push({
           test: /.scss$/,
-          use: ExtractTextPlugin.extract({
-            fallback: "style-loader",
-            use: [cssLoader, postCSSLoader, sassLoader]
-          })
+          use: ["style-loader", cssLoader, postCSSLoader, sassLoader]
         });
 
         config.plugins.push(

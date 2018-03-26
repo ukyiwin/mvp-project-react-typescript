@@ -9,7 +9,10 @@ interface Props {
 
 // tslint:disable-next-line:typedef
 const InterestItemSlim = (props: Props) => {
-    return <a className="tag">{props.name}</a>;
+    return <a className="ui label " style={{margin: 2}}>
+      <img className="ui right spaced avatar image" src="https://semantic-ui.com/images/avatar/small/joe.jpg" />
+      {props.name}
+    </a>;
 };
 
 export default InterestItemSlim;

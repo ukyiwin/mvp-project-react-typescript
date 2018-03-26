@@ -21,7 +21,11 @@ const Html = ({ assets, markup, client: { cache }, asyncState }) => (
       <meta name="theme-color" content="teal" />
       
       <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" crossOrigin="anonymous" />
-      <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700" rel="stylesheet" crossOrigin="anonymous" />
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/themes/default/assets/fonts/icons.ttf" rel="stylesheet" crossOrigin="anonymous" />
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/themes/default/assets/fonts/brand-icons.tt" rel="stylesheet" crossOrigin="anonymous" />
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/themes/default/assets/fonts/outline-icons.tt" rel="stylesheet" crossOrigin="anonymous" />
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet prefetch" crossOrigin="anonymous" />
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/components/icon.min.css" rel="stylesheet prefetch" crossOrigin="anonymous" />
       <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css" rel="stylesheet" crossOrigin="anonymous" />
       <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossOrigin="anonymous" />
       <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.svg" crossOrigin="anonymous" />
@@ -39,6 +43,7 @@ const Html = ({ assets, markup, client: { cache }, asyncState }) => (
               
       <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js" />
       <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.js" />
     </head>
     <body>
       <div id="root">{markup}</div>
@@ -61,6 +66,7 @@ const Html = ({ assets, markup, client: { cache }, asyncState }) => (
         }}
       />
       <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.js" />
       <script src="./crack.js" />
       <script src="./timeago-in-words.js" />
       <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js" />
