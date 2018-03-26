@@ -23,10 +23,9 @@ const UserProfileBox = (props: Props) => {
         <p className="uk-text-bold" style={{fontSize: 16}}>{props.me.firstname} {props.me.lastname}</p>
         <p style={{fontSize: 12}}>Founder at Gueva Technologies. Geek, programmer, interest in AI and Machine Learning, Big Data, love basketball.</p>
         
-        <div className="btn-group btn-group-block">
-          <button className="btn uk-light">0 Posts</button>
-          <button className="btn uk-light">0 Connects</button>
-          <button className="btn uk-light">0 Posts</button>
+        <div className="ui small two buttons">
+          <button className="ui left positive attached button">29k Posts</button>
+          <button className="right positive attached ui button">Connects 56k</button>
         </div>
     </div>
   );

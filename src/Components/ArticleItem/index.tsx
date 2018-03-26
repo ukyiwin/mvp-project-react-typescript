@@ -24,15 +24,15 @@ class ArticleItem extends React.Component<Props> {
         const { author } = article;
         return (
             <div
-              className="card uk-width-1-1"
+              className="ui card raised centered fluid uk-width-1-1"
               style={{
-                  borderRadius: 1,
                   marginBottom: this.props.small ? 7 : 15,
                   backgroundColor: '#fff',
               }}
             >
+              
               {this.props.small && (this.props.article.link === null) ? null : (
-                <div className="card-image">
+                <div className="image">
                   <div
                     data-uk-lightbox="animation: fade; video-autoplay: true;"
                     className="uk-inline-clip uk-transition-toggle"
@@ -51,8 +51,9 @@ class ArticleItem extends React.Component<Props> {
                   </div>
                 </div>)
               }
+              <div className="">
                 {this.props.small ? null : (
-                    <div className="post-metadata uk-padding-remove-bottom uk-padding-small">
+                    <div className="header uk-padding-remove-bottom uk-padding-small">
                         <div className="uk-grid-small uk-flex" uk-grid={true}>
                             <div className="uk-width-auto">
                                 <Avatar
@@ -99,6 +100,10 @@ class ArticleItem extends React.Component<Props> {
                     <div className="uk-flex pull-left">
                         <Likebutton liked={true} likeCount={2} />
                         <a className="response-count uk-flex uk-inline uk-margin-left uk-margin-right">
+                          <span className="left floated like">
+                            <i className="like icon"/>
+                            Like
+                          </span>
                             <span uk-icon="icon: comment; ratio: 1.0" /> <div className="uk-visible@s">Comments</div>
                         </a>
                         <a className="response-count uk-flex uk-inline">
@@ -135,6 +140,7 @@ class ArticleItem extends React.Component<Props> {
                             <span uk-icon="icon: bookmark; ratio: 1.2" />
                         </button>
                     </div>
+                </div>
                 </div>
             </div>
         );

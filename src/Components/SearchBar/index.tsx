@@ -18,16 +18,12 @@ export default class SearchBar extends React.Component<Props> {
 
     render() {
         return (
-          <form className="uk-search uk-search-default uk-width-1-1">
-              <a 
-                href="" 
-                className="uk-search-icon-flip uk-background-primary"
-                data-uk-icon="icon: search" 
-                data-uk-search-icon 
-                style={{color: '#ffffff'}}
-              />
-              <input className="uk-search-input uk-form-width-large uk-width-1-1" type="search" placeholder="Search..." />
-          </form>
+          <div className="ui fluid action input">
+            <input type="text" placeholder="Search..." />
+            <button className="ui icon button">
+              <i className="inverted circular search link icon" />
+            </button>
+          </div>
         );
     }
 

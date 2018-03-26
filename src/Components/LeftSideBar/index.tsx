@@ -32,36 +32,31 @@ class LeftSideBar extends React.Component<RouteComponentProps & Props> {
         // const { loading } = this.state;
         return (
           <div className=" uk-width-1-1">
-            <div className="uk-width-1-1 mdc-elevation--z4 uk-card uk-card-default" style={{ paddingTop: 30, marginBottom: 10 }}>
+            <div className="uk-width-1-1 raised ui card" style={{ paddingTop: 30, marginBottom: 10 }}>
               <UserProfileBox me={this.props.user} />
             </div>
-            <div className="uk-width-1-1 mdc-elevation--z4 uk-card uk-card-default" style={{ marginBottom: 10, padding: 0 }}>
+            <div className="uk-width-1-1 raised ui card" style={{ marginBottom: 10, padding: 0 }}>
               <Label text="Top Interests" />
               <TopInterest />
               <hr/>
-              <div className="uk-width-1-1 uk-padding-small">
-                <ul 
-                  className="listItem uk-text-center"
-                  style={{justifyContent: 'space-evenly', flex: 1}}
-                >
-                    <li>
-                        <A href="#">About</A>
-                    </li>
-                    <li>
-                        <A href="#">Terms & Terms</A>
-                    </li>
-                    <li>
-                      <A color={'#000'} href="#">
-                          Privacy
-                      </A>
-                    </li>
-                    <li>
-                        <A href="#">Career</A>
-                    </li>
-                    <li>
-                        <A href="#">Support</A>
-                    </li>
-                </ul>
+              <div className="fluid uk-padding-small">
+                <div className="ui mini celled horizontal list">
+                  <a className="item">
+                    About Us
+                  </a>
+                  <a className="item">
+                    Terms & Terms
+                  </a>
+                  <a className="item">
+                    Privacy
+                  </a>
+                  <a className="item">
+                    Career
+                  </a>
+                  <a className="item">
+                    Support
+                  </a>
+                </div>
                 <div>
                     <p>Copyright @ 2018, Unizonn</p>
                 </div>
