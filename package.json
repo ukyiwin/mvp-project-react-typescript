@@ -9,7 +9,8 @@
     "postbuild": "npm run build",
     "start:prod": "NODE_ENV=production node build/server.js",
     "start:dev": "razzle start",
-    "heroku-postbuild": "npm run build"
+    "dev": "razzle start",
+    "heroku-postbuild": "yarn run build"
   },
   "dependencies": {
     "@types/jquery": "^3.3.1",
@@ -83,6 +84,7 @@
     "react-apollo": "^2.0.4",
     "react-async-bootstrapper": "^1.1.2",
     "react-async-component": "^1.0.2",
+    "react-avatar-image-cropper": "^1.1.7",
     "react-calendar": "^2.13.5",
     "react-content-loader": "^3.1.1",
     "react-cookie-banner": "^3.0.0",

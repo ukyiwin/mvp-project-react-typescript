@@ -7,6 +7,7 @@ import RightSideBar from 'Components/RightSideBar';
 import LeftSideBar from 'Components/LeftSideBar';
 import glamorous from 'glamorous';
 import Label from 'Components/Label';
+import { PrivateHeader } from 'Components/Layouts/Header';
 
 interface DefaultProps {
     // tslint:disable-next-line:no-any
@@ -18,6 +19,7 @@ interface DefaultProps {
     location: object;
     history: object;
     me?: User;
+    logout: any;
 }
 
 const A = glamorous.a({
@@ -35,6 +37,7 @@ const PrivateLayout: React.SFC<DefaultProps & Response> = (props) => {
             render={(matctProps) =>
                 isAuthenticated ? (
                   <div className="">
+                  <PrivateHeader  me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
                     <div className="columns uk-flex uk-padding-large@s uk-padding">
                         <div className="column col-3 uk-margin-left uk-visible@m">
                             <LeftSideBar user={props.me} />
@@ -46,7 +49,7 @@ const PrivateLayout: React.SFC<DefaultProps & Response> = (props) => {
                             className="column col-3 uk-margin-right uk-visible@m"
                             style={{ marginBottom: 10 }}
                         >
-                            {isAuthenticated ? (
+                            {!isAuthenticated ? (
                                 <div 
                                   className="uk-card uk-card-default uk-card-body uk-width-1-1 uk-padding-small"
                                   style={{marginBottom: 10}}

@@ -9,8 +9,8 @@ import './style.scss';
 interface Props {
   classes?: object;
   isAuthenticated: boolean;
-  me?: User;
-  avatar: string;
+  me: any;
+  avatar?: string;
   // tslint:disable-next-line:no-any
   logout: any;
 }
@@ -75,14 +75,13 @@ const PrivateHeader = (props: Props) => {
                   />
                 </li>
               </ul>
-              
               <ul className="uk-navbar-nav">
                 <li>
                   <a href="#">
                     <div className="uk-animation-toggle">
                     <img 
-                      className="uk-border-circle uk-animation-kenburns uk-animation-fast" 
-                      src={props.avatar ? props.avatar : maleP} 
+                      className="uk-border-circle round-avatar uk-animation-kenburns uk-border-small uk-animation-fast" 
+                      src={props.me.avatar ? `https://gs3.blob.core.windows.net/unizonn/${props.me.avatar.name}` : maleP} 
                       width="40" 
                       height="40" 
                       alt="img"

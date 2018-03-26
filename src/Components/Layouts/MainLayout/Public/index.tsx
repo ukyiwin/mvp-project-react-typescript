@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 import './style.css';
+import { PrivateHeader } from 'Components/Layouts/Header';
+import { User } from 'CustomTypings/schema';
 
 interface DefaultProps {
     // tslint:disable-next-line:no-any
@@ -13,6 +15,8 @@ interface DefaultProps {
     match: object;
     location: object;
     history: object;
+    me?: User;
+    logout: any;
 }
 
 const PublicLayout: React.SFC<DefaultProps> = (props) => {
@@ -25,7 +29,8 @@ const PublicLayout: React.SFC<DefaultProps> = (props) => {
             render={(matchProps) =>
                 isAuthenticated !== true ? (
                     <React.Fragment>
-                        <Component {...matchProps} refreshToken={refreshToken} />
+                      <PrivateHeader  me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
+                      <Component {...matchProps} refreshToken={refreshToken} />
                     </React.Fragment>
                 ) : (
                     <Redirect to={{ pathname: '/home' }} />

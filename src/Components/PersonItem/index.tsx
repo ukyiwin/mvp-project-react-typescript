@@ -19,7 +19,7 @@ const PersonItem = (props: Props) => {
             <div className="tile-subtitle text-gray">I like to eat alot everyday with</div>
           </div>
           <div className="tile-action">
-            <FollowButton liked={true}/>
+            <FollowButton liked={false}/>
           </div>
         </div>
     );

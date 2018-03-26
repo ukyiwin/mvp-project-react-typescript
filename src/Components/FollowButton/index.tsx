@@ -36,15 +36,19 @@ export default class FollowButton extends React.Component<Props> {
     render() {
       if (this.state.liked) {
         return (
-            <button className="btn btn-primary" onClick={this.onUnlikeClick} style={{padding: 0, margin: 0}}>
+            <div>
+            <button className="btn btn-primary btn-sm" onClick={this.onUnlikeClick} style={{padding: 0, margin: 0, width: 70}}>
                 Connected
             </button>
+            </div>
         );
       } else {
           return (
-              <button className="btn btn-default" onClick={this.onLikeClick} style={{padding: 0, margin: 0}}>
+            <div>
+              <button className="btn btn-default btn-sm uk-dark" onClick={this.onLikeClick} style={{padding: 0, margin: 0, width: 70, color: '#000'}}>
                   + Connect
               </button>
+            </div>
           );
       }
     }

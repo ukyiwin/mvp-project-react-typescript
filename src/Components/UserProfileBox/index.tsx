@@ -20,8 +20,8 @@ const UserProfileBox = (props: Props) => {
         // tslint:disable-next-line:max-line-length
         url={props.me.avatar ? props.me.avatar.name : ''} presence={false} />
 
-        <p className="uk-text-bold" style={{fontSize: 17}}>{props.me.firstname} {props.me.lastname}</p>
-        <p style={{fontSize: 13}}>Founder at Gueva Technologies. Geek, programmer, interest in AI and Machine Learning, Big Data, love basketball.</p>
+        <p className="uk-text-bold" style={{fontSize: 16}}>{props.me.firstname} {props.me.lastname}</p>
+        <p style={{fontSize: 12}}>Founder at Gueva Technologies. Geek, programmer, interest in AI and Machine Learning, Big Data, love basketball.</p>
         
         <div className="btn-group btn-group-block">
           <button className="btn uk-light">0 Posts</button>
