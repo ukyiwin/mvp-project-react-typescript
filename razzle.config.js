@@ -136,13 +136,21 @@ module.exports = {
         // For production, extract CSS
         config.module.rules.push({
           test: /.scss$/,
-          use: ["style-loader", cssLoader, postCSSLoader, sassLoader]
+          use: ExtractTextPlugin.extract({
+            fallback: "style-loader",
+            use: [cssLoader, postCSSLoader, sassLoader]
+          })
         });
 
         config.plugins.push(
           new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
           new webpack.IgnorePlugin(/moment/, /react-kronos/),
-          new Visualizer()
+          new Visualizer(),
+          new ExtractTextPlugin({
+            filename: "css/[name].css?[hash]-[chunkhash]-[contenthash]-[name]",
+            disable: false,
+            allChunks: true
+          })
         );
       }
     } else {

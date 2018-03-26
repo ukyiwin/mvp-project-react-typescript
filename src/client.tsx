@@ -9,7 +9,6 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from 'react-apollo';
 import registerServiceWorker from './registerServiceWorker';
 import { ApolloLink } from 'apollo-link';
-import Loadable from 'react-loadable';
 import 'isomorphic-fetch';
 // import fetch from 'node-fetch';
 import asyncBootstrapper from 'react-async-bootstrapper';

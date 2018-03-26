@@ -3,9 +3,6 @@ import * as React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 
-import { getBundles } from 'react-loadable/webpack';
-import { Capture } from 'react-loadable';
-import stats from '../build/react-loadable.json';
 import App from './Containers/App';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
@@ -88,9 +85,6 @@ server
       </AsyncComponentProvider>
     );
 
-    const bundles = getBundles(stats, modules);
-    const chunks = bundles.filter((bundle) => bundle.file.endsWith('.js'));
-
     asyncBootstrapper(markup).then(() => {
 
       const asyncState = asyncContext.getState();
@@ -109,8 +103,8 @@ server
           }`
         );*/
         res.status(200);
-        const html = <Html assets={assets} markup={markup} client={client} />;
-        res.send(`<!doctype html>\n${renderToStaticMarkup(html)}`);
+        const html = <Html assets={assets} markup={markup} client={client} asyncState={asyncState} />;
+        res.send(`<!doctype html>\n${renderToString(html)}`);
         res.end();
       });
     });
