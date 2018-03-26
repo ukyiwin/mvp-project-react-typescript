@@ -56,7 +56,7 @@ export default class Forum extends React.Component {
       <ThemeProvider color="#f2912c">
         <div className="App">
           <Helmet>
-            <title>Unizonn | Forum</title>
+            <title>Unizonn | Lounge</title>
             <meta name="an inclusive community" content="Unizonn community" />
           </Helmet>
           <div 
@@ -68,7 +68,6 @@ export default class Forum extends React.Component {
               <SearchBox placeholder="Search for channels and chat" />
               <List
                 id="chat-list"
-
                 header="Channels"
                 style={{height: '43.1vh'}}
               >
@@ -110,9 +109,10 @@ export default class Forum extends React.Component {
                     <IconChannels />
                   </Button>
                 }
+                style={{backgroundColor: '#454d5d'}}
               />
               <div className="uk-width-1-1 uk-flex" style={{}}>
-                <Route component={ChatDetail} exact={true} path="/forum/:id" />
+                <ChatDetail />
               </div>
             </div>
           </div>

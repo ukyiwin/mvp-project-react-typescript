@@ -9,22 +9,15 @@ class WriteModal extends React.PureComponent {
 
     return (
       <div 
-        className="uk-card uk-card-small uk-card-default uk-width-1-1 uk-margin-bottom"
-        style={{ borderRadius: 1, padding: 0, paddingTop: 15, marginLeft: 0, marginRight: 0 }}
+        className="card uk-width-1-1 uk-margin-bottom"
+        style={{ borderRadius: 1 }}
       >
-          <div className="uk-flex uk-text-middle uk-padding-small" >
-              <Avatar 
-                url="https://getuikit.com/docs/images/avatar.jpg"
-                presence={false}
-                size={40}
-              />
+          <div className="uk-flex card-header uk-padding-small" >
             <Link to="/write">
-              <div 
-                data-uk-toggle="target: #modal-close-default" 
-                className="uk-text-center"
+              <div
                 style={{paddingLeft: 10}}
               >
-                <p className="uk-text-lead uk-text-center">Write an article...</p>
+                <p className="uk-text-lead">Start an article...</p>
               </div>
             </Link>
           </div>

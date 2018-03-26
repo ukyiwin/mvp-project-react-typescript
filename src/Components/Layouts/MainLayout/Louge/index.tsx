@@ -3,7 +3,6 @@ import { Route, Redirect, withRouter } from 'react-router-dom';
 // import { FooterPublic } from 'Components/Layouts/FooterPublic';
 import './style.css';
 import { User } from 'CustomTypings/schema';
-import { PrivateHeader } from 'Components/Layouts/Header';
 
 interface DefaultProps {
     // tslint:disable-next-line:no-any
@@ -27,9 +26,8 @@ const EmptyLayout: React.SFC<DefaultProps> = (props) => {
             exact={true}
             render={(matctProps) =>
               isAuthenticated ? (
-                  <div className="uk-width-1-1 uk-height-1-1 ">
-                    <PrivateHeader  me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
-                      <div className="uk-width-1-1 uk-flex  uk-height-1-1 ">
+                  <div className="uk-flex uk-height-1-1 ">
+                      <div className="uk-width-expand  uk-height-1-1 ">
                           <Component {...matctProps} />
                       </div>
                   </div>

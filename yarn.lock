@@ -8733,7 +8733,7 @@ promise@^7.0.3, promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@*, prop-types@15.6.1, prop-types@^15.0.0, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1:
+prop-types@*, prop-types@15.6.1, prop-types@^15.0.0, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0, prop-types@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
   dependencies:
@@ -8989,6 +8989,12 @@ react-async-bootstrapper@^1.1.2:
 react-async-component@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-async-component/-/react-async-component-1.0.2.tgz#b041722bf7734a95c51dc9fc2f28ec9e918e9659"
+
+react-avatar-image-cropper@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/react-avatar-image-cropper/-/react-avatar-image-cropper-1.1.7.tgz#b8a452316b57a9a07455062afc5234b31a7b5921"
+  dependencies:
+    prop-types "^15.5.9"
 
 react-calendar@^2.13.5:
   version "2.13.5"

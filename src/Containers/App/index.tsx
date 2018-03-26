@@ -216,26 +216,27 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                     <title>Unizonn</title>
                     <meta name="an inclusive community" content="Unizonn community" />
                 </Helmet>
-                <PrivateHeader avatar={this.state.avatar} isAuthenticated={isAuthenticated} logout={this._logout} />
                 <Switch>
                     <Route
                         exact={true}
                         path="/"
                         render={() =>
                             isAuthenticated ? (
-                                <PrivateLayout me={this.state.me} component={Home} isAuthenticated={isAuthenticated} />
+                                <PrivateLayout me={this.state.me} component={Home} isAuthenticated={isAuthenticated} logout={this._logout} />
                             ) : (
-                                <PublicLayout me={this.state.me} component={PublicHome} isAuthenticated={isAuthenticated} />
+                                <PublicLayout me={this.state.me} component={PublicHome} isAuthenticated={isAuthenticated} logout={this._logout} />
                             )
                         }
                         // tslint:disable-next-line:jsx-alignment
                     />
-                    <PrivateLayout me={this.state.me} component={Home} path="/home" isAuthenticated={isAuthenticated} />
+                    <PrivateLayout me={this.state.me} component={Home} path="/home" isAuthenticated={isAuthenticated} logout={this._logout} />
                     <PublicLayout 
                       component={Login}
                       refreshToken={this.refreshToken}
                       path="/login"
                       isAuthenticated={isAuthenticated}  
+                      logout={this._logout}
+                      me={this.state.me}
                     />
                     <PublicLayout 
                       component={Login}
@@ -243,45 +244,113 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                       refreshToken={this.refreshToken}
                       path="/login/:email"
                       isAuthenticated={isAuthenticated}  
+                      logout={this._logout}
+                      me={this.state.me}
                     />
                     <PublicLayout 
                       component={Signup}
                       refreshToken={this.refreshToken}
                       path="/signup" 
                       isAuthenticated={isAuthenticated}  
+                      logout={this._logout}
+                      me={this.state.me}
                     />
                     <PublicLayout 
                       component={Signup}
                       exact={true}
                       refreshToken={this.refreshToken}
                       path="/signup/:email" 
-                      isAuthenticated={isAuthenticated}  
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
                     />
-                    <EmptyLayout component={FinishSignup} path="/signup/complete" isAuthenticated={isAuthenticated} />
+                    <EmptyLayout 
+                      component={FinishSignup} 
+                      path="/signup/complete" 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
                     <EmptyLayout 
                       exact={true} 
-                      component={SignupProfile} 
-                      me={this.props.me}
+                      component={SignupProfile}
                       path="/add/profile" 
                       isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
                     />
                     <EmptyLayout 
                       path="/article/:slug"
                       isAuthenticated={isAuthenticated} 
                       component={ArticleDetail}
+                      logout={this._logout}
+                      me={this.state.me}
                     />
-                    <EmptyLayout component={Interest} path="/add/interest" isAuthenticated={isAuthenticated} />
-                    <EmptyLayout component={Maps} path="/library" isAuthenticated={isAuthenticated} />
-                    <EmptyLayout component={Message} path="/message" isAuthenticated={isAuthenticated} />
-                    <EmptyLayout component={Forum} path="/Forum" isAuthenticated={isAuthenticated} />
-                    <EmptyLayout component={Compose} path="/write" isAuthenticated={isAuthenticated} />
-                    <ProfileLayout component={Profile} path="/profile" isAuthenticated={isAuthenticated}/>
-                    <ProfileLayout component={Profile} path="/profile/:id" isAuthenticated={isAuthenticated}/>
+                    <EmptyLayout 
+                      component={Interest} 
+                      path="/add/interest" 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <EmptyLayout 
+                      component={Maps} 
+                      path="/library" 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <EmptyLayout 
+                      component={Message} 
+                      path="/message" 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <EmptyLayout 
+                      component={Forum} 
+                      path="/Forum" 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <EmptyLayout 
+                      component={Forum} 
+                      exact={true} 
+                      path="/forum/:id" 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <EmptyLayout 
+                      component={Compose} 
+                      path="/write" 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <ProfileLayout 
+                      component={Profile} 
+                      path="/profile" 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <ProfileLayout 
+                      component={Profile} 
+                      path="/profile/:id" 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
                     <Route component={NotFound} path="*" />
+                    <Route exact={true} path="/:url" />
                     <PrivateLayout 
                       path="/logout"
                       isAuthenticated={isAuthenticated} 
-                      render={() => this._logout()}  
+                      render={() => this._logout()}
+                      logout={this._logout}
+                      me={this.state.me}
                     />
                 </Switch>
                 <SideBar />

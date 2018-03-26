@@ -6,6 +6,7 @@ import { ALL_INTEREST } from 'Graphql/Query';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { compose, graphql, withApollo } from 'react-apollo';
 // import { Helmet } from 'react-helmet';
+import AvatarImageCropper from 'react-avatar-image-cropper';
 import { ChildProps } from 'react-apollo/types';
 import 'react-select-plus/dist/react-select-plus.css';
 import './style.css';
@@ -31,6 +32,7 @@ class ComposeWrite extends React.Component<RouteComponentProps & Props & ChildPr
         category: [],
         removeSelected: true,
         value: [],
+        headerImage: ''
     };
 
     handleChange = (value) => {
@@ -57,8 +59,20 @@ class ComposeWrite extends React.Component<RouteComponentProps & Props & ChildPr
     }
 
     componentDidMount() {
-        this.addInterestContent();
+      this.addInterestContent();
     }
+
+    apply = (file: File) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.setState({headerImage: reader.result});
+      };
+      reader.onerror = (error) => {
+        // console.log('Error: ', error);
+      };
+    }
+
     render() {
         const { value, category, title } = this.state;
         // tslint:disable-next-line:no-console
@@ -68,7 +82,11 @@ class ComposeWrite extends React.Component<RouteComponentProps & Props & ChildPr
             <div className="uk-width-1-1">
               <div className="uk-width-1-1 mdc-elevation--z1 uk-flex uk-flex-between" style={{backgroundColor: '#454d5d', padding: 4}}>
                 <div className="uk-flex-around">
-                  <button className="uk-button uk-button-small uk-button-secondary" type="button">
+                  <button 
+                    className="uk-button uk-button-small uk-button-secondary" 
+                    type="button"
+                    onClick={() => this.props.history.goBack()}
+                  >
                       Back
                   </button>
                 </div>
@@ -82,10 +100,15 @@ class ComposeWrite extends React.Component<RouteComponentProps & Props & ChildPr
                 </div>
               </div>
               <div 
-                className="uk-width-1-1 uk-flex uk-margin-small-bottom"
-                style={{backgroundColor: '#e1eaf1', height: 250}}
+                className="uk-width-1-1 uk-inline"
+                style={{backgroundColor: '#e1eaf1', minHeight: 250, height: 350, maxHeight: 350}}
                 >
-                  <img src="" />
+                  <img src={this.state.headerImage} height={350} className="uk-width-1-1" />
+                  <AvatarImageCropper 
+                    apply={this.apply} 
+                    className="uk-width-1-1 float-center uk-overlay uk-position-center" 
+                    text="Add header image" 
+                  />
               </div>
               <div className="uk-width-1-1 uk-padding-large mdc-card mdc-elevation--z5 uk-padding-remove-vertical">
                 <div className="uk-width-1-1 uk-padding-large uk-margin-top uk-padding-remove-vertical">
