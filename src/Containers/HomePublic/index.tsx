@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import InputBoxLogin from 'Components/InputBoxLogin';
+// import * as Jquery from 'jquery';
 
 import './style.scss';
 import { FooterPublic } from 'Components/Layouts/FooterPublic';
@@ -41,31 +42,18 @@ class HomePublic extends React.Component<Props> {
     render() {
         // const { classes } = this.props;
         return (
-            <div className="uk-flex-stretch ">
+            <div className="uk-width-1-1 ui ">
                 <Helmet>
                     <title>Unizonn | Home</title>
                     <meta name="an inclusive community" content="Unizonn community" />
                 </Helmet>
                 <div
                     id="bg1"
-                    className="uk-flex uk-width-1-1 uk-flex-stretch uk-blend-darken uk-height-large backgroundOne"
+                    className="ui two column middle center aligned backgroundOne very relaxed stackable grid"
                     style={{ height: '100vh' }}
                 >
-                    <div className="uk-container uk-position-center-left uk-flex uk-width-1-2">
+                    <div className="column center">
                         <InputBoxLogin />
-                    </div>
-                    <div
-                        className=" uk-flex uk-position-center-right uk-width-1-2 uk-text-right"
-                        style={{ marginTop: 10, elevation: 3, padding: 5, borderRadius: 8 }}
-                    >
-                        <iframe
-                            src="//www.youtube.com/embed/a_ONcLi8tfY?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1"
-                            width="560"
-                            height="415"
-                            frameBorder="1"
-                            data-uk-responsive={true}
-                            uk-video="automute: true; autoplay: false"
-                        />
                     </div>
                 </div>
                 <FooterPublic />
@@ -76,3 +64,13 @@ class HomePublic extends React.Component<Props> {
 }
 
 export default HomePublic;
+/*
+
+                        <iframe
+                            src="//www.youtube.com/embed/a_ONcLi8tfY?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1"
+                            width="560"
+                            height="415"
+                            frameBorder="1"
+                            data-uk-responsive={true}
+                            uk-video="automute: true; autoplay: false"
+                        />*/
