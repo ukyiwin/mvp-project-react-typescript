@@ -7,9 +7,9 @@
     "build": "razzle build",
     "test": "razzle test --env=jsdom",
     "postinstall": "yarn run build",
-    "start:prod": "NODE_ENV=production node build/server.js",
-    "start:dev": "razzle start",
     "dev": "razzle start",
+    "start:prod": "NODE_ENV=production node build/server.js",
+    "start:dev": "razzle start"
   },
   "dependencies": {
     "@types/jquery": "^3.3.1",
