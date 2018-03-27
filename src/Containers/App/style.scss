@@ -10,7 +10,7 @@ $card-small-footer-padding-vertical: 1 !default;
 $card-footer-padding-horizontal: 1 !default;
 $navbar-background: #ffffff !default;
 
-$global-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Open Sans" Arial, sans-serif !default;
+$global-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 'Raleway', sans-serif, 'Crimson Text', serif, sans-serif !default;
 
 // 2. Import default variables and available mixins.
 @import "node_modules/uikit/src/scss/variables-theme.scss";
@@ -40,7 +40,7 @@ button {
 }
 
 body {
-  background-color: #e1eaf1;
+  background-color: #f5f7f8;
 }
 
 // Import only the needed components

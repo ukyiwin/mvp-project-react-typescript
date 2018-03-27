@@ -210,7 +210,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
         console.log(isAuthenticated);
 
         return (
-            <div className="uk-offcanvas-content bg-muted" style={{ backgroundColor: '#e4e6eb' }}>
+            <div className="uk-offcanvas-content bg-muted" style={{ backgroundColor: '#f5f7f8' }}>
                 
                 <Helmet>
                     <title>Unizonn</title>
@@ -325,6 +325,15 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                     <EmptyLayout 
                       component={Compose} 
                       path="/write" 
+                      exact={true} 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <EmptyLayout 
+                      component={Compose} 
+                      path="/write/:id" 
+                      exact={true} 
                       isAuthenticated={isAuthenticated}
                       logout={this._logout}
                       me={this.state.me}

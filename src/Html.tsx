@@ -20,7 +20,8 @@ const Html = ({ assets, markup, client: { cache }, asyncState }) => (
       <meta name="msapplication-TileColor" content="#da532c" />
       <meta name="theme-color" content="teal" />
       
-      <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" crossOrigin="anonymous" />
+      <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" crossOrigin="anonymous" />
+      <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Muli|Raleway" rel="stylesheet" crossOrigin="anonymous" />
       <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/themes/default/assets/fonts/icons.ttf" rel="stylesheet" crossOrigin="anonymous" />
       <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/themes/default/assets/fonts/brand-icons.tt" rel="stylesheet" crossOrigin="anonymous" />
       <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/themes/default/assets/fonts/outline-icons.tt" rel="stylesheet" crossOrigin="anonymous" />
@@ -65,49 +66,9 @@ const Html = ({ assets, markup, client: { cache }, asyncState }) => (
           __html: `window.ASYNC_COMPONENT_STATE=${serialize(asyncState)};`,
         }}
       />
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js" />
       <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.js" />
-      <script src="./crack.js" />
-      <script src="./timeago-in-words.js" />
       <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js" />
       <script>mdc.autoInit()</script>
-      <script>
-        {
-        // tslint:disable-next-line:only-arrow-functions
-        /*function anima() {
-          [].slice.call(document.querySelectorAll('.grid--effect-vega > .grid__item')).forEach(function(stackEl) {
-            new VegaFx(stackEl);
-          });
-          [].slice.call(document.querySelectorAll('.grid--effect-castor > .grid__item')).forEach(function(stackEl) {
-            new CastorFx(stackEl);
-          });
-          [].slice.call(document.querySelectorAll('.grid--effect-hamal > .grid__item')).forEach(function(stackEl) {
-            new HamalFx(stackEl);
-          });
-          [].slice.call(document.querySelectorAll('.grid--effect-polaris > .grid__item')).forEach(function(stackEl) {
-            new PolarisFx(stackEl);
-          });
-          [].slice.call(document.querySelectorAll('.grid--effect-alphard > .grid__item')).forEach(function(stackEl) {
-            new AlphardFx(stackEl);
-          });
-          [].slice.call(document.querySelectorAll('.grid--effect-altair > .grid__item')).forEach(function(stackEl) {
-            new AltairFx(stackEl);
-          });
-          [].slice.call(document.querySelectorAll('.grid--effect-rigel > .grid__item')).forEach(function(stackEl) {
-            new RigelFx(stackEl);
-          });
-          [].slice.call(document.querySelectorAll('.grid--effect-canopus > .grid__item')).forEach(function(stackEl) {
-            new CanopusFx(stackEl);
-          });
-          [].slice.call(document.querySelectorAll('.grid--effect-pollux > .grid__item')).forEach(function(stackEl) {
-            new PolluxFx(stackEl);
-          });
-          [].slice.call(document.querySelectorAll('.grid--effect-deneb > .grid__item')).forEach(function(stackEl) {
-            new DenebFx(stackEl);
-          });
-        };*/
-        }
-      </script>
       <script src="/static/bundle.js" charSet="UTF-8" />
     </body>
   </html>
