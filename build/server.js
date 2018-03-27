@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ba9b9c482f4054802e23"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "b396f4d2ad8f2afa9ce8"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1443,17 +1443,33 @@ class InputBoxLogin extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             });
         };
     }
+    componentDidMount() {
+        // ghg
+    }
     render() {
         const { loading } = this.state;
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h1", { className: "uk-heading-primary uk-text-bold uk-text-uppercase" }, "unizonn"),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { className: " uk-text-center uk-margin uk-text-bold" }, "Friendly and inclusive community for students and academia"),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex-stretch" },
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "anim-button" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "circular ui big icon button", style: { marginTop: 120 } },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "icon settings" }))),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h1", { className: "uk-heading-primary white uk-text-bold uk-text-uppercase" }, "unizonn"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { className: " uk-text-center white uk-margin uk-text-bold" }, "Friendly and inclusive community for students and academia"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "ui uk-flex-stretch" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("form", { onSubmit: this.checkUser, className: "uk-margin uk-flex-stretch", "uk-margin": true },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-margin uk-flex uk-width-1-1", "uk-margin": true },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "uk-form-custom": "target: true", className: "uk-width-3-4@m uk-width-1-1@s" },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { type: "email", onChange: (e) => this.setState({ text: e.target.value }), value: this.state.text, required: true, className: "uk-input uk-box-shadow-hover-small uk-responsive-width uk-form-large", placeholder: "Enter email to signin or signup" })),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-4@m uk-width-1-1@s" }, loading ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "data-uk-spinner": "ratio: 1", style: { marginLeft: 15, color: 'green' } })) : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-primary uk-button-large", type: "submit" }, "GETSTARTED"))))))));
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "ui big right labeled input fluid" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { type: "email", onChange: (e) => this.setState({ text: e.target.value }), value: this.state.text, required: true, placeholder: "Enter email to signin or signup" }),
+                        loading ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "data-uk-spinner": "ratio: 1", className: "ui center middle", style: { marginLeft: 15, color: 'green' } })) : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "ui tag label positive button", type: "submit" }, "GET STARTED"))))),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "ui horizontal divider" }, "Or"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "column vertical" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "ui facebook button" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "facebook icon" }),
+                    "Facebook"),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "ui google plus button" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "google plus icon" }),
+                    "Google Plus"),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "ui linkedin button" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "linkedin icon" }),
+                    "LinkedIn"))));
     }
 }
 /* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_3_Graphql_Query__["h" /* USER_EXIST */], {
@@ -2546,10 +2562,9 @@ class ProfileLeft extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 class LeftSideBar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     render() {
         // const { loading } = this.state;
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: " uk-width-1-1" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 mdc-elevation--z4 uk-card uk-card-default", style: { marginBottom: 10, padding: 0 } },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_ConnectBox__["a" /* default */], null)),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null)));
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "ui card uk-width-1-1" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1", style: { marginBottom: 10, padding: 0 } },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_ConnectBox__["a" /* default */], null))));
     }
 }
 /* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"])(LeftSideBar)));
@@ -4404,6 +4419,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+// import * as Jquery from 'jquery';
 
 
 const url = (name, wrap = false) => `${wrap ? 'url(' : ''}https://awv3node-homepage.surge.sh/build/assets/${name}.svg${wrap ? ')' : ''}`;
@@ -4433,19 +4449,27 @@ class HomePublic extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
     render() {
         // const { classes } = this.props;
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex-stretch " },
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 ui " },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_helmet__["Helmet"], null,
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("title", null, "Unizonn | Home"),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("meta", { name: "an inclusive community", content: "Unizonn community" })),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { id: "bg1", className: "uk-flex uk-width-1-1 uk-flex-stretch uk-blend-darken uk-height-large backgroundOne", style: { height: '100vh' } },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-container uk-position-center-left uk-flex uk-width-1-2" },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_InputBoxLogin__["a" /* default */], null)),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: " uk-flex uk-position-center-right uk-width-1-2 uk-text-right", style: { marginTop: 10, elevation: 3, padding: 5, borderRadius: 8 } },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("iframe", { src: "//www.youtube.com/embed/a_ONcLi8tfY?autoplay=0&showinfo=0&rel=0&modestbranding=1&playsinline=1", width: "560", height: "415", frameBorder: "1", "data-uk-responsive": true, "uk-video": "automute: true; autoplay: false" }))),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { id: "bg1", className: "ui two column middle center aligned backgroundOne very relaxed stackable grid", style: { height: '100vh' } },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "column center" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_InputBoxLogin__["a" /* default */], null))),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_Layouts_FooterPublic__["a" /* FooterPublic */], null)));
     }
 }
 /* harmony default export */ __webpack_exports__["default"] = (HomePublic);
+/*
+
+                        <iframe
+                            src="//www.youtube.com/embed/a_ONcLi8tfY?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1"
+                            width="560"
+                            height="415"
+                            frameBorder="1"
+                            data-uk-responsive={true}
+                            uk-video="automute: true; autoplay: false"
+                        />*/ 
 
 
 /***/ }),
