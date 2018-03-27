@@ -2,7 +2,7 @@ import * as React from 'react';
 // import Editor from 'Components/Editor';
 import UnizonnEditor from 'Components/Editor2';
 import Select from 'react-select-plus';
-import { ALL_INTEREST } from 'Graphql/Query';
+import { ALL_INTEREST, GET_ARTICLE_BY_ID } from 'Graphql/Query';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { compose, graphql, withApollo } from 'react-apollo';
 // import { Helmet } from 'react-helmet';
@@ -27,17 +27,31 @@ interface Response {
 
 class ComposeWrite extends React.Component<RouteComponentProps & Props & ChildProps<Response, {}>, {}> {
     state = {
-        title: null,
+        title: '',
         body: null,
         category: [],
         removeSelected: true,
         value: [],
-        headerImage: ''
+        headerImage: '',
+        articleId: ''
     };
 
     handleChange = (value) => {
         this.setState({ value });
         // console.log(`Selected: ${selectedOption.label}`);
+    }
+
+    handleChangeBody = (value) => {
+      this.setState({ value });
+      // console.log(`Selected: ${selectedOption.label}`);
+    }
+
+    autoSave = () => {
+      // console.log(`Selected: ${selectedOption.label}`);
+    }
+
+    publish = () => {
+      // console.log(`Selected: ${selectedOption.label}`);
     }
 
     addInterestContent() {
@@ -58,8 +72,41 @@ class ComposeWrite extends React.Component<RouteComponentProps & Props & ChildPr
             });
     }
 
-    componentDidMount() {
+    componentWillMount() {
       this.addInterestContent();
+      const { match: { params } } = this.props;
+      // tslint:disable-next-line:no-console
+      console.log(params);
+      if (params.id) {
+        this.fetchArticle(params.id);
+      } else {
+         // this.props.history.goBack();
+      }
+    }
+    // tslint:disable-next-line:typedef
+    componentDidUpdate(prevProps) {
+        // tslint:disable-next-line:no-console
+        console.log(prevProps);
+        const oldId = prevProps.match.params.id;
+        const newId = this.props.match.params.id;
+        // tslint:disable-next-line:no-console
+        console.log(oldId);
+        if (newId !== oldId) {
+            this.fetchArticle(oldId);
+        }
+    }
+
+    fetchArticle(id) {
+      this.props.client.query({
+        query: GET_ARTICLE_BY_ID,
+        variables: {
+          id
+        }
+      }).then((result) => {
+        console.log(result);
+      }).catch((err) => {
+        console.log(err);
+      });
     }
 
     apply = (file: File) => {
