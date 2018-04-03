@@ -29,7 +29,7 @@ export default class PopoverLink extends React.Component<Props> {
     const styleIt = this.props.bigger ? { fontSize: 17 } : {};
     return (
         <span className="boundary" >
-          <Link to={`/${this.props.user.username}`} className="popover-link uk-text-bold " style={styleIt}>
+          <Link to={`/${this.props.user.username}`} className="uk-text-bold " style={styleIt}>
               {this.props.children}
           </Link>
           {user.id === me.id ?

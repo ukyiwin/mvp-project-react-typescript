@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "51f728c141c08b94f79c"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "ffb5587705f11dfce2ca"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1001,16 +1001,16 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         const { article } = this.props;
         const { author } = article;
         const body = Object(__WEBPACK_IMPORTED_MODULE_6_Utils_helper__["b" /* strip_html_tags */])(article.body);
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "card raised centered fluid uk-width-1-1", style: {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-card uk-card-default raised uk-width-1-1", style: {
                 marginBottom: this.props.small ? 7 : 15,
                 backgroundColor: '#fff',
             } },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "" },
-                this.props.small ? null : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "header uk-padding-remove-bottom uk-padding-small" },
+                this.props.small ? null : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-remove-bottom uk-padding-small" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-grid-small uk-flex", "uk-grid": true },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-auto" },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__Avatar__["a" /* default */], { url: author.avatar ? author.avatar.url : 'https://getuikit.com/docs/images/avatar.jpg', size: 40, presence: false })),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-auto post-info" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-auto" },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__PopoverLink__["a" /* default */], { link: article.id, user: author },
                                 author.firstname,
                                 " ",
@@ -1027,7 +1027,7 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                             ? article.title.truncString('...', 36)
                             : article.title.truncString('...', 140))),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { style: { color: '#212121', fontFamily: 'Muli', fontSize: this.props.small ? 14 : 17 } }, this.props.small ? body.truncString('...', 70) : body.truncString('...', 140))),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "post-stats clearfix card-footer" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "post-stats clearfix uk-padding-small" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex pull-left" },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__LikeButton__["a" /* default */], { liked: true, likeCount: 2 }),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["Link"], { to: `/article/${article.id}#comments`, className: "response-count uk-flex uk-inline uk-margin-left uk-margin-right" },
@@ -2454,7 +2454,7 @@ class PopoverLink extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         const { me } = this.state;
         const styleIt = this.props.bigger ? { fontSize: 17 } : {};
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "boundary" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/${this.props.user.username}`, className: "popover-link uk-text-bold ", style: styleIt }, this.props.children),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/${this.props.user.username}`, className: "uk-text-bold ", style: styleIt }, this.props.children),
             user.id === me.id ?
                 null :
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "uk-drop": "boundary: .boundary; animation: uk-animation-slide-top-small; duration: 500" },
