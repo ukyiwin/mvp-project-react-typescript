@@ -59,8 +59,8 @@ class HomePublic extends React.Component<Props> {
                       <div className="uk-padding uk-width-1-2@m uk-width-1-1@s">
                           <InputBoxLogin />
                       </div>
-                      <div className="uk-padding uk-width-1-2@m uk-hidden@s">
-                          wow
+                      <div className="uk-padding uk-width-1-2@m uk-visible@s">
+                          .
                       </div>
                     </div>
                   </div>

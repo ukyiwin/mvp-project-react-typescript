@@ -60,7 +60,43 @@ class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildP
     render() {
         const { loading } = this.state;
         return (
-          <div className="">
+          <>
+          <div className="uk-hidden@s">
+              <h1 className="uk-heading-primary uk-text-bold uk-text-uppercase" style={{fontSize: '15vw', color: '#fff'}}>unizonn</h1>
+              <p className=" uk-margin uk-text-bold" style={{fontSize: '2.5vw', color: '#fff'}}>
+                Friendly and inclusive community for students and academia
+              </p>
+              <div className="ui uk-flex-stretch">
+                <form
+                  onSubmit={this.checkUser}
+                  className="uk-margin"
+                  // tslint:disable-next-line:jsx-boolean-value
+                  uk-margin
+                >
+                  <div>
+                    <div className="ui big input fluid">
+                      <input 
+                        type="email"
+                        onChange={(e) => this.setState({ text: e.target.value })}
+                        value={this.state.text}
+                        required={true}
+                        placeholder="Enter email to signin or signup"
+                      />
+                    </div>
+                    <div className="ui big labeled">
+                    {loading ? (
+                        <div data-uk-spinner="ratio: 1" className="ui center middle" style={{ marginLeft: 15, color: 'green' }} />
+                    ) : (
+                        <button className="ui label fluid big positive button" type="submit" style={{marginTop: 5}}>
+                          GET STARTED
+                        </button>
+                    )}
+                    </div>
+                  </div>
+                </form>
+              </div>
+          </div>
+          <div className="uk-visible@s">
               <h1 className="uk-heading-primary uk-text-bold uk-text-uppercase" style={{fontSize: '8vw', color: '#fff'}}>unizonn</h1>
               <p className=" uk-margin uk-text-bold" style={{fontSize: '1.3vw', color: '#fff'}}>
                 Friendly and inclusive community for students and academia
@@ -92,6 +128,7 @@ class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildP
                 </form>
               </div>
           </div>
+          </>
         );
     }
 }

@@ -27,14 +27,14 @@ const FooterPublic = () => {
         </div>
         <div className="uk-width-2-3@m uk-width-1-1@s uk-text-right">
           <div className="ui horizontal list">
-            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold', fontSize: '1vw'}}>Unizonn</A>
-            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold', fontSize: '1vw'}}>Privacy</A>
-            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold', fontSize: '1vw'}}>Terms & Condition</A>
-            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold', fontSize: '1vw'}}>Careers</A>
-            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold', fontSize: '1vw'}}>Skills</A>
-            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold', fontSize: '1vw'}}>About Us</A>
-            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold', fontSize: '1vw'}}>Contact</A>
-            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold', fontSize: '1vw'}}>Support</A>
+            <A className="item simple-link" style={{color: '#fff', fontWeight: 'bold', fontSize: '1vw'}}>Unizonn</A>
+            <A className="item simple-link" style={{color: '#fff', fontWeight: 'bold', fontSize: '1vw'}}>Privacy</A>
+            <A className="item simple-link" style={{color: '#fff', fontWeight: 'bold', fontSize: '1vw'}}>Terms & Condition</A>
+            <A className="item simple-link" style={{color: '#fff', fontWeight: 'bold', fontSize: '1vw'}}>Careers</A>
+            <A className="item simple-link" style={{color: '#fff', fontWeight: 'bold', fontSize: '1vw'}}>Skills</A>
+            <A className="item simple-link" style={{color: '#fff', fontWeight: 'bold', fontSize: '1vw'}}>About Us</A>
+            <A className="item simple-link" style={{color: '#fff', fontWeight: 'bold', fontSize: '1vw'}}>Contact</A>
+            <A className="item simple-link" style={{color: '#fff', fontWeight: 'bold', fontSize: '1vw'}}>Support</A>
           </div>
         </div>
       </div>

@@ -5,6 +5,8 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const Visualizer = require("webpack-visualizer-plugin");
 const razzleHeroku = require("razzle-heroku");
 const OfflinePlugin = require('offline-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
 
 const context = path.resolve(__dirname, 'src');
 
@@ -87,17 +89,17 @@ module.exports = {
     // config.module.rules.push(tsLoader)
 
     // Setup SCSS
-    if (target === "web") {
-      const cssLoader = {
-        loader: "css-loader",
-        options: {
-          minimize: !dev,
-          sourceMap: dev,
-          // importLoaders: 1
-        }
-      };
+  if (target === "web") {
+    const cssLoader = {
+      loader: "css-loader",
+      options: {
+        minimize: !dev,
+        sourceMap: dev,
+        // importLoaders: 1
+      }
+    };
 
-      const postCSSLoader = {
+    const postCSSLoader = {
         loader: "postcss-loader",
         options: {
           ident: "postcss", // https://webpack.js.org/guides/migrating/#complex-options
@@ -113,29 +115,30 @@ module.exports = {
             })
           ]
         }
-      };
+    };
 
-      const sassLoader = {
+    const sassLoader = {
         loader: "sass-loader",
         options: {
           sourceMap: dev
         }
-      };
+    };
 
-      config.module.rules.push({
-        test: /\.less$/,
-        use: [
-          {
-              loader: "style-loader" // creates style nodes from JS strings
-          }, {
-              loader: "css-loader" // translates CSS into CommonJS
-          }, {
-              loader: "less-loader" // compiles Less to CSS
-          }
-        ]
-      });
-      /*
-      config.module.rules.push({
+    config.module.rules.push({
+      test: /\.less$/,
+      use: [
+        {
+            loader: "style-loader" // creates style nodes from JS strings
+        }, {
+            loader: "css-loader" // translates CSS into CommonJS
+        }, {
+            loader: "less-loader" // compiles Less to CSS
+        }
+      ]
+    });
+
+    /*
+    config.module.rules.push({
         // Load .less files from semantic-ui-less module folder
         test: /\.less$/i,
         include: /[/\\]node_modules[/\\]semantic-ui-less[/\\]/,
@@ -171,22 +174,40 @@ module.exports = {
           // Use publicPath ../, because this will be used in css files, and to reference an image from the images
           // folder in a css file in the styles folder the relative path is ../images/image-file.ext
           options: { name: 'images/[name].[hash].[ext]', publicPath: '../' }
-      });*/
+    });*/
 
+    config.plugins.push(
+      new ExtractTextPlugin({
+        filename: 'styles/[name].[contenthash].css'
+      })
+    );
+
+    if (dev) {
+      // For development, include source map
+      config.module.rules.push({
+        test: /.scss$/,
+        use: ["style-loader", cssLoader, postCSSLoader, sassLoader]
+      });
       config.plugins.push(
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new webpack.IgnorePlugin(/moment/, /react-kronos/),
         new ExtractTextPlugin({
           filename: 'styles/[name].[contenthash].css'
-        })
+        }),
+        new webpack.ProvidePlugin({
+          $: 'jquery',
+          jQuery: 'jquery',
+          'window.jQuery': 'jquery'
+        }),
+        new Visualizer(),
+        new CompressionPlugin({
+          cache: true,
+          algorithm: 'gzip'
+        }),
+        new OfflinePlugin()
       );
 
-      if (dev) {
-        // For development, include source map
-        config.module.rules.push({
-          test: /.scss$/,
-          use: ["style-loader", cssLoader, postCSSLoader, sassLoader]
-        });
-
-      } else {
+    } else {
         // For production, extract CSS
         config.module.rules.push({
           test: /.scss$/,
@@ -203,20 +224,31 @@ module.exports = {
           new ExtractTextPlugin({
             filename: 'styles/[name].[contenthash].css'
           }),
-          new OfflinePlugin(),
           new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery'
-          })
+          }),
+          new OptimizeCssAssetsPlugin({
+            assetNameRegExp: /\.optimize\.css$/g,
+            cssProcessor: require('cssnano'),
+            cssProcessorOptions: { discardComments: { removeAll: true } },
+            canPrint: true
+          }),
+          new CompressionPlugin({
+            cache: true,
+            algorithm: 'gzip'
+          }),
+          new Visualizer(),
+          new OfflinePlugin()
         );
-      }
-    } else {
-      config.module.rules.push({
-        test: /.scss$/,
-        use: ["ignore-loader"]
-      });
     }
+  } else {
+    config.module.rules.push({
+      test: /.scss$/,
+      use: ["ignore-loader"]
+    });
+  }
 
     return config;
   },

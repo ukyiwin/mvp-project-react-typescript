@@ -285,7 +285,7 @@ const PrivateHeader = (props: Props) => {
               </React.Fragment>
               :
               <div className="uk-navbar-nav uk-padding-small">
-                <Link to="/login" className="uk-button uk-button-default uk-dark uk-button-small uk-border-rounded">
+                <Link to="/login" className="uk-button uk-button-primary uk-dark uk-button-small">
                   Login
                 </Link>
               </div>
