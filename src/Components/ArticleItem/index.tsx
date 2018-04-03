@@ -26,7 +26,7 @@ class ArticleItem extends React.Component<Props> {
         const body = strip_html_tags(article.body);
         return (
             <div
-              className="card raised centered fluid uk-width-1-1"
+              className="uk-card uk-card-default raised uk-width-1-1"
               style={{
                   marginBottom: this.props.small ? 7 : 15,
                   backgroundColor: '#fff',
@@ -34,7 +34,7 @@ class ArticleItem extends React.Component<Props> {
             >
               <div className="">
                 {this.props.small ? null : (
-                    <div className="header uk-padding-remove-bottom uk-padding-small">
+                    <div className="uk-padding-remove-bottom uk-padding-small">
                         <div className="uk-grid-small uk-flex" uk-grid={true}>
                             <div className="uk-width-auto">
                                 <Avatar
@@ -43,7 +43,7 @@ class ArticleItem extends React.Component<Props> {
                                   presence={false}
                                 />
                             </div>
-                            <div className="uk-width-auto post-info">
+                            <div className="uk-width-auto">
                                 <PopoverLink link={article.id} user={author}>
                                     {author.firstname} {author.lastname}
                                 </PopoverLink>
@@ -76,7 +76,7 @@ class ArticleItem extends React.Component<Props> {
                     </p>
                 </div>
                 <div
-                    className="post-stats clearfix card-footer"
+                    className="post-stats clearfix uk-padding-small"
                 >
                     <div className="uk-flex pull-left">
                         <Likebutton liked={true} likeCount={2} />

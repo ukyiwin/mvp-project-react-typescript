@@ -229,12 +229,6 @@ module.exports = {
             jQuery: 'jquery',
             'window.jQuery': 'jquery'
           }),
-          new OptimizeCssAssetsPlugin({
-            assetNameRegExp: /\.optimize\.css$/g,
-            cssProcessor: require('cssnano'),
-            cssProcessorOptions: { discardComments: { removeAll: true } },
-            canPrint: true
-          }),
           new CompressionPlugin({
             cache: true,
             algorithm: 'gzip'
