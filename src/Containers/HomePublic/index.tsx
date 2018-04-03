@@ -51,20 +51,20 @@ class HomePublic extends React.Component<Props> {
                 </Helmet>
                 <div
                   id="bg1"
-                  className="uk-section backgroundOne uk-light uk-background-cover"
+                  className="uk-section backgroundOne uk-width-1-1 uk-height-1-1 uk-light uk-background-cover"
                   style={{ height: '91vh' }}
                 >
                    <div className="uk-container">
-                    <div className="uk-grid-match uk-flex uk-child-width-1-2@m" uk-grid>
-                      <div className="uk-padding">
+                    <div className="uk-grid-match uk-flex uk-width-1-1" uk-grid>
+                      <div className="uk-padding uk-width-1-2@m uk-width-1-1@s">
                           <InputBoxLogin />
                       </div>
-                      <div className="uk-padding">
+                      <div className="uk-padding uk-width-1-2@m uk-hidden@s">
                           wow
                       </div>
                     </div>
                   </div>
-                  <div className="uk-position-bottom">
+                  <div className="uk-position-bottom uk-visible@s">
                   <FooterPublic />
                   </div>
                 </div>

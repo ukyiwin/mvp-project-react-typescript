@@ -1,5 +1,8 @@
 import * as http from 'http';
 import app from './server';
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
+
+OfflinePluginRuntime.install();
 
 const server = http.createServer(app as any);
 let currentApp = app;

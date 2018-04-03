@@ -61,16 +61,16 @@ class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildP
         const { loading } = this.state;
         return (
           <div className="">
-              <h1 className="uk-heading-primary uk-text-bold uk-text-uppercase" style={{fontSize: 90, color: '#000'}}>unizonn</h1>
-              <p className=" uk-margin uk-text-bold" style={{fontSize: 18, color: '#000'}}>
+              <h1 className="uk-heading-primary uk-text-bold uk-text-uppercase" style={{fontSize: '8vw', color: '#fff'}}>unizonn</h1>
+              <p className=" uk-margin uk-text-bold" style={{fontSize: '1.3vw', color: '#fff'}}>
                 Friendly and inclusive community for students and academia
               </p>
               <div className="ui uk-flex-stretch">
                 <form
-                        onSubmit={this.checkUser}
-                        className="uk-margin uk-flex-stretch"
-                        // tslint:disable-next-line:jsx-boolean-value
-                        uk-margin
+                  onSubmit={this.checkUser}
+                  className="uk-margin uk-flex-stretch"
+                  // tslint:disable-next-line:jsx-boolean-value
+                  uk-margin
                 >
                   <div className="ui big right labeled input fluid">
                     <input 
