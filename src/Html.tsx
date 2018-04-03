@@ -18,33 +18,34 @@ const Html = ({ assets, markup, client: { cache }, asyncState }) => (
       <link rel="manifest" href="/site.webmanifest" />
       <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
       <meta name="msapplication-TileColor" content="#da532c" />
+      <meta property="og:image:width" content="145"/>
+      <meta property="og:image:height" content="76"/>
+      <meta property="og:title" content="Unizonn"/>
+      <meta property="og:url" content="http://unizonn.com"/>
+      <meta property="og:image" content="http://unizonn.com/static/og-image.jpg"/>
+      <meta property="og:description" content="social community for students and academia"/>
       <meta name="theme-color" content="teal" />
       
       <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" crossOrigin="anonymous" />
+      <link href="node_modules/semantic-ui-css/semantic.min.js" rel="stylesheet" crossOrigin="anonymous" />
       <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Muli|Raleway" rel="stylesheet" crossOrigin="anonymous" />
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/themes/default/assets/fonts/icons.ttf" rel="stylesheet" crossOrigin="anonymous" />
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/themes/default/assets/fonts/brand-icons.tt" rel="stylesheet" crossOrigin="anonymous" />
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/themes/default/assets/fonts/outline-icons.tt" rel="stylesheet" crossOrigin="anonymous" />
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet prefetch" crossOrigin="anonymous" />
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/components/icon.min.css" rel="stylesheet prefetch" crossOrigin="anonymous" />
       <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css" rel="stylesheet" crossOrigin="anonymous" />
       <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossOrigin="anonymous" />
       <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.svg" crossOrigin="anonymous" />
-
       {
         assets.client.css
           ? <link rel="stylesheet" href={assets.client.css} />
           : null
       }
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js" crossOrigin="anonymous" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js" crossOrigin="anonymous"  />
       {
         process.env.NODE_ENV === 'production'
           ? <script src={assets.client.js} defer />
           : <script src={assets.client.js} defer crossOrigin="anonymous" />
       }
-              
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js" />
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js" />
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.js" />
+
+      
     </head>
     <body>
       <div id="root">{markup}</div>
@@ -53,25 +54,29 @@ const Html = ({ assets, markup, client: { cache }, asyncState }) => (
         dangerouslySetInnerHTML={{
           __html: `,`,
         }}
+        crossOrigin="anonymous"
       />
       <script
         charSet="UTF-8"
         dangerouslySetInnerHTML={{
           __html: `window.__APOLLO_STATE__=${JSON.stringify(cache.extract())};`,
         }}
+        crossOrigin="anonymous"
       />
       <script
         charSet="UTF-8"
         dangerouslySetInnerHTML={{
           __html: `window.ASYNC_COMPONENT_STATE=${serialize(asyncState)};`,
         }}
+        crossOrigin="anonymous"
       />
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.js" />
+      <script src="/static/bundle.js" charSet="UTF-8" crossOrigin="anonymous"/>
+      <script src="/semantic-ui/semantic.js" crossOrigin="anonymous" />
       <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js" />
-      <script>mdc.autoInit()</script>
-      <script src="/static/bundle.js" charSet="UTF-8" />
+      <script crossOrigin="anonymous">mdc.autoInit()</script>
     </body>
   </html>
 );
 
 export default Html;
+      // <script src="/semantic-ui/semantic.js" />

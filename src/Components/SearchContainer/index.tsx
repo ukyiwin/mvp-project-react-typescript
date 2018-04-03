@@ -1,60 +1,61 @@
 // tslint:disable
 import * as React from 'react';
+import _ from 'lodash';
 import SearchBar from 'Components/SearchBar';
 
 export default class SearchContainer extends React.Component {
-  state = { 
-    preventHideDropdown: false, 
-    showDropdown: false, 
-    term: '', 
-    posts: [], 
-    users: [], 
-    tags: [] 
+
+  state = {
+    isLoading: false,
+    results: [],
+    value: '',
+    showDropdown: false,
+    posts: [],
+    users: [],
+    tags: []
+  }
+
+  componentWillMount() {
+    this.resetComponent();
+  }
+
+  resetComponent = () =>
+    this.setState({ isLoading: false, results: [], value: '' });
+
+  handleResultSelect = (e, { result }) =>
+    this.setState({ value: result.title });
+
+  handleSearchChange = (e, { value }) => {
+    this.setState({ isLoading: true, value });
+
+    setTimeout(() => {
+      if (this.state.value.length < 1) return this.resetComponent();
+
+      const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
+      const isMatch = result => re.test(result.title);
+
+      this.setState({
+        isLoading: false,
+        results: 'klk'
+      });
+    }, 300);
   };
-    
-  // tslint:disable-next-line:typedef
-  constructor(props) {
-    super(props);
-    this.hideDropdown = this.hideDropdown.bind(this);
-    this.showDropdown = this.showDropdown.bind(this);
-    this.setPreventHideDropdown = this.setPreventHideDropdown.bind(this);
-    this.resetPreventHideDropdown = this.resetPreventHideDropdown.bind(this);
-  }
-
-  // tslint:disable-next-line:typedef
-  search(term) {
-    this.setState({ term });
-  }
-
-  setPreventHideDropdown() {
-    this.setState({ preventHideDropdown: true });
-  }
-
-  resetPreventHideDropdown() {
-    this.setState({ preventHideDropdown: false });
-  }
-
-  hideDropdown() {
-    if (!this.state.preventHideDropdown) {
-      this.setState({ showDropdown: false });
-    }
-  }
-
-  showDropdown() {
-    this.setState({ showDropdown: true });
-  }
 
   render () {
+    const { isLoading, value, results } = this.state;
     return (
-      <div>
-        <SearchBar 
-          showDropdown={this.showDropdown}
-          hideDropdown={this.hideDropdown}
-          term={this.state.term} 
-          onSearchTermChange={(term) => {this.search(term); }}
-        />
-        {this.renderSearchResults()}
-      </div>
+      <SearchBar
+        loading={isLoading}
+        onResultSelect={this.handleResultSelect}
+        onSearchChange={() => _.debounce(this.handleSearchChange, 500, {
+          leading: true
+        })}
+        results={results}
+        noResultsDescription={"Course not available"}
+        value={value}
+        className="uk-width-1-1"
+        {...this.props}
+      />
     );
   }
 

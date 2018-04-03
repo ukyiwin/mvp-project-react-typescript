@@ -13,7 +13,20 @@ import 'isomorphic-fetch';
 // import fetch from 'node-fetch';
 import asyncBootstrapper from 'react-async-bootstrapper';
 // import { AsyncComponentProvider } from 'react-async-component';
-
+import 'semantic-ui-css/components/button.min.css'
+import 'semantic-ui-css/components/card.min.css'
+import 'semantic-ui-css/components/dimmer.min.css'
+import 'semantic-ui-css/components/search.min.css'
+import 'semantic-ui-css/components/reset.min.css'
+import 'semantic-ui-css/components/segment.min.css'
+import 'semantic-ui-css/components/search.min.css'
+import 'semantic-ui-css/components/video.min.css'
+import 'semantic-ui-css/components/image.min.css'
+import 'semantic-ui-css/components/input.min.css'
+import 'semantic-ui-css/components/label.min.css'
+import 'semantic-ui-css/components/item.min.css'
+import 'semantic-ui-css/components/list.min.css'
+import './Containers/App/style.scss';
 import App from './Containers/App';
 import {
   errorLink,

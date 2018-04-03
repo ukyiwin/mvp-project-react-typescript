@@ -8,13 +8,11 @@ interface Props {
 export const ErrorComponent = (props: Props) => (
     <div className="uk-flex uk-flex-stretch uk-width-1-1">
         <div className="empty uk-text-center uk-width-1-1">
-            <div className="empty-icon">
-                <i className="icon icon-people" />
-            </div>
-            <h5 className="empty-title h5">There was an error loading content</h5>
-            <p className="empty-subtitle">Click the button to refresh.</p>
+            <i className="redo icon" />
+            <h5 className="empty-title h5">There was an error</h5>
+            <p className="empty-subtitle">Click to refresh.</p>
             <div className="empty-action">
-                <button className="uk-button uk-button-primary" onClick={() => props.refresh}>
+                <button className="uk-button circle button uk-button-primary" onClick={() => props.refresh}>
                     Refresh
                 </button>
             </div>

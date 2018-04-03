@@ -42,21 +42,32 @@ class HomePublic extends React.Component<Props> {
     render() {
         // const { classes } = this.props;
         return (
-            <div className="uk-width-1-1 ui ">
+            <div 
+              className="uk-width-1-1 ui"
+            >
                 <Helmet>
                     <title>Unizonn | Home</title>
                     <meta name="an inclusive community" content="Unizonn community" />
                 </Helmet>
                 <div
-                    id="bg1"
-                    className="ui two column middle center aligned backgroundOne very relaxed stackable grid"
-                    style={{ height: '100vh' }}
+                  id="bg1"
+                  className="uk-section backgroundOne uk-light uk-background-cover"
+                  style={{ height: '91vh' }}
                 >
-                    <div className="column center">
-                        <InputBoxLogin />
+                   <div className="uk-container">
+                    <div className="uk-grid-match uk-flex uk-child-width-1-2@m" uk-grid>
+                      <div className="uk-padding">
+                          <InputBoxLogin />
+                      </div>
+                      <div className="uk-padding">
+                          wow
+                      </div>
                     </div>
+                  </div>
+                  <div className="uk-position-bottom">
+                  <FooterPublic />
+                  </div>
                 </div>
-                <FooterPublic />
             </div>
             
         );

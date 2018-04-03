@@ -18,7 +18,7 @@ interface DefaultProps {
     match: object;
     location: object;
     history: object;
-    me?: User;
+    me: User;
     logout: any;
 }
 
@@ -38,16 +38,15 @@ const PrivateLayout: React.SFC<DefaultProps & Response> = (props) => {
                 isAuthenticated ? (
                   <div className="">
                   <PrivateHeader  me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
-                    <div className="columns uk-flex uk-padding-large@s uk-padding">
-                        <div className="column col-3 uk-margin-left uk-visible@m">
+                    <div className="uk-flex uk-flex-center uk-flex-around uk-width-1-1" style={{paddingTop: 30}}>
+                        <div className="uk-width-1-5 uk-margin-large-left uk-margin-small-right uk-visible@m">
                             <LeftSideBar user={props.me} />
                         </div>
-                        <div className="column col-7 uk-width-expand">
+                        <div className="uk-margin-small@s uk-width-expand">
                             <Component {...matctProps} />
                         </div>
                         <div
-                            className="column col-3 uk-margin-right uk-visible@m"
-                            style={{ marginBottom: 10 }}
+                            className="uk-width-1-5 uk-margin-large-right uk-margin-small-left uk-visible@m"
                         >
                             {!isAuthenticated ? (
                                 <div 

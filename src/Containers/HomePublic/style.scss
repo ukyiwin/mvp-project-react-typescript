@@ -1,37 +1,3 @@
-
-@import url('https://fonts.googleapis.com/css?family=Montserrat+Alternates:700|Volkhov:700|Hammersmith+One|Arbutus+Slab|Poppins:800|Questrial|Bungee+Outline|Josefin+Sans:700');
-article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block;}audio,canvas,video{display:inline-block;}audio:not([controls]){display:none;height:0;}[hidden]{display:none;}html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}body{margin:0;}a:focus{outline:thin dotted;}a:active,a:hover{outline:0;}h1{font-size:2em;margin:0.67em 0;}abbr[title]{border-bottom:1px dotted;}b,strong{font-weight:bold;}dfn{font-style:italic;}hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0;}mark{background:#ff0;color:#000;}code,kbd,pre,samp{font-family:monospace,serif;font-size:1em;}pre{white-space:pre-wrap;}q{quotes:"\201C" "\201D" "\2018" "\2019";}small{font-size:80%;}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline;}sup{top:-0.5em;}sub{bottom:-0.25em;}img{border:0;}svg:not(:root){overflow:hidden;}figure{margin:0;}fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:0.35em 0.625em 0.75em;}legend{border:0;padding:0;}button,input,select,textarea{font-family:inherit;font-size:100%;margin:0;}button,input{line-height:normal;}button,select{text-transform:none;}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer;}button[disabled],html input[disabled]{cursor:default;}input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0;}input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box;}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none;}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0;}textarea{overflow:auto;vertical-align:top;}table{border-collapse:collapse;border-spacing:0;}
-*,
-*::after,
-*::before {
-	box-sizing: border-box;
-}
-
-body {
-	font-family: "Franklin Gothic Medium", "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-section{
-  text-align:center;
-  overflow: hidden;
-}
-
-p, a {
-	font-family: "freight-text-pro",sans-serif;
-	font-size: 1em;
-	font-style: normal;
-	font-weight: 500;
-	letter-spacing: 1px;
-	line-height: 1.25em;
-	margin-bottom: 0;
-}
-.fp-tableCell {
-  display: table-cell;
-  vertical-align: middle;
-  width:100%;
-  height:100%
-}
-
 .btn-main {
   border-radius: 4;
   background-color: #ffffff;
@@ -45,42 +11,18 @@ p, a {
 
 .backgroundOne {
   background:
-    url('../../Assets/img/slider-light.svg');
-  background-position: left top center bottom right;
+    url('../../Assets/bgs/brain.svg');
+  background-position: center;
   background-repeat: no-repeat;
-  
-  background-size: contain;
-  background: #141E30;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to left, #243B55, #141E30);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to left, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+  background-size: 100%;
 }
 
 .backgroundTwo {
   background:
-    url('../../Assets/bg9.svg');
-  background-position: bottom center;
-  background-repeat: repeat-x;
-  background-position-y: 250px;
-  background-size: 50%;
-}
-.container > div > div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.text {
-  pointer-events: none;
-  justify-content: start !important;
-  font-family: 'Kanit', sans-serif;
-  line-height: 0px;
-  text-transform: uppercase;
-}
-
-.number {
-  font-size: 450px;
-  color: #373c4c;
+    url('../../Assets/bgs/brain.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 
 .white {
@@ -102,23 +44,6 @@ background: linear-gradient(to left, #243B55, #141E30); /* W3C, IE 10+/ Edge, Fi
 .stripe {
   height: 2px;
   width: auto;
-}
-
-.slopeBegin {
-  background-color: #20232f;
-  clip-path: polygon(20vw 0, 70% 0, calc(70% - 20vw) 100%, 0 100%);
-}
-
-.slopeEnd {
-  clip-path: polygon(70% 0, 100% 0, calc(100% - 20vw) 100%, calc(70% - 20vw) 100%);
-}
-
-.slopeBegin,
-.slopeEnd {
-  position: absolute;
-  width: 140%;
-  height: 100%;
-  cursor: pointer;
 }
 
 .pink {

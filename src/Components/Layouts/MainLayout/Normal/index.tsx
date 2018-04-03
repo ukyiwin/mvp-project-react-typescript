@@ -14,17 +14,17 @@ interface DefaultProps {
     match: object;
     location: object;
     history: object;
-    me?: User;
+    me: User;
     logout: any;
 }
 
 const EmptyLayout: React.SFC<DefaultProps> = (props) => {
-    const { component: Component, isAuthenticated, ...rest } = props;
+    const { component: Component, isAuthenticated, exact, ...rest} = props;
 
     return (
         <Route
             {...rest}
-            exact={true}
+            exact={exact}
             render={(matctProps) =>
               isAuthenticated ? (
                   <div className="uk-width-1-1 uk-height-1-1 ">

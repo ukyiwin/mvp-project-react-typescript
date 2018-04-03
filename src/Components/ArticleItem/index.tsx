@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Likebutton from '../LikeButton';
 import PopoverLink from '../PopoverLink';
 import TimeAgo from 'react-timeago';
+import { strip_html_tags } from 'Utils/helper';
 // import UIkit from 'uikit/src/js/uikit';
 // import { Link } from 'react-router-dom';
 
@@ -22,54 +23,34 @@ class ArticleItem extends React.Component<Props> {
     render() {
         const { article } = this.props;
         const { author } = article;
+        const body = strip_html_tags(article.body);
         return (
             <div
-              className="ui card raised centered fluid uk-width-1-1"
+              className="card raised centered fluid uk-width-1-1"
               style={{
                   marginBottom: this.props.small ? 7 : 15,
                   backgroundColor: '#fff',
               }}
             >
-              
-              {this.props.small && (this.props.article.link === null) ? null : (
-                <div className="image">
-                  <div
-                    data-uk-lightbox="animation: fade; video-autoplay: true;"
-                    className="uk-inline-clip uk-transition-toggle"
-                  >
-                      <a
-                        className="uk-inline"
-                        href="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
-                      >
-                        <img
-                          src="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
-                          className="img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque"
-                          alt="..."
-                          style={{maxHeight: 280 }}
-                        />
-                      </a>
-                  </div>
-                </div>)
-              }
               <div className="">
                 {this.props.small ? null : (
                     <div className="header uk-padding-remove-bottom uk-padding-small">
                         <div className="uk-grid-small uk-flex" uk-grid={true}>
                             <div className="uk-width-auto">
                                 <Avatar
-                                    url={'https://getuikit.com/docs/images/avatar.jpg'}
-                                    size={40}
-                                    presence={false}
+                                  url={author.avatar ? author.avatar.url : 'https://getuikit.com/docs/images/avatar.jpg'} 
+                                  size={40}
+                                  presence={false}
                                 />
                             </div>
                             <div className="uk-width-auto post-info">
-                                <PopoverLink link={article.id}>
+                                <PopoverLink link={article.id} user={author}>
                                     {author.firstname} {author.lastname}
                                 </PopoverLink>
                                 <p className="uk-text-meta uk-margin-remove-top">
                                     <time dateTime={article.createdAt}>
                                         <TimeAgo className="timeago" date={article.createdAt} /> &#149;{' '}
-                                        {article.body.lengthInMinutes()}
+                                        {body.lengthInMinutes()}
                                     </time>
                                 </p>
                             </div>
@@ -83,15 +64,15 @@ class ArticleItem extends React.Component<Props> {
                     <Link to={`/article/${article.id}`} className="simple-link">
                         <h5
                             className="uk-text-medium uk-text-bold uk-text-break"
-                            style={{ fontSize: this.props.small ? 17 : 23, fontFamily: 'Open Sans' }}
+                            style={{ fontSize: this.props.small ? 17 : 23, fontFamily: 'Crimson Text' }}
                         >
                             {this.props.small
                                 ? article.title.truncString('...', 36)
                                 : article.title.truncString('...', 140)}
                         </h5>
                     </Link>
-                    <p style={{ color: '#212121', fontSize: this.props.small ? 14 : 17 }}>
-                        {this.props.small ? article.body.truncString('...', 70) : article.body.truncString('...', 140)}
+                    <p style={{ color: '#212121', fontFamily: 'Muli', fontSize: this.props.small ? 14 : 17 }}>
+                        {this.props.small ? body.truncString('...', 70) : body.truncString('...', 140)}
                     </p>
                 </div>
                 <div
@@ -99,13 +80,9 @@ class ArticleItem extends React.Component<Props> {
                 >
                     <div className="uk-flex pull-left">
                         <Likebutton liked={true} likeCount={2} />
-                        <a className="response-count uk-flex uk-inline uk-margin-left uk-margin-right">
-                          <span className="left floated like">
-                            <i className="like icon"/>
-                            Like
-                          </span>
+                        <Link to={`/article/${article.id}#comments`} className="response-count uk-flex uk-inline uk-margin-left uk-margin-right">
                             <span uk-icon="icon: comment; ratio: 1.0" /> <div className="uk-visible@s">Comments</div>
-                        </a>
+                        </Link>
                         <a className="response-count uk-flex uk-inline">
                             <span uk-icon="icon: forward; ratio: 1.2" /> <div className="uk-visible@s">Share</div>
                         </a>
@@ -151,20 +128,24 @@ export default ArticleItem;
 
 /*
 
-          <div
-            data-uk-lightbox="animation: fade; video-autoplay: true;"
-            className="uk-inline-clip uk-transition-toggle"
-            style={{ borderRadius: 12, marginTop: 10 }}
-          >
-            <a
-              className="uk-inline"
-              href="https://picturepan2.github.io/spectre/img/osx-yosemite.jpg"
-            >
-              <img
-                src="https://picturepan2.github.io/spectre/img/osx-yosemite.jpg"
-                className="img-responsive uk-transition-scale-up uk-transition-opaque"
-                alt="..."
-              />
-            </a>
-          </div>
+          <{this.props.small && (this.props.article.link === null) ? null : (
+                <div className="image">
+                  <div
+                    data-uk-lightbox="animation: fade; video-autoplay: true;"
+                    className="uk-inline-clip uk-transition-toggle"
+                  >
+                      <a
+                        className="uk-inline"
+                        href="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
+                      >
+                        <img
+                          src="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
+                          className="img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque"
+                          alt="..."
+                          style={{maxHeight: 280 }}
+                        />
+                      </a>
+                  </div>
+                </div>)
+              }
 */

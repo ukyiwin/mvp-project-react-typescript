@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { USER_FRAGMENT, ARTICLE_FRAGMENT } from 'Graphql/Fragment';
+import { USER_FRAGMENT, ARTICLE_FRAGMENT, MESSAGE_FRAGMENT } from 'Graphql/Fragment';
 /**
  * @description user registration for graphql mutation
  */
@@ -52,8 +52,8 @@ export const ADD_INTERESTS = gql`
 `;
 
 export const CREATE_ARTICLE = gql`
-  mutation createArticle($title: String, $body: String, $tags: [String!]!, $category: [String!]!){
-    createArticle(title: $title, body: $body, tags: $tags, category: $category ){
+  mutation createArticle($id: ID, $title: String, $body: String, $tags: [String!]!, $category: [String!]!, $photoId: ID){
+    createArticle(id: $id, title: $title, body: $body, tags: $tags, category: $category, photoId: $photoId ){
       ...articleFragment
     }
   }
@@ -67,4 +67,19 @@ export const PUBLISH_ARTICLE = gql`
     }
   }
   ${ARTICLE_FRAGMENT}
+`;
+
+export const CREATE_MESSAGE = gql`
+  mutation createMessage($channelId: ID!, $text: String!){
+    createMessage(channelId: $id, text: $text){
+      text
+      user {
+        id
+      }
+      cahnnel {
+        id
+      }
+    }
+  }
+  ${MESSAGE_FRAGMENT}
 `;

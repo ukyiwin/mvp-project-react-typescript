@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 import './style.css';
-import { PrivateHeader } from 'Components/Layouts/Header';
+import { PublicHeader } from 'Components/Layouts/Header';
 import { User } from 'CustomTypings/schema';
 
 interface DefaultProps {
@@ -29,8 +29,10 @@ const PublicLayout: React.SFC<DefaultProps> = (props) => {
             render={(matchProps) =>
                 isAuthenticated !== true ? (
                     <React.Fragment>
-                      <PrivateHeader  me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
-                      <Component {...matchProps} refreshToken={refreshToken} />
+                      <div className="uk-position-relative">
+                        <PublicHeader me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
+                        <Component {...matchProps} refreshToken={refreshToken} />
+                      </div>
                     </React.Fragment>
                 ) : (
                     <Redirect to={{ pathname: '/home' }} />

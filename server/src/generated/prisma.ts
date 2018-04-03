@@ -19,6 +19,7 @@ type Article implements Node {
   viewCount: Int
   likes(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
+  userFavourited(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
 type Channels implements Node {
@@ -50,7 +51,7 @@ type Connect implements Node {
   updatedAt: DateTime!
   to(where: UserWhereInput): User!
   from(where: UserWhereInput): User!
-  accepted: Boolean!
+  status: Int!
 }
 
 type Country implements Node {
@@ -125,7 +126,7 @@ type Message implements Node {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  cahnnel(where: ChannelsWhereInput): Channels!
+  channel(where: ChannelsWhereInput): Channels!
   text: String!
   user(where: UserWhereInput): User!
 }
@@ -156,10 +157,11 @@ type User implements Node {
   interest(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Interest!]
   messages(where: MessageWhereInput): Message
   connectTo(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect!]
-  ConectFrom(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect!]
+  connectFrom(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect!]
   type: String
   userType: String
   articles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article!]
+  favourites(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article!]
   channels(where: ChannelsWhereInput, orderBy: ChannelsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Channels!]
   myChannels(where: ChannelsWhereInput, orderBy: ChannelsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Channels!]
   likedArticles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article!]
@@ -262,6 +264,7 @@ input ArticleCreateInput {
   author: UserCreateOneWithoutArticlesInput!
   likes: UserCreateManyWithoutLikedArticlesInput
   comments: CommentCreateManyWithoutArticleInput
+  userFavourited: UserCreateManyWithoutFavouritesInput
 }
 
 input ArticleCreateManyWithoutAuthorInput {
@@ -271,6 +274,11 @@ input ArticleCreateManyWithoutAuthorInput {
 
 input ArticleCreateManyWithoutLikesInput {
   create: [ArticleCreateWithoutLikesInput!]
+  connect: [ArticleWhereUniqueInput!]
+}
+
+input ArticleCreateManyWithoutUserFavouritedInput {
+  create: [ArticleCreateWithoutUserFavouritedInput!]
   connect: [ArticleWhereUniqueInput!]
 }
 
@@ -296,6 +304,7 @@ input ArticleCreateWithoutAuthorInput {
   category: InterestCreateManyInput
   likes: UserCreateManyWithoutLikedArticlesInput
   comments: CommentCreateManyWithoutArticleInput
+  userFavourited: UserCreateManyWithoutFavouritesInput
 }
 
 input ArticleCreateWithoutCommentsInput {
@@ -311,6 +320,7 @@ input ArticleCreateWithoutCommentsInput {
   category: InterestCreateManyInput
   author: UserCreateOneWithoutArticlesInput!
   likes: UserCreateManyWithoutLikedArticlesInput
+  userFavourited: UserCreateManyWithoutFavouritesInput
 }
 
 input ArticleCreateWithoutLikesInput {
@@ -325,6 +335,23 @@ input ArticleCreateWithoutLikesInput {
   tags: ArticleCreatetagsInput
   category: InterestCreateManyInput
   author: UserCreateOneWithoutArticlesInput!
+  comments: CommentCreateManyWithoutArticleInput
+  userFavourited: UserCreateManyWithoutFavouritesInput
+}
+
+input ArticleCreateWithoutUserFavouritedInput {
+  slug: String
+  isPublished: Boolean
+  title: String!
+  body: String!
+  type: Arcticletype
+  link: String
+  description: String
+  viewCount: Int
+  tags: ArticleCreatetagsInput
+  category: InterestCreateManyInput
+  author: UserCreateOneWithoutArticlesInput!
+  likes: UserCreateManyWithoutLikedArticlesInput
   comments: CommentCreateManyWithoutArticleInput
 }
 
@@ -431,6 +458,7 @@ input ArticleUpdateInput {
   author: UserUpdateOneWithoutArticlesInput
   likes: UserUpdateManyWithoutLikedArticlesInput
   comments: CommentUpdateManyWithoutArticleInput
+  userFavourited: UserUpdateManyWithoutFavouritesInput
 }
 
 input ArticleUpdateManyWithoutAuthorInput {
@@ -449,6 +477,15 @@ input ArticleUpdateManyWithoutLikesInput {
   delete: [ArticleWhereUniqueInput!]
   update: [ArticleUpdateWithWhereUniqueWithoutLikesInput!]
   upsert: [ArticleUpsertWithWhereUniqueWithoutLikesInput!]
+}
+
+input ArticleUpdateManyWithoutUserFavouritedInput {
+  create: [ArticleCreateWithoutUserFavouritedInput!]
+  connect: [ArticleWhereUniqueInput!]
+  disconnect: [ArticleWhereUniqueInput!]
+  delete: [ArticleWhereUniqueInput!]
+  update: [ArticleUpdateWithWhereUniqueWithoutUserFavouritedInput!]
+  upsert: [ArticleUpsertWithWhereUniqueWithoutUserFavouritedInput!]
 }
 
 input ArticleUpdateOneWithoutCommentsInput {
@@ -476,6 +513,7 @@ input ArticleUpdateWithoutAuthorDataInput {
   category: InterestUpdateManyInput
   likes: UserUpdateManyWithoutLikedArticlesInput
   comments: CommentUpdateManyWithoutArticleInput
+  userFavourited: UserUpdateManyWithoutFavouritesInput
 }
 
 input ArticleUpdateWithoutCommentsDataInput {
@@ -491,6 +529,7 @@ input ArticleUpdateWithoutCommentsDataInput {
   category: InterestUpdateManyInput
   author: UserUpdateOneWithoutArticlesInput
   likes: UserUpdateManyWithoutLikedArticlesInput
+  userFavourited: UserUpdateManyWithoutFavouritesInput
 }
 
 input ArticleUpdateWithoutLikesDataInput {
@@ -506,6 +545,23 @@ input ArticleUpdateWithoutLikesDataInput {
   category: InterestUpdateManyInput
   author: UserUpdateOneWithoutArticlesInput
   comments: CommentUpdateManyWithoutArticleInput
+  userFavourited: UserUpdateManyWithoutFavouritesInput
+}
+
+input ArticleUpdateWithoutUserFavouritedDataInput {
+  slug: String
+  isPublished: Boolean
+  title: String
+  body: String
+  type: Arcticletype
+  link: String
+  description: String
+  viewCount: Int
+  tags: ArticleUpdatetagsInput
+  category: InterestUpdateManyInput
+  author: UserUpdateOneWithoutArticlesInput
+  likes: UserUpdateManyWithoutLikedArticlesInput
+  comments: CommentUpdateManyWithoutArticleInput
 }
 
 input ArticleUpdateWithWhereUniqueWithoutAuthorInput {
@@ -516,6 +572,11 @@ input ArticleUpdateWithWhereUniqueWithoutAuthorInput {
 input ArticleUpdateWithWhereUniqueWithoutLikesInput {
   where: ArticleWhereUniqueInput!
   data: ArticleUpdateWithoutLikesDataInput!
+}
+
+input ArticleUpdateWithWhereUniqueWithoutUserFavouritedInput {
+  where: ArticleWhereUniqueInput!
+  data: ArticleUpdateWithoutUserFavouritedDataInput!
 }
 
 input ArticleUpsertWithoutCommentsInput {
@@ -533,6 +594,12 @@ input ArticleUpsertWithWhereUniqueWithoutLikesInput {
   where: ArticleWhereUniqueInput!
   update: ArticleUpdateWithoutLikesDataInput!
   create: ArticleCreateWithoutLikesInput!
+}
+
+input ArticleUpsertWithWhereUniqueWithoutUserFavouritedInput {
+  where: ArticleWhereUniqueInput!
+  update: ArticleUpdateWithoutUserFavouritedDataInput!
+  create: ArticleCreateWithoutUserFavouritedInput!
 }
 
 input ArticleWhereInput {
@@ -977,6 +1044,9 @@ input ArticleWhereInput {
   comments_every: CommentWhereInput
   comments_some: CommentWhereInput
   comments_none: CommentWhereInput
+  userFavourited_every: UserWhereInput
+  userFavourited_some: UserWhereInput
+  userFavourited_none: UserWhereInput
 }
 
 input ArticleWhereUniqueInput {
@@ -1012,7 +1082,7 @@ input ChannelsCreateInput {
   avatar: String
   type: ChannelType
   author: UserCreateOneWithoutMyChannelsInput!
-  messages: MessageCreateManyWithoutCahnnelInput
+  messages: MessageCreateManyWithoutChannelInput
   participants: UserCreateManyWithoutChannelsInput
 }
 
@@ -1035,7 +1105,7 @@ input ChannelsCreateWithoutAuthorInput {
   title: String!
   avatar: String
   type: ChannelType
-  messages: MessageCreateManyWithoutCahnnelInput
+  messages: MessageCreateManyWithoutChannelInput
   participants: UserCreateManyWithoutChannelsInput
 }
 
@@ -1052,7 +1122,7 @@ input ChannelsCreateWithoutParticipantsInput {
   avatar: String
   type: ChannelType
   author: UserCreateOneWithoutMyChannelsInput!
-  messages: MessageCreateManyWithoutCahnnelInput
+  messages: MessageCreateManyWithoutChannelInput
 }
 
 """
@@ -1133,7 +1203,7 @@ input ChannelsUpdateInput {
   avatar: String
   type: ChannelType
   author: UserUpdateOneWithoutMyChannelsInput
-  messages: MessageUpdateManyWithoutCahnnelInput
+  messages: MessageUpdateManyWithoutChannelInput
   participants: UserUpdateManyWithoutChannelsInput
 }
 
@@ -1167,7 +1237,7 @@ input ChannelsUpdateWithoutAuthorDataInput {
   title: String
   avatar: String
   type: ChannelType
-  messages: MessageUpdateManyWithoutCahnnelInput
+  messages: MessageUpdateManyWithoutChannelInput
   participants: UserUpdateManyWithoutChannelsInput
 }
 
@@ -1184,7 +1254,7 @@ input ChannelsUpdateWithoutParticipantsDataInput {
   avatar: String
   type: ChannelType
   author: UserUpdateOneWithoutMyChannelsInput
-  messages: MessageUpdateManyWithoutCahnnelInput
+  messages: MessageUpdateManyWithoutChannelInput
 }
 
 input ChannelsUpdateWithWhereUniqueWithoutAuthorInput {
@@ -1938,9 +2008,9 @@ type ConnectConnection {
 }
 
 input ConnectCreateInput {
-  accepted: Boolean
+  status: Int
   to: UserCreateOneWithoutConnectToInput!
-  from: UserCreateOneWithoutConectFromInput!
+  from: UserCreateOneWithoutConnectFromInput!
 }
 
 input ConnectCreateManyWithoutFromInput {
@@ -1954,13 +2024,13 @@ input ConnectCreateManyWithoutToInput {
 }
 
 input ConnectCreateWithoutFromInput {
-  accepted: Boolean
+  status: Int
   to: UserCreateOneWithoutConnectToInput!
 }
 
 input ConnectCreateWithoutToInput {
-  accepted: Boolean
-  from: UserCreateOneWithoutConectFromInput!
+  status: Int
+  from: UserCreateOneWithoutConnectFromInput!
 }
 
 """
@@ -1984,15 +2054,15 @@ enum ConnectOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
-  accepted_ASC
-  accepted_DESC
+  status_ASC
+  status_DESC
 }
 
 type ConnectPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  accepted: Boolean!
+  status: Int!
 }
 
 type ConnectSubscriptionPayload {
@@ -2031,9 +2101,9 @@ input ConnectSubscriptionWhereInput {
 }
 
 input ConnectUpdateInput {
-  accepted: Boolean
+  status: Int
   to: UserUpdateOneWithoutConnectToInput
-  from: UserUpdateOneWithoutConectFromInput
+  from: UserUpdateOneWithoutConnectFromInput
 }
 
 input ConnectUpdateManyWithoutFromInput {
@@ -2055,13 +2125,13 @@ input ConnectUpdateManyWithoutToInput {
 }
 
 input ConnectUpdateWithoutFromDataInput {
-  accepted: Boolean
+  status: Int
   to: UserUpdateOneWithoutConnectToInput
 }
 
 input ConnectUpdateWithoutToDataInput {
-  accepted: Boolean
-  from: UserUpdateOneWithoutConectFromInput
+  status: Int
+  from: UserUpdateOneWithoutConnectFromInput
 }
 
 input ConnectUpdateWithWhereUniqueWithoutFromInput {
@@ -2206,11 +2276,35 @@ input ConnectWhereInput {
   All values greater than or equal the given value.
   """
   updatedAt_gte: DateTime
-  accepted: Boolean
+  status: Int
   """
   All values that are not equal to given value.
   """
-  accepted_not: Boolean
+  status_not: Int
+  """
+  All values that are contained in given list.
+  """
+  status_in: [Int!]
+  """
+  All values that are not contained in given list.
+  """
+  status_not_in: [Int!]
+  """
+  All values less than the given value.
+  """
+  status_lt: Int
+  """
+  All values less than or equal the given value.
+  """
+  status_lte: Int
+  """
+  All values greater than the given value.
+  """
+  status_gt: Int
+  """
+  All values greater than or equal the given value.
+  """
+  status_gte: Int
   to: UserWhereInput
   from: UserWhereInput
 }
@@ -4992,12 +5086,12 @@ type MessageConnection {
 
 input MessageCreateInput {
   text: String!
-  cahnnel: ChannelsCreateOneWithoutMessagesInput!
+  channel: ChannelsCreateOneWithoutMessagesInput!
   user: UserCreateOneInput!
 }
 
-input MessageCreateManyWithoutCahnnelInput {
-  create: [MessageCreateWithoutCahnnelInput!]
+input MessageCreateManyWithoutChannelInput {
+  create: [MessageCreateWithoutChannelInput!]
   connect: [MessageWhereUniqueInput!]
 }
 
@@ -5006,7 +5100,7 @@ input MessageCreateOneInput {
   connect: MessageWhereUniqueInput
 }
 
-input MessageCreateWithoutCahnnelInput {
+input MessageCreateWithoutChannelInput {
   text: String!
   user: UserCreateOneInput!
 }
@@ -5080,23 +5174,23 @@ input MessageSubscriptionWhereInput {
 
 input MessageUpdateDataInput {
   text: String
-  cahnnel: ChannelsUpdateOneWithoutMessagesInput
+  channel: ChannelsUpdateOneWithoutMessagesInput
   user: UserUpdateOneInput
 }
 
 input MessageUpdateInput {
   text: String
-  cahnnel: ChannelsUpdateOneWithoutMessagesInput
+  channel: ChannelsUpdateOneWithoutMessagesInput
   user: UserUpdateOneInput
 }
 
-input MessageUpdateManyWithoutCahnnelInput {
-  create: [MessageCreateWithoutCahnnelInput!]
+input MessageUpdateManyWithoutChannelInput {
+  create: [MessageCreateWithoutChannelInput!]
   connect: [MessageWhereUniqueInput!]
   disconnect: [MessageWhereUniqueInput!]
   delete: [MessageWhereUniqueInput!]
-  update: [MessageUpdateWithWhereUniqueWithoutCahnnelInput!]
-  upsert: [MessageUpsertWithWhereUniqueWithoutCahnnelInput!]
+  update: [MessageUpdateWithWhereUniqueWithoutChannelInput!]
+  upsert: [MessageUpsertWithWhereUniqueWithoutChannelInput!]
 }
 
 input MessageUpdateOneInput {
@@ -5108,14 +5202,14 @@ input MessageUpdateOneInput {
   upsert: MessageUpsertNestedInput
 }
 
-input MessageUpdateWithoutCahnnelDataInput {
+input MessageUpdateWithoutChannelDataInput {
   text: String
   user: UserUpdateOneInput
 }
 
-input MessageUpdateWithWhereUniqueWithoutCahnnelInput {
+input MessageUpdateWithWhereUniqueWithoutChannelInput {
   where: MessageWhereUniqueInput!
-  data: MessageUpdateWithoutCahnnelDataInput!
+  data: MessageUpdateWithoutChannelDataInput!
 }
 
 input MessageUpsertNestedInput {
@@ -5123,10 +5217,10 @@ input MessageUpsertNestedInput {
   create: MessageCreateInput!
 }
 
-input MessageUpsertWithWhereUniqueWithoutCahnnelInput {
+input MessageUpsertWithWhereUniqueWithoutChannelInput {
   where: MessageWhereUniqueInput!
-  update: MessageUpdateWithoutCahnnelDataInput!
-  create: MessageCreateWithoutCahnnelInput!
+  update: MessageUpdateWithoutChannelDataInput!
+  create: MessageCreateWithoutChannelInput!
 }
 
 input MessageWhereInput {
@@ -5302,7 +5396,7 @@ input MessageWhereInput {
   All values not ending with the given string.
   """
   text_not_ends_with: String
-  cahnnel: ChannelsWhereInput
+  channel: ChannelsWhereInput
   user: UserWhereInput
 }
 
@@ -5722,8 +5816,9 @@ input UserCreateInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
@@ -5742,6 +5837,11 @@ input UserCreateManyWithoutCountryInput {
 
 input UserCreateManyWithoutDepartmentInput {
   create: [UserCreateWithoutDepartmentInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateManyWithoutFavouritesInput {
+  create: [UserCreateWithoutFavouritesInput!]
   connect: [UserWhereUniqueInput!]
 }
 
@@ -5775,8 +5875,8 @@ input UserCreateOneWithoutCommentsInput {
   connect: UserWhereUniqueInput
 }
 
-input UserCreateOneWithoutConectFromInput {
-  create: UserCreateWithoutConectFromInput
+input UserCreateOneWithoutConnectFromInput {
+  create: UserCreateWithoutConnectFromInput
   connect: UserWhereUniqueInput
 }
 
@@ -5812,7 +5912,8 @@ input UserCreateWithoutArticlesInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
@@ -5841,8 +5942,9 @@ input UserCreateWithoutChannelsInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
   comments: CommentCreateManyWithoutAuthorInput
@@ -5870,14 +5972,15 @@ input UserCreateWithoutCommentsInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
 }
 
-input UserCreateWithoutConectFromInput {
+input UserCreateWithoutConnectFromInput {
   email: String!
   username: String
   password: String!
@@ -5900,6 +6003,7 @@ input UserCreateWithoutConectFromInput {
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
@@ -5927,8 +6031,9 @@ input UserCreateWithoutConnectToInput {
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
@@ -5956,8 +6061,9 @@ input UserCreateWithoutCountryInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
@@ -5985,7 +6091,38 @@ input UserCreateWithoutDepartmentInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
+  articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
+  channels: ChannelsCreateManyWithoutParticipantsInput
+  myChannels: ChannelsCreateManyWithoutAuthorInput
+  likedArticles: ArticleCreateManyWithoutLikesInput
+  comments: CommentCreateManyWithoutAuthorInput
+}
+
+input UserCreateWithoutFavouritesInput {
+  email: String!
+  username: String
+  password: String!
+  firstname: String!
+  lastname: String!
+  gender: String!
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  verified: Boolean
+  avatar: FileCreateOneInput
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateManyWithoutUsersInput
+  messages: MessageCreateOneInput
+  connectTo: ConnectCreateManyWithoutToInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
@@ -6014,8 +6151,9 @@ input UserCreateWithoutInstitutionInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
@@ -6043,8 +6181,9 @@ input UserCreateWithoutInterestInput {
   department: DepartmentCreateOneWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
@@ -6073,8 +6212,9 @@ input UserCreateWithoutLikedArticlesInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
@@ -6102,8 +6242,9 @@ input UserCreateWithoutMyChannelsInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   likedArticles: ArticleCreateManyWithoutLikesInput
   comments: CommentCreateManyWithoutAuthorInput
@@ -6237,8 +6378,9 @@ input UserUpdateDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6267,8 +6409,9 @@ input UserUpdateInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6300,6 +6443,15 @@ input UserUpdateManyWithoutDepartmentInput {
   delete: [UserWhereUniqueInput!]
   update: [UserUpdateWithWhereUniqueWithoutDepartmentInput!]
   upsert: [UserUpsertWithWhereUniqueWithoutDepartmentInput!]
+}
+
+input UserUpdateManyWithoutFavouritesInput {
+  create: [UserCreateWithoutFavouritesInput!]
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutFavouritesInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutFavouritesInput!]
 }
 
 input UserUpdateManyWithoutInstitutionInput {
@@ -6353,12 +6505,12 @@ input UserUpdateOneWithoutCommentsInput {
   upsert: UserUpsertWithoutCommentsInput
 }
 
-input UserUpdateOneWithoutConectFromInput {
-  create: UserCreateWithoutConectFromInput
+input UserUpdateOneWithoutConnectFromInput {
+  create: UserCreateWithoutConnectFromInput
   connect: UserWhereUniqueInput
   delete: Boolean
-  update: UserUpdateWithoutConectFromDataInput
-  upsert: UserUpsertWithoutConectFromInput
+  update: UserUpdateWithoutConnectFromDataInput
+  upsert: UserUpsertWithoutConnectFromInput
 }
 
 input UserUpdateOneWithoutConnectToInput {
@@ -6399,7 +6551,8 @@ input UserUpdateWithoutArticlesDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6428,8 +6581,9 @@ input UserUpdateWithoutChannelsDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
   comments: CommentUpdateManyWithoutAuthorInput
@@ -6457,14 +6611,15 @@ input UserUpdateWithoutCommentsDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
 }
 
-input UserUpdateWithoutConectFromDataInput {
+input UserUpdateWithoutConnectFromDataInput {
   email: String
   username: String
   password: String
@@ -6487,6 +6642,7 @@ input UserUpdateWithoutConectFromDataInput {
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6514,8 +6670,9 @@ input UserUpdateWithoutConnectToDataInput {
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6543,8 +6700,9 @@ input UserUpdateWithoutCountryDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6572,7 +6730,38 @@ input UserUpdateWithoutDepartmentDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
+  articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
+  channels: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles: ArticleUpdateManyWithoutLikesInput
+  comments: CommentUpdateManyWithoutAuthorInput
+}
+
+input UserUpdateWithoutFavouritesDataInput {
+  email: String
+  username: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  verified: Boolean
+  avatar: FileUpdateOneInput
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateManyWithoutUsersInput
+  messages: MessageUpdateOneInput
+  connectTo: ConnectUpdateManyWithoutToInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
@@ -6601,8 +6790,9 @@ input UserUpdateWithoutInstitutionDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6630,8 +6820,9 @@ input UserUpdateWithoutInterestDataInput {
   department: DepartmentUpdateOneWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6660,8 +6851,9 @@ input UserUpdateWithoutLikedArticlesDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
@@ -6689,8 +6881,9 @@ input UserUpdateWithoutMyChannelsDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
   comments: CommentUpdateManyWithoutAuthorInput
@@ -6709,6 +6902,11 @@ input UserUpdateWithWhereUniqueWithoutCountryInput {
 input UserUpdateWithWhereUniqueWithoutDepartmentInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutDepartmentDataInput!
+}
+
+input UserUpdateWithWhereUniqueWithoutFavouritesInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutFavouritesDataInput!
 }
 
 input UserUpdateWithWhereUniqueWithoutInstitutionInput {
@@ -6741,9 +6939,9 @@ input UserUpsertWithoutCommentsInput {
   create: UserCreateWithoutCommentsInput!
 }
 
-input UserUpsertWithoutConectFromInput {
-  update: UserUpdateWithoutConectFromDataInput!
-  create: UserCreateWithoutConectFromInput!
+input UserUpsertWithoutConnectFromInput {
+  update: UserUpdateWithoutConnectFromDataInput!
+  create: UserCreateWithoutConnectFromInput!
 }
 
 input UserUpsertWithoutConnectToInput {
@@ -6772,6 +6970,12 @@ input UserUpsertWithWhereUniqueWithoutDepartmentInput {
   where: UserWhereUniqueInput!
   update: UserUpdateWithoutDepartmentDataInput!
   create: UserCreateWithoutDepartmentInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutFavouritesInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutFavouritesDataInput!
+  create: UserCreateWithoutFavouritesInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutInstitutionInput {
@@ -7401,12 +7605,15 @@ input UserWhereInput {
   connectTo_every: ConnectWhereInput
   connectTo_some: ConnectWhereInput
   connectTo_none: ConnectWhereInput
-  ConectFrom_every: ConnectWhereInput
-  ConectFrom_some: ConnectWhereInput
-  ConectFrom_none: ConnectWhereInput
+  connectFrom_every: ConnectWhereInput
+  connectFrom_some: ConnectWhereInput
+  connectFrom_none: ConnectWhereInput
   articles_every: ArticleWhereInput
   articles_some: ArticleWhereInput
   articles_none: ArticleWhereInput
+  favourites_every: ArticleWhereInput
+  favourites_some: ArticleWhereInput
+  favourites_none: ArticleWhereInput
   channels_every: ChannelsWhereInput
   channels_some: ChannelsWhereInput
   channels_none: ChannelsWhereInput
@@ -7699,8 +7906,8 @@ export type ConnectOrderByInput =
   'createdAt_DESC' |
   'updatedAt_ASC' |
   'updatedAt_DESC' |
-  'accepted_ASC' |
-  'accepted_DESC'
+  'status_ASC' |
+  'status_DESC'
 
 export type ArticleOrderByInput = 
   'id_ASC' |
@@ -7812,13 +8019,10 @@ export type CommentOrderByInput =
   'body_ASC' |
   'body_DESC'
 
-export interface ChannelsCreateInput {
-  title: String
-  avatar?: String
-  type?: ChannelType
-  author: UserCreateOneWithoutMyChannelsInput
-  messages?: MessageCreateManyWithoutCahnnelInput
-  participants?: UserCreateManyWithoutChannelsInput
+export interface PostUpdateInput {
+  isPublished?: Boolean
+  title?: String
+  text?: String
 }
 
 export interface FileWhereInput {
@@ -7920,13 +8124,10 @@ export interface FileWhereInput {
   url_not_ends_with?: String
 }
 
-export interface InterestUpdateManyInput {
-  create?: InterestCreateInput[] | InterestCreateInput
-  connect?: InterestWhereUniqueInput[] | InterestWhereUniqueInput
-  disconnect?: InterestWhereUniqueInput[] | InterestWhereUniqueInput
-  delete?: InterestWhereUniqueInput[] | InterestWhereUniqueInput
-  update?: InterestUpdateWithWhereUniqueNestedInput[] | InterestUpdateWithWhereUniqueNestedInput
-  upsert?: InterestUpsertWithWhereUniqueNestedInput[] | InterestUpsertWithWhereUniqueNestedInput
+export interface InterestUpdateDataInput {
+  name?: String
+  avatar?: String
+  users?: UserUpdateManyWithoutInterestInput
 }
 
 export interface ArticleWhereInput {
@@ -8056,11 +8257,18 @@ export interface ArticleWhereInput {
   comments_every?: CommentWhereInput
   comments_some?: CommentWhereInput
   comments_none?: CommentWhereInput
+  userFavourited_every?: UserWhereInput
+  userFavourited_some?: UserWhereInput
+  userFavourited_none?: UserWhereInput
 }
 
-export interface InterestUpdateWithWhereUniqueNestedInput {
-  where: InterestWhereUniqueInput
-  data: InterestUpdateDataInput
+export interface UserUpdateManyWithoutInterestInput {
+  create?: UserCreateWithoutInterestInput[] | UserCreateWithoutInterestInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  update?: UserUpdateWithWhereUniqueWithoutInterestInput[] | UserUpdateWithWhereUniqueWithoutInterestInput
+  upsert?: UserUpsertWithWhereUniqueWithoutInterestInput[] | UserUpsertWithWhereUniqueWithoutInterestInput
 }
 
 export interface UserWhereInput {
@@ -8237,12 +8445,15 @@ export interface UserWhereInput {
   connectTo_every?: ConnectWhereInput
   connectTo_some?: ConnectWhereInput
   connectTo_none?: ConnectWhereInput
-  ConectFrom_every?: ConnectWhereInput
-  ConectFrom_some?: ConnectWhereInput
-  ConectFrom_none?: ConnectWhereInput
+  connectFrom_every?: ConnectWhereInput
+  connectFrom_some?: ConnectWhereInput
+  connectFrom_none?: ConnectWhereInput
   articles_every?: ArticleWhereInput
   articles_some?: ArticleWhereInput
   articles_none?: ArticleWhereInput
+  favourites_every?: ArticleWhereInput
+  favourites_some?: ArticleWhereInput
+  favourites_none?: ArticleWhereInput
   channels_every?: ChannelsWhereInput
   channels_some?: ChannelsWhereInput
   channels_none?: ChannelsWhereInput
@@ -8257,10 +8468,9 @@ export interface UserWhereInput {
   comments_none?: CommentWhereInput
 }
 
-export interface InterestUpdateDataInput {
-  name?: String
-  avatar?: String
-  users?: UserUpdateManyWithoutInterestInput
+export interface UserUpdateWithWhereUniqueWithoutInterestInput {
+  where: UserWhereUniqueInput
+  data: UserUpdateWithoutInterestDataInput
 }
 
 export interface InstitutionsWhereInput {
@@ -8323,13 +8533,34 @@ export interface InstitutionsWhereInput {
   departments_none?: DepartmentWhereInput
 }
 
-export interface UserUpdateManyWithoutInterestInput {
-  create?: UserCreateWithoutInterestInput[] | UserCreateWithoutInterestInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  update?: UserUpdateWithWhereUniqueWithoutInterestInput[] | UserUpdateWithWhereUniqueWithoutInterestInput
-  upsert?: UserUpsertWithWhereUniqueWithoutInterestInput[] | UserUpsertWithWhereUniqueWithoutInterestInput
+export interface UserUpdateWithoutInterestDataInput {
+  email?: String
+  username?: String
+  password?: String
+  firstname?: String
+  lastname?: String
+  gender?: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  verified?: Boolean
+  avatar?: FileUpdateOneInput
+  country?: CountryUpdateOneWithoutUsersInput
+  institution?: InstitutionsUpdateOneWithoutUsersInput
+  department?: DepartmentUpdateOneWithoutUsersInput
+  messages?: MessageUpdateOneInput
+  connectTo?: ConnectUpdateManyWithoutToInput
+  connectFrom?: ConnectUpdateManyWithoutFromInput
+  articles?: ArticleUpdateManyWithoutAuthorInput
+  favourites?: ArticleUpdateManyWithoutUserFavouritedInput
+  channels?: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels?: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles?: ArticleUpdateManyWithoutLikesInput
+  comments?: CommentUpdateManyWithoutAuthorInput
 }
 
 export interface DepartmentWhereInput {
@@ -8385,9 +8616,13 @@ export interface DepartmentWhereInput {
   users_none?: UserWhereInput
 }
 
-export interface UserUpdateWithWhereUniqueWithoutInterestInput {
-  where: UserWhereUniqueInput
-  data: UserUpdateWithoutInterestDataInput
+export interface FileUpdateOneInput {
+  create?: FileCreateInput
+  connect?: FileWhereUniqueInput
+  disconnect?: Boolean
+  delete?: Boolean
+  update?: FileUpdateDataInput
+  upsert?: FileUpsertNestedInput
 }
 
 export interface ChannelsWhereInput {
@@ -8464,33 +8699,12 @@ export interface ChannelsWhereInput {
   participants_none?: UserWhereInput
 }
 
-export interface UserUpdateWithoutInterestDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  verified?: Boolean
-  avatar?: FileUpdateOneInput
-  country?: CountryUpdateOneWithoutUsersInput
-  institution?: InstitutionsUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  messages?: MessageUpdateOneInput
-  connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
-  channels?: ChannelsUpdateManyWithoutParticipantsInput
-  myChannels?: ChannelsUpdateManyWithoutAuthorInput
-  likedArticles?: ArticleUpdateManyWithoutLikesInput
-  comments?: CommentUpdateManyWithoutAuthorInput
+export interface FileUpdateDataInput {
+  name?: String
+  size?: Int
+  secret?: String
+  contentType?: String
+  url?: String
 }
 
 export interface ConnectWhereInput {
@@ -8526,73 +8740,44 @@ export interface ConnectWhereInput {
   updatedAt_lte?: DateTime
   updatedAt_gt?: DateTime
   updatedAt_gte?: DateTime
-  accepted?: Boolean
-  accepted_not?: Boolean
+  status?: Int
+  status_not?: Int
+  status_in?: Int[] | Int
+  status_not_in?: Int[] | Int
+  status_lt?: Int
+  status_lte?: Int
+  status_gt?: Int
+  status_gte?: Int
   to?: UserWhereInput
   from?: UserWhereInput
-}
-
-export interface UserCreateOneWithoutConnectToInput {
-  create?: UserCreateWithoutConnectToInput
-  connect?: UserWhereUniqueInput
-}
-
-export interface ArticleUpdateWithoutCommentsDataInput {
-  slug?: String
-  isPublished?: Boolean
-  title?: String
-  body?: String
-  type?: Arcticletype
-  link?: String
-  description?: String
-  viewCount?: Int
-  tags?: ArticleUpdatetagsInput
-  category?: InterestUpdateManyInput
-  author?: UserUpdateOneWithoutArticlesInput
-  likes?: UserUpdateManyWithoutLikedArticlesInput
-}
-
-export interface UserCreateWithoutConnectToInput {
-  email: String
-  username?: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  verified?: Boolean
-  avatar?: FileCreateOneInput
-  country?: CountryCreateOneWithoutUsersInput
-  institution?: InstitutionsCreateOneWithoutUsersInput
-  department?: DepartmentCreateOneWithoutUsersInput
-  interest?: InterestCreateManyWithoutUsersInput
-  messages?: MessageCreateOneInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
-  articles?: ArticleCreateManyWithoutAuthorInput
-  channels?: ChannelsCreateManyWithoutParticipantsInput
-  myChannels?: ChannelsCreateManyWithoutAuthorInput
-  likedArticles?: ArticleCreateManyWithoutLikesInput
-  comments?: CommentCreateManyWithoutAuthorInput
-}
-
-export interface FileUpdateOneInput {
-  create?: FileCreateInput
-  connect?: FileWhereUniqueInput
-  disconnect?: Boolean
-  delete?: Boolean
-  update?: FileUpdateDataInput
-  upsert?: FileUpsertNestedInput
 }
 
 export interface ChannelsCreateManyWithoutParticipantsInput {
   create?: ChannelsCreateWithoutParticipantsInput[] | ChannelsCreateWithoutParticipantsInput
   connect?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
+}
+
+export interface CommentUpdateWithWhereUniqueWithoutAuthorInput {
+  where: CommentWhereUniqueInput
+  data: CommentUpdateWithoutAuthorDataInput
+}
+
+export interface ChannelsCreateWithoutParticipantsInput {
+  title: String
+  avatar?: String
+  type?: ChannelType
+  author: UserCreateOneWithoutMyChannelsInput
+  messages?: MessageCreateManyWithoutChannelInput
+}
+
+export interface FileUpsertNestedInput {
+  update: FileUpdateDataInput
+  create: FileCreateInput
+}
+
+export interface MessageCreateManyWithoutChannelInput {
+  create?: MessageCreateWithoutChannelInput[] | MessageCreateWithoutChannelInput
+  connect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput
 }
 
 export interface MessageSubscriptionWhereInput {
@@ -8605,12 +8790,9 @@ export interface MessageSubscriptionWhereInput {
   node?: MessageWhereInput
 }
 
-export interface ChannelsCreateWithoutParticipantsInput {
-  title: String
-  avatar?: String
-  type?: ChannelType
-  author: UserCreateOneWithoutMyChannelsInput
-  messages?: MessageCreateManyWithoutCahnnelInput
+export interface MessageCreateWithoutChannelInput {
+  text: String
+  user: UserCreateOneInput
 }
 
 export interface ChannelsSubscriptionWhereInput {
@@ -8623,9 +8805,9 @@ export interface ChannelsSubscriptionWhereInput {
   node?: ChannelsWhereInput
 }
 
-export interface MessageCreateManyWithoutCahnnelInput {
-  create?: MessageCreateWithoutCahnnelInput[] | MessageCreateWithoutCahnnelInput
-  connect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput
+export interface UserCreateOneInput {
+  create?: UserCreateInput
+  connect?: UserWhereUniqueInput
 }
 
 export interface UserSubscriptionWhereInput {
@@ -8636,36 +8818,6 @@ export interface UserSubscriptionWhereInput {
   updatedFields_contains_every?: String[] | String
   updatedFields_contains_some?: String[] | String
   node?: UserWhereInput
-}
-
-export interface MessageCreateWithoutCahnnelInput {
-  text: String
-  user: UserCreateOneInput
-}
-
-export interface DepartmentSubscriptionWhereInput {
-  AND?: DepartmentSubscriptionWhereInput[] | DepartmentSubscriptionWhereInput
-  OR?: DepartmentSubscriptionWhereInput[] | DepartmentSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: DepartmentWhereInput
-}
-
-export interface UserCreateOneInput {
-  create?: UserCreateInput
-  connect?: UserWhereUniqueInput
-}
-
-export interface CountrySubscriptionWhereInput {
-  AND?: CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput
-  OR?: CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: CountryWhereInput
 }
 
 export interface UserCreateInput {
@@ -8690,12 +8842,46 @@ export interface UserCreateInput {
   interest?: InterestCreateManyWithoutUsersInput
   messages?: MessageCreateOneInput
   connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
+  connectFrom?: ConnectCreateManyWithoutFromInput
   articles?: ArticleCreateManyWithoutAuthorInput
+  favourites?: ArticleCreateManyWithoutUserFavouritedInput
   channels?: ChannelsCreateManyWithoutParticipantsInput
   myChannels?: ChannelsCreateManyWithoutAuthorInput
   likedArticles?: ArticleCreateManyWithoutLikesInput
   comments?: CommentCreateManyWithoutAuthorInput
+}
+
+export interface DepartmentSubscriptionWhereInput {
+  AND?: DepartmentSubscriptionWhereInput[] | DepartmentSubscriptionWhereInput
+  OR?: DepartmentSubscriptionWhereInput[] | DepartmentSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: DepartmentWhereInput
+}
+
+export interface ChannelsCreateManyWithoutAuthorInput {
+  create?: ChannelsCreateWithoutAuthorInput[] | ChannelsCreateWithoutAuthorInput
+  connect?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
+}
+
+export interface CountrySubscriptionWhereInput {
+  AND?: CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput
+  OR?: CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: CountryWhereInput
+}
+
+export interface ChannelsCreateWithoutAuthorInput {
+  title: String
+  avatar?: String
+  type?: ChannelType
+  messages?: MessageCreateManyWithoutChannelInput
+  participants?: UserCreateManyWithoutChannelsInput
 }
 
 export interface PostWhereInput {
@@ -8763,9 +8949,9 @@ export interface PostWhereInput {
   text_not_ends_with?: String
 }
 
-export interface ChannelsCreateManyWithoutAuthorInput {
-  create?: ChannelsCreateWithoutAuthorInput[] | ChannelsCreateWithoutAuthorInput
-  connect?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
+export interface UserCreateManyWithoutChannelsInput {
+  create?: UserCreateWithoutChannelsInput[] | UserCreateWithoutChannelsInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
 }
 
 export interface ArticleSubscriptionWhereInput {
@@ -8776,39 +8962,6 @@ export interface ArticleSubscriptionWhereInput {
   updatedFields_contains_every?: String[] | String
   updatedFields_contains_some?: String[] | String
   node?: ArticleWhereInput
-}
-
-export interface ChannelsCreateWithoutAuthorInput {
-  title: String
-  avatar?: String
-  type?: ChannelType
-  messages?: MessageCreateManyWithoutCahnnelInput
-  participants?: UserCreateManyWithoutChannelsInput
-}
-
-export interface LibrarySubscriptionWhereInput {
-  AND?: LibrarySubscriptionWhereInput[] | LibrarySubscriptionWhereInput
-  OR?: LibrarySubscriptionWhereInput[] | LibrarySubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: LibraryWhereInput
-}
-
-export interface UserCreateManyWithoutChannelsInput {
-  create?: UserCreateWithoutChannelsInput[] | UserCreateWithoutChannelsInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-}
-
-export interface FileSubscriptionWhereInput {
-  AND?: FileSubscriptionWhereInput[] | FileSubscriptionWhereInput
-  OR?: FileSubscriptionWhereInput[] | FileSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: FileWhereInput
 }
 
 export interface UserCreateWithoutChannelsInput {
@@ -8833,15 +8986,22 @@ export interface UserCreateWithoutChannelsInput {
   interest?: InterestCreateManyWithoutUsersInput
   messages?: MessageCreateOneInput
   connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
+  connectFrom?: ConnectCreateManyWithoutFromInput
   articles?: ArticleCreateManyWithoutAuthorInput
+  favourites?: ArticleCreateManyWithoutUserFavouritedInput
   myChannels?: ChannelsCreateManyWithoutAuthorInput
   likedArticles?: ArticleCreateManyWithoutLikesInput
   comments?: CommentCreateManyWithoutAuthorInput
 }
 
-export interface PostWhereUniqueInput {
-  id?: ID_Input
+export interface LibrarySubscriptionWhereInput {
+  AND?: LibrarySubscriptionWhereInput[] | LibrarySubscriptionWhereInput
+  OR?: LibrarySubscriptionWhereInput[] | LibrarySubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: LibraryWhereInput
 }
 
 export interface ArticleCreateManyWithoutLikesInput {
@@ -8849,8 +9009,14 @@ export interface ArticleCreateManyWithoutLikesInput {
   connect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
 }
 
-export interface LocationWhereUniqueInput {
-  id?: ID_Input
+export interface FileSubscriptionWhereInput {
+  AND?: FileSubscriptionWhereInput[] | FileSubscriptionWhereInput
+  OR?: FileSubscriptionWhereInput[] | FileSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: FileWhereInput
 }
 
 export interface ArticleCreateWithoutLikesInput {
@@ -8866,6 +9032,27 @@ export interface ArticleCreateWithoutLikesInput {
   category?: InterestCreateManyInput
   author: UserCreateOneWithoutArticlesInput
   comments?: CommentCreateManyWithoutArticleInput
+  userFavourited?: UserCreateManyWithoutFavouritesInput
+}
+
+export interface PostWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface CommentCreateManyWithoutArticleInput {
+  create?: CommentCreateWithoutArticleInput[] | CommentCreateWithoutArticleInput
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+}
+
+export interface LocationWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface CommentCreateWithoutArticleInput {
+  slug?: String
+  body: String
+  replies?: CommentCreateManyInput
+  author: UserCreateOneWithoutCommentsInput
 }
 
 export interface CommentWhereUniqueInput {
@@ -8873,16 +9060,72 @@ export interface CommentWhereUniqueInput {
   slug?: String
 }
 
-export interface UserCreateOneWithoutArticlesInput {
-  create?: UserCreateWithoutArticlesInput
-  connect?: UserWhereUniqueInput
+export interface CommentCreateManyInput {
+  create?: CommentCreateInput[] | CommentCreateInput
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
 }
 
 export interface InstitutionsWhereUniqueInput {
   id?: ID_Input
 }
 
-export interface UserCreateWithoutArticlesInput {
+export interface CommentCreateInput {
+  slug?: String
+  body: String
+  replies?: CommentCreateManyInput
+  article: ArticleCreateOneWithoutCommentsInput
+  author: UserCreateOneWithoutCommentsInput
+}
+
+export interface InterestWhereUniqueInput {
+  id?: ID_Input
+  name?: String
+}
+
+export interface ArticleCreateOneWithoutCommentsInput {
+  create?: ArticleCreateWithoutCommentsInput
+  connect?: ArticleWhereUniqueInput
+}
+
+export interface ConnectWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface ArticleCreateWithoutCommentsInput {
+  slug?: String
+  isPublished?: Boolean
+  title: String
+  body: String
+  type?: Arcticletype
+  link?: String
+  description?: String
+  viewCount?: Int
+  tags?: ArticleCreatetagsInput
+  category?: InterestCreateManyInput
+  author: UserCreateOneWithoutArticlesInput
+  likes?: UserCreateManyWithoutLikedArticlesInput
+  userFavourited?: UserCreateManyWithoutFavouritesInput
+}
+
+export interface MessageWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface UserCreateManyWithoutFavouritesInput {
+  create?: UserCreateWithoutFavouritesInput[] | UserCreateWithoutFavouritesInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+}
+
+export interface ChannelsUpdateInput {
+  title?: String
+  avatar?: String
+  type?: ChannelType
+  author?: UserUpdateOneWithoutMyChannelsInput
+  messages?: MessageUpdateManyWithoutChannelInput
+  participants?: UserUpdateManyWithoutChannelsInput
+}
+
+export interface UserCreateWithoutFavouritesInput {
   email: String
   username?: String
   password: String
@@ -8904,58 +9147,12 @@ export interface UserCreateWithoutArticlesInput {
   interest?: InterestCreateManyWithoutUsersInput
   messages?: MessageCreateOneInput
   connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
+  connectFrom?: ConnectCreateManyWithoutFromInput
+  articles?: ArticleCreateManyWithoutAuthorInput
   channels?: ChannelsCreateManyWithoutParticipantsInput
   myChannels?: ChannelsCreateManyWithoutAuthorInput
   likedArticles?: ArticleCreateManyWithoutLikesInput
   comments?: CommentCreateManyWithoutAuthorInput
-}
-
-export interface InterestWhereUniqueInput {
-  id?: ID_Input
-  name?: String
-}
-
-export interface CommentCreateManyWithoutAuthorInput {
-  create?: CommentCreateWithoutAuthorInput[] | CommentCreateWithoutAuthorInput
-  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-}
-
-export interface ConnectWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface CommentCreateWithoutAuthorInput {
-  slug?: String
-  body: String
-  replies?: CommentCreateManyInput
-  article: ArticleCreateOneWithoutCommentsInput
-}
-
-export interface MessageWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface CommentCreateManyInput {
-  create?: CommentCreateInput[] | CommentCreateInput
-  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-}
-
-export interface ChannelsUpdateInput {
-  title?: String
-  avatar?: String
-  type?: ChannelType
-  author?: UserUpdateOneWithoutMyChannelsInput
-  messages?: MessageUpdateManyWithoutCahnnelInput
-  participants?: UserUpdateManyWithoutChannelsInput
-}
-
-export interface CommentCreateInput {
-  slug?: String
-  body: String
-  replies?: CommentCreateManyInput
-  article: ArticleCreateOneWithoutCommentsInput
-  author: UserCreateOneWithoutCommentsInput
 }
 
 export interface UserUpdateInput {
@@ -8980,17 +9177,18 @@ export interface UserUpdateInput {
   interest?: InterestUpdateManyWithoutUsersInput
   messages?: MessageUpdateOneInput
   connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
+  connectFrom?: ConnectUpdateManyWithoutFromInput
   articles?: ArticleUpdateManyWithoutAuthorInput
+  favourites?: ArticleUpdateManyWithoutUserFavouritedInput
   channels?: ChannelsUpdateManyWithoutParticipantsInput
   myChannels?: ChannelsUpdateManyWithoutAuthorInput
   likedArticles?: ArticleUpdateManyWithoutLikesInput
   comments?: CommentUpdateManyWithoutAuthorInput
 }
 
-export interface ArticleCreateOneWithoutCommentsInput {
-  create?: ArticleCreateWithoutCommentsInput
-  connect?: ArticleWhereUniqueInput
+export interface CommentCreateManyWithoutAuthorInput {
+  create?: CommentCreateWithoutAuthorInput[] | CommentCreateWithoutAuthorInput
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
 }
 
 export interface DepartmentUpdateInput {
@@ -8999,19 +9197,11 @@ export interface DepartmentUpdateInput {
   users?: UserUpdateManyWithoutDepartmentInput
 }
 
-export interface ArticleCreateWithoutCommentsInput {
+export interface CommentCreateWithoutAuthorInput {
   slug?: String
-  isPublished?: Boolean
-  title: String
   body: String
-  type?: Arcticletype
-  link?: String
-  description?: String
-  viewCount?: Int
-  tags?: ArticleCreatetagsInput
-  category?: InterestCreateManyInput
-  author: UserCreateOneWithoutArticlesInput
-  likes?: UserCreateManyWithoutLikedArticlesInput
+  replies?: CommentCreateManyInput
+  article: ArticleCreateOneWithoutCommentsInput
 }
 
 export interface CountryUpdateInput {
@@ -9054,8 +9244,9 @@ export interface UserCreateWithoutCommentsInput {
   interest?: InterestCreateManyWithoutUsersInput
   messages?: MessageCreateOneInput
   connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
+  connectFrom?: ConnectCreateManyWithoutFromInput
   articles?: ArticleCreateManyWithoutAuthorInput
+  favourites?: ArticleCreateManyWithoutUserFavouritedInput
   channels?: ChannelsCreateManyWithoutParticipantsInput
   myChannels?: ChannelsCreateManyWithoutAuthorInput
   likedArticles?: ArticleCreateManyWithoutLikesInput
@@ -9066,29 +9257,6 @@ export interface CountryUpsertWithoutUsersInput {
   create: CountryCreateWithoutUsersInput
 }
 
-export interface CommentCreateManyWithoutArticleInput {
-  create?: CommentCreateWithoutArticleInput[] | CommentCreateWithoutArticleInput
-  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-}
-
-export interface UserUpsertWithWhereUniqueWithoutInstitutionInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutInstitutionDataInput
-  create: UserCreateWithoutInstitutionInput
-}
-
-export interface CommentCreateWithoutArticleInput {
-  slug?: String
-  body: String
-  replies?: CommentCreateManyInput
-  author: UserCreateOneWithoutCommentsInput
-}
-
-export interface InstitutionsUpsertWithoutDepartmentsInput {
-  update: InstitutionsUpdateWithoutDepartmentsDataInput
-  create: InstitutionsCreateWithoutDepartmentsInput
-}
-
 export interface CountryCreateInput {
   shortName: String
   name: String
@@ -9096,10 +9264,10 @@ export interface CountryCreateInput {
   users?: UserCreateManyWithoutCountryInput
 }
 
-export interface UserUpsertWithWhereUniqueWithoutCountryInput {
+export interface UserUpsertWithWhereUniqueWithoutInstitutionInput {
   where: UserWhereUniqueInput
-  update: UserUpdateWithoutCountryDataInput
-  create: UserCreateWithoutCountryInput
+  update: UserUpdateWithoutInstitutionDataInput
+  create: UserCreateWithoutInstitutionInput
 }
 
 export interface InstitutionsCreateInput {
@@ -9110,10 +9278,9 @@ export interface InstitutionsCreateInput {
   departments?: DepartmentCreateManyWithoutInstitutionInput
 }
 
-export interface DepartmentUpsertWithWhereUniqueWithoutInstitutionInput {
-  where: DepartmentWhereUniqueInput
-  update: DepartmentUpdateWithoutInstitutionDataInput
-  create: DepartmentCreateWithoutInstitutionInput
+export interface InstitutionsUpsertWithoutDepartmentsInput {
+  update: InstitutionsUpdateWithoutDepartmentsDataInput
+  create: InstitutionsCreateWithoutDepartmentsInput
 }
 
 export interface DepartmentCreateInput {
@@ -9122,30 +9289,36 @@ export interface DepartmentCreateInput {
   users?: UserCreateManyWithoutDepartmentInput
 }
 
-export interface MessageUpsertNestedInput {
-  update: MessageUpdateDataInput
-  create: MessageCreateInput
+export interface UserUpsertWithWhereUniqueWithoutCountryInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutCountryDataInput
+  create: UserCreateWithoutCountryInput
 }
 
 export interface ConnectCreateInput {
-  accepted?: Boolean
+  status?: Int
   to: UserCreateOneWithoutConnectToInput
-  from: UserCreateOneWithoutConectFromInput
+  from: UserCreateOneWithoutConnectFromInput
 }
 
-export interface UserUpsertWithoutMyChannelsInput {
-  update: UserUpdateWithoutMyChannelsDataInput
-  create: UserCreateWithoutMyChannelsInput
+export interface DepartmentUpsertWithWhereUniqueWithoutInstitutionInput {
+  where: DepartmentWhereUniqueInput
+  update: DepartmentUpdateWithoutInstitutionDataInput
+  create: DepartmentCreateWithoutInstitutionInput
 }
 
-export interface UserUpsertWithoutCommentsInput {
-  update: UserUpdateWithoutCommentsDataInput
-  create: UserCreateWithoutCommentsInput
+export interface ChannelsCreateInput {
+  title: String
+  avatar?: String
+  type?: ChannelType
+  author: UserCreateOneWithoutMyChannelsInput
+  messages?: MessageCreateManyWithoutChannelInput
+  participants?: UserCreateManyWithoutChannelsInput
 }
 
-export interface UserUpsertWithoutConectFromInput {
-  update: UserUpdateWithoutConectFromDataInput
-  create: UserCreateWithoutConectFromInput
+export interface MessageUpsertNestedInput {
+  update: MessageUpdateDataInput
+  create: MessageCreateInput
 }
 
 export interface FileUpdateInput {
@@ -9156,21 +9329,19 @@ export interface FileUpdateInput {
   url?: String
 }
 
-export interface UserUpsertWithWhereUniqueWithoutLikedArticlesInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutLikedArticlesDataInput
-  create: UserCreateWithoutLikedArticlesInput
+export interface UserUpsertWithoutMyChannelsInput {
+  update: UserUpdateWithoutMyChannelsDataInput
+  create: UserCreateWithoutMyChannelsInput
 }
 
-export interface PostUpdateInput {
-  isPublished?: Boolean
-  title?: String
-  text?: String
+export interface ArticleUpsertWithoutCommentsInput {
+  update: ArticleUpdateWithoutCommentsDataInput
+  create: ArticleCreateWithoutCommentsInput
 }
 
-export interface UserUpsertWithoutConnectToInput {
-  update: UserUpdateWithoutConnectToDataInput
-  create: UserCreateWithoutConnectToInput
+export interface UserUpsertWithoutConnectFromInput {
+  update: UserUpdateWithoutConnectFromDataInput
+  create: UserCreateWithoutConnectFromInput
 }
 
 export interface LibraryUpdateInput {
@@ -9179,10 +9350,10 @@ export interface LibraryUpdateInput {
   location?: LocationUpdateOneInput
 }
 
-export interface MessageUpsertWithWhereUniqueWithoutCahnnelInput {
-  where: MessageWhereUniqueInput
-  update: MessageUpdateWithoutCahnnelDataInput
-  create: MessageCreateWithoutCahnnelInput
+export interface UserUpsertWithWhereUniqueWithoutLikedArticlesInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutLikedArticlesDataInput
+  create: UserCreateWithoutLikedArticlesInput
 }
 
 export interface LocationUpdateOneInput {
@@ -9193,10 +9364,9 @@ export interface LocationUpdateOneInput {
   upsert?: LocationUpsertNestedInput
 }
 
-export interface ChannelsUpsertWithWhereUniqueWithoutAuthorInput {
-  where: ChannelsWhereUniqueInput
-  update: ChannelsUpdateWithoutAuthorDataInput
-  create: ChannelsCreateWithoutAuthorInput
+export interface UserUpsertWithoutConnectToInput {
+  update: UserUpdateWithoutConnectToDataInput
+  create: UserCreateWithoutConnectToInput
 }
 
 export interface LocationUpdateDataInput {
@@ -9205,10 +9375,9 @@ export interface LocationUpdateDataInput {
   type?: String
 }
 
-export interface ArticleUpsertWithWhereUniqueWithoutLikesInput {
-  where: ArticleWhereUniqueInput
-  update: ArticleUpdateWithoutLikesDataInput
-  create: ArticleCreateWithoutLikesInput
+export interface UserUpsertWithoutArticlesInput {
+  update: UserUpdateWithoutArticlesDataInput
+  create: UserCreateWithoutArticlesInput
 }
 
 export interface LocationUpsertNestedInput {
@@ -9216,11 +9385,10 @@ export interface LocationUpsertNestedInput {
   create: LocationCreateInput
 }
 
-export interface CommentUpdateWithoutArticleDataInput {
-  slug?: String
-  body?: String
-  replies?: CommentUpdateManyInput
-  author?: UserUpdateOneWithoutCommentsInput
+export interface MessageUpsertWithWhereUniqueWithoutChannelInput {
+  where: MessageWhereUniqueInput
+  update: MessageUpdateWithoutChannelDataInput
+  create: MessageCreateWithoutChannelInput
 }
 
 export interface LocationUpdateInput {
@@ -9229,13 +9397,10 @@ export interface LocationUpdateInput {
   type?: String
 }
 
-export interface CommentUpdateManyWithoutArticleInput {
-  create?: CommentCreateWithoutArticleInput[] | CommentCreateWithoutArticleInput
-  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-  disconnect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-  delete?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-  update?: CommentUpdateWithWhereUniqueWithoutArticleInput[] | CommentUpdateWithWhereUniqueWithoutArticleInput
-  upsert?: CommentUpsertWithWhereUniqueWithoutArticleInput[] | CommentUpsertWithWhereUniqueWithoutArticleInput
+export interface ChannelsUpsertWithWhereUniqueWithoutAuthorInput {
+  where: ChannelsWhereUniqueInput
+  update: ChannelsUpdateWithoutAuthorDataInput
+  create: ChannelsCreateWithoutAuthorInput
 }
 
 export interface ArticleUpdateInput {
@@ -9252,16 +9417,67 @@ export interface ArticleUpdateInput {
   author?: UserUpdateOneWithoutArticlesInput
   likes?: UserUpdateManyWithoutLikedArticlesInput
   comments?: CommentUpdateManyWithoutArticleInput
+  userFavourited?: UserUpdateManyWithoutFavouritesInput
 }
 
-export interface CommentUpsertWithWhereUniqueWithoutAuthorInput {
-  where: CommentWhereUniqueInput
-  update: CommentUpdateWithoutAuthorDataInput
-  create: CommentCreateWithoutAuthorInput
+export interface ArticleUpsertWithWhereUniqueWithoutLikesInput {
+  where: ArticleWhereUniqueInput
+  update: ArticleUpdateWithoutLikesDataInput
+  create: ArticleCreateWithoutLikesInput
 }
 
 export interface ArticleUpdatetagsInput {
   set?: String[] | String
+}
+
+export interface CommentUpsertWithWhereUniqueNestedInput {
+  where: CommentWhereUniqueInput
+  update: CommentUpdateDataInput
+  create: CommentCreateInput
+}
+
+export interface InterestUpdateManyInput {
+  create?: InterestCreateInput[] | InterestCreateInput
+  connect?: InterestWhereUniqueInput[] | InterestWhereUniqueInput
+  disconnect?: InterestWhereUniqueInput[] | InterestWhereUniqueInput
+  delete?: InterestWhereUniqueInput[] | InterestWhereUniqueInput
+  update?: InterestUpdateWithWhereUniqueNestedInput[] | InterestUpdateWithWhereUniqueNestedInput
+  upsert?: InterestUpsertWithWhereUniqueNestedInput[] | InterestUpsertWithWhereUniqueNestedInput
+}
+
+export interface UserUpdateWithoutCommentsDataInput {
+  email?: String
+  username?: String
+  password?: String
+  firstname?: String
+  lastname?: String
+  gender?: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  verified?: Boolean
+  avatar?: FileUpdateOneInput
+  country?: CountryUpdateOneWithoutUsersInput
+  institution?: InstitutionsUpdateOneWithoutUsersInput
+  department?: DepartmentUpdateOneWithoutUsersInput
+  interest?: InterestUpdateManyWithoutUsersInput
+  messages?: MessageUpdateOneInput
+  connectTo?: ConnectUpdateManyWithoutToInput
+  connectFrom?: ConnectUpdateManyWithoutFromInput
+  articles?: ArticleUpdateManyWithoutAuthorInput
+  favourites?: ArticleUpdateManyWithoutUserFavouritedInput
+  channels?: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels?: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles?: ArticleUpdateManyWithoutLikesInput
+}
+
+export interface InterestUpdateWithWhereUniqueNestedInput {
+  where: InterestWhereUniqueInput
+  data: InterestUpdateDataInput
 }
 
 export interface FileCreateInput {
@@ -9419,33 +9635,10 @@ export interface LocationCreateInput {
   type: String
 }
 
-export interface UserUpdateWithoutCommentsDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  verified?: Boolean
-  avatar?: FileUpdateOneInput
-  country?: CountryUpdateOneWithoutUsersInput
-  institution?: InstitutionsUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  interest?: InterestUpdateManyWithoutUsersInput
-  messages?: MessageUpdateOneInput
-  connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
-  channels?: ChannelsUpdateManyWithoutParticipantsInput
-  myChannels?: ChannelsUpdateManyWithoutAuthorInput
-  likedArticles?: ArticleUpdateManyWithoutLikesInput
+export interface UserUpsertWithWhereUniqueWithoutFavouritesInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutFavouritesDataInput
+  create: UserCreateWithoutFavouritesInput
 }
 
 export interface ArticleCreatetagsInput {
@@ -9499,7 +9692,7 @@ export interface MessageWhereInput {
   text_not_starts_with?: String
   text_ends_with?: String
   text_not_ends_with?: String
-  cahnnel?: ChannelsWhereInput
+  channel?: ChannelsWhereInput
   user?: UserWhereInput
 }
 
@@ -9509,12 +9702,10 @@ export interface InterestCreateInput {
   users?: UserCreateManyWithoutInterestInput
 }
 
-export interface UserUpdateOneWithoutCommentsInput {
-  create?: UserCreateWithoutCommentsInput
-  connect?: UserWhereUniqueInput
-  delete?: Boolean
-  update?: UserUpdateWithoutCommentsDataInput
-  upsert?: UserUpsertWithoutCommentsInput
+export interface CommentUpsertWithWhereUniqueWithoutAuthorInput {
+  where: CommentWhereUniqueInput
+  update: CommentUpdateWithoutAuthorDataInput
+  create: CommentCreateWithoutAuthorInput
 }
 
 export interface UserCreateWithoutInterestInput {
@@ -9538,8 +9729,9 @@ export interface UserCreateWithoutInterestInput {
   department?: DepartmentCreateOneWithoutUsersInput
   messages?: MessageCreateOneInput
   connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
+  connectFrom?: ConnectCreateManyWithoutFromInput
   articles?: ArticleCreateManyWithoutAuthorInput
+  favourites?: ArticleCreateManyWithoutUserFavouritedInput
   channels?: ChannelsCreateManyWithoutParticipantsInput
   myChannels?: ChannelsCreateManyWithoutAuthorInput
   likedArticles?: ArticleCreateManyWithoutLikesInput
@@ -9619,37 +9811,16 @@ export interface CountryCreateOneWithoutUsersInput {
   connect?: CountryWhereUniqueInput
 }
 
-export interface ArticleUpsertWithoutCommentsInput {
-  update: ArticleUpdateWithoutCommentsDataInput
-  create: ArticleCreateWithoutCommentsInput
+export interface CommentUpdateWithoutAuthorDataInput {
+  slug?: String
+  body?: String
+  replies?: CommentUpdateManyInput
+  article?: ArticleUpdateOneWithoutCommentsInput
 }
 
 export interface InstitutionsCreateManyWithoutCountryInput {
   create?: InstitutionsCreateWithoutCountryInput[] | InstitutionsCreateWithoutCountryInput
   connect?: InstitutionsWhereUniqueInput[] | InstitutionsWhereUniqueInput
-}
-
-export interface FileUpdateDataInput {
-  name?: String
-  size?: Int
-  secret?: String
-  contentType?: String
-  url?: String
-}
-
-export interface UserCreateManyWithoutInstitutionInput {
-  create?: UserCreateWithoutInstitutionInput[] | UserCreateWithoutInstitutionInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-}
-
-export interface FileUpsertNestedInput {
-  update: FileUpdateDataInput
-  create: FileCreateInput
-}
-
-export interface DepartmentCreateOneWithoutUsersInput {
-  create?: DepartmentCreateWithoutUsersInput
-  connect?: DepartmentWhereUniqueInput
 }
 
 export interface CountryUpdateOneWithoutUsersInput {
@@ -9661,9 +9832,9 @@ export interface CountryUpdateOneWithoutUsersInput {
   upsert?: CountryUpsertWithoutUsersInput
 }
 
-export interface InstitutionsCreateOneWithoutDepartmentsInput {
-  create?: InstitutionsCreateWithoutDepartmentsInput
-  connect?: InstitutionsWhereUniqueInput
+export interface UserCreateManyWithoutInstitutionInput {
+  create?: UserCreateWithoutInstitutionInput[] | UserCreateWithoutInstitutionInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
 }
 
 export interface CountryUpdateWithoutUsersDataInput {
@@ -9672,9 +9843,9 @@ export interface CountryUpdateWithoutUsersDataInput {
   institutions?: InstitutionsUpdateManyWithoutCountryInput
 }
 
-export interface CountryCreateOneWithoutInstitutionsInput {
-  create?: CountryCreateWithoutInstitutionsInput
-  connect?: CountryWhereUniqueInput
+export interface DepartmentCreateOneWithoutUsersInput {
+  create?: DepartmentCreateWithoutUsersInput
+  connect?: DepartmentWhereUniqueInput
 }
 
 export interface InstitutionsUpdateManyWithoutCountryInput {
@@ -9686,9 +9857,9 @@ export interface InstitutionsUpdateManyWithoutCountryInput {
   upsert?: InstitutionsUpsertWithWhereUniqueWithoutCountryInput[] | InstitutionsUpsertWithWhereUniqueWithoutCountryInput
 }
 
-export interface UserCreateManyWithoutCountryInput {
-  create?: UserCreateWithoutCountryInput[] | UserCreateWithoutCountryInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+export interface InstitutionsCreateOneWithoutDepartmentsInput {
+  create?: InstitutionsCreateWithoutDepartmentsInput
+  connect?: InstitutionsWhereUniqueInput
 }
 
 export interface InstitutionsUpdateWithWhereUniqueWithoutCountryInput {
@@ -9696,9 +9867,9 @@ export interface InstitutionsUpdateWithWhereUniqueWithoutCountryInput {
   data: InstitutionsUpdateWithoutCountryDataInput
 }
 
-export interface InstitutionsCreateOneWithoutUsersInput {
-  create?: InstitutionsCreateWithoutUsersInput
-  connect?: InstitutionsWhereUniqueInput
+export interface CountryCreateOneWithoutInstitutionsInput {
+  create?: CountryCreateWithoutInstitutionsInput
+  connect?: CountryWhereUniqueInput
 }
 
 export interface InstitutionsUpdateWithoutCountryDataInput {
@@ -9708,9 +9879,9 @@ export interface InstitutionsUpdateWithoutCountryDataInput {
   departments?: DepartmentUpdateManyWithoutInstitutionInput
 }
 
-export interface DepartmentCreateManyWithoutInstitutionInput {
-  create?: DepartmentCreateWithoutInstitutionInput[] | DepartmentCreateWithoutInstitutionInput
-  connect?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
+export interface UserCreateManyWithoutCountryInput {
+  create?: UserCreateWithoutCountryInput[] | UserCreateWithoutCountryInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
 }
 
 export interface UserUpdateManyWithoutInstitutionInput {
@@ -9722,9 +9893,9 @@ export interface UserUpdateManyWithoutInstitutionInput {
   upsert?: UserUpsertWithWhereUniqueWithoutInstitutionInput[] | UserUpsertWithWhereUniqueWithoutInstitutionInput
 }
 
-export interface UserCreateManyWithoutDepartmentInput {
-  create?: UserCreateWithoutDepartmentInput[] | UserCreateWithoutDepartmentInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+export interface InstitutionsCreateOneWithoutUsersInput {
+  create?: InstitutionsCreateWithoutUsersInput
+  connect?: InstitutionsWhereUniqueInput
 }
 
 export interface UserUpdateWithWhereUniqueWithoutInstitutionInput {
@@ -9732,9 +9903,9 @@ export interface UserUpdateWithWhereUniqueWithoutInstitutionInput {
   data: UserUpdateWithoutInstitutionDataInput
 }
 
-export interface InterestCreateManyWithoutUsersInput {
-  create?: InterestCreateWithoutUsersInput[] | InterestCreateWithoutUsersInput
-  connect?: InterestWhereUniqueInput[] | InterestWhereUniqueInput
+export interface DepartmentCreateManyWithoutInstitutionInput {
+  create?: DepartmentCreateWithoutInstitutionInput[] | DepartmentCreateWithoutInstitutionInput
+  connect?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
 }
 
 export interface UserUpdateWithoutInstitutionDataInput {
@@ -9758,17 +9929,18 @@ export interface UserUpdateWithoutInstitutionDataInput {
   interest?: InterestUpdateManyWithoutUsersInput
   messages?: MessageUpdateOneInput
   connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
+  connectFrom?: ConnectUpdateManyWithoutFromInput
   articles?: ArticleUpdateManyWithoutAuthorInput
+  favourites?: ArticleUpdateManyWithoutUserFavouritedInput
   channels?: ChannelsUpdateManyWithoutParticipantsInput
   myChannels?: ChannelsUpdateManyWithoutAuthorInput
   likedArticles?: ArticleUpdateManyWithoutLikesInput
   comments?: CommentUpdateManyWithoutAuthorInput
 }
 
-export interface MessageCreateOneInput {
-  create?: MessageCreateInput
-  connect?: MessageWhereUniqueInput
+export interface UserCreateManyWithoutDepartmentInput {
+  create?: UserCreateWithoutDepartmentInput[] | UserCreateWithoutDepartmentInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
 }
 
 export interface DepartmentUpdateOneWithoutUsersInput {
@@ -9780,9 +9952,9 @@ export interface DepartmentUpdateOneWithoutUsersInput {
   upsert?: DepartmentUpsertWithoutUsersInput
 }
 
-export interface ChannelsCreateOneWithoutMessagesInput {
-  create?: ChannelsCreateWithoutMessagesInput
-  connect?: ChannelsWhereUniqueInput
+export interface InterestCreateManyWithoutUsersInput {
+  create?: InterestCreateWithoutUsersInput[] | InterestCreateWithoutUsersInput
+  connect?: InterestWhereUniqueInput[] | InterestWhereUniqueInput
 }
 
 export interface DepartmentUpdateWithoutUsersDataInput {
@@ -9790,9 +9962,9 @@ export interface DepartmentUpdateWithoutUsersDataInput {
   institution?: InstitutionsUpdateOneWithoutDepartmentsInput
 }
 
-export interface UserCreateOneWithoutMyChannelsInput {
-  create?: UserCreateWithoutMyChannelsInput
-  connect?: UserWhereUniqueInput
+export interface MessageCreateOneInput {
+  create?: MessageCreateInput
+  connect?: MessageWhereUniqueInput
 }
 
 export interface InstitutionsUpdateOneWithoutDepartmentsInput {
@@ -9804,9 +9976,9 @@ export interface InstitutionsUpdateOneWithoutDepartmentsInput {
   upsert?: InstitutionsUpsertWithoutDepartmentsInput
 }
 
-export interface ConnectCreateManyWithoutToInput {
-  create?: ConnectCreateWithoutToInput[] | ConnectCreateWithoutToInput
-  connect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
+export interface ChannelsCreateOneWithoutMessagesInput {
+  create?: ChannelsCreateWithoutMessagesInput
+  connect?: ChannelsWhereUniqueInput
 }
 
 export interface InstitutionsUpdateWithoutDepartmentsDataInput {
@@ -9816,8 +9988,8 @@ export interface InstitutionsUpdateWithoutDepartmentsDataInput {
   users?: UserUpdateManyWithoutInstitutionInput
 }
 
-export interface UserCreateOneWithoutConectFromInput {
-  create?: UserCreateWithoutConectFromInput
+export interface UserCreateOneWithoutMyChannelsInput {
+  create?: UserCreateWithoutMyChannelsInput
   connect?: UserWhereUniqueInput
 }
 
@@ -9830,9 +10002,9 @@ export interface CountryUpdateOneWithoutInstitutionsInput {
   upsert?: CountryUpsertWithoutInstitutionsInput
 }
 
-export interface ArticleCreateManyWithoutAuthorInput {
-  create?: ArticleCreateWithoutAuthorInput[] | ArticleCreateWithoutAuthorInput
-  connect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
+export interface ConnectCreateManyWithoutToInput {
+  create?: ConnectCreateWithoutToInput[] | ConnectCreateWithoutToInput
+  connect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
 }
 
 export interface CountryUpdateWithoutInstitutionsDataInput {
@@ -9841,9 +10013,9 @@ export interface CountryUpdateWithoutInstitutionsDataInput {
   users?: UserUpdateManyWithoutCountryInput
 }
 
-export interface UserCreateManyWithoutLikedArticlesInput {
-  create?: UserCreateWithoutLikedArticlesInput[] | UserCreateWithoutLikedArticlesInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+export interface UserCreateOneWithoutConnectFromInput {
+  create?: UserCreateWithoutConnectFromInput
+  connect?: UserWhereUniqueInput
 }
 
 export interface UserUpdateManyWithoutCountryInput {
@@ -9855,14 +10027,99 @@ export interface UserUpdateManyWithoutCountryInput {
   upsert?: UserUpsertWithWhereUniqueWithoutCountryInput[] | UserUpsertWithWhereUniqueWithoutCountryInput
 }
 
-export interface ConnectCreateManyWithoutFromInput {
-  create?: ConnectCreateWithoutFromInput[] | ConnectCreateWithoutFromInput
-  connect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
+export interface ArticleCreateManyWithoutAuthorInput {
+  create?: ArticleCreateWithoutAuthorInput[] | ArticleCreateWithoutAuthorInput
+  connect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
 }
 
 export interface UserUpdateWithWhereUniqueWithoutCountryInput {
   where: UserWhereUniqueInput
   data: UserUpdateWithoutCountryDataInput
+}
+
+export interface UserCreateManyWithoutLikedArticlesInput {
+  create?: UserCreateWithoutLikedArticlesInput[] | UserCreateWithoutLikedArticlesInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+}
+
+export interface UserUpdateWithoutCountryDataInput {
+  email?: String
+  username?: String
+  password?: String
+  firstname?: String
+  lastname?: String
+  gender?: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  verified?: Boolean
+  avatar?: FileUpdateOneInput
+  institution?: InstitutionsUpdateOneWithoutUsersInput
+  department?: DepartmentUpdateOneWithoutUsersInput
+  interest?: InterestUpdateManyWithoutUsersInput
+  messages?: MessageUpdateOneInput
+  connectTo?: ConnectUpdateManyWithoutToInput
+  connectFrom?: ConnectUpdateManyWithoutFromInput
+  articles?: ArticleUpdateManyWithoutAuthorInput
+  favourites?: ArticleUpdateManyWithoutUserFavouritedInput
+  channels?: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels?: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles?: ArticleUpdateManyWithoutLikesInput
+  comments?: CommentUpdateManyWithoutAuthorInput
+}
+
+export interface ConnectCreateManyWithoutFromInput {
+  create?: ConnectCreateWithoutFromInput[] | ConnectCreateWithoutFromInput
+  connect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
+}
+
+export interface InstitutionsUpdateOneWithoutUsersInput {
+  create?: InstitutionsCreateWithoutUsersInput
+  connect?: InstitutionsWhereUniqueInput
+  disconnect?: Boolean
+  delete?: Boolean
+  update?: InstitutionsUpdateWithoutUsersDataInput
+  upsert?: InstitutionsUpsertWithoutUsersInput
+}
+
+export interface UserCreateOneWithoutConnectToInput {
+  create?: UserCreateWithoutConnectToInput
+  connect?: UserWhereUniqueInput
+}
+
+export interface InstitutionsUpdateWithoutUsersDataInput {
+  title?: String
+  type?: InstitutionType
+  country?: CountryUpdateOneWithoutInstitutionsInput
+  departments?: DepartmentUpdateManyWithoutInstitutionInput
+}
+
+export interface ArticleCreateManyWithoutUserFavouritedInput {
+  create?: ArticleCreateWithoutUserFavouritedInput[] | ArticleCreateWithoutUserFavouritedInput
+  connect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
+}
+
+export interface DepartmentUpdateManyWithoutInstitutionInput {
+  create?: DepartmentCreateWithoutInstitutionInput[] | DepartmentCreateWithoutInstitutionInput
+  connect?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
+  disconnect?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
+  delete?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
+  update?: DepartmentUpdateWithWhereUniqueWithoutInstitutionInput[] | DepartmentUpdateWithWhereUniqueWithoutInstitutionInput
+  upsert?: DepartmentUpsertWithWhereUniqueWithoutInstitutionInput[] | DepartmentUpsertWithWhereUniqueWithoutInstitutionInput
+}
+
+export interface UserCreateOneWithoutArticlesInput {
+  create?: UserCreateWithoutArticlesInput
+  connect?: UserWhereUniqueInput
+}
+
+export interface DepartmentUpdateWithWhereUniqueWithoutInstitutionInput {
+  where: DepartmentWhereUniqueInput
+  data: DepartmentUpdateWithoutInstitutionDataInput
 }
 
 export interface LocationWhereInput {
@@ -9930,33 +10187,9 @@ export interface LocationWhereInput {
   type_not_ends_with?: String
 }
 
-export interface UserUpdateWithoutCountryDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  verified?: Boolean
-  avatar?: FileUpdateOneInput
-  institution?: InstitutionsUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  interest?: InterestUpdateManyWithoutUsersInput
-  messages?: MessageUpdateOneInput
-  connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
-  channels?: ChannelsUpdateManyWithoutParticipantsInput
-  myChannels?: ChannelsUpdateManyWithoutAuthorInput
-  likedArticles?: ArticleUpdateManyWithoutLikesInput
-  comments?: CommentUpdateManyWithoutAuthorInput
+export interface DepartmentUpdateWithoutInstitutionDataInput {
+  name?: String
+  users?: UserUpdateManyWithoutDepartmentInput
 }
 
 export interface ConnectSubscriptionWhereInput {
@@ -9969,13 +10202,13 @@ export interface ConnectSubscriptionWhereInput {
   node?: ConnectWhereInput
 }
 
-export interface InstitutionsUpdateOneWithoutUsersInput {
-  create?: InstitutionsCreateWithoutUsersInput
-  connect?: InstitutionsWhereUniqueInput
-  disconnect?: Boolean
-  delete?: Boolean
-  update?: InstitutionsUpdateWithoutUsersDataInput
-  upsert?: InstitutionsUpsertWithoutUsersInput
+export interface UserUpdateManyWithoutDepartmentInput {
+  create?: UserCreateWithoutDepartmentInput[] | UserCreateWithoutDepartmentInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  update?: UserUpdateWithWhereUniqueWithoutDepartmentInput[] | UserUpdateWithWhereUniqueWithoutDepartmentInput
+  upsert?: UserUpsertWithWhereUniqueWithoutDepartmentInput[] | UserUpsertWithWhereUniqueWithoutDepartmentInput
 }
 
 export interface InstitutionsSubscriptionWhereInput {
@@ -9988,11 +10221,9 @@ export interface InstitutionsSubscriptionWhereInput {
   node?: InstitutionsWhereInput
 }
 
-export interface InstitutionsUpdateWithoutUsersDataInput {
-  title?: String
-  type?: InstitutionType
-  country?: CountryUpdateOneWithoutInstitutionsInput
-  departments?: DepartmentUpdateManyWithoutInstitutionInput
+export interface UserUpdateWithWhereUniqueWithoutDepartmentInput {
+  where: UserWhereUniqueInput
+  data: UserUpdateWithoutDepartmentDataInput
 }
 
 export interface PostSubscriptionWhereInput {
@@ -10003,67 +10234,6 @@ export interface PostSubscriptionWhereInput {
   updatedFields_contains_every?: String[] | String
   updatedFields_contains_some?: String[] | String
   node?: PostWhereInput
-}
-
-export interface DepartmentUpdateManyWithoutInstitutionInput {
-  create?: DepartmentCreateWithoutInstitutionInput[] | DepartmentCreateWithoutInstitutionInput
-  connect?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
-  disconnect?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
-  delete?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
-  update?: DepartmentUpdateWithWhereUniqueWithoutInstitutionInput[] | DepartmentUpdateWithWhereUniqueWithoutInstitutionInput
-  upsert?: DepartmentUpsertWithWhereUniqueWithoutInstitutionInput[] | DepartmentUpsertWithWhereUniqueWithoutInstitutionInput
-}
-
-export interface LibraryWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface DepartmentUpdateWithWhereUniqueWithoutInstitutionInput {
-  where: DepartmentWhereUniqueInput
-  data: DepartmentUpdateWithoutInstitutionDataInput
-}
-
-export interface CountryWhereUniqueInput {
-  id?: ID_Input
-  shortName?: String
-  name?: String
-}
-
-export interface DepartmentUpdateWithoutInstitutionDataInput {
-  name?: String
-  users?: UserUpdateManyWithoutDepartmentInput
-}
-
-export interface UserWhereUniqueInput {
-  id?: ID_Input
-  email?: String
-  username?: String
-}
-
-export interface UserUpdateManyWithoutDepartmentInput {
-  create?: UserCreateWithoutDepartmentInput[] | UserCreateWithoutDepartmentInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  update?: UserUpdateWithWhereUniqueWithoutDepartmentInput[] | UserUpdateWithWhereUniqueWithoutDepartmentInput
-  upsert?: UserUpsertWithWhereUniqueWithoutDepartmentInput[] | UserUpsertWithWhereUniqueWithoutDepartmentInput
-}
-
-export interface MessageUpdateInput {
-  text?: String
-  cahnnel?: ChannelsUpdateOneWithoutMessagesInput
-  user?: UserUpdateOneInput
-}
-
-export interface UserUpdateWithWhereUniqueWithoutDepartmentInput {
-  where: UserWhereUniqueInput
-  data: UserUpdateWithoutDepartmentDataInput
-}
-
-export interface InterestUpdateInput {
-  name?: String
-  avatar?: String
-  users?: UserUpdateManyWithoutInterestInput
 }
 
 export interface UserUpdateWithoutDepartmentDataInput {
@@ -10087,20 +10257,17 @@ export interface UserUpdateWithoutDepartmentDataInput {
   interest?: InterestUpdateManyWithoutUsersInput
   messages?: MessageUpdateOneInput
   connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
+  connectFrom?: ConnectUpdateManyWithoutFromInput
   articles?: ArticleUpdateManyWithoutAuthorInput
+  favourites?: ArticleUpdateManyWithoutUserFavouritedInput
   channels?: ChannelsUpdateManyWithoutParticipantsInput
   myChannels?: ChannelsUpdateManyWithoutAuthorInput
   likedArticles?: ArticleUpdateManyWithoutLikesInput
   comments?: CommentUpdateManyWithoutAuthorInput
 }
 
-export interface CommentUpdateInput {
-  slug?: String
-  body?: String
-  replies?: CommentUpdateManyInput
-  article?: ArticleUpdateOneWithoutCommentsInput
-  author?: UserUpdateOneWithoutCommentsInput
+export interface LibraryWhereUniqueInput {
+  id?: ID_Input
 }
 
 export interface InterestUpdateManyWithoutUsersInput {
@@ -10112,10 +10279,10 @@ export interface InterestUpdateManyWithoutUsersInput {
   upsert?: InterestUpsertWithWhereUniqueWithoutUsersInput[] | InterestUpsertWithWhereUniqueWithoutUsersInput
 }
 
-export interface InstitutionsUpsertWithWhereUniqueWithoutCountryInput {
-  where: InstitutionsWhereUniqueInput
-  update: InstitutionsUpdateWithoutCountryDataInput
-  create: InstitutionsCreateWithoutCountryInput
+export interface CountryWhereUniqueInput {
+  id?: ID_Input
+  shortName?: String
+  name?: String
 }
 
 export interface InterestUpdateWithWhereUniqueWithoutUsersInput {
@@ -10123,9 +10290,10 @@ export interface InterestUpdateWithWhereUniqueWithoutUsersInput {
   data: InterestUpdateWithoutUsersDataInput
 }
 
-export interface CountryUpsertWithoutInstitutionsInput {
-  update: CountryUpdateWithoutInstitutionsDataInput
-  create: CountryCreateWithoutInstitutionsInput
+export interface UserWhereUniqueInput {
+  id?: ID_Input
+  email?: String
+  username?: String
 }
 
 export interface InterestUpdateWithoutUsersDataInput {
@@ -10133,10 +10301,10 @@ export interface InterestUpdateWithoutUsersDataInput {
   avatar?: String
 }
 
-export interface UserUpsertWithWhereUniqueWithoutDepartmentInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutDepartmentDataInput
-  create: UserCreateWithoutDepartmentInput
+export interface MessageUpdateInput {
+  text?: String
+  channel?: ChannelsUpdateOneWithoutMessagesInput
+  user?: UserUpdateOneInput
 }
 
 export interface InterestUpsertWithWhereUniqueWithoutUsersInput {
@@ -10145,10 +10313,10 @@ export interface InterestUpsertWithWhereUniqueWithoutUsersInput {
   create: InterestCreateWithoutUsersInput
 }
 
-export interface ConnectUpsertWithWhereUniqueWithoutToInput {
-  where: ConnectWhereUniqueInput
-  update: ConnectUpdateWithoutToDataInput
-  create: ConnectCreateWithoutToInput
+export interface InterestUpdateInput {
+  name?: String
+  avatar?: String
+  users?: UserUpdateManyWithoutInterestInput
 }
 
 export interface MessageUpdateOneInput {
@@ -10160,21 +10328,24 @@ export interface MessageUpdateOneInput {
   upsert?: MessageUpsertNestedInput
 }
 
-export interface ConnectUpsertWithWhereUniqueWithoutFromInput {
-  where: ConnectWhereUniqueInput
-  update: ConnectUpdateWithoutFromDataInput
-  create: ConnectCreateWithoutFromInput
+export interface CommentUpdateInput {
+  slug?: String
+  body?: String
+  replies?: CommentUpdateManyInput
+  article?: ArticleUpdateOneWithoutCommentsInput
+  author?: UserUpdateOneWithoutCommentsInput
 }
 
 export interface MessageUpdateDataInput {
   text?: String
-  cahnnel?: ChannelsUpdateOneWithoutMessagesInput
+  channel?: ChannelsUpdateOneWithoutMessagesInput
   user?: UserUpdateOneInput
 }
 
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput
-  create: UserCreateInput
+export interface InstitutionsUpsertWithWhereUniqueWithoutCountryInput {
+  where: InstitutionsWhereUniqueInput
+  update: InstitutionsUpdateWithoutCountryDataInput
+  create: InstitutionsCreateWithoutCountryInput
 }
 
 export interface ChannelsUpdateOneWithoutMessagesInput {
@@ -10185,10 +10356,9 @@ export interface ChannelsUpdateOneWithoutMessagesInput {
   upsert?: ChannelsUpsertWithoutMessagesInput
 }
 
-export interface CommentUpsertWithWhereUniqueWithoutArticleInput {
-  where: CommentWhereUniqueInput
-  update: CommentUpdateWithoutArticleDataInput
-  create: CommentCreateWithoutArticleInput
+export interface CountryUpsertWithoutInstitutionsInput {
+  update: CountryUpdateWithoutInstitutionsDataInput
+  create: CountryCreateWithoutInstitutionsInput
 }
 
 export interface ChannelsUpdateWithoutMessagesDataInput {
@@ -10199,9 +10369,10 @@ export interface ChannelsUpdateWithoutMessagesDataInput {
   participants?: UserUpdateManyWithoutChannelsInput
 }
 
-export interface UserUpsertWithoutArticlesInput {
-  update: UserUpdateWithoutArticlesDataInput
-  create: UserCreateWithoutArticlesInput
+export interface UserUpsertWithWhereUniqueWithoutDepartmentInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutDepartmentDataInput
+  create: UserCreateWithoutDepartmentInput
 }
 
 export interface UserUpdateOneWithoutMyChannelsInput {
@@ -10212,10 +10383,10 @@ export interface UserUpdateOneWithoutMyChannelsInput {
   upsert?: UserUpsertWithoutMyChannelsInput
 }
 
-export interface PostCreateInput {
-  isPublished?: Boolean
-  title: String
-  text: String
+export interface ConnectUpsertWithWhereUniqueWithoutToInput {
+  where: ConnectWhereUniqueInput
+  update: ConnectUpdateWithoutToDataInput
+  create: ConnectCreateWithoutToInput
 }
 
 export interface UserUpdateWithoutMyChannelsDataInput {
@@ -10240,9 +10411,96 @@ export interface UserUpdateWithoutMyChannelsDataInput {
   interest?: InterestUpdateManyWithoutUsersInput
   messages?: MessageUpdateOneInput
   connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
+  connectFrom?: ConnectUpdateManyWithoutFromInput
   articles?: ArticleUpdateManyWithoutAuthorInput
+  favourites?: ArticleUpdateManyWithoutUserFavouritedInput
   channels?: ChannelsUpdateManyWithoutParticipantsInput
+  likedArticles?: ArticleUpdateManyWithoutLikesInput
+  comments?: CommentUpdateManyWithoutAuthorInput
+}
+
+export interface ConnectUpsertWithWhereUniqueWithoutFromInput {
+  where: ConnectWhereUniqueInput
+  update: ConnectUpdateWithoutFromDataInput
+  create: ConnectCreateWithoutFromInput
+}
+
+export interface ConnectUpdateManyWithoutToInput {
+  create?: ConnectCreateWithoutToInput[] | ConnectCreateWithoutToInput
+  connect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
+  disconnect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
+  delete?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
+  update?: ConnectUpdateWithWhereUniqueWithoutToInput[] | ConnectUpdateWithWhereUniqueWithoutToInput
+  upsert?: ConnectUpsertWithWhereUniqueWithoutToInput[] | ConnectUpsertWithWhereUniqueWithoutToInput
+}
+
+export interface ChannelsUpsertWithWhereUniqueWithoutParticipantsInput {
+  where: ChannelsWhereUniqueInput
+  update: ChannelsUpdateWithoutParticipantsDataInput
+  create: ChannelsCreateWithoutParticipantsInput
+}
+
+export interface ConnectUpdateWithWhereUniqueWithoutToInput {
+  where: ConnectWhereUniqueInput
+  data: ConnectUpdateWithoutToDataInput
+}
+
+export interface UserUpsertWithWhereUniqueWithoutChannelsInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutChannelsDataInput
+  create: UserCreateWithoutChannelsInput
+}
+
+export interface ConnectUpdateWithoutToDataInput {
+  status?: Int
+  from?: UserUpdateOneWithoutConnectFromInput
+}
+
+export interface UserUpsertWithoutCommentsInput {
+  update: UserUpdateWithoutCommentsDataInput
+  create: UserCreateWithoutCommentsInput
+}
+
+export interface UserUpdateOneWithoutConnectFromInput {
+  create?: UserCreateWithoutConnectFromInput
+  connect?: UserWhereUniqueInput
+  delete?: Boolean
+  update?: UserUpdateWithoutConnectFromDataInput
+  upsert?: UserUpsertWithoutConnectFromInput
+}
+
+export interface PostCreateInput {
+  isPublished?: Boolean
+  title: String
+  text: String
+}
+
+export interface UserUpdateWithoutConnectFromDataInput {
+  email?: String
+  username?: String
+  password?: String
+  firstname?: String
+  lastname?: String
+  gender?: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  verified?: Boolean
+  avatar?: FileUpdateOneInput
+  country?: CountryUpdateOneWithoutUsersInput
+  institution?: InstitutionsUpdateOneWithoutUsersInput
+  department?: DepartmentUpdateOneWithoutUsersInput
+  interest?: InterestUpdateManyWithoutUsersInput
+  messages?: MessageUpdateOneInput
+  connectTo?: ConnectUpdateManyWithoutToInput
+  articles?: ArticleUpdateManyWithoutAuthorInput
+  favourites?: ArticleUpdateManyWithoutUserFavouritedInput
+  channels?: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels?: ChannelsUpdateManyWithoutAuthorInput
   likedArticles?: ArticleUpdateManyWithoutLikesInput
   comments?: CommentUpdateManyWithoutAuthorInput
 }
@@ -10261,15 +10519,16 @@ export interface ArticleCreateInput {
   author: UserCreateOneWithoutArticlesInput
   likes?: UserCreateManyWithoutLikedArticlesInput
   comments?: CommentCreateManyWithoutArticleInput
+  userFavourited?: UserCreateManyWithoutFavouritesInput
 }
 
-export interface ConnectUpdateManyWithoutToInput {
-  create?: ConnectCreateWithoutToInput[] | ConnectCreateWithoutToInput
-  connect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
-  disconnect?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
-  delete?: ConnectWhereUniqueInput[] | ConnectWhereUniqueInput
-  update?: ConnectUpdateWithWhereUniqueWithoutToInput[] | ConnectUpdateWithWhereUniqueWithoutToInput
-  upsert?: ConnectUpsertWithWhereUniqueWithoutToInput[] | ConnectUpsertWithWhereUniqueWithoutToInput
+export interface ArticleUpdateManyWithoutAuthorInput {
+  create?: ArticleCreateWithoutAuthorInput[] | ArticleCreateWithoutAuthorInput
+  connect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
+  disconnect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
+  delete?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
+  update?: ArticleUpdateWithWhereUniqueWithoutAuthorInput[] | ArticleUpdateWithWhereUniqueWithoutAuthorInput
+  upsert?: ArticleUpsertWithWhereUniqueWithoutAuthorInput[] | ArticleUpsertWithWhereUniqueWithoutAuthorInput
 }
 
 export interface UserCreateManyWithoutInterestInput {
@@ -10277,9 +10536,9 @@ export interface UserCreateManyWithoutInterestInput {
   connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
 }
 
-export interface ConnectUpdateWithWhereUniqueWithoutToInput {
-  where: ConnectWhereUniqueInput
-  data: ConnectUpdateWithoutToDataInput
+export interface ArticleUpdateWithWhereUniqueWithoutAuthorInput {
+  where: ArticleWhereUniqueInput
+  data: ArticleUpdateWithoutAuthorDataInput
 }
 
 export interface CountryCreateWithoutUsersInput {
@@ -10288,9 +10547,20 @@ export interface CountryCreateWithoutUsersInput {
   institutions?: InstitutionsCreateManyWithoutCountryInput
 }
 
-export interface ConnectUpdateWithoutToDataInput {
-  accepted?: Boolean
-  from?: UserUpdateOneWithoutConectFromInput
+export interface ArticleUpdateWithoutAuthorDataInput {
+  slug?: String
+  isPublished?: Boolean
+  title?: String
+  body?: String
+  type?: Arcticletype
+  link?: String
+  description?: String
+  viewCount?: Int
+  tags?: ArticleUpdatetagsInput
+  category?: InterestUpdateManyInput
+  likes?: UserUpdateManyWithoutLikedArticlesInput
+  comments?: CommentUpdateManyWithoutArticleInput
+  userFavourited?: UserUpdateManyWithoutFavouritesInput
 }
 
 export interface UserCreateWithoutInstitutionInput {
@@ -10314,20 +10584,22 @@ export interface UserCreateWithoutInstitutionInput {
   interest?: InterestCreateManyWithoutUsersInput
   messages?: MessageCreateOneInput
   connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
+  connectFrom?: ConnectCreateManyWithoutFromInput
   articles?: ArticleCreateManyWithoutAuthorInput
+  favourites?: ArticleCreateManyWithoutUserFavouritedInput
   channels?: ChannelsCreateManyWithoutParticipantsInput
   myChannels?: ChannelsCreateManyWithoutAuthorInput
   likedArticles?: ArticleCreateManyWithoutLikesInput
   comments?: CommentCreateManyWithoutAuthorInput
 }
 
-export interface UserUpdateOneWithoutConectFromInput {
-  create?: UserCreateWithoutConectFromInput
-  connect?: UserWhereUniqueInput
-  delete?: Boolean
-  update?: UserUpdateWithoutConectFromDataInput
-  upsert?: UserUpsertWithoutConectFromInput
+export interface UserUpdateManyWithoutLikedArticlesInput {
+  create?: UserCreateWithoutLikedArticlesInput[] | UserCreateWithoutLikedArticlesInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  update?: UserUpdateWithWhereUniqueWithoutLikedArticlesInput[] | UserUpdateWithWhereUniqueWithoutLikedArticlesInput
+  upsert?: UserUpsertWithWhereUniqueWithoutLikedArticlesInput[] | UserUpsertWithWhereUniqueWithoutLikedArticlesInput
 }
 
 export interface InstitutionsCreateWithoutDepartmentsInput {
@@ -10337,33 +10609,9 @@ export interface InstitutionsCreateWithoutDepartmentsInput {
   users?: UserCreateManyWithoutInstitutionInput
 }
 
-export interface UserUpdateWithoutConectFromDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  verified?: Boolean
-  avatar?: FileUpdateOneInput
-  country?: CountryUpdateOneWithoutUsersInput
-  institution?: InstitutionsUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  interest?: InterestUpdateManyWithoutUsersInput
-  messages?: MessageUpdateOneInput
-  connectTo?: ConnectUpdateManyWithoutToInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
-  channels?: ChannelsUpdateManyWithoutParticipantsInput
-  myChannels?: ChannelsUpdateManyWithoutAuthorInput
-  likedArticles?: ArticleUpdateManyWithoutLikesInput
-  comments?: CommentUpdateManyWithoutAuthorInput
+export interface UserUpdateWithWhereUniqueWithoutLikedArticlesInput {
+  where: UserWhereUniqueInput
+  data: UserUpdateWithoutLikedArticlesDataInput
 }
 
 export interface UserCreateWithoutCountryInput {
@@ -10387,93 +10635,13 @@ export interface UserCreateWithoutCountryInput {
   interest?: InterestCreateManyWithoutUsersInput
   messages?: MessageCreateOneInput
   connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
+  connectFrom?: ConnectCreateManyWithoutFromInput
   articles?: ArticleCreateManyWithoutAuthorInput
+  favourites?: ArticleCreateManyWithoutUserFavouritedInput
   channels?: ChannelsCreateManyWithoutParticipantsInput
   myChannels?: ChannelsCreateManyWithoutAuthorInput
   likedArticles?: ArticleCreateManyWithoutLikesInput
   comments?: CommentCreateManyWithoutAuthorInput
-}
-
-export interface ArticleUpdateManyWithoutAuthorInput {
-  create?: ArticleCreateWithoutAuthorInput[] | ArticleCreateWithoutAuthorInput
-  connect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
-  disconnect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
-  delete?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
-  update?: ArticleUpdateWithWhereUniqueWithoutAuthorInput[] | ArticleUpdateWithWhereUniqueWithoutAuthorInput
-  upsert?: ArticleUpsertWithWhereUniqueWithoutAuthorInput[] | ArticleUpsertWithWhereUniqueWithoutAuthorInput
-}
-
-export interface DepartmentCreateWithoutInstitutionInput {
-  name: String
-  users?: UserCreateManyWithoutDepartmentInput
-}
-
-export interface ArticleUpdateWithWhereUniqueWithoutAuthorInput {
-  where: ArticleWhereUniqueInput
-  data: ArticleUpdateWithoutAuthorDataInput
-}
-
-export interface InterestCreateWithoutUsersInput {
-  name: String
-  avatar: String
-}
-
-export interface ArticleUpdateWithoutAuthorDataInput {
-  slug?: String
-  isPublished?: Boolean
-  title?: String
-  body?: String
-  type?: Arcticletype
-  link?: String
-  description?: String
-  viewCount?: Int
-  tags?: ArticleUpdatetagsInput
-  category?: InterestUpdateManyInput
-  likes?: UserUpdateManyWithoutLikedArticlesInput
-  comments?: CommentUpdateManyWithoutArticleInput
-}
-
-export interface ChannelsCreateWithoutMessagesInput {
-  title: String
-  avatar?: String
-  type?: ChannelType
-  author: UserCreateOneWithoutMyChannelsInput
-  participants?: UserCreateManyWithoutChannelsInput
-}
-
-export interface UserUpdateManyWithoutLikedArticlesInput {
-  create?: UserCreateWithoutLikedArticlesInput[] | UserCreateWithoutLikedArticlesInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  update?: UserUpdateWithWhereUniqueWithoutLikedArticlesInput[] | UserUpdateWithWhereUniqueWithoutLikedArticlesInput
-  upsert?: UserUpsertWithWhereUniqueWithoutLikedArticlesInput[] | UserUpsertWithWhereUniqueWithoutLikedArticlesInput
-}
-
-export interface ConnectCreateWithoutToInput {
-  accepted?: Boolean
-  from: UserCreateOneWithoutConectFromInput
-}
-
-export interface UserUpdateWithWhereUniqueWithoutLikedArticlesInput {
-  where: UserWhereUniqueInput
-  data: UserUpdateWithoutLikedArticlesDataInput
-}
-
-export interface ArticleCreateWithoutAuthorInput {
-  slug?: String
-  isPublished?: Boolean
-  title: String
-  body: String
-  type?: Arcticletype
-  link?: String
-  description?: String
-  viewCount?: Int
-  tags?: ArticleCreatetagsInput
-  category?: InterestCreateManyInput
-  likes?: UserCreateManyWithoutLikedArticlesInput
-  comments?: CommentCreateManyWithoutArticleInput
 }
 
 export interface UserUpdateWithoutLikedArticlesDataInput {
@@ -10498,16 +10666,17 @@ export interface UserUpdateWithoutLikedArticlesDataInput {
   interest?: InterestUpdateManyWithoutUsersInput
   messages?: MessageUpdateOneInput
   connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
+  connectFrom?: ConnectUpdateManyWithoutFromInput
   articles?: ArticleUpdateManyWithoutAuthorInput
+  favourites?: ArticleUpdateManyWithoutUserFavouritedInput
   channels?: ChannelsUpdateManyWithoutParticipantsInput
   myChannels?: ChannelsUpdateManyWithoutAuthorInput
   comments?: CommentUpdateManyWithoutAuthorInput
 }
 
-export interface ConnectCreateWithoutFromInput {
-  accepted?: Boolean
-  to: UserCreateOneWithoutConnectToInput
+export interface DepartmentCreateWithoutInstitutionInput {
+  name: String
+  users?: UserCreateManyWithoutDepartmentInput
 }
 
 export interface ConnectUpdateManyWithoutFromInput {
@@ -10519,14 +10688,9 @@ export interface ConnectUpdateManyWithoutFromInput {
   upsert?: ConnectUpsertWithWhereUniqueWithoutFromInput[] | ConnectUpsertWithWhereUniqueWithoutFromInput
 }
 
-export interface InterestSubscriptionWhereInput {
-  AND?: InterestSubscriptionWhereInput[] | InterestSubscriptionWhereInput
-  OR?: InterestSubscriptionWhereInput[] | InterestSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: InterestWhereInput
+export interface InterestCreateWithoutUsersInput {
+  name: String
+  avatar: String
 }
 
 export interface ConnectUpdateWithWhereUniqueWithoutFromInput {
@@ -10534,25 +10698,22 @@ export interface ConnectUpdateWithWhereUniqueWithoutFromInput {
   data: ConnectUpdateWithoutFromDataInput
 }
 
-export interface LocationSubscriptionWhereInput {
-  AND?: LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput
-  OR?: LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: LocationWhereInput
+export interface ChannelsCreateWithoutMessagesInput {
+  title: String
+  avatar?: String
+  type?: ChannelType
+  author: UserCreateOneWithoutMyChannelsInput
+  participants?: UserCreateManyWithoutChannelsInput
 }
 
 export interface ConnectUpdateWithoutFromDataInput {
-  accepted?: Boolean
+  status?: Int
   to?: UserUpdateOneWithoutConnectToInput
 }
 
-export interface ArticleWhereUniqueInput {
-  id?: ID_Input
-  slug?: String
-  link?: String
+export interface ConnectCreateWithoutToInput {
+  status?: Int
+  from: UserCreateOneWithoutConnectFromInput
 }
 
 export interface UserUpdateOneWithoutConnectToInput {
@@ -10563,8 +10724,20 @@ export interface UserUpdateOneWithoutConnectToInput {
   upsert?: UserUpsertWithoutConnectToInput
 }
 
-export interface ChannelsWhereUniqueInput {
-  id?: ID_Input
+export interface ArticleCreateWithoutAuthorInput {
+  slug?: String
+  isPublished?: Boolean
+  title: String
+  body: String
+  type?: Arcticletype
+  link?: String
+  description?: String
+  viewCount?: Int
+  tags?: ArticleCreatetagsInput
+  category?: InterestCreateManyInput
+  likes?: UserCreateManyWithoutLikedArticlesInput
+  comments?: CommentCreateManyWithoutArticleInput
+  userFavourited?: UserCreateManyWithoutFavouritesInput
 }
 
 export interface UserUpdateWithoutConnectToDataInput {
@@ -10588,199 +10761,48 @@ export interface UserUpdateWithoutConnectToDataInput {
   department?: DepartmentUpdateOneWithoutUsersInput
   interest?: InterestUpdateManyWithoutUsersInput
   messages?: MessageUpdateOneInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
+  connectFrom?: ConnectUpdateManyWithoutFromInput
   articles?: ArticleUpdateManyWithoutAuthorInput
+  favourites?: ArticleUpdateManyWithoutUserFavouritedInput
   channels?: ChannelsUpdateManyWithoutParticipantsInput
   myChannels?: ChannelsUpdateManyWithoutAuthorInput
   likedArticles?: ArticleUpdateManyWithoutLikesInput
   comments?: CommentUpdateManyWithoutAuthorInput
 }
 
-export interface InstitutionsUpdateInput {
-  title?: String
-  type?: InstitutionType
-  country?: CountryUpdateOneWithoutInstitutionsInput
-  users?: UserUpdateManyWithoutInstitutionInput
-  departments?: DepartmentUpdateManyWithoutInstitutionInput
+export interface ConnectCreateWithoutFromInput {
+  status?: Int
+  to: UserCreateOneWithoutConnectToInput
 }
 
-export interface ChannelsUpdateManyWithoutParticipantsInput {
-  create?: ChannelsCreateWithoutParticipantsInput[] | ChannelsCreateWithoutParticipantsInput
-  connect?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
-  disconnect?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
-  delete?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
-  update?: ChannelsUpdateWithWhereUniqueWithoutParticipantsInput[] | ChannelsUpdateWithWhereUniqueWithoutParticipantsInput
-  upsert?: ChannelsUpsertWithWhereUniqueWithoutParticipantsInput[] | ChannelsUpsertWithWhereUniqueWithoutParticipantsInput
+export interface ArticleUpdateManyWithoutUserFavouritedInput {
+  create?: ArticleCreateWithoutUserFavouritedInput[] | ArticleCreateWithoutUserFavouritedInput
+  connect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
+  disconnect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
+  delete?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
+  update?: ArticleUpdateWithWhereUniqueWithoutUserFavouritedInput[] | ArticleUpdateWithWhereUniqueWithoutUserFavouritedInput
+  upsert?: ArticleUpsertWithWhereUniqueWithoutUserFavouritedInput[] | ArticleUpsertWithWhereUniqueWithoutUserFavouritedInput
 }
 
-export interface DepartmentUpsertWithoutUsersInput {
-  update: DepartmentUpdateWithoutUsersDataInput
-  create: DepartmentCreateWithoutUsersInput
-}
-
-export interface ChannelsUpdateWithWhereUniqueWithoutParticipantsInput {
-  where: ChannelsWhereUniqueInput
-  data: ChannelsUpdateWithoutParticipantsDataInput
-}
-
-export interface ChannelsUpsertWithoutMessagesInput {
-  update: ChannelsUpdateWithoutMessagesDataInput
-  create: ChannelsCreateWithoutMessagesInput
-}
-
-export interface ChannelsUpdateWithoutParticipantsDataInput {
-  title?: String
-  avatar?: String
-  type?: ChannelType
-  author?: UserUpdateOneWithoutMyChannelsInput
-  messages?: MessageUpdateManyWithoutCahnnelInput
-}
-
-export interface ChannelsUpsertWithWhereUniqueWithoutParticipantsInput {
-  where: ChannelsWhereUniqueInput
-  update: ChannelsUpdateWithoutParticipantsDataInput
-  create: ChannelsCreateWithoutParticipantsInput
-}
-
-export interface MessageUpdateManyWithoutCahnnelInput {
-  create?: MessageCreateWithoutCahnnelInput[] | MessageCreateWithoutCahnnelInput
-  connect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput
-  disconnect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput
-  delete?: MessageWhereUniqueInput[] | MessageWhereUniqueInput
-  update?: MessageUpdateWithWhereUniqueWithoutCahnnelInput[] | MessageUpdateWithWhereUniqueWithoutCahnnelInput
-  upsert?: MessageUpsertWithWhereUniqueWithoutCahnnelInput[] | MessageUpsertWithWhereUniqueWithoutCahnnelInput
-}
-
-export interface CommentUpdateWithWhereUniqueWithoutArticleInput {
-  where: CommentWhereUniqueInput
-  data: CommentUpdateWithoutArticleDataInput
-}
-
-export interface MessageUpdateWithWhereUniqueWithoutCahnnelInput {
-  where: MessageWhereUniqueInput
-  data: MessageUpdateWithoutCahnnelDataInput
-}
-
-export interface LocationCreateOneInput {
-  create?: LocationCreateInput
-  connect?: LocationWhereUniqueInput
-}
-
-export interface MessageUpdateWithoutCahnnelDataInput {
-  text?: String
-  user?: UserUpdateOneInput
-}
-
-export interface FileCreateOneInput {
-  create?: FileCreateInput
-  connect?: FileWhereUniqueInput
-}
-
-export interface UserUpdateOneInput {
-  create?: UserCreateInput
-  connect?: UserWhereUniqueInput
-  delete?: Boolean
-  update?: UserUpdateDataInput
-  upsert?: UserUpsertNestedInput
-}
-
-export interface DepartmentCreateWithoutUsersInput {
-  name: String
-  institution?: InstitutionsCreateOneWithoutDepartmentsInput
-}
-
-export interface UserUpdateDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  verified?: Boolean
-  avatar?: FileUpdateOneInput
-  country?: CountryUpdateOneWithoutUsersInput
-  institution?: InstitutionsUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  interest?: InterestUpdateManyWithoutUsersInput
-  messages?: MessageUpdateOneInput
-  connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
-  channels?: ChannelsUpdateManyWithoutParticipantsInput
-  myChannels?: ChannelsUpdateManyWithoutAuthorInput
-  likedArticles?: ArticleUpdateManyWithoutLikesInput
-  comments?: CommentUpdateManyWithoutAuthorInput
-}
-
-export interface InstitutionsCreateWithoutUsersInput {
+export interface ArticleCreateWithoutUserFavouritedInput {
+  slug?: String
+  isPublished?: Boolean
   title: String
-  type: InstitutionType
-  country?: CountryCreateOneWithoutInstitutionsInput
-  departments?: DepartmentCreateManyWithoutInstitutionInput
+  body: String
+  type?: Arcticletype
+  link?: String
+  description?: String
+  viewCount?: Int
+  tags?: ArticleCreatetagsInput
+  category?: InterestCreateManyInput
+  author: UserCreateOneWithoutArticlesInput
+  likes?: UserCreateManyWithoutLikedArticlesInput
+  comments?: CommentCreateManyWithoutArticleInput
 }
 
-export interface ChannelsUpdateManyWithoutAuthorInput {
-  create?: ChannelsCreateWithoutAuthorInput[] | ChannelsCreateWithoutAuthorInput
-  connect?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
-  disconnect?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
-  delete?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
-  update?: ChannelsUpdateWithWhereUniqueWithoutAuthorInput[] | ChannelsUpdateWithWhereUniqueWithoutAuthorInput
-  upsert?: ChannelsUpsertWithWhereUniqueWithoutAuthorInput[] | ChannelsUpsertWithWhereUniqueWithoutAuthorInput
-}
-
-export interface MessageCreateInput {
-  text: String
-  cahnnel: ChannelsCreateOneWithoutMessagesInput
-  user: UserCreateOneInput
-}
-
-export interface ChannelsUpdateWithWhereUniqueWithoutAuthorInput {
-  where: ChannelsWhereUniqueInput
-  data: ChannelsUpdateWithoutAuthorDataInput
-}
-
-export interface UserCreateWithoutConectFromInput {
-  email: String
-  username?: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  verified?: Boolean
-  avatar?: FileCreateOneInput
-  country?: CountryCreateOneWithoutUsersInput
-  institution?: InstitutionsCreateOneWithoutUsersInput
-  department?: DepartmentCreateOneWithoutUsersInput
-  interest?: InterestCreateManyWithoutUsersInput
-  messages?: MessageCreateOneInput
-  connectTo?: ConnectCreateManyWithoutToInput
-  articles?: ArticleCreateManyWithoutAuthorInput
-  channels?: ChannelsCreateManyWithoutParticipantsInput
-  myChannels?: ChannelsCreateManyWithoutAuthorInput
-  likedArticles?: ArticleCreateManyWithoutLikesInput
-  comments?: CommentCreateManyWithoutAuthorInput
-}
-
-export interface ChannelsUpdateWithoutAuthorDataInput {
-  title?: String
-  avatar?: String
-  type?: ChannelType
-  messages?: MessageUpdateManyWithoutCahnnelInput
-  participants?: UserUpdateManyWithoutChannelsInput
+export interface ArticleUpdateWithWhereUniqueWithoutUserFavouritedInput {
+  where: ArticleWhereUniqueInput
+  data: ArticleUpdateWithoutUserFavouritedDataInput
 }
 
 export interface LibraryWhereInput {
@@ -10847,92 +10869,7 @@ export interface LibraryWhereInput {
   location?: LocationWhereInput
 }
 
-export interface UserUpdateManyWithoutChannelsInput {
-  create?: UserCreateWithoutChannelsInput[] | UserCreateWithoutChannelsInput
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
-  update?: UserUpdateWithWhereUniqueWithoutChannelsInput[] | UserUpdateWithWhereUniqueWithoutChannelsInput
-  upsert?: UserUpsertWithWhereUniqueWithoutChannelsInput[] | UserUpsertWithWhereUniqueWithoutChannelsInput
-}
-
-export interface FileWhereUniqueInput {
-  id?: ID_Input
-  secret?: String
-  url?: String
-}
-
-export interface UserUpdateWithWhereUniqueWithoutChannelsInput {
-  where: UserWhereUniqueInput
-  data: UserUpdateWithoutChannelsDataInput
-}
-
-export interface ConnectUpdateInput {
-  accepted?: Boolean
-  to?: UserUpdateOneWithoutConnectToInput
-  from?: UserUpdateOneWithoutConectFromInput
-}
-
-export interface UserUpdateWithoutChannelsDataInput {
-  email?: String
-  username?: String
-  password?: String
-  firstname?: String
-  lastname?: String
-  gender?: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  verified?: Boolean
-  avatar?: FileUpdateOneInput
-  country?: CountryUpdateOneWithoutUsersInput
-  institution?: InstitutionsUpdateOneWithoutUsersInput
-  department?: DepartmentUpdateOneWithoutUsersInput
-  interest?: InterestUpdateManyWithoutUsersInput
-  messages?: MessageUpdateOneInput
-  connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
-  articles?: ArticleUpdateManyWithoutAuthorInput
-  myChannels?: ChannelsUpdateManyWithoutAuthorInput
-  likedArticles?: ArticleUpdateManyWithoutLikesInput
-  comments?: CommentUpdateManyWithoutAuthorInput
-}
-
-export interface InstitutionsUpsertWithoutUsersInput {
-  update: InstitutionsUpdateWithoutUsersDataInput
-  create: InstitutionsCreateWithoutUsersInput
-}
-
-export interface ArticleUpdateManyWithoutLikesInput {
-  create?: ArticleCreateWithoutLikesInput[] | ArticleCreateWithoutLikesInput
-  connect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
-  disconnect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
-  delete?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
-  update?: ArticleUpdateWithWhereUniqueWithoutLikesInput[] | ArticleUpdateWithWhereUniqueWithoutLikesInput
-  upsert?: ArticleUpsertWithWhereUniqueWithoutLikesInput[] | ArticleUpsertWithWhereUniqueWithoutLikesInput
-}
-
-export interface UserUpsertWithWhereUniqueWithoutChannelsInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutChannelsDataInput
-  create: UserCreateWithoutChannelsInput
-}
-
-export interface ArticleUpdateWithWhereUniqueWithoutLikesInput {
-  where: ArticleWhereUniqueInput
-  data: ArticleUpdateWithoutLikesDataInput
-}
-
-export interface InterestCreateManyInput {
-  create?: InterestCreateInput[] | InterestCreateInput
-  connect?: InterestWhereUniqueInput[] | InterestWhereUniqueInput
-}
-
-export interface ArticleUpdateWithoutLikesDataInput {
+export interface ArticleUpdateWithoutUserFavouritedDataInput {
   slug?: String
   isPublished?: Boolean
   title?: String
@@ -10944,13 +10881,18 @@ export interface ArticleUpdateWithoutLikesDataInput {
   tags?: ArticleUpdatetagsInput
   category?: InterestUpdateManyInput
   author?: UserUpdateOneWithoutArticlesInput
+  likes?: UserUpdateManyWithoutLikedArticlesInput
   comments?: CommentUpdateManyWithoutArticleInput
 }
 
-export interface CountryCreateWithoutInstitutionsInput {
-  shortName: String
-  name: String
-  users?: UserCreateManyWithoutCountryInput
+export interface CommentSubscriptionWhereInput {
+  AND?: CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput
+  OR?: CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: CommentWhereInput
 }
 
 export interface UserUpdateOneWithoutArticlesInput {
@@ -10961,33 +10903,10 @@ export interface UserUpdateOneWithoutArticlesInput {
   upsert?: UserUpsertWithoutArticlesInput
 }
 
-export interface UserCreateWithoutMyChannelsInput {
-  email: String
-  username?: String
-  password: String
-  firstname: String
-  lastname: String
-  gender: String
-  type?: String
-  userType?: String
-  newConnectNot?: Boolean
-  newCommentNot?: Boolean
-  newMessageNot?: Boolean
-  newProfileNot?: Boolean
-  completedProfile?: Int
-  verified?: Boolean
-  avatar?: FileCreateOneInput
-  country?: CountryCreateOneWithoutUsersInput
-  institution?: InstitutionsCreateOneWithoutUsersInput
-  department?: DepartmentCreateOneWithoutUsersInput
-  interest?: InterestCreateManyWithoutUsersInput
-  messages?: MessageCreateOneInput
-  connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
-  articles?: ArticleCreateManyWithoutAuthorInput
-  channels?: ChannelsCreateManyWithoutParticipantsInput
-  likedArticles?: ArticleCreateManyWithoutLikesInput
-  comments?: CommentCreateManyWithoutAuthorInput
+export interface FileWhereUniqueInput {
+  id?: ID_Input
+  secret?: String
+  url?: String
 }
 
 export interface UserUpdateWithoutArticlesDataInput {
@@ -11012,30 +10931,36 @@ export interface UserUpdateWithoutArticlesDataInput {
   interest?: InterestUpdateManyWithoutUsersInput
   messages?: MessageUpdateOneInput
   connectTo?: ConnectUpdateManyWithoutToInput
-  ConectFrom?: ConnectUpdateManyWithoutFromInput
+  connectFrom?: ConnectUpdateManyWithoutFromInput
+  favourites?: ArticleUpdateManyWithoutUserFavouritedInput
   channels?: ChannelsUpdateManyWithoutParticipantsInput
   myChannels?: ChannelsUpdateManyWithoutAuthorInput
   likedArticles?: ArticleUpdateManyWithoutLikesInput
   comments?: CommentUpdateManyWithoutAuthorInput
 }
 
-export interface CommentSubscriptionWhereInput {
-  AND?: CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput
-  OR?: CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: CommentWhereInput
+export interface DepartmentWhereUniqueInput {
+  id?: ID_Input
 }
 
-export interface CommentUpdateManyWithoutAuthorInput {
-  create?: CommentCreateWithoutAuthorInput[] | CommentCreateWithoutAuthorInput
-  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-  disconnect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-  delete?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-  update?: CommentUpdateWithWhereUniqueWithoutAuthorInput[] | CommentUpdateWithWhereUniqueWithoutAuthorInput
-  upsert?: CommentUpsertWithWhereUniqueWithoutAuthorInput[] | CommentUpsertWithWhereUniqueWithoutAuthorInput
+export interface ChannelsUpdateManyWithoutParticipantsInput {
+  create?: ChannelsCreateWithoutParticipantsInput[] | ChannelsCreateWithoutParticipantsInput
+  connect?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
+  disconnect?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
+  delete?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
+  update?: ChannelsUpdateWithWhereUniqueWithoutParticipantsInput[] | ChannelsUpdateWithWhereUniqueWithoutParticipantsInput
+  upsert?: ChannelsUpsertWithWhereUniqueWithoutParticipantsInput[] | ChannelsUpsertWithWhereUniqueWithoutParticipantsInput
+}
+
+export interface ConnectUpdateInput {
+  status?: Int
+  to?: UserUpdateOneWithoutConnectToInput
+  from?: UserUpdateOneWithoutConnectFromInput
+}
+
+export interface ChannelsUpdateWithWhereUniqueWithoutParticipantsInput {
+  where: ChannelsWhereUniqueInput
+  data: ChannelsUpdateWithoutParticipantsDataInput
 }
 
 export interface UserUpsertWithWhereUniqueWithoutInterestInput {
@@ -11044,22 +10969,126 @@ export interface UserUpsertWithWhereUniqueWithoutInterestInput {
   create: UserCreateWithoutInterestInput
 }
 
-export interface CommentUpdateWithWhereUniqueWithoutAuthorInput {
-  where: CommentWhereUniqueInput
-  data: CommentUpdateWithoutAuthorDataInput
+export interface ChannelsUpdateWithoutParticipantsDataInput {
+  title?: String
+  avatar?: String
+  type?: ChannelType
+  author?: UserUpdateOneWithoutMyChannelsInput
+  messages?: MessageUpdateManyWithoutChannelInput
 }
 
-export interface CommentUpsertWithWhereUniqueNestedInput {
-  where: CommentWhereUniqueInput
-  update: CommentUpdateDataInput
-  create: CommentCreateInput
+export interface InstitutionsUpsertWithoutUsersInput {
+  update: InstitutionsUpdateWithoutUsersDataInput
+  create: InstitutionsCreateWithoutUsersInput
 }
 
-export interface CommentUpdateWithoutAuthorDataInput {
-  slug?: String
-  body?: String
-  replies?: CommentUpdateManyInput
-  article?: ArticleUpdateOneWithoutCommentsInput
+export interface MessageUpdateManyWithoutChannelInput {
+  create?: MessageCreateWithoutChannelInput[] | MessageCreateWithoutChannelInput
+  connect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput
+  disconnect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput
+  delete?: MessageWhereUniqueInput[] | MessageWhereUniqueInput
+  update?: MessageUpdateWithWhereUniqueWithoutChannelInput[] | MessageUpdateWithWhereUniqueWithoutChannelInput
+  upsert?: MessageUpsertWithWhereUniqueWithoutChannelInput[] | MessageUpsertWithWhereUniqueWithoutChannelInput
+}
+
+export interface ArticleUpsertWithWhereUniqueWithoutAuthorInput {
+  where: ArticleWhereUniqueInput
+  update: ArticleUpdateWithoutAuthorDataInput
+  create: ArticleCreateWithoutAuthorInput
+}
+
+export interface MessageUpdateWithWhereUniqueWithoutChannelInput {
+  where: MessageWhereUniqueInput
+  data: MessageUpdateWithoutChannelDataInput
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput
+  create: UserCreateInput
+}
+
+export interface MessageUpdateWithoutChannelDataInput {
+  text?: String
+  user?: UserUpdateOneInput
+}
+
+export interface UserUpdateOneWithoutCommentsInput {
+  create?: UserCreateWithoutCommentsInput
+  connect?: UserWhereUniqueInput
+  delete?: Boolean
+  update?: UserUpdateWithoutCommentsDataInput
+  upsert?: UserUpsertWithoutCommentsInput
+}
+
+export interface UserUpdateOneInput {
+  create?: UserCreateInput
+  connect?: UserWhereUniqueInput
+  delete?: Boolean
+  update?: UserUpdateDataInput
+  upsert?: UserUpsertNestedInput
+}
+
+export interface InterestCreateManyInput {
+  create?: InterestCreateInput[] | InterestCreateInput
+  connect?: InterestWhereUniqueInput[] | InterestWhereUniqueInput
+}
+
+export interface UserUpdateDataInput {
+  email?: String
+  username?: String
+  password?: String
+  firstname?: String
+  lastname?: String
+  gender?: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  verified?: Boolean
+  avatar?: FileUpdateOneInput
+  country?: CountryUpdateOneWithoutUsersInput
+  institution?: InstitutionsUpdateOneWithoutUsersInput
+  department?: DepartmentUpdateOneWithoutUsersInput
+  interest?: InterestUpdateManyWithoutUsersInput
+  messages?: MessageUpdateOneInput
+  connectTo?: ConnectUpdateManyWithoutToInput
+  connectFrom?: ConnectUpdateManyWithoutFromInput
+  articles?: ArticleUpdateManyWithoutAuthorInput
+  favourites?: ArticleUpdateManyWithoutUserFavouritedInput
+  channels?: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels?: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles?: ArticleUpdateManyWithoutLikesInput
+  comments?: CommentUpdateManyWithoutAuthorInput
+}
+
+export interface InstitutionsCreateWithoutCountryInput {
+  title: String
+  type: InstitutionType
+  users?: UserCreateManyWithoutInstitutionInput
+  departments?: DepartmentCreateManyWithoutInstitutionInput
+}
+
+export interface ChannelsUpdateManyWithoutAuthorInput {
+  create?: ChannelsCreateWithoutAuthorInput[] | ChannelsCreateWithoutAuthorInput
+  connect?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
+  disconnect?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
+  delete?: ChannelsWhereUniqueInput[] | ChannelsWhereUniqueInput
+  update?: ChannelsUpdateWithWhereUniqueWithoutAuthorInput[] | ChannelsUpdateWithWhereUniqueWithoutAuthorInput
+  upsert?: ChannelsUpsertWithWhereUniqueWithoutAuthorInput[] | ChannelsUpsertWithWhereUniqueWithoutAuthorInput
+}
+
+export interface CountryCreateWithoutInstitutionsInput {
+  shortName: String
+  name: String
+  users?: UserCreateManyWithoutCountryInput
+}
+
+export interface ChannelsUpdateWithWhereUniqueWithoutAuthorInput {
+  where: ChannelsWhereUniqueInput
+  data: ChannelsUpdateWithoutAuthorDataInput
 }
 
 export interface UserCreateWithoutDepartmentInput {
@@ -11083,42 +11112,60 @@ export interface UserCreateWithoutDepartmentInput {
   interest?: InterestCreateManyWithoutUsersInput
   messages?: MessageCreateOneInput
   connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
+  connectFrom?: ConnectCreateManyWithoutFromInput
   articles?: ArticleCreateManyWithoutAuthorInput
+  favourites?: ArticleCreateManyWithoutUserFavouritedInput
   channels?: ChannelsCreateManyWithoutParticipantsInput
   myChannels?: ChannelsCreateManyWithoutAuthorInput
   likedArticles?: ArticleCreateManyWithoutLikesInput
   comments?: CommentCreateManyWithoutAuthorInput
 }
 
-export interface ArticleUpdateOneWithoutCommentsInput {
-  create?: ArticleCreateWithoutCommentsInput
-  connect?: ArticleWhereUniqueInput
-  delete?: Boolean
-  update?: ArticleUpdateWithoutCommentsDataInput
-  upsert?: ArticleUpsertWithoutCommentsInput
+export interface ChannelsUpdateWithoutAuthorDataInput {
+  title?: String
+  avatar?: String
+  type?: ChannelType
+  messages?: MessageUpdateManyWithoutChannelInput
+  participants?: UserUpdateManyWithoutChannelsInput
 }
 
-export interface CommentUpdateDataInput {
-  slug?: String
-  body?: String
-  replies?: CommentUpdateManyInput
-  article?: ArticleUpdateOneWithoutCommentsInput
-  author?: UserUpdateOneWithoutCommentsInput
+export interface UserCreateWithoutMyChannelsInput {
+  email: String
+  username?: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  verified?: Boolean
+  avatar?: FileCreateOneInput
+  country?: CountryCreateOneWithoutUsersInput
+  institution?: InstitutionsCreateOneWithoutUsersInput
+  department?: DepartmentCreateOneWithoutUsersInput
+  interest?: InterestCreateManyWithoutUsersInput
+  messages?: MessageCreateOneInput
+  connectTo?: ConnectCreateManyWithoutToInput
+  connectFrom?: ConnectCreateManyWithoutFromInput
+  articles?: ArticleCreateManyWithoutAuthorInput
+  favourites?: ArticleCreateManyWithoutUserFavouritedInput
+  channels?: ChannelsCreateManyWithoutParticipantsInput
+  likedArticles?: ArticleCreateManyWithoutLikesInput
+  comments?: CommentCreateManyWithoutAuthorInput
 }
 
-export interface CommentUpdateWithWhereUniqueNestedInput {
-  where: CommentWhereUniqueInput
-  data: CommentUpdateDataInput
-}
-
-export interface CommentUpdateManyInput {
-  create?: CommentCreateInput[] | CommentCreateInput
-  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-  disconnect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-  delete?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-  update?: CommentUpdateWithWhereUniqueNestedInput[] | CommentUpdateWithWhereUniqueNestedInput
-  upsert?: CommentUpsertWithWhereUniqueNestedInput[] | CommentUpsertWithWhereUniqueNestedInput
+export interface UserUpdateManyWithoutChannelsInput {
+  create?: UserCreateWithoutChannelsInput[] | UserCreateWithoutChannelsInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  update?: UserUpdateWithWhereUniqueWithoutChannelsInput[] | UserUpdateWithWhereUniqueWithoutChannelsInput
+  upsert?: UserUpsertWithWhereUniqueWithoutChannelsInput[] | UserUpsertWithWhereUniqueWithoutChannelsInput
 }
 
 export interface UserCreateWithoutLikedArticlesInput {
@@ -11143,28 +11190,375 @@ export interface UserCreateWithoutLikedArticlesInput {
   interest?: InterestCreateManyWithoutUsersInput
   messages?: MessageCreateOneInput
   connectTo?: ConnectCreateManyWithoutToInput
-  ConectFrom?: ConnectCreateManyWithoutFromInput
+  connectFrom?: ConnectCreateManyWithoutFromInput
   articles?: ArticleCreateManyWithoutAuthorInput
+  favourites?: ArticleCreateManyWithoutUserFavouritedInput
   channels?: ChannelsCreateManyWithoutParticipantsInput
   myChannels?: ChannelsCreateManyWithoutAuthorInput
   comments?: CommentCreateManyWithoutAuthorInput
 }
 
-export interface InstitutionsCreateWithoutCountryInput {
+export interface UserUpdateWithWhereUniqueWithoutChannelsInput {
+  where: UserWhereUniqueInput
+  data: UserUpdateWithoutChannelsDataInput
+}
+
+export interface UserCreateWithoutArticlesInput {
+  email: String
+  username?: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  verified?: Boolean
+  avatar?: FileCreateOneInput
+  country?: CountryCreateOneWithoutUsersInput
+  institution?: InstitutionsCreateOneWithoutUsersInput
+  department?: DepartmentCreateOneWithoutUsersInput
+  interest?: InterestCreateManyWithoutUsersInput
+  messages?: MessageCreateOneInput
+  connectTo?: ConnectCreateManyWithoutToInput
+  connectFrom?: ConnectCreateManyWithoutFromInput
+  favourites?: ArticleCreateManyWithoutUserFavouritedInput
+  channels?: ChannelsCreateManyWithoutParticipantsInput
+  myChannels?: ChannelsCreateManyWithoutAuthorInput
+  likedArticles?: ArticleCreateManyWithoutLikesInput
+  comments?: CommentCreateManyWithoutAuthorInput
+}
+
+export interface UserUpdateWithoutChannelsDataInput {
+  email?: String
+  username?: String
+  password?: String
+  firstname?: String
+  lastname?: String
+  gender?: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  verified?: Boolean
+  avatar?: FileUpdateOneInput
+  country?: CountryUpdateOneWithoutUsersInput
+  institution?: InstitutionsUpdateOneWithoutUsersInput
+  department?: DepartmentUpdateOneWithoutUsersInput
+  interest?: InterestUpdateManyWithoutUsersInput
+  messages?: MessageUpdateOneInput
+  connectTo?: ConnectUpdateManyWithoutToInput
+  connectFrom?: ConnectUpdateManyWithoutFromInput
+  articles?: ArticleUpdateManyWithoutAuthorInput
+  favourites?: ArticleUpdateManyWithoutUserFavouritedInput
+  myChannels?: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles?: ArticleUpdateManyWithoutLikesInput
+  comments?: CommentUpdateManyWithoutAuthorInput
+}
+
+export interface LocationSubscriptionWhereInput {
+  AND?: LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput
+  OR?: LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: LocationWhereInput
+}
+
+export interface ArticleUpdateManyWithoutLikesInput {
+  create?: ArticleCreateWithoutLikesInput[] | ArticleCreateWithoutLikesInput
+  connect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
+  disconnect?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
+  delete?: ArticleWhereUniqueInput[] | ArticleWhereUniqueInput
+  update?: ArticleUpdateWithWhereUniqueWithoutLikesInput[] | ArticleUpdateWithWhereUniqueWithoutLikesInput
+  upsert?: ArticleUpsertWithWhereUniqueWithoutLikesInput[] | ArticleUpsertWithWhereUniqueWithoutLikesInput
+}
+
+export interface ChannelsWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface ArticleUpdateWithWhereUniqueWithoutLikesInput {
+  where: ArticleWhereUniqueInput
+  data: ArticleUpdateWithoutLikesDataInput
+}
+
+export interface DepartmentUpsertWithoutUsersInput {
+  update: DepartmentUpdateWithoutUsersDataInput
+  create: DepartmentCreateWithoutUsersInput
+}
+
+export interface ArticleUpdateWithoutLikesDataInput {
+  slug?: String
+  isPublished?: Boolean
+  title?: String
+  body?: String
+  type?: Arcticletype
+  link?: String
+  description?: String
+  viewCount?: Int
+  tags?: ArticleUpdatetagsInput
+  category?: InterestUpdateManyInput
+  author?: UserUpdateOneWithoutArticlesInput
+  comments?: CommentUpdateManyWithoutArticleInput
+  userFavourited?: UserUpdateManyWithoutFavouritesInput
+}
+
+export interface ArticleUpsertWithWhereUniqueWithoutUserFavouritedInput {
+  where: ArticleWhereUniqueInput
+  update: ArticleUpdateWithoutUserFavouritedDataInput
+  create: ArticleCreateWithoutUserFavouritedInput
+}
+
+export interface CommentUpdateManyWithoutArticleInput {
+  create?: CommentCreateWithoutArticleInput[] | CommentCreateWithoutArticleInput
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+  disconnect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+  delete?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+  update?: CommentUpdateWithWhereUniqueWithoutArticleInput[] | CommentUpdateWithWhereUniqueWithoutArticleInput
+  upsert?: CommentUpsertWithWhereUniqueWithoutArticleInput[] | CommentUpsertWithWhereUniqueWithoutArticleInput
+}
+
+export interface LocationCreateOneInput {
+  create?: LocationCreateInput
+  connect?: LocationWhereUniqueInput
+}
+
+export interface CommentUpdateWithWhereUniqueWithoutArticleInput {
+  where: CommentWhereUniqueInput
+  data: CommentUpdateWithoutArticleDataInput
+}
+
+export interface DepartmentCreateWithoutUsersInput {
+  name: String
+  institution?: InstitutionsCreateOneWithoutDepartmentsInput
+}
+
+export interface CommentUpdateWithoutArticleDataInput {
+  slug?: String
+  body?: String
+  replies?: CommentUpdateManyInput
+  author?: UserUpdateOneWithoutCommentsInput
+}
+
+export interface MessageCreateInput {
+  text: String
+  channel: ChannelsCreateOneWithoutMessagesInput
+  user: UserCreateOneInput
+}
+
+export interface CommentUpdateManyInput {
+  create?: CommentCreateInput[] | CommentCreateInput
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+  disconnect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+  delete?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+  update?: CommentUpdateWithWhereUniqueNestedInput[] | CommentUpdateWithWhereUniqueNestedInput
+  upsert?: CommentUpsertWithWhereUniqueNestedInput[] | CommentUpsertWithWhereUniqueNestedInput
+}
+
+export interface UserCreateWithoutConnectToInput {
+  email: String
+  username?: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  verified?: Boolean
+  avatar?: FileCreateOneInput
+  country?: CountryCreateOneWithoutUsersInput
+  institution?: InstitutionsCreateOneWithoutUsersInput
+  department?: DepartmentCreateOneWithoutUsersInput
+  interest?: InterestCreateManyWithoutUsersInput
+  messages?: MessageCreateOneInput
+  connectFrom?: ConnectCreateManyWithoutFromInput
+  articles?: ArticleCreateManyWithoutAuthorInput
+  favourites?: ArticleCreateManyWithoutUserFavouritedInput
+  channels?: ChannelsCreateManyWithoutParticipantsInput
+  myChannels?: ChannelsCreateManyWithoutAuthorInput
+  likedArticles?: ArticleCreateManyWithoutLikesInput
+  comments?: CommentCreateManyWithoutAuthorInput
+}
+
+export interface CommentUpdateWithWhereUniqueNestedInput {
+  where: CommentWhereUniqueInput
+  data: CommentUpdateDataInput
+}
+
+export interface ArticleWhereUniqueInput {
+  id?: ID_Input
+  slug?: String
+  link?: String
+}
+
+export interface CommentUpdateDataInput {
+  slug?: String
+  body?: String
+  replies?: CommentUpdateManyInput
+  article?: ArticleUpdateOneWithoutCommentsInput
+  author?: UserUpdateOneWithoutCommentsInput
+}
+
+export interface ChannelsUpsertWithoutMessagesInput {
+  update: ChannelsUpdateWithoutMessagesDataInput
+  create: ChannelsCreateWithoutMessagesInput
+}
+
+export interface ArticleUpdateOneWithoutCommentsInput {
+  create?: ArticleCreateWithoutCommentsInput
+  connect?: ArticleWhereUniqueInput
+  delete?: Boolean
+  update?: ArticleUpdateWithoutCommentsDataInput
+  upsert?: ArticleUpsertWithoutCommentsInput
+}
+
+export interface FileCreateOneInput {
+  create?: FileCreateInput
+  connect?: FileWhereUniqueInput
+}
+
+export interface ArticleUpdateWithoutCommentsDataInput {
+  slug?: String
+  isPublished?: Boolean
+  title?: String
+  body?: String
+  type?: Arcticletype
+  link?: String
+  description?: String
+  viewCount?: Int
+  tags?: ArticleUpdatetagsInput
+  category?: InterestUpdateManyInput
+  author?: UserUpdateOneWithoutArticlesInput
+  likes?: UserUpdateManyWithoutLikedArticlesInput
+  userFavourited?: UserUpdateManyWithoutFavouritesInput
+}
+
+export interface UserCreateWithoutConnectFromInput {
+  email: String
+  username?: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  verified?: Boolean
+  avatar?: FileCreateOneInput
+  country?: CountryCreateOneWithoutUsersInput
+  institution?: InstitutionsCreateOneWithoutUsersInput
+  department?: DepartmentCreateOneWithoutUsersInput
+  interest?: InterestCreateManyWithoutUsersInput
+  messages?: MessageCreateOneInput
+  connectTo?: ConnectCreateManyWithoutToInput
+  articles?: ArticleCreateManyWithoutAuthorInput
+  favourites?: ArticleCreateManyWithoutUserFavouritedInput
+  channels?: ChannelsCreateManyWithoutParticipantsInput
+  myChannels?: ChannelsCreateManyWithoutAuthorInput
+  likedArticles?: ArticleCreateManyWithoutLikesInput
+  comments?: CommentCreateManyWithoutAuthorInput
+}
+
+export interface CommentUpdateManyWithoutAuthorInput {
+  create?: CommentCreateWithoutAuthorInput[] | CommentCreateWithoutAuthorInput
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+  disconnect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+  delete?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+  update?: CommentUpdateWithWhereUniqueWithoutAuthorInput[] | CommentUpdateWithWhereUniqueWithoutAuthorInput
+  upsert?: CommentUpsertWithWhereUniqueWithoutAuthorInput[] | CommentUpsertWithWhereUniqueWithoutAuthorInput
+}
+
+export interface UserUpdateWithoutFavouritesDataInput {
+  email?: String
+  username?: String
+  password?: String
+  firstname?: String
+  lastname?: String
+  gender?: String
+  type?: String
+  userType?: String
+  newConnectNot?: Boolean
+  newCommentNot?: Boolean
+  newMessageNot?: Boolean
+  newProfileNot?: Boolean
+  completedProfile?: Int
+  verified?: Boolean
+  avatar?: FileUpdateOneInput
+  country?: CountryUpdateOneWithoutUsersInput
+  institution?: InstitutionsUpdateOneWithoutUsersInput
+  department?: DepartmentUpdateOneWithoutUsersInput
+  interest?: InterestUpdateManyWithoutUsersInput
+  messages?: MessageUpdateOneInput
+  connectTo?: ConnectUpdateManyWithoutToInput
+  connectFrom?: ConnectUpdateManyWithoutFromInput
+  articles?: ArticleUpdateManyWithoutAuthorInput
+  channels?: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels?: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles?: ArticleUpdateManyWithoutLikesInput
+  comments?: CommentUpdateManyWithoutAuthorInput
+}
+
+export interface UserUpdateWithWhereUniqueWithoutFavouritesInput {
+  where: UserWhereUniqueInput
+  data: UserUpdateWithoutFavouritesDataInput
+}
+
+export interface UserUpdateManyWithoutFavouritesInput {
+  create?: UserCreateWithoutFavouritesInput[] | UserCreateWithoutFavouritesInput
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput
+  update?: UserUpdateWithWhereUniqueWithoutFavouritesInput[] | UserUpdateWithWhereUniqueWithoutFavouritesInput
+  upsert?: UserUpsertWithWhereUniqueWithoutFavouritesInput[] | UserUpsertWithWhereUniqueWithoutFavouritesInput
+}
+
+export interface InterestSubscriptionWhereInput {
+  AND?: InterestSubscriptionWhereInput[] | InterestSubscriptionWhereInput
+  OR?: InterestSubscriptionWhereInput[] | InterestSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: InterestWhereInput
+}
+
+export interface InstitutionsCreateWithoutUsersInput {
   title: String
   type: InstitutionType
-  users?: UserCreateManyWithoutInstitutionInput
+  country?: CountryCreateOneWithoutInstitutionsInput
   departments?: DepartmentCreateManyWithoutInstitutionInput
 }
 
-export interface ArticleUpsertWithWhereUniqueWithoutAuthorInput {
-  where: ArticleWhereUniqueInput
-  update: ArticleUpdateWithoutAuthorDataInput
-  create: ArticleCreateWithoutAuthorInput
+export interface CommentUpsertWithWhereUniqueWithoutArticleInput {
+  where: CommentWhereUniqueInput
+  update: CommentUpdateWithoutArticleDataInput
+  create: CommentCreateWithoutArticleInput
 }
 
-export interface DepartmentWhereUniqueInput {
-  id?: ID_Input
+export interface InstitutionsUpdateInput {
+  title?: String
+  type?: InstitutionType
+  country?: CountryUpdateOneWithoutInstitutionsInput
+  users?: UserUpdateManyWithoutInstitutionInput
+  departments?: DepartmentUpdateManyWithoutInstitutionInput
 }
 
 /*
@@ -11209,6 +11603,7 @@ export interface Article extends Node {
   viewCount?: Int
   likes?: User[]
   comments?: Comment[]
+  userFavourited?: User[]
 }
 
 export interface BatchPayload {
@@ -11239,7 +11634,7 @@ export interface ConnectPreviousValues {
   id: ID_Output
   createdAt: DateTime
   updatedAt: DateTime
-  accepted: Boolean
+  status: Int
 }
 
 export interface Library extends Node {
@@ -11504,7 +11899,7 @@ export interface Connect extends Node {
   updatedAt: DateTime
   to: User
   from: User
-  accepted: Boolean
+  status: Int
 }
 
 export interface AggregateLibrary {
@@ -11601,7 +11996,7 @@ export interface Message extends Node {
   id: ID_Output
   createdAt: DateTime
   updatedAt: DateTime
-  cahnnel: Channels
+  channel: Channels
   text: String
   user: User
 }
@@ -11708,10 +12103,11 @@ export interface User extends Node {
   interest?: Interest[]
   messages?: Message
   connectTo?: Connect[]
-  ConectFrom?: Connect[]
+  connectFrom?: Connect[]
   type?: String
   userType?: String
   articles?: Article[]
+  favourites?: Article[]
   channels?: Channels[]
   myChannels?: Channels[]
   likedArticles?: Article[]

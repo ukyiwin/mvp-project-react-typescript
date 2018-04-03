@@ -53,6 +53,7 @@ type Article {
   viewCount: Int
   likes: [User!]! @relation(name: "UserLikesArticle")
   comments: [Comment!]! @relation(name: "ArticleComment")
+  userFavourited: [User!]!  @relation(name: "FavouriteArticles")
 }
 
 type Comment {
@@ -121,11 +122,12 @@ type User {
   department: Department @relation(name: "UserDepartment")
   interest: [Interest!]! @relation(name: "UserInterest")
   messages: Message @relation(name: "UserMessage")
-  connectTo: [Connect!]! @relation(name: "ConectTo")
-  ConectFrom: [Connect!]! @relation(name: "ConectFrom")
+  connectTo: [Connect!]! @relation(name: "ConnectionsTo")
+  connectFrom: [Connect!]! @relation(name: "ConnectionsFrom")
   type: String @default(value: "Student")
   userType: String
   articles: [Article!]!  @relation(name: "ArticleOwner")
+  favourites: [Article!]!  @relation(name: "FavouriteArticles")
   channels: [Channels!]! @relation(name: "ChannelUser")
   myChannels: [Channels!]! @relation(name: "ChannelOwner")
   likedArticles: [Article!]! @relation(name: "UserLikesArticle")
@@ -142,9 +144,9 @@ type Connect {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
-  to: User! @relation(name: "ConectTo")
-  from: User! @relation(name: "ConectFrom")
-  accepted: Boolean! @default(value: "false")
+  to: User! @relation(name: "ConnectionsTo")
+  from: User! @relation(name: "ConnectionsFrom")
+  status: Int! @default(value: "0")
 }
 
 type Channels {
@@ -163,7 +165,7 @@ type Message {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
-  cahnnel: Channels! @relation(name: "ChannelMessage")
+  channel: Channels! @relation(name: "ChannelMessage")
   text: String!
   user: User! @relation(name: "UserUser")
 }

@@ -60,17 +60,9 @@ class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildP
     render() {
         const { loading } = this.state;
         return (
-          <div>
-              <div className="anim-button">
-              <a 
-                className="circular ui big icon button"
-                style={{marginTop: 120}}
-              >
-                <i className="icon settings" />
-              </a>
-              </div>
-              <h1 className="uk-heading-primary white uk-text-bold uk-text-uppercase">unizonn</h1>
-              <p className=" uk-text-center white uk-margin uk-text-bold">
+          <div className="">
+              <h1 className="uk-heading-primary uk-text-bold uk-text-uppercase" style={{fontSize: 90, color: '#000'}}>unizonn</h1>
+              <p className=" uk-margin uk-text-bold" style={{fontSize: 18, color: '#000'}}>
                 Friendly and inclusive community for students and academia
               </p>
               <div className="ui uk-flex-stretch">
@@ -92,29 +84,12 @@ class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildP
                     {loading ? (
                         <div data-uk-spinner="ratio: 1" className="ui center middle" style={{ marginLeft: 15, color: 'green' }} />
                     ) : (
-                        <button className="ui tag label positive button" type="submit">
+                        <button className="ui label positive button" type="submit">
                           GET STARTED
                         </button>
                     )}
                   </div>
                 </form>
-              </div>
-              <div className="ui horizontal divider">
-                Or
-              </div>
-              <div className="column vertical">
-                      <button className="ui facebook button">
-                        <i className="facebook icon" />
-                        Facebook
-                      </button>
-                      <button className="ui google plus button">
-                        <i className="google plus icon" />
-                        Google Plus
-                      </button>
-                      <button className="ui linkedin button">
-                        <i className="linkedin icon" />
-                        LinkedIn
-                      </button>
               </div>
           </div>
         );

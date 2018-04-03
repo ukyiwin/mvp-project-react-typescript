@@ -15,7 +15,8 @@ $global-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 'Ral
 // 2. Import default variables and available mixins.
 @import "node_modules/uikit/src/scss/variables-theme.scss";
 @import "node_modules/uikit/src/scss/mixins-theme.scss";
-
+// @import 'node_modules/semantic-ui-less/theme.less';
+// @import 'node_modules/semantic-ui-less/semantic.less';
 // 3. Your custom mixin overwrites.
 @mixin hook-card() { color: #000; }
 
@@ -40,7 +41,7 @@ button {
 }
 
 body {
-  background-color: #f5f7f8;
+  background-color: #e1eaf1;
 }
 
 // Import only the needed components
@@ -75,6 +76,23 @@ $primary-color: #09d35d !default;
 
 a {
   text-decoration: none !important;
+  color: #000;
+}
+
+.simple-link{
+  text-decoration: none !important;
+  color: #000;
+}
+.simple-link:hover{
+  color: #000;
+}
+
+.simple-link-light{
+  text-decoration: none !important;
+  color: rgb(49, 49, 49);
+}
+.simple-link-light:hover{
+  color: rgb(49, 49, 49);
 }
 
 .anim-button {
@@ -178,4 +196,19 @@ a {
       }
     }
   }
+}
+
+.listItem {
+  list-style: inline-block;
+  list-style-type: none;
+  display: inline;
+  text-align: left;
+}
+
+.listItem li {
+	display: inline-block;
+  margin-right: 5px;
+  align-self: flex-start;
+  border-radius: 10px;
+	-webkit-border-radius: 10px;
 }

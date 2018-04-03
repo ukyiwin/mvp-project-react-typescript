@@ -84,21 +84,11 @@ export const ME = gql`
   query me {
     me{
       ...userFragment
-      connectTo{
-        to{
-          email
-          id
-          firstname
-          lastname
-          username
-        }
-        from{
-          email
-          id
-          firstname
-          lastname
-          username
-        }
+      connectTo(where: {status: 2}){
+        id
+      }
+      connectFrom(where: {status: 2}){
+        id
       }
       avatar{
         url
@@ -174,6 +164,35 @@ export const ALL_CHAT = gql`
       id
       name
       avatar
+      createdAt
+    }
+  }
+`;
+
+/**
+ * @description get all messages
+ */
+export const GET_MESSAGES = gql`
+  query getMessages($channelId: ID!){
+    getMessages(channelId: $channelId){
+      id
+      user {
+        id
+      }
+      text
+      createdAt
+    }
+  }
+`;
+
+/**
+ * @description get all messages
+ */
+export const GET_ALL_MY_CHANNEL = gql`
+  query getAllChat{
+    getAllChat{
+      id
+      messages
       createdAt
     }
   }

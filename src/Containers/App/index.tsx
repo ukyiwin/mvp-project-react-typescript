@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import { withApollo, graphql, compose, ChildProps } from 'react-apollo';
 import Loadable from 'react-loadable';
 import { asyncComponent } from 'react-async-component';
-import { PublicLayout, PrivateLayout, EmptyLayout, ProfileLayout } from 'Components/Layouts/MainLayout';
+import { PublicLayout, PrivateLayout, EmptyLayout, ConnectLayout } from 'Components/Layouts/MainLayout';
 import { isTokenExpired } from 'Utils/jwtHelper';
 import { AUTH_TOKEN } from '../../constants';
 import { PrivateHeader } from 'Components/Layouts/Header';
@@ -14,7 +14,8 @@ import SideBar from 'Components/Layouts/SideBar';
 import { User } from 'CustomTypings/schema';
 import { ME } from 'Graphql/Query';
 import 'Theme/application.scss';
-import './style.scss';
+// import 'Theme/theme.less';
+// import '../semantic-ui-theme';
 import { cookies } from 'link';
 // import { cookies } from '../../link';
 
@@ -75,6 +76,16 @@ const Forum = asyncComponent({
   LoadingComponent: () => <LoadingComponent />,
 });
 
+const Connections = asyncComponent({
+  resolve: () => System.import('Containers/Connection'),
+  LoadingComponent: () => <LoadingComponent />,
+});
+
+const Search = asyncComponent({
+  resolve: () => System.import('Containers/Connection'),
+  LoadingComponent: () => <LoadingComponent />,
+});
+
 const FinishSignup = asyncComponent({
   resolve: () => System.import('Containers/Auth/Signup/finishSignup'),
   LoadingComponent: () => <LoadingComponent />,
@@ -112,7 +123,8 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
         token: '',
         expireToken: false,
         avatar: '',
-        me: {},
+        // tslint:disable-next-line:no-object-literal-type-assertion
+        me: {} as User,
     };
 
     componentWillMount() {
@@ -146,9 +158,16 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
     }
 
     componentDidMount() {
-        // this.props.
-        // tslint:disable-next-line:no-console
-        console.log(this.props.me);
+      const ele = document.getElementById('ipl-progress-indicator');
+      if (ele) {
+        setTimeout(() => {
+          ele.classList.add('available');
+          setTimeout(() => {
+            ele.outerHTML = '';
+          },         2000);
+        },         1000);
+      }
+      console.log(this.props.me);
     }
 
     refreshToken = (token: string) => {
@@ -160,7 +179,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
             this.setState({
                 isAuthenticated: true,
             });
-            // this.loadMe();
+            this.loadMe();
         }
     }
 
@@ -187,7 +206,11 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                     this.props.history.replace('/add/interest');
                 }
 
-                this.setState({ avatar: data.me.avata.url });
+                if (data.me.avata) {
+                  if (data.me.avata.url) {
+                    this.setState({ avatar: data.me.avata.url });
+                  }
+                }
                 // tslint:disable-next-line:no-console
                 console.log(this.state.avatar);
             })
@@ -195,10 +218,8 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                 // localStorage.removeItem(AUTH_TOKEN);
                 if (error) {
                     // tslint:disable-next-line:no-console
-                    console.log('grooom');
-                    // this.setState({isAuthenticated: false});
-                    this.setState({ token: '' });
-                    this.setState({ expireToken: false });
+                    console.log(error);
+                    this._logout();
                 }
             });
     }
@@ -210,7 +231,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
         console.log(isAuthenticated);
 
         return (
-            <div className="uk-offcanvas-content bg-muted" style={{ backgroundColor: '#f5f7f8' }}>
+            <div className="uk-offcanvas-content bg-muted" style={{ backgroundColor: '#e1eaf1' }}>
                 
                 <Helmet>
                     <title>Unizonn</title>
@@ -221,19 +242,47 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                         exact={true}
                         path="/"
                         render={() =>
-                            isAuthenticated ? (
-                                <PrivateLayout me={this.state.me} component={Home} isAuthenticated={isAuthenticated} logout={this._logout} />
-                            ) : (
-                                <PublicLayout me={this.state.me} component={PublicHome} isAuthenticated={isAuthenticated} logout={this._logout} />
-                            )
+                          isAuthenticated ? (
+                              <PrivateLayout 
+                                exact={false} 
+                                me={this.state.me} 
+                                component={Home} 
+                                isAuthenticated={isAuthenticated} 
+                                logout={this._logout} 
+                              />
+                          ) : (
+                              <PublicLayout 
+                                exact={false} 
+                                me={this.state.me}
+                                component={PublicHome}
+                                isAuthenticated={isAuthenticated}
+                                logout={this._logout} 
+                              />
+                          )
                         }
                         // tslint:disable-next-line:jsx-alignment
                     />
-                    <PrivateLayout me={this.state.me} component={Home} path="/home" isAuthenticated={isAuthenticated} logout={this._logout} />
+                    <PrivateLayout 
+                      me={this.state.me} 
+                      component={Home} 
+                      path="/home" 
+                      exact={false} 
+                      isAuthenticated={isAuthenticated} 
+                      logout={this._logout} 
+                    />
+                    <EmptyLayout 
+                      me={this.state.me} 
+                      exact={false} 
+                      component={Profile} 
+                      path="/uz/:username" 
+                      isAuthenticated={isAuthenticated} 
+                      logout={this._logout} 
+                    />
                     <PublicLayout 
                       component={Login}
                       refreshToken={this.refreshToken}
                       path="/login"
+                      exact={true} 
                       isAuthenticated={isAuthenticated}  
                       logout={this._logout}
                       me={this.state.me}
@@ -251,6 +300,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                       component={Signup}
                       refreshToken={this.refreshToken}
                       path="/signup" 
+                      exact={true} 
                       isAuthenticated={isAuthenticated}  
                       logout={this._logout}
                       me={this.state.me}
@@ -267,6 +317,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                     <EmptyLayout 
                       component={FinishSignup} 
                       path="/signup/complete" 
+                      exact={true} 
                       isAuthenticated={isAuthenticated}
                       logout={this._logout}
                       me={this.state.me}
@@ -283,6 +334,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                       path="/article/:slug"
                       isAuthenticated={isAuthenticated} 
                       component={ArticleDetail}
+                      exact={true} 
                       logout={this._logout}
                       me={this.state.me}
                     />
@@ -291,6 +343,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                       path="/add/interest" 
                       isAuthenticated={isAuthenticated}
                       logout={this._logout}
+                      exact={true} 
                       me={this.state.me}
                     />
                     <EmptyLayout 
@@ -298,18 +351,29 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                       path="/library" 
                       isAuthenticated={isAuthenticated}
                       logout={this._logout}
+                      exact={true} 
                       me={this.state.me}
                     />
                     <EmptyLayout 
                       component={Message} 
                       path="/message" 
+                      exact={true} 
                       isAuthenticated={isAuthenticated}
                       logout={this._logout}
                       me={this.state.me}
                     />
                     <EmptyLayout 
                       component={Forum} 
-                      path="/Forum" 
+                      path="/forum" 
+                      exact={true} 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <ConnectLayout 
+                      component={Connections} 
+                      path="/connections" 
+                      exact={true} 
                       isAuthenticated={isAuthenticated}
                       logout={this._logout}
                       me={this.state.me}
@@ -338,16 +402,74 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                       logout={this._logout}
                       me={this.state.me}
                     />
-                    <ProfileLayout 
-                      component={Profile} 
-                      path="/profile" 
+                    <EmptyLayout 
+                      component={Search} 
+                      path="/search/:school" 
+                      exact={true} 
                       isAuthenticated={isAuthenticated}
                       logout={this._logout}
                       me={this.state.me}
                     />
-                    <ProfileLayout 
+                    <EmptyLayout 
+                      component={Search} 
+                      path="/search/:interest" 
+                      exact={true} 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <EmptyLayout 
+                      component={Search} 
+                      path="/search"
+                      exact={true} 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <EmptyLayout 
+                      component={Search} 
+                      path="/search/:library"
+                      exact={true} 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <EmptyLayout 
+                      component={Search} 
+                      path="/search/:user"
+                      exact={true} 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <EmptyLayout 
+                      component={Search} 
+                      path="/search"
+                      exact={true} 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <EmptyLayout 
+                      component={Search} 
+                      path="/search/:tags" 
+                      exact={true} 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <EmptyLayout 
+                      component={Profile} 
+                      path="/profile" 
+                      exact={true} 
+                      isAuthenticated={isAuthenticated}
+                      logout={this._logout}
+                      me={this.state.me}
+                    />
+                    <EmptyLayout 
                       component={Profile} 
                       path="/profile/:id" 
+                      exact={true} 
                       isAuthenticated={isAuthenticated}
                       logout={this._logout}
                       me={this.state.me}
@@ -356,6 +478,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                     <Route exact={true} path="/:url" />
                     <PrivateLayout 
                       path="/logout"
+                      exact={true} 
                       isAuthenticated={isAuthenticated} 
                       render={() => this._logout()}
                       logout={this._logout}
