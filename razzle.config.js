@@ -5,6 +5,8 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const Visualizer = require("webpack-visualizer-plugin");
 const razzleHeroku = require("razzle-heroku");
 const OfflinePlugin = require('offline-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
 
 const context = path.resolve(__dirname, 'src');
 
@@ -192,13 +194,18 @@ module.exports = {
         new ExtractTextPlugin({
           filename: 'styles/[name].[contenthash].css'
         }),
-        new OfflinePlugin(),
         new webpack.ProvidePlugin({
           $: 'jquery',
           jQuery: 'jquery',
           'window.jQuery': 'jquery'
         }),
-        new Visualizer()
+        new Visualizer(),
+        new CompressionPlugin({
+          cache: true,
+          algorithm: 'gzip'
+        }),
+        new webpack.IgnorePlugin(/\/iconv-loader$/),
+        new OfflinePlugin()
       );
 
     } else {
@@ -223,7 +230,19 @@ module.exports = {
             jQuery: 'jquery',
             'window.jQuery': 'jquery'
           }),
-          new Visualizer()
+          new OptimizeCssAssetsPlugin({
+            assetNameRegExp: /\.optimize\.css$/g,
+            cssProcessor: require('cssnano'),
+            cssProcessorOptions: { discardComments: { removeAll: true } },
+            canPrint: true
+          }),
+          new CompressionPlugin({
+            cache: true,
+            algorithm: 'gzip'
+          }),
+          new Visualizer(),
+          new webpack.IgnorePlugin(/\/iconv-loader$/),
+          new OfflinePlugin()
         );
     }
   } else {
