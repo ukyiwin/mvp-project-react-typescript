@@ -1,6 +1,5 @@
 import * as React from 'react';
 import glamorous from 'glamorous';
-import './style.css';
 
 // var winWidth = $(window).width();
 // var winHeight = $(window).height();
@@ -14,43 +13,31 @@ import './style.css';
 };*/
 
 const A = glamorous.a({
-    fontFamily: 'brandon-grotesque',
-    color: '#ffffff',
+    color: '#fff',
 });
 
 const FooterPublic = () => {
     return (
-        <React.Fragment>
-            <div
-                className="uk-flex uk-width-1-1 uk-flex-stretch
-        uk-section-secondary uk-light uk-padding-small
-        uk-padding-remove-vertical"
-                style={{ paddingTop: 15 }}
-            >
-                <div className="uk-width-1-3@m uk-width-1-1@s uk-padding-small" id="footerList">
-                    <p>Copyright @2017, All Rights Reserved</p>
-                </div>
-                <div className="uk-width-2-3@m uk-width-1-1@s" id="footerList">
-                    <ul>
-                        <li>
-                            <A href="#">Terms</A>
-                        </li>
-                        <li>
-                            <A href="#">Privacy</A>
-                        </li>
-                        <li>
-                            <A href="#">Jobs</A>
-                        </li>
-                        <li>
-                            <A href="#">About</A>
-                        </li>
-                        <li>
-                            <A href="#">Support</A>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </React.Fragment>
+      <div
+        className="uk-flex uk-width-1-1 uk-flex-between uk-padding-small"
+        style={{backgroundColor: '#21212199'}}
+      >
+        <div className="uk-width-1-3@m uk-width-1-1@s" style={{color: '#000', fontWeight: 'bold'}}>
+          Copyright @2017, All Rights Reserved
+        </div>
+        <div className="uk-width-2-3@m uk-width-1-1@s uk-text-right">
+          <div className="ui horizontal list">
+            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold'}}>Unizonn</A>
+            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold'}}>Privacy</A>
+            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold'}}>Terms & Condition</A>
+            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold'}}>Careers</A>
+            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold'}}>Skills</A>
+            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold'}}>About Us</A>
+            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold'}}>Contact</A>
+            <A className="item simple-link" style={{color: '#000', fontWeight: 'bold'}}>Support</A>
+          </div>
+        </div>
+      </div>
     );
 };
 

@@ -9,5 +9,10 @@
     "lib": [
       "esnext", "dom"
     ]
-  }
+  },
+  "exclude": [
+    "../public",
+    "../src",
+    "../build",
+  ],
 }

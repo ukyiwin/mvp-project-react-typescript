@@ -12,9 +12,9 @@ const Avatar = (props: Props) => {
     return (
         <figure>
             <img
-                className={`mdc-elevation--z2 mdc-elevation-transition uk-border-${props.square ? 'square' : 'circle rcorners'}
+                className={`uk-border-${props.square ? 'square' : 'circle rcorners'}
                   uk-animation-kenburns uk-animation-fast`}
-                src={`https://gs3.blob.core.windows.net/unizonn/${props.url}`}
+                src={props.url}
                 width={props.size}
                 height={props.size}
                 alt="img" 

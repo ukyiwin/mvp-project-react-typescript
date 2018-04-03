@@ -116,8 +116,8 @@ class Login extends React.Component<RouteComponentProps & Props & ChildProps<Res
                     <div className="uk-flex uk-flex-stretch uk-flex-middle">.</div>
                 </div>
                 <div
-                    className="uk-container uk-width-3-5@m uk-width-1-1@s uk-flex
-          uk-flex-stretch uk-flex-middle uk-box-shadow-small"
+                  className="uk-container uk-width-3-5@m uk-width-1-1@s uk-flex
+                  uk-flex-stretch uk-flex-middle"
                 >
                     <form
                         className="uk-form-vertical uk-width-1-1 uk-margin-large uk-padding-large uk-padding-remove-vertical"

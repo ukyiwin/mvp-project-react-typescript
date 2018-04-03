@@ -50,4 +50,23 @@ export const chat = {
     );
   },
 
+  async createMessage(parent, { channelId, text }, ctx: Context, info) {
+    const id = getUserId(ctx);
+    return ctx.db.mutation.createMessage({
+      data: {
+        text,
+        user: {
+          connect: {
+            id
+          }
+        },
+        channel: {
+          connect: {
+            id: channelId
+          }
+        }
+      }
+    });
+  }
+
 };

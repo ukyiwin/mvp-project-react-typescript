@@ -32,10 +32,10 @@ class LeftSideBar extends React.Component<RouteComponentProps & Props> {
         // const { loading } = this.state;
         return (
           <div className=" uk-width-1-1">
-            <div className="uk-width-1-1 raised ui card" style={{ paddingTop: 30, marginBottom: 10 }}>
+            <div className="uk-width-1-1 raised card" style={{ paddingTop: 30, marginBottom: 10 }}>
               <UserProfileBox me={this.props.user} />
             </div>
-            <div className="uk-width-1-1 raised ui card" style={{ marginBottom: 10, padding: 0 }}>
+            <div className="uk-width-1-1 raised card" style={{ marginBottom: 10, padding: 0 }}>
               <Label text="Top Interests" />
               <TopInterest />
               <hr/>

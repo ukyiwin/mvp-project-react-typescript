@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { compose, withApollo } from 'react-apollo';
+import { Editor, createEditorState } from 'medium-draft';
 // import { Helmet } from 'react-helmet';
 import { Article } from 'CustomTypings/schema';
 import Avatar from 'Components/Avatar';
@@ -10,9 +11,12 @@ import TopInterest from 'Components/TopInterest';
 import Likebutton from 'Components/LikeButton';
 import PopoverLink from 'Components/PopoverLink';
 import TimeAgo from 'react-timeago';
-import './style.css';
 import { GET_ARTICLE_BY_ID } from 'Graphql/Query';
 import Label from 'Components/Label';
+import mediumDraftImporter from 'medium-draft/lib/importer';
+import { convertToRaw } from 'draft-js';
+import 'medium-draft/lib/index.css';
+import './style.css';
 
 interface Props {
     // tslint:disable-next-line:no-any
@@ -24,6 +28,7 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
         // tslint:disable-next-line:no-object-literal-type-assertion
         currentArticle: {} as Article,
         loading: true,
+        editorState: createEditorState()
     };
 
     componentWillMount() {
@@ -60,7 +65,8 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
             .then((result) => {
                 // tslint:disable-next-line:no-console
                 console.log(result.data.getArticleById);
-                this.setState({ currentArticle: result.data.getArticleById, loading: false });
+                const editorState = createEditorState(convertToRaw(mediumDraftImporter(result.data.getArticleById.body)));
+                this.setState({ currentArticle: result.data.getArticleById, loading: false, editorState });
             })
             .catch((err) => {
                 // tslint:disable-next-line:no-console
@@ -75,18 +81,22 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
 
     renderArticle(article: Article) {
         const { author } = article;
+        const { editorState } = this.state;
         return (
             <div
-                className="uk-card uk-card-small uk-width-1-1"
+                className="uk-card card uk-card-small uk-width-1-1"
                 style={{ borderRadius: 1, marginBottom: 22, padding: 10, backgroundColor: '#fff' }}
             >
                 <div className="uk-width-1-1 post-metadata uk-padding-remove-bottom uk-padding-small">
                     <div className="uk-grid-small uk-flex uk-width-4-5" uk-grid={true}>
                         <div className="uk-width-auto">
-                            <Avatar url={'https://getuikit.com/docs/images/avatar.jpg'} size={50} presence={false} />
+                            <Avatar 
+                              url={author.avatar ? author.avatar.url : 'https://getuikit.com/docs/images/avatar.jpg'} 
+                              size={50}
+                              presence={false} />
                         </div>
                         <div className="uk-width-auto post-info">
-                            <PopoverLink bigger={true} link={article.id}>
+                            <PopoverLink user={article.author} bigger={true} link={article.id}>
                                 {author.firstname} {author.lastname}
                             </PopoverLink>
                             <p className="uk-text-meta uk-margin-remove-top">
@@ -104,11 +114,13 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
                 <div className="uk-card-body uk-padding-remove-vertical" style={{ paddingTop: 10, borderBottom: 1 }}>
                     <h5
                         className="uk-text-medium uk-text-bold uk-text-break"
-                        style={{ fontSize: 23, fontFamily: 'Open Sans' }}
+                        style={{ fontSize: 50, fontFamily: 'Open Sans' }}
                     >
                         {article.title}
                     </h5>
-                    <p style={{ color: '#212121', fontSize: 17 }}>{article.body}</p>
+                    <Editor
+                      editorState={editorState}
+                    />
                 </div>
                 <div className="uk-padding-small">
                     <TopInterest />
@@ -161,8 +173,8 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
     renderCommentBox() {
         return (
             <div
-                className="uk-card uk-card-small uk-width-1-1"
-                style={{ borderRadius: 1, marginBottom: 30, padding: 10, backgroundColor: '#fff' }}
+              className="uk-card card uk-card-small uk-width-1-1"
+              style={{ borderRadius: 1, marginBottom: 30, padding: 10, backgroundColor: '#fff' }}
             >
                 <div className="uk-grid-small uk-flex" uk-grid={true} style={{ padding: 0, marginTop: 3 }}>
                     <div className="uk-width-auto">
@@ -171,7 +183,9 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
                     <div className="uk-width-auto post-info">John Doe</div>
                 </div>
                 <CommentEditor />
+                <div>
                 <button className="uk-button uk-button-primary uk-button-small uk-text-right">Comment</button>
+                </div>
             </div>
         );
     }
@@ -179,7 +193,7 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
     renderComment() {
         return (
             <article
-                className="uk-comment uk-visible-toggle uk-padding-small"
+                className="uk-comment card uk-visible-toggle uk-padding-small"
                 style={{ backgroundColor: '#fff', marginBottom: 10 }}
             >
                 <header className="uk-comment-header uk-position-relative">
@@ -221,15 +235,11 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
     renderCommentList() {
         return (
             <div
-                className="uk-card uk-card-small uk-card-small uk-width-1-1"
-                style={{ backgroundColor: 'transparent' }}
+              id="comments"
+              className="uk-card uk-card-small uk-card-small uk-width-1-1"
+              style={{ backgroundColor: 'transparent' }}
             >
                 <Label text="Comment responses" />
-                {this.renderComment()}
-                {this.renderComment()}
-                {this.renderComment()}
-                {this.renderComment()}
-                {this.renderComment()}
                 {this.renderComment()}
             </div>
         );
@@ -251,12 +261,6 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
         }
         return (
             <div className="uk-width-1-1 uk-padding">
-                <button
-                    className="uk-button uk-button-primary uk-button-small uk-margin-bottom-right"
-                    onClick={() => this.props.history.goBack()}
-                >
-                    Go Back
-                </button>
                 <div className="uk-width-1-1 uk-grid uk-flex-stretch">
                     <div className="uk-width-2-3@m uk-width-3-3@s">
                         {this.renderArticle(this.state.currentArticle)}

@@ -1,4 +1,4 @@
-import { Query } from './Query';
+import Query from './Query';
 import { auth } from './Mutation/auth';
 import { post } from './Mutation/post';
 import { user } from './Mutation/user';

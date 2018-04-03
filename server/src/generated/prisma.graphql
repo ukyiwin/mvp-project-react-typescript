@@ -22,6 +22,7 @@ type Article implements Node {
   viewCount: Int
   likes(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
+  userFavourited(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
 type Channels implements Node {
@@ -53,7 +54,7 @@ type Connect implements Node {
   updatedAt: DateTime!
   to(where: UserWhereInput): User!
   from(where: UserWhereInput): User!
-  accepted: Boolean!
+  status: Int!
 }
 
 type Country implements Node {
@@ -128,7 +129,7 @@ type Message implements Node {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  cahnnel(where: ChannelsWhereInput): Channels!
+  channel(where: ChannelsWhereInput): Channels!
   text: String!
   user(where: UserWhereInput): User!
 }
@@ -159,10 +160,11 @@ type User implements Node {
   interest(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Interest!]
   messages(where: MessageWhereInput): Message
   connectTo(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect!]
-  ConectFrom(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect!]
+  connectFrom(where: ConnectWhereInput, orderBy: ConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connect!]
   type: String
   userType: String
   articles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article!]
+  favourites(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article!]
   channels(where: ChannelsWhereInput, orderBy: ChannelsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Channels!]
   myChannels(where: ChannelsWhereInput, orderBy: ChannelsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Channels!]
   likedArticles(where: ArticleWhereInput, orderBy: ArticleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Article!]
@@ -270,6 +272,7 @@ input ArticleCreateInput {
   author: UserCreateOneWithoutArticlesInput!
   likes: UserCreateManyWithoutLikedArticlesInput
   comments: CommentCreateManyWithoutArticleInput
+  userFavourited: UserCreateManyWithoutFavouritesInput
 }
 
 input ArticleCreateManyWithoutAuthorInput {
@@ -279,6 +282,11 @@ input ArticleCreateManyWithoutAuthorInput {
 
 input ArticleCreateManyWithoutLikesInput {
   create: [ArticleCreateWithoutLikesInput!]
+  connect: [ArticleWhereUniqueInput!]
+}
+
+input ArticleCreateManyWithoutUserFavouritedInput {
+  create: [ArticleCreateWithoutUserFavouritedInput!]
   connect: [ArticleWhereUniqueInput!]
 }
 
@@ -304,6 +312,7 @@ input ArticleCreateWithoutAuthorInput {
   category: InterestCreateManyInput
   likes: UserCreateManyWithoutLikedArticlesInput
   comments: CommentCreateManyWithoutArticleInput
+  userFavourited: UserCreateManyWithoutFavouritesInput
 }
 
 input ArticleCreateWithoutCommentsInput {
@@ -319,6 +328,7 @@ input ArticleCreateWithoutCommentsInput {
   category: InterestCreateManyInput
   author: UserCreateOneWithoutArticlesInput!
   likes: UserCreateManyWithoutLikedArticlesInput
+  userFavourited: UserCreateManyWithoutFavouritesInput
 }
 
 input ArticleCreateWithoutLikesInput {
@@ -333,6 +343,23 @@ input ArticleCreateWithoutLikesInput {
   tags: ArticleCreatetagsInput
   category: InterestCreateManyInput
   author: UserCreateOneWithoutArticlesInput!
+  comments: CommentCreateManyWithoutArticleInput
+  userFavourited: UserCreateManyWithoutFavouritesInput
+}
+
+input ArticleCreateWithoutUserFavouritedInput {
+  slug: String
+  isPublished: Boolean
+  title: String!
+  body: String!
+  type: Arcticletype
+  link: String
+  description: String
+  viewCount: Int
+  tags: ArticleCreatetagsInput
+  category: InterestCreateManyInput
+  author: UserCreateOneWithoutArticlesInput!
+  likes: UserCreateManyWithoutLikedArticlesInput
   comments: CommentCreateManyWithoutArticleInput
 }
 
@@ -439,6 +466,7 @@ input ArticleUpdateInput {
   author: UserUpdateOneWithoutArticlesInput
   likes: UserUpdateManyWithoutLikedArticlesInput
   comments: CommentUpdateManyWithoutArticleInput
+  userFavourited: UserUpdateManyWithoutFavouritesInput
 }
 
 input ArticleUpdateManyWithoutAuthorInput {
@@ -457,6 +485,15 @@ input ArticleUpdateManyWithoutLikesInput {
   delete: [ArticleWhereUniqueInput!]
   update: [ArticleUpdateWithWhereUniqueWithoutLikesInput!]
   upsert: [ArticleUpsertWithWhereUniqueWithoutLikesInput!]
+}
+
+input ArticleUpdateManyWithoutUserFavouritedInput {
+  create: [ArticleCreateWithoutUserFavouritedInput!]
+  connect: [ArticleWhereUniqueInput!]
+  disconnect: [ArticleWhereUniqueInput!]
+  delete: [ArticleWhereUniqueInput!]
+  update: [ArticleUpdateWithWhereUniqueWithoutUserFavouritedInput!]
+  upsert: [ArticleUpsertWithWhereUniqueWithoutUserFavouritedInput!]
 }
 
 input ArticleUpdateOneWithoutCommentsInput {
@@ -484,6 +521,7 @@ input ArticleUpdateWithoutAuthorDataInput {
   category: InterestUpdateManyInput
   likes: UserUpdateManyWithoutLikedArticlesInput
   comments: CommentUpdateManyWithoutArticleInput
+  userFavourited: UserUpdateManyWithoutFavouritesInput
 }
 
 input ArticleUpdateWithoutCommentsDataInput {
@@ -499,6 +537,7 @@ input ArticleUpdateWithoutCommentsDataInput {
   category: InterestUpdateManyInput
   author: UserUpdateOneWithoutArticlesInput
   likes: UserUpdateManyWithoutLikedArticlesInput
+  userFavourited: UserUpdateManyWithoutFavouritesInput
 }
 
 input ArticleUpdateWithoutLikesDataInput {
@@ -514,6 +553,23 @@ input ArticleUpdateWithoutLikesDataInput {
   category: InterestUpdateManyInput
   author: UserUpdateOneWithoutArticlesInput
   comments: CommentUpdateManyWithoutArticleInput
+  userFavourited: UserUpdateManyWithoutFavouritesInput
+}
+
+input ArticleUpdateWithoutUserFavouritedDataInput {
+  slug: String
+  isPublished: Boolean
+  title: String
+  body: String
+  type: Arcticletype
+  link: String
+  description: String
+  viewCount: Int
+  tags: ArticleUpdatetagsInput
+  category: InterestUpdateManyInput
+  author: UserUpdateOneWithoutArticlesInput
+  likes: UserUpdateManyWithoutLikedArticlesInput
+  comments: CommentUpdateManyWithoutArticleInput
 }
 
 input ArticleUpdateWithWhereUniqueWithoutAuthorInput {
@@ -524,6 +580,11 @@ input ArticleUpdateWithWhereUniqueWithoutAuthorInput {
 input ArticleUpdateWithWhereUniqueWithoutLikesInput {
   where: ArticleWhereUniqueInput!
   data: ArticleUpdateWithoutLikesDataInput!
+}
+
+input ArticleUpdateWithWhereUniqueWithoutUserFavouritedInput {
+  where: ArticleWhereUniqueInput!
+  data: ArticleUpdateWithoutUserFavouritedDataInput!
 }
 
 input ArticleUpsertWithoutCommentsInput {
@@ -541,6 +602,12 @@ input ArticleUpsertWithWhereUniqueWithoutLikesInput {
   where: ArticleWhereUniqueInput!
   update: ArticleUpdateWithoutLikesDataInput!
   create: ArticleCreateWithoutLikesInput!
+}
+
+input ArticleUpsertWithWhereUniqueWithoutUserFavouritedInput {
+  where: ArticleWhereUniqueInput!
+  update: ArticleUpdateWithoutUserFavouritedDataInput!
+  create: ArticleCreateWithoutUserFavouritedInput!
 }
 
 input ArticleWhereInput {
@@ -985,6 +1052,9 @@ input ArticleWhereInput {
   comments_every: CommentWhereInput
   comments_some: CommentWhereInput
   comments_none: CommentWhereInput
+  userFavourited_every: UserWhereInput
+  userFavourited_some: UserWhereInput
+  userFavourited_none: UserWhereInput
 }
 
 input ArticleWhereUniqueInput {
@@ -1020,7 +1090,7 @@ input ChannelsCreateInput {
   avatar: String
   type: ChannelType
   author: UserCreateOneWithoutMyChannelsInput!
-  messages: MessageCreateManyWithoutCahnnelInput
+  messages: MessageCreateManyWithoutChannelInput
   participants: UserCreateManyWithoutChannelsInput
 }
 
@@ -1043,7 +1113,7 @@ input ChannelsCreateWithoutAuthorInput {
   title: String!
   avatar: String
   type: ChannelType
-  messages: MessageCreateManyWithoutCahnnelInput
+  messages: MessageCreateManyWithoutChannelInput
   participants: UserCreateManyWithoutChannelsInput
 }
 
@@ -1060,7 +1130,7 @@ input ChannelsCreateWithoutParticipantsInput {
   avatar: String
   type: ChannelType
   author: UserCreateOneWithoutMyChannelsInput!
-  messages: MessageCreateManyWithoutCahnnelInput
+  messages: MessageCreateManyWithoutChannelInput
 }
 
 """
@@ -1141,7 +1211,7 @@ input ChannelsUpdateInput {
   avatar: String
   type: ChannelType
   author: UserUpdateOneWithoutMyChannelsInput
-  messages: MessageUpdateManyWithoutCahnnelInput
+  messages: MessageUpdateManyWithoutChannelInput
   participants: UserUpdateManyWithoutChannelsInput
 }
 
@@ -1175,7 +1245,7 @@ input ChannelsUpdateWithoutAuthorDataInput {
   title: String
   avatar: String
   type: ChannelType
-  messages: MessageUpdateManyWithoutCahnnelInput
+  messages: MessageUpdateManyWithoutChannelInput
   participants: UserUpdateManyWithoutChannelsInput
 }
 
@@ -1192,7 +1262,7 @@ input ChannelsUpdateWithoutParticipantsDataInput {
   avatar: String
   type: ChannelType
   author: UserUpdateOneWithoutMyChannelsInput
-  messages: MessageUpdateManyWithoutCahnnelInput
+  messages: MessageUpdateManyWithoutChannelInput
 }
 
 input ChannelsUpdateWithWhereUniqueWithoutAuthorInput {
@@ -1946,9 +2016,9 @@ type ConnectConnection {
 }
 
 input ConnectCreateInput {
-  accepted: Boolean
+  status: Int
   to: UserCreateOneWithoutConnectToInput!
-  from: UserCreateOneWithoutConectFromInput!
+  from: UserCreateOneWithoutConnectFromInput!
 }
 
 input ConnectCreateManyWithoutFromInput {
@@ -1962,13 +2032,13 @@ input ConnectCreateManyWithoutToInput {
 }
 
 input ConnectCreateWithoutFromInput {
-  accepted: Boolean
+  status: Int
   to: UserCreateOneWithoutConnectToInput!
 }
 
 input ConnectCreateWithoutToInput {
-  accepted: Boolean
-  from: UserCreateOneWithoutConectFromInput!
+  status: Int
+  from: UserCreateOneWithoutConnectFromInput!
 }
 
 """
@@ -1992,15 +2062,15 @@ enum ConnectOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
-  accepted_ASC
-  accepted_DESC
+  status_ASC
+  status_DESC
 }
 
 type ConnectPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  accepted: Boolean!
+  status: Int!
 }
 
 type ConnectSubscriptionPayload {
@@ -2039,9 +2109,9 @@ input ConnectSubscriptionWhereInput {
 }
 
 input ConnectUpdateInput {
-  accepted: Boolean
+  status: Int
   to: UserUpdateOneWithoutConnectToInput
-  from: UserUpdateOneWithoutConectFromInput
+  from: UserUpdateOneWithoutConnectFromInput
 }
 
 input ConnectUpdateManyWithoutFromInput {
@@ -2063,13 +2133,13 @@ input ConnectUpdateManyWithoutToInput {
 }
 
 input ConnectUpdateWithoutFromDataInput {
-  accepted: Boolean
+  status: Int
   to: UserUpdateOneWithoutConnectToInput
 }
 
 input ConnectUpdateWithoutToDataInput {
-  accepted: Boolean
-  from: UserUpdateOneWithoutConectFromInput
+  status: Int
+  from: UserUpdateOneWithoutConnectFromInput
 }
 
 input ConnectUpdateWithWhereUniqueWithoutFromInput {
@@ -2214,11 +2284,35 @@ input ConnectWhereInput {
   All values greater than or equal the given value.
   """
   updatedAt_gte: DateTime
-  accepted: Boolean
+  status: Int
   """
   All values that are not equal to given value.
   """
-  accepted_not: Boolean
+  status_not: Int
+  """
+  All values that are contained in given list.
+  """
+  status_in: [Int!]
+  """
+  All values that are not contained in given list.
+  """
+  status_not_in: [Int!]
+  """
+  All values less than the given value.
+  """
+  status_lt: Int
+  """
+  All values less than or equal the given value.
+  """
+  status_lte: Int
+  """
+  All values greater than the given value.
+  """
+  status_gt: Int
+  """
+  All values greater than or equal the given value.
+  """
+  status_gte: Int
   to: UserWhereInput
   from: UserWhereInput
 }
@@ -5000,12 +5094,12 @@ type MessageConnection {
 
 input MessageCreateInput {
   text: String!
-  cahnnel: ChannelsCreateOneWithoutMessagesInput!
+  channel: ChannelsCreateOneWithoutMessagesInput!
   user: UserCreateOneInput!
 }
 
-input MessageCreateManyWithoutCahnnelInput {
-  create: [MessageCreateWithoutCahnnelInput!]
+input MessageCreateManyWithoutChannelInput {
+  create: [MessageCreateWithoutChannelInput!]
   connect: [MessageWhereUniqueInput!]
 }
 
@@ -5014,7 +5108,7 @@ input MessageCreateOneInput {
   connect: MessageWhereUniqueInput
 }
 
-input MessageCreateWithoutCahnnelInput {
+input MessageCreateWithoutChannelInput {
   text: String!
   user: UserCreateOneInput!
 }
@@ -5088,23 +5182,23 @@ input MessageSubscriptionWhereInput {
 
 input MessageUpdateDataInput {
   text: String
-  cahnnel: ChannelsUpdateOneWithoutMessagesInput
+  channel: ChannelsUpdateOneWithoutMessagesInput
   user: UserUpdateOneInput
 }
 
 input MessageUpdateInput {
   text: String
-  cahnnel: ChannelsUpdateOneWithoutMessagesInput
+  channel: ChannelsUpdateOneWithoutMessagesInput
   user: UserUpdateOneInput
 }
 
-input MessageUpdateManyWithoutCahnnelInput {
-  create: [MessageCreateWithoutCahnnelInput!]
+input MessageUpdateManyWithoutChannelInput {
+  create: [MessageCreateWithoutChannelInput!]
   connect: [MessageWhereUniqueInput!]
   disconnect: [MessageWhereUniqueInput!]
   delete: [MessageWhereUniqueInput!]
-  update: [MessageUpdateWithWhereUniqueWithoutCahnnelInput!]
-  upsert: [MessageUpsertWithWhereUniqueWithoutCahnnelInput!]
+  update: [MessageUpdateWithWhereUniqueWithoutChannelInput!]
+  upsert: [MessageUpsertWithWhereUniqueWithoutChannelInput!]
 }
 
 input MessageUpdateOneInput {
@@ -5116,14 +5210,14 @@ input MessageUpdateOneInput {
   upsert: MessageUpsertNestedInput
 }
 
-input MessageUpdateWithoutCahnnelDataInput {
+input MessageUpdateWithoutChannelDataInput {
   text: String
   user: UserUpdateOneInput
 }
 
-input MessageUpdateWithWhereUniqueWithoutCahnnelInput {
+input MessageUpdateWithWhereUniqueWithoutChannelInput {
   where: MessageWhereUniqueInput!
-  data: MessageUpdateWithoutCahnnelDataInput!
+  data: MessageUpdateWithoutChannelDataInput!
 }
 
 input MessageUpsertNestedInput {
@@ -5131,10 +5225,10 @@ input MessageUpsertNestedInput {
   create: MessageCreateInput!
 }
 
-input MessageUpsertWithWhereUniqueWithoutCahnnelInput {
+input MessageUpsertWithWhereUniqueWithoutChannelInput {
   where: MessageWhereUniqueInput!
-  update: MessageUpdateWithoutCahnnelDataInput!
-  create: MessageCreateWithoutCahnnelInput!
+  update: MessageUpdateWithoutChannelDataInput!
+  create: MessageCreateWithoutChannelInput!
 }
 
 input MessageWhereInput {
@@ -5310,7 +5404,7 @@ input MessageWhereInput {
   All values not ending with the given string.
   """
   text_not_ends_with: String
-  cahnnel: ChannelsWhereInput
+  channel: ChannelsWhereInput
   user: UserWhereInput
 }
 
@@ -5886,8 +5980,9 @@ input UserCreateInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
@@ -5906,6 +6001,11 @@ input UserCreateManyWithoutCountryInput {
 
 input UserCreateManyWithoutDepartmentInput {
   create: [UserCreateWithoutDepartmentInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateManyWithoutFavouritesInput {
+  create: [UserCreateWithoutFavouritesInput!]
   connect: [UserWhereUniqueInput!]
 }
 
@@ -5939,8 +6039,8 @@ input UserCreateOneWithoutCommentsInput {
   connect: UserWhereUniqueInput
 }
 
-input UserCreateOneWithoutConectFromInput {
-  create: UserCreateWithoutConectFromInput
+input UserCreateOneWithoutConnectFromInput {
+  create: UserCreateWithoutConnectFromInput
   connect: UserWhereUniqueInput
 }
 
@@ -5976,7 +6076,8 @@ input UserCreateWithoutArticlesInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
@@ -6005,8 +6106,9 @@ input UserCreateWithoutChannelsInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
   comments: CommentCreateManyWithoutAuthorInput
@@ -6034,14 +6136,15 @@ input UserCreateWithoutCommentsInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
 }
 
-input UserCreateWithoutConectFromInput {
+input UserCreateWithoutConnectFromInput {
   email: String!
   username: String
   password: String!
@@ -6064,6 +6167,7 @@ input UserCreateWithoutConectFromInput {
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
@@ -6091,8 +6195,9 @@ input UserCreateWithoutConnectToInput {
   department: DepartmentCreateOneWithoutUsersInput
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
@@ -6120,8 +6225,9 @@ input UserCreateWithoutCountryInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
@@ -6149,7 +6255,38 @@ input UserCreateWithoutDepartmentInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
+  articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
+  channels: ChannelsCreateManyWithoutParticipantsInput
+  myChannels: ChannelsCreateManyWithoutAuthorInput
+  likedArticles: ArticleCreateManyWithoutLikesInput
+  comments: CommentCreateManyWithoutAuthorInput
+}
+
+input UserCreateWithoutFavouritesInput {
+  email: String!
+  username: String
+  password: String!
+  firstname: String!
+  lastname: String!
+  gender: String!
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  verified: Boolean
+  avatar: FileCreateOneInput
+  country: CountryCreateOneWithoutUsersInput
+  institution: InstitutionsCreateOneWithoutUsersInput
+  department: DepartmentCreateOneWithoutUsersInput
+  interest: InterestCreateManyWithoutUsersInput
+  messages: MessageCreateOneInput
+  connectTo: ConnectCreateManyWithoutToInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
@@ -6178,8 +6315,9 @@ input UserCreateWithoutInstitutionInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
@@ -6207,8 +6345,9 @@ input UserCreateWithoutInterestInput {
   department: DepartmentCreateOneWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   likedArticles: ArticleCreateManyWithoutLikesInput
@@ -6237,8 +6376,9 @@ input UserCreateWithoutLikedArticlesInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   myChannels: ChannelsCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
@@ -6266,8 +6406,9 @@ input UserCreateWithoutMyChannelsInput {
   interest: InterestCreateManyWithoutUsersInput
   messages: MessageCreateOneInput
   connectTo: ConnectCreateManyWithoutToInput
-  ConectFrom: ConnectCreateManyWithoutFromInput
+  connectFrom: ConnectCreateManyWithoutFromInput
   articles: ArticleCreateManyWithoutAuthorInput
+  favourites: ArticleCreateManyWithoutUserFavouritedInput
   channels: ChannelsCreateManyWithoutParticipantsInput
   likedArticles: ArticleCreateManyWithoutLikesInput
   comments: CommentCreateManyWithoutAuthorInput
@@ -6401,8 +6542,9 @@ input UserUpdateDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6431,8 +6573,9 @@ input UserUpdateInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6464,6 +6607,15 @@ input UserUpdateManyWithoutDepartmentInput {
   delete: [UserWhereUniqueInput!]
   update: [UserUpdateWithWhereUniqueWithoutDepartmentInput!]
   upsert: [UserUpsertWithWhereUniqueWithoutDepartmentInput!]
+}
+
+input UserUpdateManyWithoutFavouritesInput {
+  create: [UserCreateWithoutFavouritesInput!]
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutFavouritesInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutFavouritesInput!]
 }
 
 input UserUpdateManyWithoutInstitutionInput {
@@ -6517,12 +6669,12 @@ input UserUpdateOneWithoutCommentsInput {
   upsert: UserUpsertWithoutCommentsInput
 }
 
-input UserUpdateOneWithoutConectFromInput {
-  create: UserCreateWithoutConectFromInput
+input UserUpdateOneWithoutConnectFromInput {
+  create: UserCreateWithoutConnectFromInput
   connect: UserWhereUniqueInput
   delete: Boolean
-  update: UserUpdateWithoutConectFromDataInput
-  upsert: UserUpsertWithoutConectFromInput
+  update: UserUpdateWithoutConnectFromDataInput
+  upsert: UserUpsertWithoutConnectFromInput
 }
 
 input UserUpdateOneWithoutConnectToInput {
@@ -6563,7 +6715,8 @@ input UserUpdateWithoutArticlesDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6592,8 +6745,9 @@ input UserUpdateWithoutChannelsDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
   comments: CommentUpdateManyWithoutAuthorInput
@@ -6621,14 +6775,15 @@ input UserUpdateWithoutCommentsDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
 }
 
-input UserUpdateWithoutConectFromDataInput {
+input UserUpdateWithoutConnectFromDataInput {
   email: String
   username: String
   password: String
@@ -6651,6 +6806,7 @@ input UserUpdateWithoutConectFromDataInput {
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6678,8 +6834,9 @@ input UserUpdateWithoutConnectToDataInput {
   department: DepartmentUpdateOneWithoutUsersInput
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6707,8 +6864,9 @@ input UserUpdateWithoutCountryDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6736,7 +6894,38 @@ input UserUpdateWithoutDepartmentDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
+  articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
+  channels: ChannelsUpdateManyWithoutParticipantsInput
+  myChannels: ChannelsUpdateManyWithoutAuthorInput
+  likedArticles: ArticleUpdateManyWithoutLikesInput
+  comments: CommentUpdateManyWithoutAuthorInput
+}
+
+input UserUpdateWithoutFavouritesDataInput {
+  email: String
+  username: String
+  password: String
+  firstname: String
+  lastname: String
+  gender: String
+  type: String
+  userType: String
+  newConnectNot: Boolean
+  newCommentNot: Boolean
+  newMessageNot: Boolean
+  newProfileNot: Boolean
+  completedProfile: Int
+  verified: Boolean
+  avatar: FileUpdateOneInput
+  country: CountryUpdateOneWithoutUsersInput
+  institution: InstitutionsUpdateOneWithoutUsersInput
+  department: DepartmentUpdateOneWithoutUsersInput
+  interest: InterestUpdateManyWithoutUsersInput
+  messages: MessageUpdateOneInput
+  connectTo: ConnectUpdateManyWithoutToInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
@@ -6765,8 +6954,9 @@ input UserUpdateWithoutInstitutionDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6794,8 +6984,9 @@ input UserUpdateWithoutInterestDataInput {
   department: DepartmentUpdateOneWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
@@ -6824,8 +7015,9 @@ input UserUpdateWithoutLikedArticlesDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   myChannels: ChannelsUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
@@ -6853,8 +7045,9 @@ input UserUpdateWithoutMyChannelsDataInput {
   interest: InterestUpdateManyWithoutUsersInput
   messages: MessageUpdateOneInput
   connectTo: ConnectUpdateManyWithoutToInput
-  ConectFrom: ConnectUpdateManyWithoutFromInput
+  connectFrom: ConnectUpdateManyWithoutFromInput
   articles: ArticleUpdateManyWithoutAuthorInput
+  favourites: ArticleUpdateManyWithoutUserFavouritedInput
   channels: ChannelsUpdateManyWithoutParticipantsInput
   likedArticles: ArticleUpdateManyWithoutLikesInput
   comments: CommentUpdateManyWithoutAuthorInput
@@ -6873,6 +7066,11 @@ input UserUpdateWithWhereUniqueWithoutCountryInput {
 input UserUpdateWithWhereUniqueWithoutDepartmentInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutDepartmentDataInput!
+}
+
+input UserUpdateWithWhereUniqueWithoutFavouritesInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutFavouritesDataInput!
 }
 
 input UserUpdateWithWhereUniqueWithoutInstitutionInput {
@@ -6905,9 +7103,9 @@ input UserUpsertWithoutCommentsInput {
   create: UserCreateWithoutCommentsInput!
 }
 
-input UserUpsertWithoutConectFromInput {
-  update: UserUpdateWithoutConectFromDataInput!
-  create: UserCreateWithoutConectFromInput!
+input UserUpsertWithoutConnectFromInput {
+  update: UserUpdateWithoutConnectFromDataInput!
+  create: UserCreateWithoutConnectFromInput!
 }
 
 input UserUpsertWithoutConnectToInput {
@@ -6936,6 +7134,12 @@ input UserUpsertWithWhereUniqueWithoutDepartmentInput {
   where: UserWhereUniqueInput!
   update: UserUpdateWithoutDepartmentDataInput!
   create: UserCreateWithoutDepartmentInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutFavouritesInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutFavouritesDataInput!
+  create: UserCreateWithoutFavouritesInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutInstitutionInput {
@@ -7565,12 +7769,15 @@ input UserWhereInput {
   connectTo_every: ConnectWhereInput
   connectTo_some: ConnectWhereInput
   connectTo_none: ConnectWhereInput
-  ConectFrom_every: ConnectWhereInput
-  ConectFrom_some: ConnectWhereInput
-  ConectFrom_none: ConnectWhereInput
+  connectFrom_every: ConnectWhereInput
+  connectFrom_some: ConnectWhereInput
+  connectFrom_none: ConnectWhereInput
   articles_every: ArticleWhereInput
   articles_some: ArticleWhereInput
   articles_none: ArticleWhereInput
+  favourites_every: ArticleWhereInput
+  favourites_some: ArticleWhereInput
+  favourites_none: ArticleWhereInput
   channels_every: ChannelsWhereInput
   channels_some: ChannelsWhereInput
   channels_none: ChannelsWhereInput

@@ -16,7 +16,16 @@ type Query {
   getAllChat: [Channels!]!
   getArticleById(id: ID!): Article!
   getArticleBySlug(slug: String!): Article!
+  getArticlesByInterest(text: String!): [Article!]
+  getArticlesByTags(text: String!): [Article!]
+  comments(articleId: String!): [Comment!]
   getMessages(channelId: ID!): [Message!]!
+  searchByTags(text: String!): [Message!]
+  searchInterest(text: String!): [Interest!]
+  searchLibrary(text: String!): [Library!]
+  searchArticle(text: String!): [Article!]
+  searchUser(text: String!): [User!]
+  search(text: String!): SearchPayload!
 }
 
 type Mutation {
@@ -33,11 +42,29 @@ type Mutation {
   publishArticle(id: ID!): Article!
   likeArticle(id: ID!): Article!
   unLikeArticle(id: ID!): Article!
+  sendMessage(channelId: ID!, text: String!): Message!
   commentArticle(articleId: ID, text: String!): Article!
   deletePost(id: ID!): Post!
+  finishSignup: SuccessPayload!
+  createMessage(channelId: ID!, text: String!): Message!
+  deleteArticle(id: ID!): SuccessPayload!
+  deleteComment(id: ID!): SuccessPayload!
+  favourite(id: ID!): Article!
+  unFavourite(id: ID!): Article!
 }
 
 type AuthPayload {
   token: String!
   user: User!
+}
+
+type SuccessPayload {
+  success: Boolean!
+}
+
+type SearchPayload {
+  articles: [Article!]
+  users: [User!]
+  interest: [Interest!]
+  libraries:[ Library!]
 }

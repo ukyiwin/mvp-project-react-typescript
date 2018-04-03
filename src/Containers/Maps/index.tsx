@@ -1,5 +1,5 @@
 import * as React from 'react';
-import MapComponent from 'Components/Map';
+// import MapComponent from 'Components/Map';
 import { Helmet } from 'react-helmet';
 import { geolocated, GeolocatedProps } from 'react-geolocated';
 import './style.css';
@@ -11,9 +11,6 @@ type Props = {
 
 class Maps extends React.Component<Props & GeolocatedProps> {
 
-  componentDidMount() {
-    window.anima();
-  }
   render() {
     const {coords} = this.props;
     let lat = coords ? coords.latitude : -10.0;
@@ -24,12 +21,8 @@ class Maps extends React.Component<Props & GeolocatedProps> {
           <title>Unizonn | Library</title>
           <meta name="an inclusive community" content="Unizonn community" />
         </Helmet>
-        <div className="uk-card uk-card-default" style={{minHeight: 300}}>
-          <MapComponent 
-            lat={lat}
-            lng={lng}
-            isMarkerShown={true}
-          />
+        <div className="segment uk-card uk-card-default" style={{minHeight: 290}}>
+          fdfdf
         </div>
         <div className="uk-padding-large uk-padding-remove-vertical">
           <section className="content">
@@ -39,8 +32,8 @@ class Maps extends React.Component<Props & GeolocatedProps> {
             >Near Libraries
             </h4>
             <Label text="Sorting from the closest" />
-            <div className="grid grid--effect-rigel">
-              <a href="#" className="grid__item grid__item--c1">
+            <div className="uk-flex uk-flex-between grid grid--effect-rigel">
+              <a href="#" className="uk-card-default grid__item grid__item--c1">
                 <div className="stack">
                   <div className="stack__deco"/>
                   <div className="stack__deco"/>
@@ -50,19 +43,19 @@ class Maps extends React.Component<Props & GeolocatedProps> {
                     <img className="stack__img" src="https://tympanus.net/Development/StackMotionHoverEffects/img/2.png" alt="Image"/>
                   </div>
                 </div>
-                <div className="grid__item-caption uk-card uk-card-default uk-padding-small">
+                <div className="grid__item-caption uk-padding-small">
                   <h3 className="grid__item-title uk-text-bold">First State Library</h3>
                   <div className="column column--left">
                     <span className="column__text">Distance</span>
                     <span className="column__text">Review</span>
                   </div>
                   <div className="column column--right">
-                    <span className="column__text">20 meters</span>
-                    <span className="column__text">4.5</span>
+                    <span className="column__text">9.1 meters</span>
+                    <span className="column__text">3</span>
                   </div>
                 </div>
               </a>
-              <a href="#" className="grid__item grid__item--c1">
+              <a href="#" className="uk-card-default grid__item grid__item--c1">
                 <div className="stack">
                   <div className="stack__deco"/>
                   <div className="stack__deco"/>
@@ -84,7 +77,51 @@ class Maps extends React.Component<Props & GeolocatedProps> {
                   </div>
                 </div>
               </a>
-              <a href="#" className="grid__item grid__item--c1">
+              <a href="#" className="uk-card-default grid__item grid__item--c1">
+                <div className="stack">
+                  <div className="stack__deco"/>
+                  <div className="stack__deco"/>
+                  <div className="stack__deco"/>
+                  <div className="stack__deco"/>
+                  <div className="stack__figure">
+                    <img className="stack__img" src="https://tympanus.net/Development/StackMotionHoverEffects/img/2.png" alt="Image"/>
+                  </div>
+                </div>
+                <div className="grid__item-caption uk-card uk-card-default uk-padding-small">
+                  <h3 className="grid__item-title uk-text-bold">Library de Anglon</h3>
+                  <div className="column column--left">
+                    <span className="column__text">Distance</span>
+                    <span className="column__text">Review</span>
+                  </div>
+                  <div className="column column--right">
+                    <span className="column__text">50.8 meters</span>
+                    <span className="column__text">5.0</span>
+                  </div>
+                </div>
+              </a>
+              <a href="#" className="uk-card-default grid__item grid__item--c1">
+                <div className="stack">
+                  <div className="stack__deco"/>
+                  <div className="stack__deco"/>
+                  <div className="stack__deco"/>
+                  <div className="stack__deco"/>
+                  <div className="stack__figure">
+                    <img className="stack__img" src="https://tympanus.net/Development/StackMotionHoverEffects/img/2.png" alt="Image"/>
+                  </div>
+                </div>
+                <div className="grid__item-caption uk-card uk-card-default uk-padding-small">
+                  <h3 className="grid__item-title uk-text-bold">City Library</h3>
+                  <div className="column column--left">
+                    <span className="column__text">Distance</span>
+                    <span className="column__text">Review</span>
+                  </div>
+                  <div className="column column--right">
+                    <span className="column__text">9.1 meters</span>
+                    <span className="column__text">3</span>
+                  </div>
+                </div>
+              </a>
+              <a href="#" className="uk-card-default grid__item grid__item--c1">
                 <div className="stack">
                   <div className="stack__deco"/>
                   <div className="stack__deco"/>
@@ -120,3 +157,12 @@ export default geolocated({
   },
   userDecisionTimeout: 1000,
 })(Maps);
+
+/*
+
+<MapComponent 
+            lat={lat}
+            lng={lng}
+            isMarkerShown={true}
+          />
+          */

@@ -35,12 +35,25 @@ type WrappedProps = Response & QueryProps;
 
 const ArticleList = graphql<Response, {}, WrappedProps>(ARTICLES, {
     props: ({ data }) => ({ ...data }),
+    options: {
+      pollInterval: 1000
+    }
 });
 
 export default ArticleList(({ loading, articles, error }) => {
     // tslint:disable-next-line:jsx-wrap-multiline
     if (loading) {
-        return <LoadingComponent />;
+      return (
+        <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
+          <MyLoader />
+          <div className="uk-width-1-1" style={{height: 10}}/>
+          <MyLoader />
+          <div className="uk-width-1-1" style={{height: 10, margin: 20}}/>
+          <MyLoader />
+          <div className="uk-width-1-1" style={{height: 10}}/>
+          <MyLoader />
+        </div>
+      );
     }
     if (error) {
         return <ErrorComponent />;

@@ -18,7 +18,10 @@ class LeftSideBar extends React.Component<RouteComponentProps & Props> {
     render() {
         // const { loading } = this.state;
         return (
-          <div className="ui card uk-width-1-1">
+          <div className="card uk-width-1-1">
+            <div className="uk-width-1-1" style={{ marginBottom: 10, padding: 0 }}>
+              <ConnectBox />
+            </div>
             <div className="uk-width-1-1" style={{ marginBottom: 10, padding: 0 }}>
               <ConnectBox />
             </div>

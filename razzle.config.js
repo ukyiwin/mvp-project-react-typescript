@@ -6,6 +6,8 @@ const Visualizer = require("webpack-visualizer-plugin");
 const { ReactLoadablePlugin } = require('react-loadable/webpack');
 const razzleHeroku = require("razzle-heroku");
 
+const context = path.resolve(__dirname, 'src');
+
 module.exports = {
   modify(baseConfig, { target, dev }, webpack) {
     const config = razzleHeroku(baseConfig, {target, dev}, webpack);
@@ -16,7 +18,7 @@ module.exports = {
     config.resolve.alias.Containers = path.resolve('./src/Containers');
     config.resolve.alias.Assets = path.resolve('./src/Assets');
     config.resolve.alias.Utils = path.resolve('./src/Utils');
-    config.resolve.alias.jquery = path.resolve('jquery/src/jquery');
+    config.resolve.alias.jquery = path.resolve('node_modules/jquery/src/jquery');
     config.resolve.alias['@material'] = path.resolve('./node_modules/@material');
 
     config.resolve.extensions = config.resolve.extensions.concat([
@@ -91,7 +93,7 @@ module.exports = {
         options: {
           minimize: !dev,
           sourceMap: dev,
-          importLoaders: 1
+          // importLoaders: 1
         }
       };
 
@@ -120,11 +122,58 @@ module.exports = {
         }
       };
 
-      //config.plugins.push(
-        //new ReactLoadablePlugin({
-          //filename: './build/react-loadable.json',
-        //}));
+      config.module.rules.push({
+        test: /\.less$/,
+        use: [
+          {
+              loader: "style-loader" // creates style nodes from JS strings
+          }, {
+              loader: "css-loader" // translates CSS into CommonJS
+          }, {
+              loader: "less-loader" // compiles Less to CSS
+          }
+        ]
+      });
+      /*
+      config.module.rules.push({
+        // Load .less files from semantic-ui-less module folder
+        test: /\.less$/i,
+        include: /[/\\]node_modules[/\\]semantic-ui-less[/\\]/,
+        use: ExtractTextPlugin.extract({
+            use: [
+                // Set importLoaders to 2, because there are two more loaders in the chain (postcss-loader
+                // and semantic-ui-less-module-loader), which shall be used when loading @import resources
+                // in CSS files:
+                {
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 2,
+                        sourceMap: true,
+                        minimize: true
+                    }
+                },
+                { loader: 'postcss-loader', options: { sourceMap: true } },
+                {
+                    loader: 'semantic-ui-less-module-loader',
+                    options: {
+                        siteFolder: path.resolve(context, 'semantic-ui-theme/site'),
+                        themeConfigPath: path.resolve(context, 'semantic-ui-theme/theme.config'),
+                    }
+                }
+            ]
+        })
+        },
+        {
+          // Load .png files from semantic-ui-less folder
+          test: /\.png$/i,
+          include: /[/\\]node_modules[/\\]semantic-ui-less[/\\]/,
+          loader: 'file-loader',
+          // Use publicPath ../, because this will be used in css files, and to reference an image from the images
+          // folder in a css file in the styles folder the relative path is ../images/image-file.ext
+          options: { name: 'images/[name].[hash].[ext]', publicPath: '../' }
+      });*/
 
+      //babelLoader.options.preset
       if (dev) {
         // For development, include source map
         config.module.rules.push({
@@ -132,6 +181,11 @@ module.exports = {
           use: ["style-loader", cssLoader, postCSSLoader, sassLoader]
         });
 
+        config.plugins.push(
+          new ExtractTextPlugin({
+            filename: 'styles/[name].[contenthash].css'
+          })
+        );
       } else {
         // For production, extract CSS
         config.module.rules.push({
@@ -147,9 +201,12 @@ module.exports = {
           new webpack.IgnorePlugin(/moment/, /react-kronos/),
           new Visualizer(),
           new ExtractTextPlugin({
-            filename: "css/[name].css?[hash]-[chunkhash]-[contenthash]-[name]",
-            disable: false,
-            allChunks: true
+            filename: 'styles/[name].[contenthash].css'
+          }),
+          new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery'
           })
         );
       }

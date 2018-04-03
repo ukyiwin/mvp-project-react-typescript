@@ -15,10 +15,11 @@ const UserProfileBox = (props: Props) => {
     <div
       className="uk-width-1-1 uk-text-center uk-padding-small"
     >
+      <div className="uk-background-primary uk-width-1-1 uk-position-top" style={{height: 75}} />
       <Avatar 
         size={60} 
         // tslint:disable-next-line:max-line-length
-        url={props.me.avatar ? props.me.avatar.name : ''} presence={false} />
+        url={props.me.avatar ? props.me.avatar.url : ''} presence={false} />
 
         <p className="uk-text-bold" style={{fontSize: 16}}>{props.me.firstname} {props.me.lastname}</p>
         <p style={{fontSize: 12}}>Founder at Gueva Technologies. Geek, programmer, interest in AI and Machine Learning, Big Data, love basketball.</p>

@@ -22,6 +22,21 @@ export const USER_FRAGMENT = gql`
     newMessageNot
     newProfileNot
     completedProfile
+    country {
+      name
+    }
+    postCount: articles(where: {isPublished: true}){
+      id
+    }
+    institution {
+      title
+    }
+    department { 
+      name
+    }
+    type
+    userType
+    verified
   }
 `;
 
@@ -38,6 +53,10 @@ export const ARTICLE_FRAGMENT = gql`
     createdAt
     updatedAt
     tags
+    headerImage {
+      id
+      url
+    }
     author{
       id
       username
@@ -47,6 +66,13 @@ export const ARTICLE_FRAGMENT = gql`
       }
       firstname
       lastname
+      type
+      department {
+        name
+      }
+      institution{
+        title
+      }
     }
     category{
       id
@@ -56,5 +82,24 @@ export const ARTICLE_FRAGMENT = gql`
     }
     link
     type
+  }
+`;
+
+/**
+ * @description user graphql fragment
+ */
+export const MESSAGE_FRAGMENT = gql`
+  fragment messageFragment on Article {
+    text
+    user {
+      id
+      username
+    }
+    cahnnel {
+      id
+      updatedAt
+    }
+    createdAt
+    updatedAt
   }
 `;
