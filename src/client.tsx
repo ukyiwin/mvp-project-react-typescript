@@ -10,8 +10,8 @@ import { ApolloProvider } from 'react-apollo';
 import registerServiceWorker from './registerServiceWorker';
 import { ApolloLink } from 'apollo-link';
 import 'isomorphic-fetch';
-// import fetch from 'node-fetch';
 import asyncBootstrapper from 'react-async-bootstrapper';
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 // import { AsyncComponentProvider } from 'react-async-component';
 import 'semantic-ui-css/components/button.min.css'
 import 'semantic-ui-css/components/card.min.css'
@@ -44,6 +44,7 @@ const links = [
   httpLinkAuth
 ];
 
+OfflinePluginRuntime.install();
 /*
 // const queueLink = new QueueLink();
 const httpLink = new HttpLink({ uri: 'https://uniserver.now.sh' });

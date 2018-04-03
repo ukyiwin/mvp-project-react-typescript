@@ -2,17 +2,21 @@ import * as express from 'express';
 import * as React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-
-import App from './Containers/App';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
-import 'isomorphic-unfetch';
+import helmet from 'helmet';
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import morgan from 'morgan';
 import ApolloClient from 'apollo-client';
 import { ApolloProvider, renderToStringWithData, getDataFromTree } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import fetch from 'node-fetch';
+import 'isomorphic-unfetch';
+import App from './Containers/App';
 // import { createPersistedQueryLink } from 'apollo-link-persisted-queries';
 import {
   errorLink,
@@ -58,6 +62,10 @@ const server = express();
 
 server
   .disable('x-powered-by')
+  .use(helmet())
+  .use(compression())
+  .use(morgan('dev'))
+  .use(cookieParser())
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', (req: express.Request, res: express.Response) => {
     
