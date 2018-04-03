@@ -204,7 +204,6 @@ module.exports = {
           cache: true,
           algorithm: 'gzip'
         }),
-        new webpack.IgnorePlugin(/\/iconv-loader$/),
         new OfflinePlugin()
       );
 
@@ -241,7 +240,6 @@ module.exports = {
             algorithm: 'gzip'
           }),
           new Visualizer(),
-          new webpack.IgnorePlugin(/\/iconv-loader$/),
           new OfflinePlugin()
         );
     }
