@@ -29,10 +29,8 @@ const PublicLayout: React.SFC<DefaultProps> = (props) => {
             render={(matchProps) =>
                 isAuthenticated !== true ? (
                     <React.Fragment>
-                      <div className="uk-position-relative">
-                        <PublicHeader me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
-                        <Component {...matchProps} refreshToken={refreshToken} />
-                      </div>
+                      <PublicHeader me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
+                      <Component {...matchProps} refreshToken={refreshToken} />
                     </React.Fragment>
                 ) : (
                     <Redirect to={{ pathname: '/home' }} />

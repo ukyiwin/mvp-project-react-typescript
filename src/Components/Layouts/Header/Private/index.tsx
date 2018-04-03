@@ -25,7 +25,7 @@ const PrivateHeader = (props: Props) => {
         style={{marginBottom: 0}}
       >
         <nav 
-          className="uk-navbar-container mdc-elevation--z2 uk-margin uk-navbar-transparent raised mdc-toolbar mdc-toolbar--fixed uk-dark" 
+          className="uk-navbar-container mdc-elevation--z2 uk-margin uk-background-secondary raised mdc-toolbar mdc-toolbar--fixed uk-dark" 
           // tslint:disable-next-line:jsx-boolean-value
           uk-navbar
           style={{marginBottom: 0}}

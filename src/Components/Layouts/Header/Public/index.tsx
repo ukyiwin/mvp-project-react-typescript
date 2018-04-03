@@ -22,7 +22,6 @@ const PublicHeader = (props: Props) => {
       <div
         data-uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky mdc-toolbar mdc-toolbar--fixed"
         style={{marginBottom: 0}}
-        className="uk-postition-top"
       >
         <nav 
           className="uk-navbar-container uk-margin uk-background-secondary raised mdc-toolbar mdc-toolbar--fixed uk-dark" 
