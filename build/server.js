@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "914f3281a2336175b864"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "1ceecc65e877a9888e60"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -783,6 +783,25 @@ exports.push([module.i, "/*!\n * medium-draft\n * Version - 0.6.0-beta1\n * Auth
 
 /***/ }),
 
+/***/ "./node_modules/offline-plugin/runtime.js":
+/***/ (function(module, exports) {
+
+var warn = "offline-plugin: runtime was installed without OfflinePlugin being added to the webpack.config.js. See https://goo.gl/2Ca7NO for details.";
+
+if (window.console) {
+  if (console.info) {
+    console.info(warn);
+  } else if (console.log) {
+    console.log(warn);
+  }
+}
+
+exports.install = function() {};
+exports.applyUpdate = function() {};
+exports.update = function() {};
+
+/***/ }),
+
 /***/ "./node_modules/razzle/node_modules/webpack/hot/log-apply-result.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1405,8 +1424,8 @@ class InputBoxLogin extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     render() {
         const { loading } = this.state;
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h1", { className: "uk-heading-primary uk-text-bold uk-text-uppercase", style: { fontSize: 90, color: '#000' } }, "unizonn"),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { className: " uk-margin uk-text-bold", style: { fontSize: 18, color: '#000' } }, "Friendly and inclusive community for students and academia"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h1", { className: "uk-heading-primary uk-text-bold uk-text-uppercase", style: { fontSize: '8vw', color: '#fff' } }, "unizonn"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { className: " uk-margin uk-text-bold", style: { fontSize: '1.3vw', color: '#fff' } }, "Friendly and inclusive community for students and academia"),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "ui uk-flex-stretch" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("form", { onSubmit: this.checkUser, className: "uk-margin uk-flex-stretch", "uk-margin": true },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "ui big right labeled input fluid" },
@@ -1519,17 +1538,17 @@ const A = __WEBPACK_IMPORTED_MODULE_1_glamorous___default.a.a({
 });
 const FooterPublic = () => {
     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex uk-width-1-1 uk-flex-between uk-padding-small", style: { backgroundColor: '#21212199' } },
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-3@m uk-width-1-1@s", style: { color: '#000', fontWeight: 'bold' } }, "Copyright @2017, All Rights Reserved"),
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-3@m uk-width-1-1@s", style: { color: '#fff', fontWeight: 'bold', fontSize: '1vw' } }, "Copyright @2017 Unizonn, All Rights Reserved"),
         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-2-3@m uk-width-1-1@s uk-text-right" },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "ui horizontal list" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold' } }, "Unizonn"),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold' } }, "Privacy"),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold' } }, "Terms & Condition"),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold' } }, "Careers"),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold' } }, "Skills"),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold' } }, "About Us"),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold' } }, "Contact"),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold' } }, "Support")))));
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold', fontSize: '1vw' } }, "Unizonn"),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold', fontSize: '1vw' } }, "Privacy"),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold', fontSize: '1vw' } }, "Terms & Condition"),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold', fontSize: '1vw' } }, "Careers"),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold', fontSize: '1vw' } }, "Skills"),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold', fontSize: '1vw' } }, "About Us"),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold', fontSize: '1vw' } }, "Contact"),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](A, { className: "item simple-link", style: { color: '#000', fontWeight: 'bold', fontSize: '1vw' } }, "Support")))));
 };
 
 /*
@@ -5031,13 +5050,13 @@ class HomePublic extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_helmet__["Helmet"], null,
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("title", null, "Unizonn | Home"),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("meta", { name: "an inclusive community", content: "Unizonn community" })),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { id: "bg1", className: "uk-section backgroundOne uk-light uk-background-cover", style: { height: '91vh' } },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { id: "bg1", className: "uk-section backgroundOne uk-width-1-1 uk-height-1-1 uk-light uk-background-cover", style: { height: '91vh' } },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-container" },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-grid-match uk-flex uk-child-width-1-2@m", "uk-grid": true },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-grid-match uk-flex uk-width-1-1", "uk-grid": true },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding uk-width-1-2@m uk-width-1-1@s" },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_InputBoxLogin__["a" /* default */], null)),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding" }, "wow"))),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-position-bottom" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding uk-width-1-2@m uk-hidden@s" }, "wow"))),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-position-bottom uk-visible@s" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_Layouts_FooterPublic__["a" /* FooterPublic */], null)))));
     }
 }
@@ -6161,8 +6180,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_http__ = __webpack_require__("http");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_http___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_http__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__server__ = __webpack_require__("./src/server.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_offline_plugin_runtime__ = __webpack_require__("./node_modules/offline-plugin/runtime.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_offline_plugin_runtime___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_offline_plugin_runtime__);
 
 
+
+__WEBPACK_IMPORTED_MODULE_2_offline_plugin_runtime__["install"]();
 const server = __WEBPACK_IMPORTED_MODULE_0_http__["createServer"](__WEBPACK_IMPORTED_MODULE_1__server__["default"]);
 let currentApp = __WEBPACK_IMPORTED_MODULE_1__server__["default"];
 server.listen("3000" || 3000, (err) => {

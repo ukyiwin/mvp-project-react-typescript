@@ -3,8 +3,8 @@ const path = require('path');
 const autoprefixer = require("autoprefixer");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const Visualizer = require("webpack-visualizer-plugin");
-const { ReactLoadablePlugin } = require('react-loadable/webpack');
 const razzleHeroku = require("razzle-heroku");
+const OfflinePlugin = require('offline-plugin');
 
 const context = path.resolve(__dirname, 'src');
 
@@ -173,7 +173,12 @@ module.exports = {
           options: { name: 'images/[name].[hash].[ext]', publicPath: '../' }
       });*/
 
-      //babelLoader.options.preset
+      config.plugins.push(
+        new ExtractTextPlugin({
+          filename: 'styles/[name].[contenthash].css'
+        })
+      );
+
       if (dev) {
         // For development, include source map
         config.module.rules.push({
@@ -181,11 +186,6 @@ module.exports = {
           use: ["style-loader", cssLoader, postCSSLoader, sassLoader]
         });
 
-        config.plugins.push(
-          new ExtractTextPlugin({
-            filename: 'styles/[name].[contenthash].css'
-          })
-        );
       } else {
         // For production, extract CSS
         config.module.rules.push({
@@ -203,6 +203,7 @@ module.exports = {
           new ExtractTextPlugin({
             filename: 'styles/[name].[contenthash].css'
           }),
+          new OfflinePlugin(),
           new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
