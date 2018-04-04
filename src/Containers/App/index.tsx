@@ -272,9 +272,9 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                     />
                     <EmptyLayout 
                       me={this.state.me} 
-                      exact={false} 
+                      exact={true} 
                       component={Profile} 
-                      path="/uz/:username" 
+                      path="/:username/" 
                       isAuthenticated={isAuthenticated} 
                       logout={this._logout} 
                     />
