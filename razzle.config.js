@@ -185,7 +185,7 @@ module.exports = {
     if (dev) {
       // For development, include source map
       config.module.rules.push({
-        test: /.scss$/,
+        test: /\.(css|scss)$/,
         use: ["style-loader", cssLoader, postCSSLoader, sassLoader]
       });
       config.plugins.push(
@@ -210,7 +210,7 @@ module.exports = {
     } else {
         // For production, extract CSS
         config.module.rules.push({
-          test: /.scss$/,
+          test: /\.(css|scss)$/,
           use: ExtractTextPlugin.extract({
             fallback: "style-loader",
             use: [cssLoader, postCSSLoader, sassLoader]
@@ -239,7 +239,7 @@ module.exports = {
     }
   } else {
     config.module.rules.push({
-      test: /.scss$/,
+      test: /\.(css|scss)$/,
       use: ["ignore-loader"]
     });
   }

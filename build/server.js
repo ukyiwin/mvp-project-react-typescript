@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ffb5587705f11dfce2ca"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "cb0168c41ccaeb2aa987"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -2348,6 +2348,36 @@ const LoadingComponent = () => {
 
 /***/ }),
 
+/***/ "./src/Components/Map/index.tsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_recompose__ = __webpack_require__("recompose");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_recompose___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_recompose__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_google_maps__ = __webpack_require__("react-google-maps");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_google_maps___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_google_maps__);
+
+
+
+const MapComponent = Object(__WEBPACK_IMPORTED_MODULE_1_recompose__["compose"])(Object(__WEBPACK_IMPORTED_MODULE_1_recompose__["withProps"])({
+    googleMapURL: 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places',
+    loadingElement: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { style: { height: `100%` } }),
+    containerElement: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { style: { height: `400px` } }),
+    mapElement: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { style: { height: `100%` } }),
+}), __WEBPACK_IMPORTED_MODULE_2_react_google_maps__["withScriptjs"], __WEBPACK_IMPORTED_MODULE_2_react_google_maps__["withGoogleMap"])((props) => (
+// tslint:disable-next-line:jsx-wrap-multiline
+__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_0_react__["Fragment"], null,
+    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_google_maps__["GoogleMap"], { defaultZoom: 8, defaultCenter: {
+            lat: props.lat,
+            lng: props.lng,
+        } }, props.isMarkerShown && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_google_maps__["Marker"], { position: { lat: props.lat, lng: props.lng }, onClick: props.onMarkerClick }))))));
+/* harmony default export */ __webpack_exports__["a"] = (MapComponent);
+
+
+/***/ }),
+
 /***/ "./src/Components/OverlayTriggerButton/index.tsx":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2454,7 +2484,13 @@ class PopoverLink extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         const { me } = this.state;
         const styleIt = this.props.bigger ? { fontSize: 17 } : {};
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "boundary" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/${this.props.user.username}`, className: "uk-text-bold ", style: styleIt }, this.props.children),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { style: { margin: 0 } },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/${this.props.user.username}`, className: "uk-text-bold ", style: styleIt },
+                    this.props.children,
+                    " ",
+                    ' '),
+                "@",
+                user.username),
             user.id === me.id ?
                 null :
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "uk-drop": "boundary: .boundary; animation: uk-animation-slide-top-small; duration: 500" },
@@ -5080,15 +5116,16 @@ class HomePublic extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_helmet__ = __webpack_require__("react-helmet");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_helmet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_helmet__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_geolocated__ = __webpack_require__("react-geolocated");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_geolocated___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_geolocated__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__style_css__ = __webpack_require__("./src/Containers/Maps/style.css");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__style_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__style_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_Components_Label__ = __webpack_require__("./src/Components/Label/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_Components_Map__ = __webpack_require__("./src/Components/Map/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_helmet__ = __webpack_require__("react-helmet");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_helmet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_helmet__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_geolocated__ = __webpack_require__("react-geolocated");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_geolocated___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_geolocated__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__style_scss__ = __webpack_require__("./src/Containers/Maps/style.scss");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__style_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__style_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_Components_Label__ = __webpack_require__("./src/Components/Label/index.tsx");
 
-// import MapComponent from 'Components/Map';
+
 
 
 
@@ -5099,14 +5136,15 @@ class Maps extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         let lat = coords ? coords.latitude : -10.0;
         let lng = coords ? coords.longitude : -19.0;
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-background-default" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_helmet__["Helmet"], null,
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_helmet__["Helmet"], null,
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("title", null, "Unizonn | Library"),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("meta", { name: "an inclusive community", content: "Unizonn community" })),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "segment uk-card uk-card-default", style: { minHeight: 290 } }, "fdfdf"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "segment uk-card uk-card-default", style: { minHeight: 290 } },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_Map__["a" /* default */], { lat: lat, lng: lng, isMarkerShown: true })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-large uk-padding-remove-vertical" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("section", { className: "content" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h4", { className: " uk-text-middle uk-flex uk-padding-small", style: { marginLeft: 90 } }, "Near Libraries"),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_Label__["a" /* default */], { text: "Sorting from the closest" }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5_Components_Label__["a" /* default */], { text: "Sorting from the closest" }),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex uk-flex-between grid grid--effect-rigel" },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { href: "#", className: "uk-card-default grid__item grid__item--c1" },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "stack" },
@@ -5190,7 +5228,7 @@ class Maps extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "column__text" }, "5.0")))))))));
     }
 }
-/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_2_react_geolocated__["geolocated"])({
+/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_3_react_geolocated__["geolocated"])({
     positionOptions: {
         enableHighAccuracy: true,
     },
@@ -5208,17 +5246,9 @@ class Maps extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 
 /***/ }),
 
-/***/ "./src/Containers/Maps/style.css":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./src/Containers/Maps/style.scss":
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "*,\n*::after,\n*::before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\na {\n  text-decoration: none;\n  color: #ff3d53;\n  outline: none;\n  transition: color 0.2s; }\n\na:hover,\na:focus {\n  color: #050505; }\n\n.hidden {\n  position: absolute;\n  overflow: hidden;\n  width: 0;\n  height: 0;\n  pointer-events: none; }\n\n/* Icons */\n.icon {\n  display: block;\n  width: 1.5em;\n  height: 1.5em;\n  margin: 0 auto;\n  fill: currentColor; }\n\n.message-mobile {\n  font-size: 0.85em;\n  display: none;\n  width: 100%;\n  padding: 0.5em;\n  text-align: center;\n  background: #ff3d53; }\n\n/* Header */\n.codrops-header {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  align-items: center;\n  width: 100%;\n  padding: 1.5em 1.5em 4em;\n  text-align: left; }\n\n.codrops-header__title {\n  font-size: 1.15em;\n  margin: 0;\n  padding: 0 0.5em; }\n\n.codrops-header__tagline {\n  font-size: 0.85em;\n  width: 100%;\n  margin: 0;\n  color: #000000; }\n\n.codrops-header__tagline::before {\n  content: '> '; }\n\n.github {\n  font-size: 0.85em;\n  font-weight: bold;\n  margin: 0 0 0 auto; }\n\n/* Top Navigation Style */\n.codrops-links {\n  position: relative;\n  display: flex;\n  justify-content: center;\n  text-align: center;\n  white-space: nowrap; }\n\n.codrops-links::after {\n  content: '';\n  position: absolute;\n  top: 20%;\n  left: 50%;\n  width: 1px;\n  height: 60%;\n  background: #b0adad;\n  transform: rotate3d(0, 0, 1, 22.5deg); }\n\n.codrops-icon {\n  display: inline-block;\n  margin: 0.25em 0 0.25em 0.25em;\n  padding: 0.35em 0 0.35em 0.35em; }\n\n.codrops-icon:first-child {\n  margin: 0.25em 0.25em 0.25em 0;\n  padding: 0.35em 0.35em 0.35em 0; }\n\n/* Content */\n.content {\n  position: relative;\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  padding: 0 0 1em; }\n\n.content:not(:first-child) {\n  padding: 4em 0; }\n\n.content.content--padded {\n  padding: 4em 0 8em; }\n\n.content__title {\n  font-size: 0.85em;\n  position: absolute;\n  top: 18%;\n  left: 2em;\n  width: 5em;\n  margin: 0.75em 0;\n  color: #000000; }\n\n/* Grid */\n.grid {\n  position: relative;\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  padding: 0 7em;\n  perspective: 800px;\n  perspective-origin: 50% 100%; }\n\n.grid__item {\n  position: relative;\n  display: block;\n  flex: none;\n  width: 250px;\n  margin: 1.5em 2vw;\n  cursor: default;\n  transform-style: preserve-3d; }\n\n.grid__item:hover,\n.grid__item:focus {\n  outline: none; }\n\n.grid__item--c1,\n.grid__item--c1:hover,\n.grid__item--c1:focus {\n  color: #52649e; }\n\n.grid__item--c2,\n.grid__item--c2:hover,\n.grid__item--c2:focus {\n  color: #ee7074; }\n\n.grid__item--c3,\n.grid__item--c3:hover,\n.grid__item--c3:focus {\n  color: #f7f295; }\n\n.stack {\n  position: relative;\n  width: 100%;\n  height: 200px;\n  transform-style: preserve-3d; }\n\n.stack__deco {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: currentColor;\n  transform-origin: 50% 100%; }\n\n.stack__deco:first-child {\n  opacity: 0.2; }\n\n.stack__deco:nth-child(2) {\n  opacity: 0.4; }\n\n.stack__deco:nth-child(3) {\n  opacity: 0.6; }\n\n.stack__deco:nth-child(4) {\n  opacity: 0.8; }\n\n.stack__figure {\n  position: relative;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  overflow: hidden;\n  width: 100%;\n  height: 100%;\n  cursor: pointer;\n  transform-origin: 50% 100%; }\n\n.stack__img {\n  position: relative;\n  display: block;\n  flex: none; }\n\n.grid__item-caption {\n  position: relative;\n  display: flex;\n  flex-wrap: wrap;\n  width: 100%;\n  transform-style: preserve-3d; }\n\n.grid__item-title {\n  font-size: 1.15em;\n  width: 100%;\n  margin: 1em 0;\n  text-align: left;\n  color: #1a1a1a; }\n\n.column {\n  width: 50%;\n  padding: 0 0.5em;\n  opacity: 0; }\n\n.column--left {\n  text-align: right; }\n\n.column--right {\n  text-align: left; }\n\n.column__text {\n  font-size: 0.85em;\n  display: block;\n  color: #000; }\n\n.column--left .column__text {\n  font-weight: bold; }\n\n.column--right .column__text {\n  color: #b0adad; }\n\n/* Individual effects */\n/* Vega */\n.grid--effect-vega .column {\n  opacity: 1; }\n\n/* Castor */\n.grid--effect-castor .stack__figure,\n.grid--effect-castor .stack__deco {\n  transform-origin: 50% 50%; }\n\n.grid--effect-castor .column {\n  opacity: 1; }\n\n/* Hamal */\n.grid--effect-hamal {\n  perspective: none; }\n\n.grid--effect-hamal .column {\n  opacity: 1; }\n\n/* polaris */\n.grid--effect-polaris {\n  perspective-origin: 100% -100%; }\n\n.grid--effect-polaris .column {\n  opacity: 1; }\n\n/* Alphard */\n.grid--effect-alphard {\n  perspective: none; }\n\n.grid--effect-alphard .column {\n  opacity: 1; }\n\n.grid--effect-alphard .stack__figure,\n.grid--effect-alphard .stack__deco {\n  transform-origin: 50% 150%; }\n\n/* Altair */\n.grid--effect-altair {\n  perspective-origin: 50% -50%; }\n\n.grid--effect-altair .column {\n  opacity: 1; }\n\n.grid--effect-altair .stack__figure,\n.grid--effect-altair .stack__deco {\n  transform-origin: 50% 100%; }\n\n/* rigel */\n.grid--effect-rigel {\n  perspective-origin: 50% 100%; }\n\n.grid--effect-rigel .column {\n  opacity: 1; }\n\n/* Canopus */\n.grid--effect-canopus {\n  perspective-origin: 50% 0%; }\n\n.grid--effect-canopus .column {\n  opacity: 1; }\n\n.grid--effect-canopus .stack__figure,\n.grid--effect-canopus .stack__deco {\n  transform-origin: 50% 100%; }\n\n/* pollux */\n.grid--effect-pollux {\n  perspective: 1000px;\n  perspective-origin: 50% -70%; }\n\n.grid--effect-pollux .column {\n  opacity: 1; }\n\n.grid--effect-pollux .stack__figure,\n.grid--effect-pollux .stack__deco {\n  transform-origin: 50% 50%; }\n\n.grid--effect-pollux .grid__item-caption > .grid__item-title {\n  transform-origin: 50% -200%; }\n\n/* deneb */\n.grid--effect-deneb {\n  perspective: none; }\n\n.grid--effect-deneb .stack__figure,\n.grid--effect-deneb .stack__deco {\n  transform-origin: 50% 50%; }\n\n.grid--effect-deneb .grid__item-caption > .column {\n  transform-origin: 50% -200%; }\n\n/* Related demos */\n.content.content--related {\n  font-weight: bold;\n  justify-content: center;\n  min-height: 0;\n  padding-bottom: 10em;\n  text-align: center;\n  background: #5d5d66; }\n\n.content--related a {\n  color: #000000; }\n\n.content--related a:hover,\n.content--related a:focus {\n  color: #000; }\n\n.content--related p:first-child {\n  padding: 6em 0 2em; }\n\n.content--related p {\n  width: 100%;\n  color: #37373e; }\n\n.media-item {\n  font-size: 0.85em;\n  display: inline-block;\n  padding: 1em 2vw;\n  vertical-align: top;\n  transition: color 0.3s; }\n\n.media-item__img {\n  max-width: 100%;\n  opacity: 0.6;\n  transition: opacity 0.3s; }\n\n.media-item:hover .media-item__img,\n.media-item:focus .media-item__img {\n  opacity: 1; }\n\n.media-item__title {\n  font-size: 1em;\n  margin: 0;\n  padding: 0.5em; }\n\n@media screen and (max-width: 42em) {\n  .codrops-header {\n    display: block;\n    text-align: center; }\n  .github {\n    width: 100%;\n    margin: 0;\n    padding: 0.5em 0; }\n  .message-mobile {\n    display: block; } }\n", ""]);
-
-// exports
 
 
 /***/ }),
@@ -6336,21 +6366,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_compression___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_compression__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_cookie_parser__ = __webpack_require__("cookie-parser");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_cookie_parser___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_cookie_parser__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_morgan__ = __webpack_require__("morgan");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_morgan___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_morgan__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_apollo_client__ = __webpack_require__("apollo-client");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_apollo_client___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_apollo_client__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_react_apollo__ = __webpack_require__("react-apollo");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_react_apollo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_react_apollo__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_apollo_cache_inmemory__ = __webpack_require__("apollo-cache-inmemory");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_apollo_cache_inmemory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_apollo_cache_inmemory__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_apollo_link__ = __webpack_require__("apollo-link");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_apollo_link___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_apollo_link__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_isomorphic_unfetch__ = __webpack_require__("isomorphic-unfetch");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_isomorphic_unfetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_isomorphic_unfetch__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__Containers_App__ = __webpack_require__("./src/Containers/App/index.tsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__link__ = __webpack_require__("./src/link.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_Html__ = __webpack_require__("./src/Html.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_body_parser__ = __webpack_require__("body-parser");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_body_parser___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_body_parser__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_morgan__ = __webpack_require__("morgan");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_morgan___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_morgan__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_apollo_client__ = __webpack_require__("apollo-client");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_apollo_client___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_apollo_client__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_react_apollo__ = __webpack_require__("react-apollo");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_react_apollo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_react_apollo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_apollo_cache_inmemory__ = __webpack_require__("apollo-cache-inmemory");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_apollo_cache_inmemory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_apollo_cache_inmemory__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_apollo_link__ = __webpack_require__("apollo-link");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_apollo_link___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_apollo_link__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_isomorphic_unfetch__ = __webpack_require__("isomorphic-unfetch");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_isomorphic_unfetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15_isomorphic_unfetch__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__Containers_App__ = __webpack_require__("./src/Containers/App/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__link__ = __webpack_require__("./src/link.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_Html__ = __webpack_require__("./src/Html.tsx");
+
 
 
 
@@ -6371,10 +6404,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 const links = [
-    __WEBPACK_IMPORTED_MODULE_16__link__["b" /* errorLink */],
-    __WEBPACK_IMPORTED_MODULE_16__link__["d" /* retryLink */],
-    __WEBPACK_IMPORTED_MODULE_16__link__["e" /* stateLink */],
-    __WEBPACK_IMPORTED_MODULE_16__link__["c" /* httpLinkAuth */]
+    __WEBPACK_IMPORTED_MODULE_17__link__["b" /* errorLink */],
+    __WEBPACK_IMPORTED_MODULE_17__link__["d" /* retryLink */],
+    __WEBPACK_IMPORTED_MODULE_17__link__["e" /* stateLink */],
+    __WEBPACK_IMPORTED_MODULE_17__link__["c" /* httpLinkAuth */]
 ];
 let assets;
 String.prototype.truncString = function (add, max) {
@@ -6402,17 +6435,17 @@ server
     .disable('x-powered-by')
     .use(__WEBPACK_IMPORTED_MODULE_6_helmet___default()())
     .use(__WEBPACK_IMPORTED_MODULE_7_compression___default()())
-    .use(__WEBPACK_IMPORTED_MODULE_9_morgan___default()('dev'))
+    .use(__WEBPACK_IMPORTED_MODULE_10_morgan___default()('dev'))
     .use(__WEBPACK_IMPORTED_MODULE_8_cookie_parser___default()())
     .use(__WEBPACK_IMPORTED_MODULE_0_express__["static"]("C:\\Users\\juicycleff\\Documents\\Projects\\Unizonn\\unizonn\\public"))
     .get('/*', (req, res) => {
     if (false) {
         // links.unshift(createPersistedQueryLink());
     }
-    const client = new __WEBPACK_IMPORTED_MODULE_10_apollo_client___default.a({
+    const client = new __WEBPACK_IMPORTED_MODULE_11_apollo_client___default.a({
         ssrMode: true,
-        link: __WEBPACK_IMPORTED_MODULE_13_apollo_link__["ApolloLink"].from(links),
-        cache: new __WEBPACK_IMPORTED_MODULE_12_apollo_cache_inmemory__["InMemoryCache"](),
+        link: __WEBPACK_IMPORTED_MODULE_14_apollo_link__["ApolloLink"].from(links),
+        cache: new __WEBPACK_IMPORTED_MODULE_13_apollo_cache_inmemory__["InMemoryCache"](),
     });
     const context = {};
     const modules = [];
@@ -6420,14 +6453,14 @@ server
     const markup = (
     // tslint:disable-next-line:no-unused-expression
     __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_react_async_component__["AsyncComponentProvider"], { asyncContext: asyncContext },
-        __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](__WEBPACK_IMPORTED_MODULE_11_react_apollo__["ApolloProvider"], { client: client },
+        __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12_react_apollo__["ApolloProvider"], { client: client },
             __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["StaticRouter"], { context: context, location: req.url },
-                __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](__WEBPACK_IMPORTED_MODULE_15__Containers_App__["a" /* default */], null)))));
+                __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](__WEBPACK_IMPORTED_MODULE_16__Containers_App__["a" /* default */], null)))));
     __WEBPACK_IMPORTED_MODULE_5_react_async_bootstrapper___default()(markup).then(() => {
         const asyncState = asyncContext.getState();
-        Object(__WEBPACK_IMPORTED_MODULE_11_react_apollo__["renderToStringWithData"])(markup).then((content) => {
+        Object(__WEBPACK_IMPORTED_MODULE_12_react_apollo__["renderToStringWithData"])(markup).then((content) => {
             res.status(200);
-            const html = __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](__WEBPACK_IMPORTED_MODULE_17_Html__["a" /* default */], { assets: assets, markup: markup, client: client, asyncState: asyncState });
+            const html = __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](__WEBPACK_IMPORTED_MODULE_18_Html__["a" /* default */], { assets: assets, markup: markup, client: client, asyncState: asyncState });
             res.send(`<!doctype html>\n${Object(__WEBPACK_IMPORTED_MODULE_2_react_dom_server__["renderToString"])(html)}`);
             res.end();
         })
@@ -6440,12 +6473,13 @@ server
               }`
             );*/
             res.status(200);
-            const html = __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](__WEBPACK_IMPORTED_MODULE_17_Html__["a" /* default */], { assets: assets, markup: markup, client: client, asyncState: asyncState });
+            const html = __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](__WEBPACK_IMPORTED_MODULE_18_Html__["a" /* default */], { assets: assets, markup: markup, client: client, asyncState: asyncState });
             res.send(`<!doctype html>\n${Object(__WEBPACK_IMPORTED_MODULE_2_react_dom_server__["renderToString"])(html)}`);
             res.end();
         });
     });
-});
+})
+    .use(__WEBPACK_IMPORTED_MODULE_9_body_parser___default.a.json());
 /* harmony default export */ __webpack_exports__["default"] = (server);
 
 
@@ -6628,6 +6662,13 @@ module.exports = require("axios");
 
 /***/ }),
 
+/***/ "body-parser":
+/***/ (function(module, exports) {
+
+module.exports = require("body-parser");
+
+/***/ }),
+
 /***/ "compression":
 /***/ (function(module, exports) {
 
@@ -6803,6 +6844,13 @@ module.exports = require("react-geolocated");
 
 /***/ }),
 
+/***/ "react-google-maps":
+/***/ (function(module, exports) {
+
+module.exports = require("react-google-maps");
+
+/***/ }),
+
 /***/ "react-helmet":
 /***/ (function(module, exports) {
 
@@ -6849,6 +6897,13 @@ module.exports = require("react-stack-grid");
 /***/ (function(module, exports) {
 
 module.exports = require("react-timeago");
+
+/***/ }),
+
+/***/ "recompose":
+/***/ (function(module, exports) {
+
+module.exports = require("recompose");
 
 /***/ }),
 
