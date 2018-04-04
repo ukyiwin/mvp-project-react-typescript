@@ -181,13 +181,18 @@ module.exports = {
         filename: 'styles/[name].[contenthash].css'
       })
     );
-
     if (dev) {
       // For development, include source map
       config.module.rules.push({
-        test: /\.(css|scss)$/,
+        test: /.scss$/,
         use: ["style-loader", cssLoader, postCSSLoader, sassLoader]
       });
+
+      config.module.rules.push({
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
+      });
+
       config.plugins.push(
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new webpack.IgnorePlugin(/moment/, /react-kronos/),
@@ -210,11 +215,16 @@ module.exports = {
     } else {
         // For production, extract CSS
         config.module.rules.push({
-          test: /\.(css|scss)$/,
+          test: /.scss$/,
           use: ExtractTextPlugin.extract({
             fallback: "style-loader",
             use: [cssLoader, postCSSLoader, sassLoader]
           })
+        });
+
+        config.module.rules.push({
+          test: /\.css$/,
+          use: [ 'style-loader', 'css-loader' ]
         });
 
         config.plugins.push(
@@ -229,6 +239,12 @@ module.exports = {
             jQuery: 'jquery',
             'window.jQuery': 'jquery'
           }),
+          /*new OptimizeCssAssetsPlugin({
+            assetNameRegExp: /\.optimize\.css$/g,
+            cssProcessor: require('cssnano'),
+            cssProcessorOptions: { discardComments: { removeAll: true } },
+            canPrint: true
+          }),*/
           new CompressionPlugin({
             cache: true,
             algorithm: 'gzip'
@@ -239,7 +255,7 @@ module.exports = {
     }
   } else {
     config.module.rules.push({
-      test: /\.(css|scss)$/,
+      test: /.scss$/,
       use: ["ignore-loader"]
     });
   }
