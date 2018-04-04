@@ -1,8 +1,8 @@
 import * as React from 'react';
-// import MapComponent from 'Components/Map';
+import MapComponent from 'Components/Map';
 import { Helmet } from 'react-helmet';
 import { geolocated, GeolocatedProps } from 'react-geolocated';
-import './style.css';
+import './style.scss';
 import Label from 'Components/Label';
 // tslint:disable
 type Props = {
@@ -22,7 +22,11 @@ class Maps extends React.Component<Props & GeolocatedProps> {
           <meta name="an inclusive community" content="Unizonn community" />
         </Helmet>
         <div className="segment uk-card uk-card-default" style={{minHeight: 290}}>
-          fdfdf
+          <MapComponent 
+            lat={lat}
+            lng={lng}
+            isMarkerShown={true}
+          />
         </div>
         <div className="uk-padding-large uk-padding-remove-vertical">
           <section className="content">

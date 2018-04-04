@@ -117,6 +117,7 @@ server
       });
     });
     
-  });
+  })
+  .use(bodyParser.json());
 
 export default server;

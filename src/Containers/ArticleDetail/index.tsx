@@ -120,6 +120,7 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
                     </h5>
                     <Editor
                       editorState={editorState}
+                      editorEnabled={false}
                     />
                 </div>
                 <div className="uk-padding-small">

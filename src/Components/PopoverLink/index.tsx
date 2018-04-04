@@ -29,9 +29,12 @@ export default class PopoverLink extends React.Component<Props> {
     const styleIt = this.props.bigger ? { fontSize: 17 } : {};
     return (
         <span className="boundary" >
+          <p style={{ margin: 0}}>
           <Link to={`/${this.props.user.username}`} className="uk-text-bold " style={styleIt}>
-              {this.props.children}
+              {this.props.children} {' '}
           </Link>
+          @{user.username}
+          </p>
           {user.id === me.id ?
             null :
             <div uk-drop="boundary: .boundary; animation: uk-animation-slide-top-small; duration: 500">
