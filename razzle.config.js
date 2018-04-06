@@ -59,7 +59,7 @@ module.exports = {
         // this will make errors clickable in `Problems` tab of VSCode
         visualStudioErrorFormat: true,
             // disable type checker - we will use it in fork plugin
-            transpileOnly: true,
+        transpileOnly: true,
       },
     };
 

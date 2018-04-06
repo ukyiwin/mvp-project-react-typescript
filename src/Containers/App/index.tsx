@@ -20,79 +20,79 @@ import { cookies } from 'link';
 // import { cookies } from '../../link';
 
 const Home = asyncComponent({
-  resolve: () => System.import('Containers/Home'),
+  resolve: () => import('Containers/Home'),
   LoadingComponent: () => <LoadingComponent />
 });
 
 const NotFound = asyncComponent({
-  resolve: () => System.import('Containers/NotFound'),
+  resolve: () => import('Containers/NotFound'),
   LoadingComponent: () => <LoadingComponent />,
 });
 
 const Profile = asyncComponent({
-  resolve: () => System.import('Containers/Profile'),
+  resolve: () => import('Containers/Profile'),
   LoadingComponent: () => <LoadingComponent />,
 });
 
 const PublicHome = asyncComponent({
-  resolve: () => System.import('Containers/HomePublic'),
+  resolve: () => import('Containers/HomePublic'),
   LoadingComponent: () => <LoadingComponent />,
 });
 const Login = asyncComponent({
-  resolve: () => System.import('Containers/Auth/Login'),
+  resolve: () => import('Containers/Auth/Login'),
   LoadingComponent: () => <LoadingComponent />,
 });
 
 const Signup = asyncComponent({
-  resolve: () => System.import('Containers/Auth/Signup'),
+  resolve: () => import('Containers/Auth/Signup'),
   LoadingComponent: () => <LoadingComponent />,
 });
 const ArticleDetail = asyncComponent({
-  resolve: () => System.import('Containers/ArticleDetail'),
+  resolve: () => import('Containers/ArticleDetail'),
   LoadingComponent: () => <LoadingComponent />,
 });
 
 const Interest = asyncComponent({
-  resolve: () => System.import('Containers/Auth/Signup/interest'),
+  resolve: () => import('Containers/Auth/Signup/interest'),
   LoadingComponent: () => <LoadingComponent />,
 });
 const Maps = asyncComponent({
-  resolve: () => System.import('Containers/Maps'),
+  resolve: () => import('Containers/Maps'),
   LoadingComponent: () => <LoadingComponent />,
 });
 
 const Compose = asyncComponent({
-  resolve: () => System.import('Containers/ComposeArticle'),
+  resolve: () => import('Containers/ComposeArticle'),
   LoadingComponent: () => <LoadingComponent />,
 });
 
 const Message = asyncComponent({
-  resolve: () => System.import('Containers/Message'),
+  resolve: () => import('Containers/Message'),
   LoadingComponent: () => <LoadingComponent />,
 });
 
 const Forum = asyncComponent({
-  resolve: () => System.import('Containers/Forum'),
+  resolve: () => import('Containers/Forum'),
   LoadingComponent: () => <LoadingComponent />,
 });
 
 const Connections = asyncComponent({
-  resolve: () => System.import('Containers/Connection'),
+  resolve: () => import('Containers/Connection'),
   LoadingComponent: () => <LoadingComponent />,
 });
 
 const Search = asyncComponent({
-  resolve: () => System.import('Containers/Connection'),
+  resolve: () => import('Containers/Connection'),
   LoadingComponent: () => <LoadingComponent />,
 });
 
 const FinishSignup = asyncComponent({
-  resolve: () => System.import('Containers/Auth/Signup/finishSignup'),
+  resolve: () => import('Containers/Auth/Signup/finishSignup'),
   LoadingComponent: () => <LoadingComponent />,
 });
 
 const SignupProfile = asyncComponent({
-  resolve: () => System.import('Containers/Auth/Signup/signupProfile'),
+  resolve: () => import('Containers/Auth/Signup/signupProfile'),
   LoadingComponent: () => <LoadingComponent />,
 });
 
@@ -244,7 +244,7 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                         render={() =>
                           isAuthenticated ? (
                               <PrivateLayout 
-                                exact={false} 
+                                exact={true} 
                                 me={this.state.me} 
                                 component={Home} 
                                 isAuthenticated={isAuthenticated} 
@@ -252,9 +252,10 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                               />
                           ) : (
                               <PublicLayout 
-                                exact={false} 
+                                exact={true} 
                                 me={this.state.me}
                                 component={PublicHome}
+                                refreshToken={this.refreshToken}
                                 isAuthenticated={isAuthenticated}
                                 logout={this._logout} 
                               />
@@ -266,15 +267,15 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                       me={this.state.me} 
                       component={Home} 
                       path="/home" 
-                      exact={false} 
+                      exact={true} 
                       isAuthenticated={isAuthenticated} 
                       logout={this._logout} 
                     />
                     <EmptyLayout 
                       me={this.state.me} 
-                      exact={true} 
+                      exact={true}
                       component={Profile} 
-                      path="/:username/" 
+                      path="/n/:username"
                       isAuthenticated={isAuthenticated} 
                       logout={this._logout} 
                     />
@@ -475,15 +476,6 @@ class App extends React.Component<Props & ChildProps<Response, {}>, State> {
                       me={this.state.me}
                     />
                     <Route component={NotFound} path="*" />
-                    <Route exact={true} path="/:url" />
-                    <PrivateLayout 
-                      path="/logout"
-                      exact={true} 
-                      isAuthenticated={isAuthenticated} 
-                      render={() => this._logout()}
-                      logout={this._logout}
-                      me={this.state.me}
-                    />
                 </Switch>
                 <SideBar />
             </div>

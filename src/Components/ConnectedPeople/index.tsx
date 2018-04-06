@@ -12,7 +12,7 @@ interface Props {
 }
 
 // tslint:disable-next-line:no-any
-class ConnectedPeople extends React.Component<RouteComponentProps & Props> {
+class ConnectedPeople extends React.Component<RouteComponentProps<any> & Props> {
 
     render() {
         // const { loading } = this.state;

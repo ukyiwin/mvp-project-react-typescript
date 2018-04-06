@@ -105,6 +105,33 @@ export const ME = gql`
 `;
 
 /**
+ * @description check if current user article
+ */
+export const GET_USER_BY_USERNAME = gql`
+  query getUserByUsername($username: String!) {
+    getUserByUsername(username: $username) {
+      ...userFragment
+      connectTo(where: {status: 2}){
+        id
+      }
+      connectFrom(where: {status: 2}){
+        id
+      }
+      avatar{
+        url
+        name
+      }
+      articles{
+        id
+        title
+        body
+      }
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+/**
  * @description get all countries
  */
 export const ALL_COUNTRIES = gql`
@@ -191,9 +218,21 @@ export const GET_MESSAGES = gql`
 export const GET_ALL_MY_CHANNEL = gql`
   query getAllChat{
     getAllChat{
+      title
       id
-      messages
-      createdAt
+      participants{
+        id
+        username
+      }
+      messages(last: 1){
+        text
+      }
+      author{
+        username
+        id
+        firstname
+        lastname
+      }
     }
   }
 `;

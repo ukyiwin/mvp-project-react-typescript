@@ -4,7 +4,6 @@ import ArticleList from 'Components/ArticleList';
 import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { User } from 'CustomTypings/schema';
-import './style.css';
 // import ArcticleListComponent from 'Components/ArticleList';
 
 interface Props {
@@ -31,7 +30,7 @@ class Home extends React.Component<Props> {
         return (
             <div className="uk-width-1-1">
                 <Helmet>
-                    <title>Unizonn | Home</title>
+                    <title>Unizonn</title>
                     <meta name="an inclusive community" content="Unizonn community" />
                 </Helmet>
                 <WriteModal />

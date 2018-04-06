@@ -138,7 +138,7 @@ const PrivateHeader = (props: Props) => {
                       <div className="card mdc-menu__items mdc-list uk-dropdown-nav" style={{padding: 0}}>
                         <div className="card-header" style={{padding: 0, height: 70}}>
                           <li className="mdc-list-item" style={{ height: 70}} role="menuitem">
-                            <Link to={`/${props.me.username}`} className="uk-text-bold simple-link-light">
+                            <Link to={`/n/${props.me.username}`} className="uk-text-bold simple-link-light">
                               <span className="uk-text-bold">{props.me.firstname} {props.me.lastname}</span>
                               <br/>
                               @{props.me.username}
@@ -148,22 +148,22 @@ const PrivateHeader = (props: Props) => {
                         <div className="card-body" style={{padding: 0}}>
                           <li className="mdc-list-item " role="menuitem">
                             <Link to="/favourites" className="uk-text-bold simple-link-light">
-                              <span uk-icon="icon: plus-circle; ratio: 1" /> Favourites
+                              <span uk-icon="icon: bookmark; ratio: 1" /> Favourites
                             </Link>
                           </li>
                           <li className="mdc-list-item" role="menuitem">
                             <Link to="/score" className="uk-text-bold simple-link-light">
-                              <span uk-icon="icon: plus-circle; ratio: 1" /> Reading Score
+                              <span uk-icon="icon: thumbnails; ratio: 1" /> Reading Score
                             </Link>
                           </li>
                           <li className="mdc-list-item " role="menuitem">
                             <Link to="/favourites" className="uk-text-bold simple-link-light">
-                              <span uk-icon="icon: plus-circle; ratio: 1" /> Drafts
+                              <span uk-icon="icon: pencil; ratio: 1" /> Drafts
                             </Link>
                           </li>
                           <li className="mdc-list-item " role="menuitem">
                             <Link to="/favourites" className="uk-text-bold simple-link-light">
-                              <span uk-icon="icon: plus-circle; ratio: 1" /> Published
+                              <span uk-icon="icon: check; ratio: 1" /> Published
                             </Link>
                           </li>
                           <li className="mdc-list-item " role="menuitem">

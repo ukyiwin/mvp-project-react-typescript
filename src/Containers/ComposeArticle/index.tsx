@@ -15,9 +15,9 @@ import { convertToRaw } from 'draft-js';
 import mediumDraftExporter from 'medium-draft/lib/exporter';
 import axios from 'axios';
 
-import 'react-select-plus/dist/react-select-plus.css';
-import 'medium-draft/lib/index.css';
-import './style.css';
+// import 'react-select-plus/dist/react-select-plus.css';
+// import 'medium-draft/lib/index.css';
+import './style.scss';
 import { CREATE_ARTICLE } from 'Graphql/Mutation';
 import { urltoFile, b64toBlob } from 'Utils/helper';
 
@@ -36,7 +36,7 @@ interface Response {
   allInterest: Interest[];
 }
 
-class ComposeWrite extends React.Component < RouteComponentProps & Props & ChildProps < Response, {} >, {} > {
+class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & ChildProps < Response, {} >, {} > {
   timers: any;
   editor: any;
   state = {

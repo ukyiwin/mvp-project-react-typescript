@@ -5,7 +5,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { ApolloClient } from 'apollo-client';
 // import { setContext } from 'apollo-link-context';
 // import QueueLink from 'apollo-link-queue';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+// import { InMemoryCache } from 'apollo-cache-inmemory';
+import { Hermes } from 'apollo-cache-hermes';
 import { ApolloProvider } from 'react-apollo';
 import registerServiceWorker from './registerServiceWorker';
 import { ApolloLink } from 'apollo-link';
@@ -13,19 +14,6 @@ import 'isomorphic-fetch';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 // import { AsyncComponentProvider } from 'react-async-component';
-import 'semantic-ui-css/components/button.min.css'
-import 'semantic-ui-css/components/card.min.css'
-import 'semantic-ui-css/components/dimmer.min.css'
-import 'semantic-ui-css/components/search.min.css'
-import 'semantic-ui-css/components/reset.min.css'
-import 'semantic-ui-css/components/segment.min.css'
-import 'semantic-ui-css/components/search.min.css'
-import 'semantic-ui-css/components/video.min.css'
-import 'semantic-ui-css/components/image.min.css'
-import 'semantic-ui-css/components/input.min.css'
-import 'semantic-ui-css/components/label.min.css'
-import 'semantic-ui-css/components/item.min.css'
-import 'semantic-ui-css/components/list.min.css'
 import './Containers/App/style.scss';
 import App from './Containers/App';
 import {
@@ -108,7 +96,7 @@ const link = split(
 export const client = new ApolloClient({
   ssrForceFetchDelay: 100,
   link: ApolloLink.from(links),
-  cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
+  cache: new Hermes().restore(window.__APOLLO_STATE__),
   connectToDevTools: true,
 });
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ArticleItem from 'Components/ArticleItem';
-import { graphql, QueryProps } from 'react-apollo';
+import { graphql, QueryProps, Query } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
 import { ErrorComponent, LoadingComponent } from 'Components/EmptyStates';
 import { ARTICLES } from 'Graphql/Query';
@@ -28,7 +28,10 @@ const MyLoader = () => (
 );
 
 interface Response {
-    articles: Article[];
+    articles?: Article[];
+    loading?: boolean;
+    error?: any;
+    refetch?: any;
 }
 
 type WrappedProps = Response & QueryProps;
@@ -69,11 +72,11 @@ export default ArticleList(({ loading, articles, error }) => {
             // tslint:disable-next-line:jsx-curly-spacing
             }
         >
-            {articles.map((article) => (
+            {articles ? articles.map((article) => (
                 <div key={article.id}>
                     <ArticleItem article={article} />
                 </div>
-            ))}
+            )) : null}
         </InfiniteScroll>
     );
 });

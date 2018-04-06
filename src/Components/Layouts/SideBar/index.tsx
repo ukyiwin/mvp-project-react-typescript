@@ -1,15 +1,16 @@
 import * as React from 'react';
 // import UIkit from 'uikit/src/js/uikit';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 // import * as Logo from 'Assets/logo.png';
-import './style.css';
+import './style.scss';
 
 interface Props {
     classes?: object;
+    match?: any;
 }
 
 // tslint:disable-next-line:no-any
-class SideBar extends React.Component<Props> {
+class SideBar extends React.Component<RouteComponentProps<any> & Props> {
     componentDidMount() {
         // UIkit.notification('MyMessage', 'danger');
     }

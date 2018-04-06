@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Route, Redirect, withRouter } from 'react-router-dom';
+import { Route, Redirect, withRouter, RouteComponentProps } from 'react-router-dom';
 // import { FooterPublic } from 'Components/Layouts/FooterPublic';
-import './style.css';
 import { User } from 'CustomTypings/schema';
 import { PrivateHeader } from 'Components/Layouts/Header';
+import './style.scss';
 
 interface DefaultProps {
     // tslint:disable-next-line:no-any
@@ -18,7 +18,7 @@ interface DefaultProps {
     logout: any;
 }
 
-const EmptyLayout: React.SFC<DefaultProps> = (props) => {
+const EmptyLayout: React.SFC<RouteComponentProps<any> & DefaultProps> = (props) => {
     const { component: Component, isAuthenticated, exact, ...rest} = props;
 
     return (

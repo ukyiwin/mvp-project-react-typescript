@@ -9,6 +9,9 @@ import Label from 'Components/Label';
 
 interface Response {
     articles: Article[];
+    loading: boolean;
+    error: any;
+    refetch: any;
 }
 
 type WrappedProps = Response & QueryProps;

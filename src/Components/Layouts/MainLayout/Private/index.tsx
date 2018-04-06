@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { Route, Redirect, withRouter, Link } from 'react-router-dom';
-import {} from 'react-apollo';
-import './style.css';
+import { Route, Redirect, withRouter, Link, RouteComponentProps } from 'react-router-dom';
 import { User } from 'CustomTypings/schema';
 import RightSideBar from 'Components/RightSideBar';
 import LeftSideBar from 'Components/LeftSideBar';
 import glamorous from 'glamorous';
 import Label from 'Components/Label';
 import { PrivateHeader } from 'Components/Layouts/Header';
+import './style.scss';
 
 interface DefaultProps {
     // tslint:disable-next-line:no-any
@@ -27,7 +26,7 @@ const A = glamorous.a({
     color: '#000000',
 });
 
-const PrivateLayout: React.SFC<DefaultProps & Response> = (props) => {
+const PrivateLayout: React.SFC<RouteComponentProps<any> & DefaultProps> = (props) => {
     const { component: Component, isAuthenticated, ...rest } = props;
 
     return (
@@ -40,7 +39,7 @@ const PrivateLayout: React.SFC<DefaultProps & Response> = (props) => {
                   <PrivateHeader  me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
                     <div className="uk-flex uk-flex-center uk-flex-around uk-width-1-1" style={{paddingTop: 30}}>
                         <div className="uk-width-1-5 uk-margin-large-left uk-margin-small-right uk-visible@m">
-                            <LeftSideBar user={props.me} />
+                            <LeftSideBar />
                         </div>
                         <div className="uk-margin-small@s uk-width-expand">
                             <Component {...matctProps} />

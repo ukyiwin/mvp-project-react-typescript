@@ -1,5 +1,5 @@
 import * as React from 'react';
-import 'medium-draft/lib/index.css';
+// import 'medium-draft/lib/index.css';
 
 import {
   Editor,
