@@ -1,6 +1,6 @@
 import * as React from 'react';
-import 'medium-draft/lib/index.css';
-import './style.css';
+// import 'medium-draft/lib/index.css';
+import './style.scss';
 
 import {
   Editor,

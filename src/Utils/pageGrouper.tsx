@@ -1,4 +1,4 @@
-import * as React from 'react';
+/*import * as React from 'react';
 
 type Props = {
   // tslint:disable-next-line:no-any
@@ -111,3 +111,4 @@ export default class PageGrouper extends React.Component<Props> {
     );
   }
 }
+*/

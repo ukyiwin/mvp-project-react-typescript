@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import { compose, withApollo } from 'react-apollo';
 import { Editor, createEditorState } from 'medium-draft';
 // import { Helmet } from 'react-helmet';
@@ -15,15 +16,14 @@ import { GET_ARTICLE_BY_ID } from 'Graphql/Query';
 import Label from 'Components/Label';
 import mediumDraftImporter from 'medium-draft/lib/importer';
 import { convertToRaw } from 'draft-js';
-import 'medium-draft/lib/index.css';
-import './style.css';
+// import 'medium-draft/lib/index.css';
 
 interface Props {
     // tslint:disable-next-line:no-any
     client?: any;
 }
 
-class ArticleDetail extends React.Component<RouteComponentProps & Props> {
+class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
     state = {
         // tslint:disable-next-line:no-object-literal-type-assertion
         currentArticle: {} as Article,
@@ -130,14 +130,14 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
                     className="post-stats clearfix uk-padding-small uk-padding-remove-horizontal"
                     style={{ paddingTop: 10, paddingBottom: 1 }}
                 >
-                    <div className="uk-flex pull-left uk-padding-small">
+                  <div className="uk-flex pull-left uk-padding-small">
                         <Likebutton liked={true} likeCount={2} />
                         <a className="response-count uk-margin-left">
                             <span uk-icon="icon:  forward; ratio: 1.2" />Share
                         </a>
-                    </div>
+                  </div>
 
-                    <div className="uk-flex  response-count pull-right uk-padding-small">
+                  <div className="uk-flex  response-count pull-right uk-padding-small">
                         <div className="dropdown">
                             <button className="uk-button uk-button-text uk-margin-right" type="button">
                                 <span uk-icon="icon: more; ratio: 1.0" />
@@ -165,7 +165,7 @@ class ArticleDetail extends React.Component<RouteComponentProps & Props> {
                         <button className="uk-button uk-button-text">
                             <span uk-icon="icon: bookmark; ratio: 1.2" /> Favourite
                         </button>
-                    </div>
+                  </div>
                 </div>
             </div>
         );

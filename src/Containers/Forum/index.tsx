@@ -19,47 +19,17 @@ import IconSettings from 'anchor-ui/icons/icon-settings';
 import Modal from 'anchor-ui/modal';
 import IconAddFriend from 'anchor-ui/icons/icon-add-friend';
 import IconConversation from 'anchor-ui/icons/icon-conversation';
-import { compose, withApollo, graphql } from 'react-apollo';
-import './style.css';
+import { compose, withApollo, graphql, Query } from 'react-apollo';
 import { CREATE_MESSAGE } from 'Graphql/Mutation';
 import { GET_ALL_MY_CHANNEL } from 'Graphql/Query';
 import { Channels } from 'CustomTypings/schema';
+import './style.scss';
 
 const ChatDetail = asyncComponent({
-  resolve: () => System.import('../ChatDetail'),
+  resolve: () => import('../ChatDetail'),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
-
-const items = [{
-  primaryText: 'Rex Raphael',
-  secondaryText: 'Been long brava',
-  image: 'http://www.ghgh.gh/hjh.png'
-}, {
-  primaryText: 'Rex Raphael',
-  secondaryText: 'Been long brava',
-  image: 'http://www.ghgh.gh/hjh.png'
-}, {
-  primaryText: 'Rex Raphael',
-  secondaryText: 'Been long brava',
-  image: 'http://www.ghgh.gh/hjh.png'
-}, {
-  primaryText: 'Rex Raphael',
-  secondaryText: 'Been long brava',
-  image: 'http://www.ghgh.gh/hjh.png'
-}, {
-  primaryText: 'Rex Raphael',
-  secondaryText: 'Been long brava',
-  image: 'http://www.ghgh.gh/hjh.png'
-}, {
-  primaryText: 'Rex Raphael',
-  secondaryText: 'Been long brava',
-  image: 'http://www.ghgh.gh/hjh.png'
-}, {
-  primaryText: 'Rex Raphael',
-  secondaryText: 'Been long brava',
-  image: 'http://www.ghgh.gh/hjh.png'
-}];
 
 // tslint:disable-next-line:no-empty-interface
 interface Props {
@@ -97,11 +67,11 @@ class Forum extends React.Component<Props> {
                 header="Channels"
                 style={{height: '43.1vh'}}
             >
-              {this.props.channels.getAllChat ? this.props.channels.getAllChat.map((item, index) => (
+              {this.props.channels.getAllChat ? this.props.channels.getAllChat.map((item: Channels, index) => (
                 <ListItem
                   key={index}
-                  primaryText={item.primaryText}
-                  avatar={item.image}
+                  primaryText={item.title}
+                  avatar={item.avatar}
                 />
               )) : <div className="uk-padding-small">Empty channel conversation</div>}
             </List>
@@ -180,7 +150,7 @@ class Forum extends React.Component<Props> {
 
 export default withRouter(compose(
   withApollo,
-  graphql<Response, {}, Props>(GET_ALL_MY_CHANNEL, {
+  graphql<Response, Props>(GET_ALL_MY_CHANNEL, {
       name: 'channels',
   }),
   graphql(CREATE_MESSAGE, {name: 'sendMessage'})

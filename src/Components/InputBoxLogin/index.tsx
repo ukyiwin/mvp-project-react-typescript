@@ -12,6 +12,7 @@ interface Props {
     userExist: any;
     // tslint:disable-next-line:no-any
     client?: any;
+    history?: any;
 }
 
 interface InputProps {
@@ -19,7 +20,7 @@ interface InputProps {
 }
 
 // tslint:disable-next-line:no-any
-class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildProps<boolean, InputProps>, {}> {
+class InputBoxLogin extends React.Component<RouteComponentProps<any> & Props & ChildProps<boolean, InputProps>, {}> {
     state = {
         text: '',
         loading: false,
@@ -136,9 +137,13 @@ class InputBoxLogin extends React.Component<RouteComponentProps & Props & ChildP
 export default withRouter(
     compose(
         withApollo,
-        graphql<boolean, InputProps, Props>(USER_EXIST, {
+        graphql<boolean, Props>(USER_EXIST, {
             name: 'userExist',
-            options: { variables: { email: '' } },
+            options: {
+              variables: {
+                email: '',
+              }
+            }
         }),
     )(InputBoxLogin),
 );

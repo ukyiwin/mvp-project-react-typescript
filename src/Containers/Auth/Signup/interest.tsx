@@ -8,16 +8,14 @@ import { ALL_INTEREST } from 'Graphql/Query';
 import InterestItem from 'Components/InterestItem';
 import { Interest } from 'CustomTypings/schema';
 import { ADD_INTERESTS } from 'Graphql/Mutation';
-import './style.css';
+import './style.scss';
 
 interface Props {
     // tslint:disable-next-line:no-any
-    interests: any[];
-    // tslint:disable-next-line:no-any
+    interests: any;
     addInterests: any;
-    // tslint:disable-next-line:no-any
     refreshToken?: any;
-    // tslint:disable-next-line:no-any
+    location?: any;
     client?: any;
 }
 
@@ -27,7 +25,7 @@ interface State {
     selected: string[];
     show: boolean;
 }
-class InterestPage extends React.Component<RouteComponentProps & Props, State> {
+class InterestPage extends React.Component<RouteComponentProps<any> & Props, State> {
     state = {
         show: false,
         selected: ['1'],

@@ -12,10 +12,13 @@ declare module '*.scss'
 declare module '*.svg'
 
 declare global {
-  interface Window { anima(): any; effects: any; slideshow: any; }
+  interface Process {
+    browser: any;
+  }
+  interface Window { anima(): any; effects: any; slideshow: any; __APOLLO_STATE__: any; __ASYNC_COMPONENTS_REHYDRATE_STATE__: any; }
 }
 
-interface Window { anima(): any;  effects: any; slideshow: any; __ASYNC_COMPONENTS_REHYDRATE_STATE__: any }
+interface Window { anima(): any;  effects: any; slideshow: any; __ASYNC_COMPONENTS_REHYDRATE_STATE__: any; __APOLLO_STATE__: any; }
 
 interface String {
   truncString(lstr: string, add: number) : string;
@@ -23,7 +26,11 @@ interface String {
 }
 
 interface NodeRequire {
-  ensure: any
+  ensure: any;
+}
+
+interface Process {
+  browser: any;
 }
 
 interface Component {

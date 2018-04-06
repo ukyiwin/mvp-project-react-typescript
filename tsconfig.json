@@ -44,12 +44,14 @@
   "exclude": [
     "node_modules",
     "build",
+    "server",
+    "node_modules",
+    "build",
     "scripts",
     "acceptance-tests",
     "webpack",
     "jest",
-    "razzle.config.js",
-    "server"
+    "razzle.config.js"
   ],
   "types": ["typePatches", "node", "webpack-env"]
 }

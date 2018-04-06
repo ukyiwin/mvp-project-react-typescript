@@ -7,7 +7,7 @@ import { User } from 'CustomTypings/schema';
 import { validateSignup } from 'Utils/helpers';
 import * as UIkit from 'uikit';
 import { AUTH_TOKEN, CURRENT_USER } from '../../../constants';
-import './style.css';
+import './style.scss';
 import { cookies } from 'link';
 
 interface InputProps {
@@ -21,15 +21,13 @@ interface Response {
 }
 
 interface Props {
-    // tslint:disable-next-line:no-any
     signup: any;
-    // tslint:disable-next-line:no-any
     refreshToken?: any;
-    // tslint:disable-next-line:no-any
     client?: any;
+    location: any;
 }
 
-class Signup extends React.Component<RouteComponentProps & Props & ChildProps<Response, InputProps>, {}> {
+class Signup extends React.Component<RouteComponentProps<any> & Props & ChildProps<Response, InputProps>, {}> {
     state = {
         show: false,
         email: '',

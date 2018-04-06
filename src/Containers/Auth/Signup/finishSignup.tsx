@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import './style.css';
+import './style.scss';
 
 interface Props extends RouteComponentProps<{}> {
     // tslint:disable-next-line:no-any

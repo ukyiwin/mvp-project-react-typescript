@@ -13,12 +13,10 @@ import { AUTH_TOKEN, CURRENT_USER } from '../../../constants';
 import { cookies } from 'link';
 
 interface Props {
-    // tslint:disable-next-line:no-any
     login: any;
-    // tslint:disable-next-line:no-any
     refreshToken?: any;
-    // tslint:disable-next-line:no-any
     client?: any;
+    location?: any;
 }
 
 interface InputProps {
@@ -31,7 +29,7 @@ interface Response {
     user: User;
 }
 
-class Login extends React.Component<RouteComponentProps & Props & ChildProps<Response, InputProps>, {}> {
+class Login extends React.Component<RouteComponentProps<any> & Props & ChildProps<Response, InputProps>, {}> {
     state = {
         show: false,
         email: '',
@@ -194,7 +192,7 @@ export default withRouter(
   compose(
     withApollo,
     graphql<Response, InputProps, Props>(LOGIN_USER, {
-        name: 'login',
+      name: 'login',
     }),
   )(Login),
 );

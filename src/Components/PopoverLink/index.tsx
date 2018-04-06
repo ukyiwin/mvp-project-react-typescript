@@ -30,7 +30,7 @@ export default class PopoverLink extends React.Component<Props> {
     return (
         <span className="boundary" >
           <p style={{ margin: 0}}>
-          <Link to={`/${this.props.user.username}`} className="uk-text-bold " style={styleIt}>
+          <Link to={`/n/${this.props.user.username}`} className="uk-text-bold " style={styleIt}>
               {this.props.children} {' '}
           </Link>
           @{user.username}

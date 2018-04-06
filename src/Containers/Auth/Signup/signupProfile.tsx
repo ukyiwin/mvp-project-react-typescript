@@ -9,7 +9,7 @@ import AvatarImageCropper from 'react-avatar-image-cropper';
 import { ADD_PROFILE } from 'Graphql/Mutation';
 import axios from 'axios';
 
-import './style.css';
+import './style.scss';
 import { b64toBlob, urltoFile } from 'Utils/helper';
 
 interface Props {
@@ -22,9 +22,10 @@ interface Props {
     client?: any;
     // tslint:disable-next-line:no-any
     addProfile?: any;
+    location?: any;
 }
 
-class SignupProfile extends React.Component<RouteComponentProps & Props> {
+class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
     state = {
         show: false,
         country: '',
