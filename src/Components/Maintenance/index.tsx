@@ -34,20 +34,20 @@ const Text = styled(Copy)`
 `;
 
 const MaintenanceDowntime = () => {
-  const timeInUTC = 'September 25, 2017 15:00:00 UTC';
+  const timeInUTC = 'Aprill 10, 2018 08:00:00 UTC';
   return (
-    <ViewSegment background="constellations">
+    <ViewSegment background="constellations" style={{height: '100vh'}}>
       <Wrapper>
         <Emoji>🛠</Emoji>
         <Tagline>Unizonn is currently undergoing maintenance</Tagline>
         <Text>
-          We'll be back by 3pm UTC ({new Date(timeInUTC)
+          We'll be back by 8am GMT+1 ({new Date(timeInUTC)
             .toLocaleTimeString()
             .replace(/:\d\d:\d\d\s/, '')
             .toLowerCase()}{' '}
           your time), check{' '}
-          <a href="https://twitter.com/unzonn">
-            @withspectrum on Twitter
+          <a href="https://twitter.com/unizonn">
+            @unizonn on Twitter
           </a>{' '}
           for updates.
         </Text>
