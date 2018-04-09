@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { User } from 'CustomTypings/schema';
 import SearchContainer from 'Components/SearchContainer';
-import NotificationsTab from '../components/notificationsTab';
+import NotificationsTab from '../Components/notificationsTab';
 import {
   Nav,
   Logo,

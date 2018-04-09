@@ -1,6 +1,6 @@
 import * as React from 'react';
 // import { track } from 'src/helpers/events';
-import { Wrapper } from '../Style';
+import { Wrapper } from '../style';
 import {
   ContentContainer,
   Heading,

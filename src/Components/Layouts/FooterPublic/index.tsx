@@ -1,6 +1,6 @@
 import * as React from 'react';
 import glamorous from 'glamorous';
-import { LinkBlock, LinkBlockA, Footer, Flexer } from 'Containers/Style';
+import { LinkBlock, LinkBlockA, Footer, Flexer } from 'Containers/style';
 import { FlexRow } from 'Components/Globals';
 import Link from 'Components/Link';
 import Icon from 'Components/Icons';
