@@ -280,9 +280,25 @@ export type ChannelsOrderByInput = (
 
     "title_DESC" |
 
-    "avatar_ASC" |
+    "description_ASC" |
 
-    "avatar_DESC" |
+    "description_DESC" |
+
+    "slug_ASC" |
+
+    "slug_DESC" |
+
+    "isPrivate_ASC" |
+
+    "isPrivate_DESC" |
+
+    "isDefault_ASC" |
+
+    "isDefault_DESC" |
+
+    "isArchived_ASC" |
+
+    "isArchived_DESC" |
 
     "type_ASC" |
 
@@ -470,6 +486,29 @@ export type InterestOrderByInput = (
     "avatar_DESC"
 );
 
+export type JoinSettingsOrderByInput = (
+
+    "id_ASC" |
+
+    "id_DESC" |
+
+    "tokenJoinEnabled_ASC" |
+
+    "tokenJoinEnabled_DESC" |
+
+    "token_ASC" |
+
+    "token_DESC" |
+
+    "updatedAt_ASC" |
+
+    "updatedAt_DESC" |
+
+    "createdAt_ASC" |
+
+    "createdAt_DESC"
+);
+
 export type LibraryOrderByInput = (
 
     "id_ASC" |
@@ -597,6 +636,14 @@ export type UserOrderByInput = (
 
     "username_DESC" |
 
+    "avatar_ASC" |
+
+    "avatar_DESC" |
+
+    "headerImage_ASC" |
+
+    "headerImage_DESC" |
+
     "password_ASC" |
 
     "password_DESC" |
@@ -608,6 +655,10 @@ export type UserOrderByInput = (
     "lastname_ASC" |
 
     "lastname_DESC" |
+
+    "bio_ASC" |
+
+    "bio_DESC" |
 
     "gender_ASC" |
 
@@ -633,9 +684,29 @@ export type UserOrderByInput = (
 
     "newMessageNot_DESC" |
 
+    "newCommunityNot_ASC" |
+
+    "newCommunityNot_DESC" |
+
     "newProfileNot_ASC" |
 
     "newProfileNot_DESC" |
+
+    "topWeeklyArticleNot_ASC" |
+
+    "topWeeklyArticleNot_DESC" |
+
+    "mentionMeNot_ASC" |
+
+    "mentionMeNot_DESC" |
+
+    "enableBrowserPushNot_ASC" |
+
+    "enableBrowserPushNot_DESC" |
+
+    "enableMobilePushNot_ASC" |
+
+    "enableMobilePushNot_DESC" |
 
     "completedProfile_ASC" |
 
@@ -857,6 +928,11 @@ export interface AggregateInterest {
     count: NonNull<Int>;
 }
 
+export interface AggregateJoinSettings {
+
+    count: NonNull<Int>;
+}
+
 export interface AggregateLibrary {
 
     count: NonNull<Int>;
@@ -898,9 +974,11 @@ export interface Article extends Node {
 
     body: NonNull<String>;
 
+    headerImage?: Optional<File>;
+
     tags?: List<NonNull<String>>;
 
-    category?: List<NonNull<Interest>>;
+    category?: Optional<Interest>;
 
     type?: Optional<Arcticletype>;
 
@@ -1009,7 +1087,17 @@ export interface Channels extends Node {
 
     title: NonNull<String>;
 
-    avatar?: Optional<String>;
+    description: NonNull<String>;
+
+    avatar?: Optional<File>;
+
+    slug: NonNull<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
 
     author: NonNull<User>;
 
@@ -1018,6 +1106,14 @@ export interface Channels extends Node {
     messages?: List<NonNull<Message>>;
 
     participants?: List<NonNull<User>>;
+
+    pendingUsers?: List<NonNull<User>>;
+
+    blockedUsers?: List<NonNull<User>>;
+
+    moderators?: List<NonNull<User>>;
+
+    joinSettings?: Optional<JoinSettings>;
 }
 
 /**
@@ -1064,7 +1160,15 @@ export interface ChannelsPreviousValues {
 
     title: NonNull<String>;
 
-    avatar?: Optional<String>;
+    description: NonNull<String>;
+
+    slug: NonNull<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
 
     type?: Optional<ChannelType>;
 }
@@ -1164,10 +1268,6 @@ export interface Connect extends Node {
     createdAt: NonNull<DateTime>;
 
     updatedAt: NonNull<DateTime>;
-
-    to: NonNull<User>;
-
-    from: NonNull<User>;
 
     status: NonNull<Int>;
 }
@@ -1391,6 +1491,8 @@ export interface File extends Node {
     updatedAt: NonNull<DateTime>;
 
     url: NonNull<String>;
+
+    userFiles?: Optional<User>;
 }
 
 /**
@@ -1605,6 +1707,69 @@ export interface InterestSubscriptionPayload {
     updatedFields?: List<NonNull<String>>;
 
     previousValues?: Optional<InterestPreviousValues>;
+}
+
+export interface JoinSettings extends Node {
+
+    id: NonNull<ID>;
+
+    tokenJoinEnabled?: Optional<Boolean>;
+
+    token?: Optional<String>;
+}
+
+/**
+ * A connection to a list of items.
+ */
+export interface JoinSettingsConnection {
+
+    /**
+     * Information to aid in pagination.
+     */
+    pageInfo: NonNull<PageInfo>;
+
+    /**
+     * A list of edges.
+     */
+    edges: NonNull<List<Optional<JoinSettingsEdge>>>;
+
+    aggregate: NonNull<AggregateJoinSettings>;
+}
+
+/**
+ * An edge in a connection.
+ */
+export interface JoinSettingsEdge {
+
+    /**
+     * The item at the end of the edge.
+     */
+    node: NonNull<JoinSettings>;
+
+    /**
+     * A cursor for use in pagination.
+     */
+    cursor: NonNull<String>;
+}
+
+export interface JoinSettingsPreviousValues {
+
+    id: NonNull<ID>;
+
+    tokenJoinEnabled?: Optional<Boolean>;
+
+    token?: Optional<String>;
+}
+
+export interface JoinSettingsSubscriptionPayload {
+
+    mutation: NonNull<MutationType>;
+
+    node?: Optional<JoinSettings>;
+
+    updatedFields?: List<NonNull<String>>;
+
+    previousValues?: Optional<JoinSettingsPreviousValues>;
 }
 
 export interface Library extends Node {
@@ -1856,6 +2021,8 @@ export interface Mutation {
 
     createMessage: NonNull<Message>;
 
+    createJoinSettings: NonNull<JoinSettings>;
+
     updateFile?: Optional<File>;
 
     updatePost?: Optional<Post>;
@@ -1883,6 +2050,8 @@ export interface Mutation {
     updateChannels?: Optional<Channels>;
 
     updateMessage?: Optional<Message>;
+
+    updateJoinSettings?: Optional<JoinSettings>;
 
     deleteFile?: Optional<File>;
 
@@ -1912,6 +2081,8 @@ export interface Mutation {
 
     deleteMessage?: Optional<Message>;
 
+    deleteJoinSettings?: Optional<JoinSettings>;
+
     upsertFile: NonNull<File>;
 
     upsertPost: NonNull<Post>;
@@ -1939,6 +2110,8 @@ export interface Mutation {
     upsertChannels: NonNull<Channels>;
 
     upsertMessage: NonNull<Message>;
+
+    upsertJoinSettings: NonNull<JoinSettings>;
 
     updateManyFiles: NonNull<BatchPayload>;
 
@@ -1968,6 +2141,8 @@ export interface Mutation {
 
     updateManyMessages: NonNull<BatchPayload>;
 
+    updateManyJoinSettingses: NonNull<BatchPayload>;
+
     deleteManyFiles: NonNull<BatchPayload>;
 
     deleteManyPosts: NonNull<BatchPayload>;
@@ -1995,6 +2170,8 @@ export interface Mutation {
     deleteManyChannelses: NonNull<BatchPayload>;
 
     deleteManyMessages: NonNull<BatchPayload>;
+
+    deleteManyJoinSettingses: NonNull<BatchPayload>;
 }
 
 /**
@@ -2128,6 +2305,8 @@ export interface Query {
 
     messages: NonNull<List<Optional<Message>>>;
 
+    joinSettingses: NonNull<List<Optional<JoinSettings>>>;
+
     file?: Optional<File>;
 
     post?: Optional<Post>;
@@ -2156,6 +2335,8 @@ export interface Query {
 
     message?: Optional<Message>;
 
+    joinSettings?: Optional<JoinSettings>;
+
     filesConnection: NonNull<FileConnection>;
 
     postsConnection: NonNull<PostConnection>;
@@ -2183,6 +2364,8 @@ export interface Query {
     channelsesConnection: NonNull<ChannelsConnection>;
 
     messagesConnection: NonNull<MessageConnection>;
+
+    joinSettingsesConnection: NonNull<JoinSettingsConnection>;
 
     /**
      * Fetches an object given its ID
@@ -2219,6 +2402,8 @@ export interface Subscription {
     channels?: Optional<ChannelsSubscriptionPayload>;
 
     message?: Optional<MessageSubscriptionPayload>;
+
+    joinSettings?: Optional<JoinSettingsSubscriptionPayload>;
 }
 
 export interface User extends Node {
@@ -2233,13 +2418,19 @@ export interface User extends Node {
 
     username?: Optional<String>;
 
-    avatar?: Optional<File>;
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
 
     password: NonNull<String>;
 
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    bio?: Optional<String>;
+
+    userFiles?: List<NonNull<File>>;
 
     gender: NonNull<String>;
 
@@ -2253,9 +2444,9 @@ export interface User extends Node {
 
     messages?: Optional<Message>;
 
-    connectTo?: List<NonNull<Connect>>;
+    connectTo?: List<NonNull<User>>;
 
-    connectFrom?: List<NonNull<Connect>>;
+    connectFrom?: List<NonNull<User>>;
 
     type?: Optional<String>;
 
@@ -2269,6 +2460,12 @@ export interface User extends Node {
 
     myChannels?: List<NonNull<Channels>>;
 
+    pendingChannels?: List<NonNull<Channels>>;
+
+    blockedChannels?: List<NonNull<Channels>>;
+
+    moderatorsChannels?: List<NonNull<Channels>>;
+
     likedArticles?: List<NonNull<Article>>;
 
     comments?: List<NonNull<Comment>>;
@@ -2279,7 +2476,17 @@ export interface User extends Node {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
@@ -2332,11 +2539,17 @@ export interface UserPreviousValues {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password: NonNull<String>;
 
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    bio?: Optional<String>;
 
     gender: NonNull<String>;
 
@@ -2350,7 +2563,17 @@ export interface UserPreviousValues {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
@@ -2388,7 +2611,9 @@ export interface ArticleCreateInput {
 
     tags?: Optional<ArticleCreatetagsInput>;
 
-    category?: Optional<InterestCreateManyInput>;
+    headerImage?: Optional<FileCreateOneInput>;
+
+    category?: Optional<InterestCreateOneInput>;
 
     author: NonNull<UserCreateOneWithoutArticlesInput>;
 
@@ -2452,7 +2677,9 @@ export interface ArticleCreateWithoutAuthorInput {
 
     tags?: Optional<ArticleCreatetagsInput>;
 
-    category?: Optional<InterestCreateManyInput>;
+    headerImage?: Optional<FileCreateOneInput>;
+
+    category?: Optional<InterestCreateOneInput>;
 
     likes?: Optional<UserCreateManyWithoutLikedArticlesInput>;
 
@@ -2481,7 +2708,9 @@ export interface ArticleCreateWithoutCommentsInput {
 
     tags?: Optional<ArticleCreatetagsInput>;
 
-    category?: Optional<InterestCreateManyInput>;
+    headerImage?: Optional<FileCreateOneInput>;
+
+    category?: Optional<InterestCreateOneInput>;
 
     author: NonNull<UserCreateOneWithoutArticlesInput>;
 
@@ -2510,7 +2739,9 @@ export interface ArticleCreateWithoutLikesInput {
 
     tags?: Optional<ArticleCreatetagsInput>;
 
-    category?: Optional<InterestCreateManyInput>;
+    headerImage?: Optional<FileCreateOneInput>;
+
+    category?: Optional<InterestCreateOneInput>;
 
     author: NonNull<UserCreateOneWithoutArticlesInput>;
 
@@ -2539,7 +2770,9 @@ export interface ArticleCreateWithoutUserFavouritedInput {
 
     tags?: Optional<ArticleCreatetagsInput>;
 
-    category?: Optional<InterestCreateManyInput>;
+    headerImage?: Optional<FileCreateOneInput>;
+
+    category?: Optional<InterestCreateOneInput>;
 
     author: NonNull<UserCreateOneWithoutArticlesInput>;
 
@@ -2606,7 +2839,9 @@ export interface ArticleUpdateInput {
 
     tags?: Optional<ArticleUpdatetagsInput>;
 
-    category?: Optional<InterestUpdateManyInput>;
+    headerImage?: Optional<FileUpdateOneInput>;
+
+    category?: Optional<InterestUpdateOneInput>;
 
     author?: Optional<UserUpdateOneWithoutArticlesInput>;
 
@@ -2700,7 +2935,9 @@ export interface ArticleUpdateWithoutAuthorDataInput {
 
     tags?: Optional<ArticleUpdatetagsInput>;
 
-    category?: Optional<InterestUpdateManyInput>;
+    headerImage?: Optional<FileUpdateOneInput>;
+
+    category?: Optional<InterestUpdateOneInput>;
 
     likes?: Optional<UserUpdateManyWithoutLikedArticlesInput>;
 
@@ -2729,7 +2966,9 @@ export interface ArticleUpdateWithoutCommentsDataInput {
 
     tags?: Optional<ArticleUpdatetagsInput>;
 
-    category?: Optional<InterestUpdateManyInput>;
+    headerImage?: Optional<FileUpdateOneInput>;
+
+    category?: Optional<InterestUpdateOneInput>;
 
     author?: Optional<UserUpdateOneWithoutArticlesInput>;
 
@@ -2758,7 +2997,9 @@ export interface ArticleUpdateWithoutLikesDataInput {
 
     tags?: Optional<ArticleUpdatetagsInput>;
 
-    category?: Optional<InterestUpdateManyInput>;
+    headerImage?: Optional<FileUpdateOneInput>;
+
+    category?: Optional<InterestUpdateOneInput>;
 
     author?: Optional<UserUpdateOneWithoutArticlesInput>;
 
@@ -2787,7 +3028,9 @@ export interface ArticleUpdateWithoutUserFavouritedDataInput {
 
     tags?: Optional<ArticleUpdatetagsInput>;
 
-    category?: Optional<InterestUpdateManyInput>;
+    headerImage?: Optional<FileUpdateOneInput>;
+
+    category?: Optional<InterestUpdateOneInput>;
 
     author?: Optional<UserUpdateOneWithoutArticlesInput>;
 
@@ -3400,11 +3643,9 @@ export interface ArticleWhereInput {
      */
     viewCount_gte?: Optional<Int>;
 
-    category_every?: Optional<InterestWhereInput>;
+    headerImage?: Optional<FileWhereInput>;
 
-    category_some?: Optional<InterestWhereInput>;
-
-    category_none?: Optional<InterestWhereInput>;
+    category?: Optional<InterestWhereInput>;
 
     author?: Optional<UserWhereInput>;
 
@@ -3440,15 +3681,33 @@ export interface ChannelsCreateInput {
 
     title: NonNull<String>;
 
-    avatar?: Optional<String>;
+    description: NonNull<String>;
+
+    slug: NonNull<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
 
     type?: Optional<ChannelType>;
+
+    avatar?: Optional<FileCreateOneInput>;
 
     author: NonNull<UserCreateOneWithoutMyChannelsInput>;
 
     messages?: Optional<MessageCreateManyWithoutChannelInput>;
 
     participants?: Optional<UserCreateManyWithoutChannelsInput>;
+
+    pendingUsers?: Optional<UserCreateManyWithoutPendingChannelsInput>;
+
+    blockedUsers?: Optional<UserCreateManyWithoutBlockedChannelsInput>;
+
+    moderators?: Optional<UserCreateManyWithoutModeratorsChannelsInput>;
+
+    joinSettings?: Optional<JoinSettingsCreateOneInput>;
 }
 
 export interface ChannelsCreateManyWithoutAuthorInput {
@@ -3458,9 +3717,30 @@ export interface ChannelsCreateManyWithoutAuthorInput {
     connect?: List<NonNull<ChannelsWhereUniqueInput>>;
 }
 
+export interface ChannelsCreateManyWithoutBlockedUsersInput {
+
+    create?: List<NonNull<ChannelsCreateWithoutBlockedUsersInput>>;
+
+    connect?: List<NonNull<ChannelsWhereUniqueInput>>;
+}
+
+export interface ChannelsCreateManyWithoutModeratorsInput {
+
+    create?: List<NonNull<ChannelsCreateWithoutModeratorsInput>>;
+
+    connect?: List<NonNull<ChannelsWhereUniqueInput>>;
+}
+
 export interface ChannelsCreateManyWithoutParticipantsInput {
 
     create?: List<NonNull<ChannelsCreateWithoutParticipantsInput>>;
+
+    connect?: List<NonNull<ChannelsWhereUniqueInput>>;
+}
+
+export interface ChannelsCreateManyWithoutPendingUsersInput {
+
+    create?: List<NonNull<ChannelsCreateWithoutPendingUsersInput>>;
 
     connect?: List<NonNull<ChannelsWhereUniqueInput>>;
 }
@@ -3476,39 +3756,186 @@ export interface ChannelsCreateWithoutAuthorInput {
 
     title: NonNull<String>;
 
-    avatar?: Optional<String>;
+    description: NonNull<String>;
+
+    slug: NonNull<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
 
     type?: Optional<ChannelType>;
+
+    avatar?: Optional<FileCreateOneInput>;
 
     messages?: Optional<MessageCreateManyWithoutChannelInput>;
 
     participants?: Optional<UserCreateManyWithoutChannelsInput>;
+
+    pendingUsers?: Optional<UserCreateManyWithoutPendingChannelsInput>;
+
+    blockedUsers?: Optional<UserCreateManyWithoutBlockedChannelsInput>;
+
+    moderators?: Optional<UserCreateManyWithoutModeratorsChannelsInput>;
+
+    joinSettings?: Optional<JoinSettingsCreateOneInput>;
+}
+
+export interface ChannelsCreateWithoutBlockedUsersInput {
+
+    title: NonNull<String>;
+
+    description: NonNull<String>;
+
+    slug: NonNull<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
+
+    type?: Optional<ChannelType>;
+
+    avatar?: Optional<FileCreateOneInput>;
+
+    author: NonNull<UserCreateOneWithoutMyChannelsInput>;
+
+    messages?: Optional<MessageCreateManyWithoutChannelInput>;
+
+    participants?: Optional<UserCreateManyWithoutChannelsInput>;
+
+    pendingUsers?: Optional<UserCreateManyWithoutPendingChannelsInput>;
+
+    moderators?: Optional<UserCreateManyWithoutModeratorsChannelsInput>;
+
+    joinSettings?: Optional<JoinSettingsCreateOneInput>;
 }
 
 export interface ChannelsCreateWithoutMessagesInput {
 
     title: NonNull<String>;
 
-    avatar?: Optional<String>;
+    description: NonNull<String>;
+
+    slug: NonNull<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
 
     type?: Optional<ChannelType>;
+
+    avatar?: Optional<FileCreateOneInput>;
 
     author: NonNull<UserCreateOneWithoutMyChannelsInput>;
 
     participants?: Optional<UserCreateManyWithoutChannelsInput>;
+
+    pendingUsers?: Optional<UserCreateManyWithoutPendingChannelsInput>;
+
+    blockedUsers?: Optional<UserCreateManyWithoutBlockedChannelsInput>;
+
+    moderators?: Optional<UserCreateManyWithoutModeratorsChannelsInput>;
+
+    joinSettings?: Optional<JoinSettingsCreateOneInput>;
+}
+
+export interface ChannelsCreateWithoutModeratorsInput {
+
+    title: NonNull<String>;
+
+    description: NonNull<String>;
+
+    slug: NonNull<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
+
+    type?: Optional<ChannelType>;
+
+    avatar?: Optional<FileCreateOneInput>;
+
+    author: NonNull<UserCreateOneWithoutMyChannelsInput>;
+
+    messages?: Optional<MessageCreateManyWithoutChannelInput>;
+
+    participants?: Optional<UserCreateManyWithoutChannelsInput>;
+
+    pendingUsers?: Optional<UserCreateManyWithoutPendingChannelsInput>;
+
+    blockedUsers?: Optional<UserCreateManyWithoutBlockedChannelsInput>;
+
+    joinSettings?: Optional<JoinSettingsCreateOneInput>;
 }
 
 export interface ChannelsCreateWithoutParticipantsInput {
 
     title: NonNull<String>;
 
-    avatar?: Optional<String>;
+    description: NonNull<String>;
+
+    slug: NonNull<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
 
     type?: Optional<ChannelType>;
+
+    avatar?: Optional<FileCreateOneInput>;
 
     author: NonNull<UserCreateOneWithoutMyChannelsInput>;
 
     messages?: Optional<MessageCreateManyWithoutChannelInput>;
+
+    pendingUsers?: Optional<UserCreateManyWithoutPendingChannelsInput>;
+
+    blockedUsers?: Optional<UserCreateManyWithoutBlockedChannelsInput>;
+
+    moderators?: Optional<UserCreateManyWithoutModeratorsChannelsInput>;
+
+    joinSettings?: Optional<JoinSettingsCreateOneInput>;
+}
+
+export interface ChannelsCreateWithoutPendingUsersInput {
+
+    title: NonNull<String>;
+
+    description: NonNull<String>;
+
+    slug: NonNull<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
+
+    type?: Optional<ChannelType>;
+
+    avatar?: Optional<FileCreateOneInput>;
+
+    author: NonNull<UserCreateOneWithoutMyChannelsInput>;
+
+    messages?: Optional<MessageCreateManyWithoutChannelInput>;
+
+    participants?: Optional<UserCreateManyWithoutChannelsInput>;
+
+    blockedUsers?: Optional<UserCreateManyWithoutBlockedChannelsInput>;
+
+    moderators?: Optional<UserCreateManyWithoutModeratorsChannelsInput>;
+
+    joinSettings?: Optional<JoinSettingsCreateOneInput>;
 }
 
 export interface ChannelsSubscriptionWhereInput {
@@ -3553,15 +3980,33 @@ export interface ChannelsUpdateInput {
 
     title?: Optional<String>;
 
-    avatar?: Optional<String>;
+    description?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
 
     type?: Optional<ChannelType>;
+
+    avatar?: Optional<FileUpdateOneInput>;
 
     author?: Optional<UserUpdateOneWithoutMyChannelsInput>;
 
     messages?: Optional<MessageUpdateManyWithoutChannelInput>;
 
     participants?: Optional<UserUpdateManyWithoutChannelsInput>;
+
+    pendingUsers?: Optional<UserUpdateManyWithoutPendingChannelsInput>;
+
+    blockedUsers?: Optional<UserUpdateManyWithoutBlockedChannelsInput>;
+
+    moderators?: Optional<UserUpdateManyWithoutModeratorsChannelsInput>;
+
+    joinSettings?: Optional<JoinSettingsUpdateOneInput>;
 }
 
 export interface ChannelsUpdateManyWithoutAuthorInput {
@@ -3579,6 +4024,36 @@ export interface ChannelsUpdateManyWithoutAuthorInput {
     upsert?: List<NonNull<ChannelsUpsertWithWhereUniqueWithoutAuthorInput>>;
 }
 
+export interface ChannelsUpdateManyWithoutBlockedUsersInput {
+
+    create?: List<NonNull<ChannelsCreateWithoutBlockedUsersInput>>;
+
+    connect?: List<NonNull<ChannelsWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<ChannelsWhereUniqueInput>>;
+
+    delete?: List<NonNull<ChannelsWhereUniqueInput>>;
+
+    update?: List<NonNull<ChannelsUpdateWithWhereUniqueWithoutBlockedUsersInput>>;
+
+    upsert?: List<NonNull<ChannelsUpsertWithWhereUniqueWithoutBlockedUsersInput>>;
+}
+
+export interface ChannelsUpdateManyWithoutModeratorsInput {
+
+    create?: List<NonNull<ChannelsCreateWithoutModeratorsInput>>;
+
+    connect?: List<NonNull<ChannelsWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<ChannelsWhereUniqueInput>>;
+
+    delete?: List<NonNull<ChannelsWhereUniqueInput>>;
+
+    update?: List<NonNull<ChannelsUpdateWithWhereUniqueWithoutModeratorsInput>>;
+
+    upsert?: List<NonNull<ChannelsUpsertWithWhereUniqueWithoutModeratorsInput>>;
+}
+
 export interface ChannelsUpdateManyWithoutParticipantsInput {
 
     create?: List<NonNull<ChannelsCreateWithoutParticipantsInput>>;
@@ -3592,6 +4067,21 @@ export interface ChannelsUpdateManyWithoutParticipantsInput {
     update?: List<NonNull<ChannelsUpdateWithWhereUniqueWithoutParticipantsInput>>;
 
     upsert?: List<NonNull<ChannelsUpsertWithWhereUniqueWithoutParticipantsInput>>;
+}
+
+export interface ChannelsUpdateManyWithoutPendingUsersInput {
+
+    create?: List<NonNull<ChannelsCreateWithoutPendingUsersInput>>;
+
+    connect?: List<NonNull<ChannelsWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<ChannelsWhereUniqueInput>>;
+
+    delete?: List<NonNull<ChannelsWhereUniqueInput>>;
+
+    update?: List<NonNull<ChannelsUpdateWithWhereUniqueWithoutPendingUsersInput>>;
+
+    upsert?: List<NonNull<ChannelsUpsertWithWhereUniqueWithoutPendingUsersInput>>;
 }
 
 export interface ChannelsUpdateOneWithoutMessagesInput {
@@ -3611,39 +4101,186 @@ export interface ChannelsUpdateWithoutAuthorDataInput {
 
     title?: Optional<String>;
 
-    avatar?: Optional<String>;
+    description?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
 
     type?: Optional<ChannelType>;
+
+    avatar?: Optional<FileUpdateOneInput>;
 
     messages?: Optional<MessageUpdateManyWithoutChannelInput>;
 
     participants?: Optional<UserUpdateManyWithoutChannelsInput>;
+
+    pendingUsers?: Optional<UserUpdateManyWithoutPendingChannelsInput>;
+
+    blockedUsers?: Optional<UserUpdateManyWithoutBlockedChannelsInput>;
+
+    moderators?: Optional<UserUpdateManyWithoutModeratorsChannelsInput>;
+
+    joinSettings?: Optional<JoinSettingsUpdateOneInput>;
+}
+
+export interface ChannelsUpdateWithoutBlockedUsersDataInput {
+
+    title?: Optional<String>;
+
+    description?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
+
+    type?: Optional<ChannelType>;
+
+    avatar?: Optional<FileUpdateOneInput>;
+
+    author?: Optional<UserUpdateOneWithoutMyChannelsInput>;
+
+    messages?: Optional<MessageUpdateManyWithoutChannelInput>;
+
+    participants?: Optional<UserUpdateManyWithoutChannelsInput>;
+
+    pendingUsers?: Optional<UserUpdateManyWithoutPendingChannelsInput>;
+
+    moderators?: Optional<UserUpdateManyWithoutModeratorsChannelsInput>;
+
+    joinSettings?: Optional<JoinSettingsUpdateOneInput>;
 }
 
 export interface ChannelsUpdateWithoutMessagesDataInput {
 
     title?: Optional<String>;
 
-    avatar?: Optional<String>;
+    description?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
 
     type?: Optional<ChannelType>;
+
+    avatar?: Optional<FileUpdateOneInput>;
 
     author?: Optional<UserUpdateOneWithoutMyChannelsInput>;
 
     participants?: Optional<UserUpdateManyWithoutChannelsInput>;
+
+    pendingUsers?: Optional<UserUpdateManyWithoutPendingChannelsInput>;
+
+    blockedUsers?: Optional<UserUpdateManyWithoutBlockedChannelsInput>;
+
+    moderators?: Optional<UserUpdateManyWithoutModeratorsChannelsInput>;
+
+    joinSettings?: Optional<JoinSettingsUpdateOneInput>;
+}
+
+export interface ChannelsUpdateWithoutModeratorsDataInput {
+
+    title?: Optional<String>;
+
+    description?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
+
+    type?: Optional<ChannelType>;
+
+    avatar?: Optional<FileUpdateOneInput>;
+
+    author?: Optional<UserUpdateOneWithoutMyChannelsInput>;
+
+    messages?: Optional<MessageUpdateManyWithoutChannelInput>;
+
+    participants?: Optional<UserUpdateManyWithoutChannelsInput>;
+
+    pendingUsers?: Optional<UserUpdateManyWithoutPendingChannelsInput>;
+
+    blockedUsers?: Optional<UserUpdateManyWithoutBlockedChannelsInput>;
+
+    joinSettings?: Optional<JoinSettingsUpdateOneInput>;
 }
 
 export interface ChannelsUpdateWithoutParticipantsDataInput {
 
     title?: Optional<String>;
 
-    avatar?: Optional<String>;
+    description?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
 
     type?: Optional<ChannelType>;
+
+    avatar?: Optional<FileUpdateOneInput>;
 
     author?: Optional<UserUpdateOneWithoutMyChannelsInput>;
 
     messages?: Optional<MessageUpdateManyWithoutChannelInput>;
+
+    pendingUsers?: Optional<UserUpdateManyWithoutPendingChannelsInput>;
+
+    blockedUsers?: Optional<UserUpdateManyWithoutBlockedChannelsInput>;
+
+    moderators?: Optional<UserUpdateManyWithoutModeratorsChannelsInput>;
+
+    joinSettings?: Optional<JoinSettingsUpdateOneInput>;
+}
+
+export interface ChannelsUpdateWithoutPendingUsersDataInput {
+
+    title?: Optional<String>;
+
+    description?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
+
+    type?: Optional<ChannelType>;
+
+    avatar?: Optional<FileUpdateOneInput>;
+
+    author?: Optional<UserUpdateOneWithoutMyChannelsInput>;
+
+    messages?: Optional<MessageUpdateManyWithoutChannelInput>;
+
+    participants?: Optional<UserUpdateManyWithoutChannelsInput>;
+
+    blockedUsers?: Optional<UserUpdateManyWithoutBlockedChannelsInput>;
+
+    moderators?: Optional<UserUpdateManyWithoutModeratorsChannelsInput>;
+
+    joinSettings?: Optional<JoinSettingsUpdateOneInput>;
 }
 
 export interface ChannelsUpdateWithWhereUniqueWithoutAuthorInput {
@@ -3653,11 +4290,32 @@ export interface ChannelsUpdateWithWhereUniqueWithoutAuthorInput {
     data: NonNull<ChannelsUpdateWithoutAuthorDataInput>;
 }
 
+export interface ChannelsUpdateWithWhereUniqueWithoutBlockedUsersInput {
+
+    where: NonNull<ChannelsWhereUniqueInput>;
+
+    data: NonNull<ChannelsUpdateWithoutBlockedUsersDataInput>;
+}
+
+export interface ChannelsUpdateWithWhereUniqueWithoutModeratorsInput {
+
+    where: NonNull<ChannelsWhereUniqueInput>;
+
+    data: NonNull<ChannelsUpdateWithoutModeratorsDataInput>;
+}
+
 export interface ChannelsUpdateWithWhereUniqueWithoutParticipantsInput {
 
     where: NonNull<ChannelsWhereUniqueInput>;
 
     data: NonNull<ChannelsUpdateWithoutParticipantsDataInput>;
+}
+
+export interface ChannelsUpdateWithWhereUniqueWithoutPendingUsersInput {
+
+    where: NonNull<ChannelsWhereUniqueInput>;
+
+    data: NonNull<ChannelsUpdateWithoutPendingUsersDataInput>;
 }
 
 export interface ChannelsUpsertWithoutMessagesInput {
@@ -3676,6 +4334,24 @@ export interface ChannelsUpsertWithWhereUniqueWithoutAuthorInput {
     create: NonNull<ChannelsCreateWithoutAuthorInput>;
 }
 
+export interface ChannelsUpsertWithWhereUniqueWithoutBlockedUsersInput {
+
+    where: NonNull<ChannelsWhereUniqueInput>;
+
+    update: NonNull<ChannelsUpdateWithoutBlockedUsersDataInput>;
+
+    create: NonNull<ChannelsCreateWithoutBlockedUsersInput>;
+}
+
+export interface ChannelsUpsertWithWhereUniqueWithoutModeratorsInput {
+
+    where: NonNull<ChannelsWhereUniqueInput>;
+
+    update: NonNull<ChannelsUpdateWithoutModeratorsDataInput>;
+
+    create: NonNull<ChannelsCreateWithoutModeratorsInput>;
+}
+
 export interface ChannelsUpsertWithWhereUniqueWithoutParticipantsInput {
 
     where: NonNull<ChannelsWhereUniqueInput>;
@@ -3683,6 +4359,15 @@ export interface ChannelsUpsertWithWhereUniqueWithoutParticipantsInput {
     update: NonNull<ChannelsUpdateWithoutParticipantsDataInput>;
 
     create: NonNull<ChannelsCreateWithoutParticipantsInput>;
+}
+
+export interface ChannelsUpsertWithWhereUniqueWithoutPendingUsersInput {
+
+    where: NonNull<ChannelsWhereUniqueInput>;
+
+    update: NonNull<ChannelsUpdateWithoutPendingUsersDataInput>;
+
+    create: NonNull<ChannelsCreateWithoutPendingUsersInput>;
 }
 
 export interface ChannelsWhereInput {
@@ -3905,72 +4590,160 @@ export interface ChannelsWhereInput {
      */
     title_not_ends_with?: Optional<String>;
 
-    avatar?: Optional<String>;
+    description?: Optional<String>;
 
     /**
      * All values that are not equal to given value.
      */
-    avatar_not?: Optional<String>;
+    description_not?: Optional<String>;
 
     /**
      * All values that are contained in given list.
      */
-    avatar_in?: List<NonNull<String>>;
+    description_in?: List<NonNull<String>>;
 
     /**
      * All values that are not contained in given list.
      */
-    avatar_not_in?: List<NonNull<String>>;
+    description_not_in?: List<NonNull<String>>;
 
     /**
      * All values less than the given value.
      */
-    avatar_lt?: Optional<String>;
+    description_lt?: Optional<String>;
 
     /**
      * All values less than or equal the given value.
      */
-    avatar_lte?: Optional<String>;
+    description_lte?: Optional<String>;
 
     /**
      * All values greater than the given value.
      */
-    avatar_gt?: Optional<String>;
+    description_gt?: Optional<String>;
 
     /**
      * All values greater than or equal the given value.
      */
-    avatar_gte?: Optional<String>;
+    description_gte?: Optional<String>;
 
     /**
      * All values containing the given string.
      */
-    avatar_contains?: Optional<String>;
+    description_contains?: Optional<String>;
 
     /**
      * All values not containing the given string.
      */
-    avatar_not_contains?: Optional<String>;
+    description_not_contains?: Optional<String>;
 
     /**
      * All values starting with the given string.
      */
-    avatar_starts_with?: Optional<String>;
+    description_starts_with?: Optional<String>;
 
     /**
      * All values not starting with the given string.
      */
-    avatar_not_starts_with?: Optional<String>;
+    description_not_starts_with?: Optional<String>;
 
     /**
      * All values ending with the given string.
      */
-    avatar_ends_with?: Optional<String>;
+    description_ends_with?: Optional<String>;
 
     /**
      * All values not ending with the given string.
      */
-    avatar_not_ends_with?: Optional<String>;
+    description_not_ends_with?: Optional<String>;
+
+    slug?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    slug_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    slug_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    slug_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    slug_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    slug_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    slug_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    slug_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    slug_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    slug_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    slug_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    slug_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    slug_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    slug_not_ends_with?: Optional<String>;
+
+    isPrivate?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    isPrivate_not?: Optional<Boolean>;
+
+    isDefault?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    isDefault_not?: Optional<Boolean>;
+
+    isArchived?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    isArchived_not?: Optional<Boolean>;
 
     type?: Optional<ChannelType>;
 
@@ -3989,6 +4762,8 @@ export interface ChannelsWhereInput {
      */
     type_not_in?: List<NonNull<ChannelType>>;
 
+    avatar?: Optional<FileWhereInput>;
+
     author?: Optional<UserWhereInput>;
 
     messages_every?: Optional<MessageWhereInput>;
@@ -4002,11 +4777,33 @@ export interface ChannelsWhereInput {
     participants_some?: Optional<UserWhereInput>;
 
     participants_none?: Optional<UserWhereInput>;
+
+    pendingUsers_every?: Optional<UserWhereInput>;
+
+    pendingUsers_some?: Optional<UserWhereInput>;
+
+    pendingUsers_none?: Optional<UserWhereInput>;
+
+    blockedUsers_every?: Optional<UserWhereInput>;
+
+    blockedUsers_some?: Optional<UserWhereInput>;
+
+    blockedUsers_none?: Optional<UserWhereInput>;
+
+    moderators_every?: Optional<UserWhereInput>;
+
+    moderators_some?: Optional<UserWhereInput>;
+
+    moderators_none?: Optional<UserWhereInput>;
+
+    joinSettings?: Optional<JoinSettingsWhereInput>;
 }
 
 export interface ChannelsWhereUniqueInput {
 
     id?: Optional<ID>;
+
+    slug?: Optional<String>;
 }
 
 export interface CommentCreateInput {
@@ -4552,38 +5349,6 @@ export interface CommentWhereUniqueInput {
 export interface ConnectCreateInput {
 
     status?: Optional<Int>;
-
-    to: NonNull<UserCreateOneWithoutConnectToInput>;
-
-    from: NonNull<UserCreateOneWithoutConnectFromInput>;
-}
-
-export interface ConnectCreateManyWithoutFromInput {
-
-    create?: List<NonNull<ConnectCreateWithoutFromInput>>;
-
-    connect?: List<NonNull<ConnectWhereUniqueInput>>;
-}
-
-export interface ConnectCreateManyWithoutToInput {
-
-    create?: List<NonNull<ConnectCreateWithoutToInput>>;
-
-    connect?: List<NonNull<ConnectWhereUniqueInput>>;
-}
-
-export interface ConnectCreateWithoutFromInput {
-
-    status?: Optional<Int>;
-
-    to: NonNull<UserCreateOneWithoutConnectToInput>;
-}
-
-export interface ConnectCreateWithoutToInput {
-
-    status?: Optional<Int>;
-
-    from: NonNull<UserCreateOneWithoutConnectFromInput>;
 }
 
 export interface ConnectSubscriptionWhereInput {
@@ -4627,86 +5392,6 @@ export interface ConnectSubscriptionWhereInput {
 export interface ConnectUpdateInput {
 
     status?: Optional<Int>;
-
-    to?: Optional<UserUpdateOneWithoutConnectToInput>;
-
-    from?: Optional<UserUpdateOneWithoutConnectFromInput>;
-}
-
-export interface ConnectUpdateManyWithoutFromInput {
-
-    create?: List<NonNull<ConnectCreateWithoutFromInput>>;
-
-    connect?: List<NonNull<ConnectWhereUniqueInput>>;
-
-    disconnect?: List<NonNull<ConnectWhereUniqueInput>>;
-
-    delete?: List<NonNull<ConnectWhereUniqueInput>>;
-
-    update?: List<NonNull<ConnectUpdateWithWhereUniqueWithoutFromInput>>;
-
-    upsert?: List<NonNull<ConnectUpsertWithWhereUniqueWithoutFromInput>>;
-}
-
-export interface ConnectUpdateManyWithoutToInput {
-
-    create?: List<NonNull<ConnectCreateWithoutToInput>>;
-
-    connect?: List<NonNull<ConnectWhereUniqueInput>>;
-
-    disconnect?: List<NonNull<ConnectWhereUniqueInput>>;
-
-    delete?: List<NonNull<ConnectWhereUniqueInput>>;
-
-    update?: List<NonNull<ConnectUpdateWithWhereUniqueWithoutToInput>>;
-
-    upsert?: List<NonNull<ConnectUpsertWithWhereUniqueWithoutToInput>>;
-}
-
-export interface ConnectUpdateWithoutFromDataInput {
-
-    status?: Optional<Int>;
-
-    to?: Optional<UserUpdateOneWithoutConnectToInput>;
-}
-
-export interface ConnectUpdateWithoutToDataInput {
-
-    status?: Optional<Int>;
-
-    from?: Optional<UserUpdateOneWithoutConnectFromInput>;
-}
-
-export interface ConnectUpdateWithWhereUniqueWithoutFromInput {
-
-    where: NonNull<ConnectWhereUniqueInput>;
-
-    data: NonNull<ConnectUpdateWithoutFromDataInput>;
-}
-
-export interface ConnectUpdateWithWhereUniqueWithoutToInput {
-
-    where: NonNull<ConnectWhereUniqueInput>;
-
-    data: NonNull<ConnectUpdateWithoutToDataInput>;
-}
-
-export interface ConnectUpsertWithWhereUniqueWithoutFromInput {
-
-    where: NonNull<ConnectWhereUniqueInput>;
-
-    update: NonNull<ConnectUpdateWithoutFromDataInput>;
-
-    create: NonNull<ConnectCreateWithoutFromInput>;
-}
-
-export interface ConnectUpsertWithWhereUniqueWithoutToInput {
-
-    where: NonNull<ConnectWhereUniqueInput>;
-
-    update: NonNull<ConnectUpdateWithoutToDataInput>;
-
-    create: NonNull<ConnectCreateWithoutToInput>;
 }
 
 export interface ConnectWhereInput {
@@ -4898,10 +5583,6 @@ export interface ConnectWhereInput {
      * All values greater than or equal the given value.
      */
     status_gte?: Optional<Int>;
-
-    to?: Optional<UserWhereInput>;
-
-    from?: Optional<UserWhereInput>;
 }
 
 export interface ConnectWhereUniqueInput {
@@ -5768,6 +6449,15 @@ export interface FileCreateInput {
     contentType: NonNull<String>;
 
     url: NonNull<String>;
+
+    userFiles?: Optional<UserCreateOneInput>;
+}
+
+export interface FileCreateManyInput {
+
+    create?: List<NonNull<FileCreateInput>>;
+
+    connect?: List<NonNull<FileWhereUniqueInput>>;
 }
 
 export interface FileCreateOneInput {
@@ -5826,6 +6516,8 @@ export interface FileUpdateDataInput {
     contentType?: Optional<String>;
 
     url?: Optional<String>;
+
+    userFiles?: Optional<UserUpdateOneInput>;
 }
 
 export interface FileUpdateInput {
@@ -5839,6 +6531,23 @@ export interface FileUpdateInput {
     contentType?: Optional<String>;
 
     url?: Optional<String>;
+
+    userFiles?: Optional<UserUpdateOneInput>;
+}
+
+export interface FileUpdateManyInput {
+
+    create?: List<NonNull<FileCreateInput>>;
+
+    connect?: List<NonNull<FileWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<FileWhereUniqueInput>>;
+
+    delete?: List<NonNull<FileWhereUniqueInput>>;
+
+    update?: List<NonNull<FileUpdateWithWhereUniqueNestedInput>>;
+
+    upsert?: List<NonNull<FileUpsertWithWhereUniqueNestedInput>>;
 }
 
 export interface FileUpdateOneInput {
@@ -5856,7 +6565,23 @@ export interface FileUpdateOneInput {
     upsert?: Optional<FileUpsertNestedInput>;
 }
 
+export interface FileUpdateWithWhereUniqueNestedInput {
+
+    where: NonNull<FileWhereUniqueInput>;
+
+    data: NonNull<FileUpdateDataInput>;
+}
+
 export interface FileUpsertNestedInput {
+
+    update: NonNull<FileUpdateDataInput>;
+
+    create: NonNull<FileCreateInput>;
+}
+
+export interface FileUpsertWithWhereUniqueNestedInput {
+
+    where: NonNull<FileWhereUniqueInput>;
 
     update: NonNull<FileUpdateDataInput>;
 
@@ -6320,6 +7045,8 @@ export interface FileWhereInput {
      * All values not ending with the given string.
      */
     url_not_ends_with?: Optional<String>;
+
+    userFiles?: Optional<UserWhereInput>;
 }
 
 export interface FileWhereUniqueInput {
@@ -6823,18 +7550,18 @@ export interface InterestCreateInput {
     users?: Optional<UserCreateManyWithoutInterestInput>;
 }
 
-export interface InterestCreateManyInput {
-
-    create?: List<NonNull<InterestCreateInput>>;
-
-    connect?: List<NonNull<InterestWhereUniqueInput>>;
-}
-
 export interface InterestCreateManyWithoutUsersInput {
 
     create?: List<NonNull<InterestCreateWithoutUsersInput>>;
 
     connect?: List<NonNull<InterestWhereUniqueInput>>;
+}
+
+export interface InterestCreateOneInput {
+
+    create?: Optional<InterestCreateInput>;
+
+    connect?: Optional<InterestWhereUniqueInput>;
 }
 
 export interface InterestCreateWithoutUsersInput {
@@ -6900,21 +7627,6 @@ export interface InterestUpdateInput {
     users?: Optional<UserUpdateManyWithoutInterestInput>;
 }
 
-export interface InterestUpdateManyInput {
-
-    create?: List<NonNull<InterestCreateInput>>;
-
-    connect?: List<NonNull<InterestWhereUniqueInput>>;
-
-    disconnect?: List<NonNull<InterestWhereUniqueInput>>;
-
-    delete?: List<NonNull<InterestWhereUniqueInput>>;
-
-    update?: List<NonNull<InterestUpdateWithWhereUniqueNestedInput>>;
-
-    upsert?: List<NonNull<InterestUpsertWithWhereUniqueNestedInput>>;
-}
-
 export interface InterestUpdateManyWithoutUsersInput {
 
     create?: List<NonNull<InterestCreateWithoutUsersInput>>;
@@ -6930,18 +7642,26 @@ export interface InterestUpdateManyWithoutUsersInput {
     upsert?: List<NonNull<InterestUpsertWithWhereUniqueWithoutUsersInput>>;
 }
 
+export interface InterestUpdateOneInput {
+
+    create?: Optional<InterestCreateInput>;
+
+    connect?: Optional<InterestWhereUniqueInput>;
+
+    disconnect?: Optional<Boolean>;
+
+    delete?: Optional<Boolean>;
+
+    update?: Optional<InterestUpdateDataInput>;
+
+    upsert?: Optional<InterestUpsertNestedInput>;
+}
+
 export interface InterestUpdateWithoutUsersDataInput {
 
     name?: Optional<String>;
 
     avatar?: Optional<String>;
-}
-
-export interface InterestUpdateWithWhereUniqueNestedInput {
-
-    where: NonNull<InterestWhereUniqueInput>;
-
-    data: NonNull<InterestUpdateDataInput>;
 }
 
 export interface InterestUpdateWithWhereUniqueWithoutUsersInput {
@@ -6951,9 +7671,7 @@ export interface InterestUpdateWithWhereUniqueWithoutUsersInput {
     data: NonNull<InterestUpdateWithoutUsersDataInput>;
 }
 
-export interface InterestUpsertWithWhereUniqueNestedInput {
-
-    where: NonNull<InterestWhereUniqueInput>;
+export interface InterestUpsertNestedInput {
 
     update: NonNull<InterestUpdateDataInput>;
 
@@ -7268,6 +7986,253 @@ export interface InterestWhereUniqueInput {
     id?: Optional<ID>;
 
     name?: Optional<String>;
+}
+
+export interface JoinSettingsCreateInput {
+
+    tokenJoinEnabled?: Optional<Boolean>;
+
+    token?: Optional<String>;
+}
+
+export interface JoinSettingsCreateOneInput {
+
+    create?: Optional<JoinSettingsCreateInput>;
+
+    connect?: Optional<JoinSettingsWhereUniqueInput>;
+}
+
+export interface JoinSettingsSubscriptionWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<JoinSettingsSubscriptionWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<JoinSettingsSubscriptionWhereInput>>;
+
+    /**
+     * The subscription event gets dispatched when it's listed in mutation_in
+     */
+    mutation_in?: List<NonNull<MutationType>>;
+
+    /**
+     * The subscription event gets only dispatched when one of the updated fields names 
+     * is included in this list
+     */
+    updatedFields_contains?: Optional<String>;
+
+    /**
+     * The subscription event gets only dispatched when all of the field names included 
+     * in this list have been updated
+     */
+    updatedFields_contains_every?: List<NonNull<String>>;
+
+    /**
+     * The subscription event gets only dispatched when some of the field names 
+     * included in this list have been updated
+     */
+    updatedFields_contains_some?: List<NonNull<String>>;
+
+    node?: Optional<JoinSettingsWhereInput>;
+}
+
+export interface JoinSettingsUpdateDataInput {
+
+    tokenJoinEnabled?: Optional<Boolean>;
+
+    token?: Optional<String>;
+}
+
+export interface JoinSettingsUpdateInput {
+
+    tokenJoinEnabled?: Optional<Boolean>;
+
+    token?: Optional<String>;
+}
+
+export interface JoinSettingsUpdateOneInput {
+
+    create?: Optional<JoinSettingsCreateInput>;
+
+    connect?: Optional<JoinSettingsWhereUniqueInput>;
+
+    disconnect?: Optional<Boolean>;
+
+    delete?: Optional<Boolean>;
+
+    update?: Optional<JoinSettingsUpdateDataInput>;
+
+    upsert?: Optional<JoinSettingsUpsertNestedInput>;
+}
+
+export interface JoinSettingsUpsertNestedInput {
+
+    update: NonNull<JoinSettingsUpdateDataInput>;
+
+    create: NonNull<JoinSettingsCreateInput>;
+}
+
+export interface JoinSettingsWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<JoinSettingsWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<JoinSettingsWhereInput>>;
+
+    id?: Optional<ID>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    id_not?: Optional<ID>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    id_in?: List<NonNull<ID>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    id_not_in?: List<NonNull<ID>>;
+
+    /**
+     * All values less than the given value.
+     */
+    id_lt?: Optional<ID>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    id_lte?: Optional<ID>;
+
+    /**
+     * All values greater than the given value.
+     */
+    id_gt?: Optional<ID>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    id_gte?: Optional<ID>;
+
+    /**
+     * All values containing the given string.
+     */
+    id_contains?: Optional<ID>;
+
+    /**
+     * All values not containing the given string.
+     */
+    id_not_contains?: Optional<ID>;
+
+    /**
+     * All values starting with the given string.
+     */
+    id_starts_with?: Optional<ID>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    id_not_starts_with?: Optional<ID>;
+
+    /**
+     * All values ending with the given string.
+     */
+    id_ends_with?: Optional<ID>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    id_not_ends_with?: Optional<ID>;
+
+    tokenJoinEnabled?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    tokenJoinEnabled_not?: Optional<Boolean>;
+
+    token?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    token_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    token_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    token_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    token_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    token_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    token_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    token_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    token_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    token_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    token_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    token_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    token_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    token_not_ends_with?: Optional<String>;
+}
+
+export interface JoinSettingsWhereUniqueInput {
+
+    id?: Optional<ID>;
 }
 
 export interface LibraryCreateInput {
@@ -8751,11 +9716,17 @@ export interface UserCreateInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password: NonNull<String>;
 
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    bio?: Optional<String>;
 
     gender: NonNull<String>;
 
@@ -8769,13 +9740,23 @@ export interface UserCreateInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileCreateOneInput>;
+    userFiles?: Optional<FileCreateManyInput>;
 
     country?: Optional<CountryCreateOneWithoutUsersInput>;
 
@@ -8787,9 +9768,9 @@ export interface UserCreateInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+    connectTo?: Optional<UserCreateManyInput>;
 
-    connectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+    connectFrom?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -8799,9 +9780,29 @@ export interface UserCreateInput {
 
     myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
 
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
+
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+}
+
+export interface UserCreateManyInput {
+
+    create?: List<NonNull<UserCreateInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+}
+
+export interface UserCreateManyWithoutBlockedChannelsInput {
+
+    create?: List<NonNull<UserCreateWithoutBlockedChannelsInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
 }
 
 export interface UserCreateManyWithoutChannelsInput {
@@ -8853,6 +9854,20 @@ export interface UserCreateManyWithoutLikedArticlesInput {
     connect?: List<NonNull<UserWhereUniqueInput>>;
 }
 
+export interface UserCreateManyWithoutModeratorsChannelsInput {
+
+    create?: List<NonNull<UserCreateWithoutModeratorsChannelsInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+}
+
+export interface UserCreateManyWithoutPendingChannelsInput {
+
+    create?: List<NonNull<UserCreateWithoutPendingChannelsInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+}
+
 export interface UserCreateOneInput {
 
     create?: Optional<UserCreateInput>;
@@ -8874,20 +9889,6 @@ export interface UserCreateOneWithoutCommentsInput {
     connect?: Optional<UserWhereUniqueInput>;
 }
 
-export interface UserCreateOneWithoutConnectFromInput {
-
-    create?: Optional<UserCreateWithoutConnectFromInput>;
-
-    connect?: Optional<UserWhereUniqueInput>;
-}
-
-export interface UserCreateOneWithoutConnectToInput {
-
-    create?: Optional<UserCreateWithoutConnectToInput>;
-
-    connect?: Optional<UserWhereUniqueInput>;
-}
-
 export interface UserCreateOneWithoutMyChannelsInput {
 
     create?: Optional<UserCreateWithoutMyChannelsInput>;
@@ -8901,11 +9902,17 @@ export interface UserCreateWithoutArticlesInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password: NonNull<String>;
 
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    bio?: Optional<String>;
 
     gender: NonNull<String>;
 
@@ -8919,13 +9926,23 @@ export interface UserCreateWithoutArticlesInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileCreateOneInput>;
+    userFiles?: Optional<FileCreateManyInput>;
 
     country?: Optional<CountryCreateOneWithoutUsersInput>;
 
@@ -8937,15 +9954,100 @@ export interface UserCreateWithoutArticlesInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+    connectTo?: Optional<UserCreateManyInput>;
 
-    connectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+    connectFrom?: Optional<UserCreateManyInput>;
 
     favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
 
     channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
+
+    likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
+
+    comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+}
+
+export interface UserCreateWithoutBlockedChannelsInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    bio?: Optional<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newCommunityNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    verified?: Optional<Boolean>;
+
+    userFiles?: Optional<FileCreateManyInput>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateManyWithoutUsersInput>;
+
+    messages?: Optional<MessageCreateOneInput>;
+
+    connectTo?: Optional<UserCreateManyInput>;
+
+    connectFrom?: Optional<UserCreateManyInput>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
+
+    channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
+
+    myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
@@ -8958,11 +10060,17 @@ export interface UserCreateWithoutChannelsInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password: NonNull<String>;
 
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    bio?: Optional<String>;
 
     gender: NonNull<String>;
 
@@ -8976,13 +10084,23 @@ export interface UserCreateWithoutChannelsInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileCreateOneInput>;
+    userFiles?: Optional<FileCreateManyInput>;
 
     country?: Optional<CountryCreateOneWithoutUsersInput>;
 
@@ -8994,15 +10112,21 @@ export interface UserCreateWithoutChannelsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+    connectTo?: Optional<UserCreateManyInput>;
 
-    connectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+    connectFrom?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
     favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
 
     myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
@@ -9015,11 +10139,17 @@ export interface UserCreateWithoutCommentsInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password: NonNull<String>;
 
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    bio?: Optional<String>;
 
     gender: NonNull<String>;
 
@@ -9033,13 +10163,23 @@ export interface UserCreateWithoutCommentsInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileCreateOneInput>;
+    userFiles?: Optional<FileCreateManyInput>;
 
     country?: Optional<CountryCreateOneWithoutUsersInput>;
 
@@ -9051,64 +10191,9 @@ export interface UserCreateWithoutCommentsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+    connectTo?: Optional<UserCreateManyInput>;
 
-    connectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
-
-    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
-
-    favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
-
-    channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
-
-    myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
-
-    likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
-}
-
-export interface UserCreateWithoutConnectFromInput {
-
-    email: NonNull<String>;
-
-    username?: Optional<String>;
-
-    password: NonNull<String>;
-
-    firstname: NonNull<String>;
-
-    lastname: NonNull<String>;
-
-    gender: NonNull<String>;
-
-    type?: Optional<String>;
-
-    userType?: Optional<String>;
-
-    newConnectNot?: Optional<Boolean>;
-
-    newCommentNot?: Optional<Boolean>;
-
-    newMessageNot?: Optional<Boolean>;
-
-    newProfileNot?: Optional<Boolean>;
-
-    completedProfile?: Optional<Int>;
-
-    verified?: Optional<Boolean>;
-
-    avatar?: Optional<FileCreateOneInput>;
-
-    country?: Optional<CountryCreateOneWithoutUsersInput>;
-
-    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
-
-    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
-
-    interest?: Optional<InterestCreateManyWithoutUsersInput>;
-
-    messages?: Optional<MessageCreateOneInput>;
-
-    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+    connectFrom?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -9118,66 +10203,13 @@ export interface UserCreateWithoutConnectFromInput {
 
     myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
 
-    likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
 
-    comments?: Optional<CommentCreateManyWithoutAuthorInput>;
-}
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
 
-export interface UserCreateWithoutConnectToInput {
-
-    email: NonNull<String>;
-
-    username?: Optional<String>;
-
-    password: NonNull<String>;
-
-    firstname: NonNull<String>;
-
-    lastname: NonNull<String>;
-
-    gender: NonNull<String>;
-
-    type?: Optional<String>;
-
-    userType?: Optional<String>;
-
-    newConnectNot?: Optional<Boolean>;
-
-    newCommentNot?: Optional<Boolean>;
-
-    newMessageNot?: Optional<Boolean>;
-
-    newProfileNot?: Optional<Boolean>;
-
-    completedProfile?: Optional<Int>;
-
-    verified?: Optional<Boolean>;
-
-    avatar?: Optional<FileCreateOneInput>;
-
-    country?: Optional<CountryCreateOneWithoutUsersInput>;
-
-    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
-
-    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
-
-    interest?: Optional<InterestCreateManyWithoutUsersInput>;
-
-    messages?: Optional<MessageCreateOneInput>;
-
-    connectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
-
-    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
-
-    favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
-
-    channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
-
-    myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
-
-    comments?: Optional<CommentCreateManyWithoutAuthorInput>;
 }
 
 export interface UserCreateWithoutCountryInput {
@@ -9186,11 +10218,17 @@ export interface UserCreateWithoutCountryInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password: NonNull<String>;
 
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    bio?: Optional<String>;
 
     gender: NonNull<String>;
 
@@ -9204,13 +10242,23 @@ export interface UserCreateWithoutCountryInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileCreateOneInput>;
+    userFiles?: Optional<FileCreateManyInput>;
 
     institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
 
@@ -9220,9 +10268,9 @@ export interface UserCreateWithoutCountryInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+    connectTo?: Optional<UserCreateManyInput>;
 
-    connectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+    connectFrom?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -9231,6 +10279,12 @@ export interface UserCreateWithoutCountryInput {
     channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
@@ -9243,11 +10297,17 @@ export interface UserCreateWithoutDepartmentInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password: NonNull<String>;
 
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    bio?: Optional<String>;
 
     gender: NonNull<String>;
 
@@ -9261,13 +10321,23 @@ export interface UserCreateWithoutDepartmentInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileCreateOneInput>;
+    userFiles?: Optional<FileCreateManyInput>;
 
     country?: Optional<CountryCreateOneWithoutUsersInput>;
 
@@ -9277,9 +10347,9 @@ export interface UserCreateWithoutDepartmentInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+    connectTo?: Optional<UserCreateManyInput>;
 
-    connectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+    connectFrom?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -9288,6 +10358,12 @@ export interface UserCreateWithoutDepartmentInput {
     channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
@@ -9300,11 +10376,17 @@ export interface UserCreateWithoutFavouritesInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password: NonNull<String>;
 
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    bio?: Optional<String>;
 
     gender: NonNull<String>;
 
@@ -9318,13 +10400,23 @@ export interface UserCreateWithoutFavouritesInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileCreateOneInput>;
+    userFiles?: Optional<FileCreateManyInput>;
 
     country?: Optional<CountryCreateOneWithoutUsersInput>;
 
@@ -9336,15 +10428,21 @@ export interface UserCreateWithoutFavouritesInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+    connectTo?: Optional<UserCreateManyInput>;
 
-    connectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+    connectFrom?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
     channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
@@ -9357,11 +10455,17 @@ export interface UserCreateWithoutInstitutionInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password: NonNull<String>;
 
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    bio?: Optional<String>;
 
     gender: NonNull<String>;
 
@@ -9375,13 +10479,23 @@ export interface UserCreateWithoutInstitutionInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileCreateOneInput>;
+    userFiles?: Optional<FileCreateManyInput>;
 
     country?: Optional<CountryCreateOneWithoutUsersInput>;
 
@@ -9391,9 +10505,9 @@ export interface UserCreateWithoutInstitutionInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+    connectTo?: Optional<UserCreateManyInput>;
 
-    connectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+    connectFrom?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -9402,6 +10516,12 @@ export interface UserCreateWithoutInstitutionInput {
     channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
@@ -9414,11 +10534,17 @@ export interface UserCreateWithoutInterestInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password: NonNull<String>;
 
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    bio?: Optional<String>;
 
     gender: NonNull<String>;
 
@@ -9432,13 +10558,23 @@ export interface UserCreateWithoutInterestInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileCreateOneInput>;
+    userFiles?: Optional<FileCreateManyInput>;
 
     country?: Optional<CountryCreateOneWithoutUsersInput>;
 
@@ -9448,9 +10584,9 @@ export interface UserCreateWithoutInterestInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+    connectTo?: Optional<UserCreateManyInput>;
 
-    connectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+    connectFrom?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -9459,6 +10595,12 @@ export interface UserCreateWithoutInterestInput {
     channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
@@ -9471,11 +10613,17 @@ export interface UserCreateWithoutLikedArticlesInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password: NonNull<String>;
 
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    bio?: Optional<String>;
 
     gender: NonNull<String>;
 
@@ -9489,13 +10637,23 @@ export interface UserCreateWithoutLikedArticlesInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileCreateOneInput>;
+    userFiles?: Optional<FileCreateManyInput>;
 
     country?: Optional<CountryCreateOneWithoutUsersInput>;
 
@@ -9507,9 +10665,9 @@ export interface UserCreateWithoutLikedArticlesInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+    connectTo?: Optional<UserCreateManyInput>;
 
-    connectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+    connectFrom?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -9518,6 +10676,91 @@ export interface UserCreateWithoutLikedArticlesInput {
     channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
+
+    comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+}
+
+export interface UserCreateWithoutModeratorsChannelsInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    bio?: Optional<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newCommunityNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    verified?: Optional<Boolean>;
+
+    userFiles?: Optional<FileCreateManyInput>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateManyWithoutUsersInput>;
+
+    messages?: Optional<MessageCreateOneInput>;
+
+    connectTo?: Optional<UserCreateManyInput>;
+
+    connectFrom?: Optional<UserCreateManyInput>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
+
+    channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
+
+    myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
 }
@@ -9528,11 +10771,17 @@ export interface UserCreateWithoutMyChannelsInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password: NonNull<String>;
 
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    bio?: Optional<String>;
 
     gender: NonNull<String>;
 
@@ -9546,13 +10795,23 @@ export interface UserCreateWithoutMyChannelsInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileCreateOneInput>;
+    userFiles?: Optional<FileCreateManyInput>;
 
     country?: Optional<CountryCreateOneWithoutUsersInput>;
 
@@ -9564,15 +10823,100 @@ export interface UserCreateWithoutMyChannelsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<ConnectCreateManyWithoutToInput>;
+    connectTo?: Optional<UserCreateManyInput>;
 
-    connectFrom?: Optional<ConnectCreateManyWithoutFromInput>;
+    connectFrom?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
     favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
 
     channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
+
+    likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
+
+    comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+}
+
+export interface UserCreateWithoutPendingChannelsInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    bio?: Optional<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newCommunityNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    verified?: Optional<Boolean>;
+
+    userFiles?: Optional<FileCreateManyInput>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateManyWithoutUsersInput>;
+
+    messages?: Optional<MessageCreateOneInput>;
+
+    connectTo?: Optional<UserCreateManyInput>;
+
+    connectFrom?: Optional<UserCreateManyInput>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
+
+    channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
+
+    myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
@@ -9623,11 +10967,17 @@ export interface UserUpdateDataInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password?: Optional<String>;
 
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
+
+    bio?: Optional<String>;
 
     gender?: Optional<String>;
 
@@ -9641,13 +10991,23 @@ export interface UserUpdateDataInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileUpdateOneInput>;
+    userFiles?: Optional<FileUpdateManyInput>;
 
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
 
@@ -9659,9 +11019,9 @@ export interface UserUpdateDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+    connectTo?: Optional<UserUpdateManyInput>;
 
-    connectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+    connectFrom?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -9670,6 +11030,12 @@ export interface UserUpdateDataInput {
     channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
@@ -9682,11 +11048,17 @@ export interface UserUpdateInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password?: Optional<String>;
 
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
+
+    bio?: Optional<String>;
 
     gender?: Optional<String>;
 
@@ -9700,13 +11072,23 @@ export interface UserUpdateInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileUpdateOneInput>;
+    userFiles?: Optional<FileUpdateManyInput>;
 
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
 
@@ -9718,9 +11100,9 @@ export interface UserUpdateInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+    connectTo?: Optional<UserUpdateManyInput>;
 
-    connectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+    connectFrom?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -9730,9 +11112,45 @@ export interface UserUpdateInput {
 
     myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
 
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
+
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateManyInput {
+
+    create?: List<NonNull<UserCreateInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<UserWhereUniqueInput>>;
+
+    delete?: List<NonNull<UserWhereUniqueInput>>;
+
+    update?: List<NonNull<UserUpdateWithWhereUniqueNestedInput>>;
+
+    upsert?: List<NonNull<UserUpsertWithWhereUniqueNestedInput>>;
+}
+
+export interface UserUpdateManyWithoutBlockedChannelsInput {
+
+    create?: List<NonNull<UserCreateWithoutBlockedChannelsInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<UserWhereUniqueInput>>;
+
+    delete?: List<NonNull<UserWhereUniqueInput>>;
+
+    update?: List<NonNull<UserUpdateWithWhereUniqueWithoutBlockedChannelsInput>>;
+
+    upsert?: List<NonNull<UserUpsertWithWhereUniqueWithoutBlockedChannelsInput>>;
 }
 
 export interface UserUpdateManyWithoutChannelsInput {
@@ -9840,11 +11258,43 @@ export interface UserUpdateManyWithoutLikedArticlesInput {
     upsert?: List<NonNull<UserUpsertWithWhereUniqueWithoutLikedArticlesInput>>;
 }
 
+export interface UserUpdateManyWithoutModeratorsChannelsInput {
+
+    create?: List<NonNull<UserCreateWithoutModeratorsChannelsInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<UserWhereUniqueInput>>;
+
+    delete?: List<NonNull<UserWhereUniqueInput>>;
+
+    update?: List<NonNull<UserUpdateWithWhereUniqueWithoutModeratorsChannelsInput>>;
+
+    upsert?: List<NonNull<UserUpsertWithWhereUniqueWithoutModeratorsChannelsInput>>;
+}
+
+export interface UserUpdateManyWithoutPendingChannelsInput {
+
+    create?: List<NonNull<UserCreateWithoutPendingChannelsInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<UserWhereUniqueInput>>;
+
+    delete?: List<NonNull<UserWhereUniqueInput>>;
+
+    update?: List<NonNull<UserUpdateWithWhereUniqueWithoutPendingChannelsInput>>;
+
+    upsert?: List<NonNull<UserUpsertWithWhereUniqueWithoutPendingChannelsInput>>;
+}
+
 export interface UserUpdateOneInput {
 
     create?: Optional<UserCreateInput>;
 
     connect?: Optional<UserWhereUniqueInput>;
+
+    disconnect?: Optional<Boolean>;
 
     delete?: Optional<Boolean>;
 
@@ -9879,32 +11329,6 @@ export interface UserUpdateOneWithoutCommentsInput {
     upsert?: Optional<UserUpsertWithoutCommentsInput>;
 }
 
-export interface UserUpdateOneWithoutConnectFromInput {
-
-    create?: Optional<UserCreateWithoutConnectFromInput>;
-
-    connect?: Optional<UserWhereUniqueInput>;
-
-    delete?: Optional<Boolean>;
-
-    update?: Optional<UserUpdateWithoutConnectFromDataInput>;
-
-    upsert?: Optional<UserUpsertWithoutConnectFromInput>;
-}
-
-export interface UserUpdateOneWithoutConnectToInput {
-
-    create?: Optional<UserCreateWithoutConnectToInput>;
-
-    connect?: Optional<UserWhereUniqueInput>;
-
-    delete?: Optional<Boolean>;
-
-    update?: Optional<UserUpdateWithoutConnectToDataInput>;
-
-    upsert?: Optional<UserUpsertWithoutConnectToInput>;
-}
-
 export interface UserUpdateOneWithoutMyChannelsInput {
 
     create?: Optional<UserCreateWithoutMyChannelsInput>;
@@ -9924,11 +11348,17 @@ export interface UserUpdateWithoutArticlesDataInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password?: Optional<String>;
 
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
+
+    bio?: Optional<String>;
 
     gender?: Optional<String>;
 
@@ -9942,13 +11372,23 @@ export interface UserUpdateWithoutArticlesDataInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileUpdateOneInput>;
+    userFiles?: Optional<FileUpdateManyInput>;
 
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
 
@@ -9960,15 +11400,100 @@ export interface UserUpdateWithoutArticlesDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+    connectTo?: Optional<UserUpdateManyInput>;
 
-    connectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+    connectFrom?: Optional<UserUpdateManyInput>;
 
     favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
 
     channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
+
+    likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
+
+    comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateWithoutBlockedChannelsDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    bio?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newCommunityNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    verified?: Optional<Boolean>;
+
+    userFiles?: Optional<FileUpdateManyInput>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateManyWithoutUsersInput>;
+
+    messages?: Optional<MessageUpdateOneInput>;
+
+    connectTo?: Optional<UserUpdateManyInput>;
+
+    connectFrom?: Optional<UserUpdateManyInput>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
+
+    channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
+
+    myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
@@ -9981,11 +11506,17 @@ export interface UserUpdateWithoutChannelsDataInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password?: Optional<String>;
 
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
+
+    bio?: Optional<String>;
 
     gender?: Optional<String>;
 
@@ -9999,13 +11530,23 @@ export interface UserUpdateWithoutChannelsDataInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileUpdateOneInput>;
+    userFiles?: Optional<FileUpdateManyInput>;
 
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
 
@@ -10017,15 +11558,21 @@ export interface UserUpdateWithoutChannelsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+    connectTo?: Optional<UserUpdateManyInput>;
 
-    connectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+    connectFrom?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
     favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
 
     myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
@@ -10038,11 +11585,17 @@ export interface UserUpdateWithoutCommentsDataInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password?: Optional<String>;
 
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
+
+    bio?: Optional<String>;
 
     gender?: Optional<String>;
 
@@ -10056,13 +11609,23 @@ export interface UserUpdateWithoutCommentsDataInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileUpdateOneInput>;
+    userFiles?: Optional<FileUpdateManyInput>;
 
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
 
@@ -10074,64 +11637,9 @@ export interface UserUpdateWithoutCommentsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+    connectTo?: Optional<UserUpdateManyInput>;
 
-    connectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
-
-    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
-
-    favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
-
-    channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
-
-    myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
-
-    likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
-}
-
-export interface UserUpdateWithoutConnectFromDataInput {
-
-    email?: Optional<String>;
-
-    username?: Optional<String>;
-
-    password?: Optional<String>;
-
-    firstname?: Optional<String>;
-
-    lastname?: Optional<String>;
-
-    gender?: Optional<String>;
-
-    type?: Optional<String>;
-
-    userType?: Optional<String>;
-
-    newConnectNot?: Optional<Boolean>;
-
-    newCommentNot?: Optional<Boolean>;
-
-    newMessageNot?: Optional<Boolean>;
-
-    newProfileNot?: Optional<Boolean>;
-
-    completedProfile?: Optional<Int>;
-
-    verified?: Optional<Boolean>;
-
-    avatar?: Optional<FileUpdateOneInput>;
-
-    country?: Optional<CountryUpdateOneWithoutUsersInput>;
-
-    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
-
-    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
-
-    interest?: Optional<InterestUpdateManyWithoutUsersInput>;
-
-    messages?: Optional<MessageUpdateOneInput>;
-
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+    connectFrom?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -10141,66 +11649,13 @@ export interface UserUpdateWithoutConnectFromDataInput {
 
     myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
 
-    likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
 
-    comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
-}
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
 
-export interface UserUpdateWithoutConnectToDataInput {
-
-    email?: Optional<String>;
-
-    username?: Optional<String>;
-
-    password?: Optional<String>;
-
-    firstname?: Optional<String>;
-
-    lastname?: Optional<String>;
-
-    gender?: Optional<String>;
-
-    type?: Optional<String>;
-
-    userType?: Optional<String>;
-
-    newConnectNot?: Optional<Boolean>;
-
-    newCommentNot?: Optional<Boolean>;
-
-    newMessageNot?: Optional<Boolean>;
-
-    newProfileNot?: Optional<Boolean>;
-
-    completedProfile?: Optional<Int>;
-
-    verified?: Optional<Boolean>;
-
-    avatar?: Optional<FileUpdateOneInput>;
-
-    country?: Optional<CountryUpdateOneWithoutUsersInput>;
-
-    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
-
-    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
-
-    interest?: Optional<InterestUpdateManyWithoutUsersInput>;
-
-    messages?: Optional<MessageUpdateOneInput>;
-
-    connectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
-
-    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
-
-    favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
-
-    channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
-
-    myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
-
-    comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
 }
 
 export interface UserUpdateWithoutCountryDataInput {
@@ -10209,11 +11664,17 @@ export interface UserUpdateWithoutCountryDataInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password?: Optional<String>;
 
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
+
+    bio?: Optional<String>;
 
     gender?: Optional<String>;
 
@@ -10227,13 +11688,23 @@ export interface UserUpdateWithoutCountryDataInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileUpdateOneInput>;
+    userFiles?: Optional<FileUpdateManyInput>;
 
     institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
 
@@ -10243,9 +11714,9 @@ export interface UserUpdateWithoutCountryDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+    connectTo?: Optional<UserUpdateManyInput>;
 
-    connectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+    connectFrom?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -10254,6 +11725,12 @@ export interface UserUpdateWithoutCountryDataInput {
     channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
@@ -10266,11 +11743,17 @@ export interface UserUpdateWithoutDepartmentDataInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password?: Optional<String>;
 
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
+
+    bio?: Optional<String>;
 
     gender?: Optional<String>;
 
@@ -10284,13 +11767,23 @@ export interface UserUpdateWithoutDepartmentDataInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileUpdateOneInput>;
+    userFiles?: Optional<FileUpdateManyInput>;
 
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
 
@@ -10300,9 +11793,9 @@ export interface UserUpdateWithoutDepartmentDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+    connectTo?: Optional<UserUpdateManyInput>;
 
-    connectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+    connectFrom?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -10311,6 +11804,12 @@ export interface UserUpdateWithoutDepartmentDataInput {
     channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
@@ -10323,11 +11822,17 @@ export interface UserUpdateWithoutFavouritesDataInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password?: Optional<String>;
 
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
+
+    bio?: Optional<String>;
 
     gender?: Optional<String>;
 
@@ -10341,13 +11846,23 @@ export interface UserUpdateWithoutFavouritesDataInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileUpdateOneInput>;
+    userFiles?: Optional<FileUpdateManyInput>;
 
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
 
@@ -10359,15 +11874,21 @@ export interface UserUpdateWithoutFavouritesDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+    connectTo?: Optional<UserUpdateManyInput>;
 
-    connectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+    connectFrom?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
     channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
@@ -10380,11 +11901,17 @@ export interface UserUpdateWithoutInstitutionDataInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password?: Optional<String>;
 
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
+
+    bio?: Optional<String>;
 
     gender?: Optional<String>;
 
@@ -10398,13 +11925,23 @@ export interface UserUpdateWithoutInstitutionDataInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileUpdateOneInput>;
+    userFiles?: Optional<FileUpdateManyInput>;
 
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
 
@@ -10414,9 +11951,9 @@ export interface UserUpdateWithoutInstitutionDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+    connectTo?: Optional<UserUpdateManyInput>;
 
-    connectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+    connectFrom?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -10425,6 +11962,12 @@ export interface UserUpdateWithoutInstitutionDataInput {
     channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
@@ -10437,11 +11980,17 @@ export interface UserUpdateWithoutInterestDataInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password?: Optional<String>;
 
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
+
+    bio?: Optional<String>;
 
     gender?: Optional<String>;
 
@@ -10455,13 +12004,23 @@ export interface UserUpdateWithoutInterestDataInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileUpdateOneInput>;
+    userFiles?: Optional<FileUpdateManyInput>;
 
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
 
@@ -10471,9 +12030,9 @@ export interface UserUpdateWithoutInterestDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+    connectTo?: Optional<UserUpdateManyInput>;
 
-    connectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+    connectFrom?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -10482,6 +12041,12 @@ export interface UserUpdateWithoutInterestDataInput {
     channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
@@ -10494,11 +12059,17 @@ export interface UserUpdateWithoutLikedArticlesDataInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password?: Optional<String>;
 
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
+
+    bio?: Optional<String>;
 
     gender?: Optional<String>;
 
@@ -10512,13 +12083,23 @@ export interface UserUpdateWithoutLikedArticlesDataInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileUpdateOneInput>;
+    userFiles?: Optional<FileUpdateManyInput>;
 
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
 
@@ -10530,9 +12111,9 @@ export interface UserUpdateWithoutLikedArticlesDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+    connectTo?: Optional<UserUpdateManyInput>;
 
-    connectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+    connectFrom?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -10541,6 +12122,91 @@ export interface UserUpdateWithoutLikedArticlesDataInput {
     channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
 
     myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
+
+    comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateWithoutModeratorsChannelsDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    bio?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newCommunityNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    verified?: Optional<Boolean>;
+
+    userFiles?: Optional<FileUpdateManyInput>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateManyWithoutUsersInput>;
+
+    messages?: Optional<MessageUpdateOneInput>;
+
+    connectTo?: Optional<UserUpdateManyInput>;
+
+    connectFrom?: Optional<UserUpdateManyInput>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
+
+    channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
+
+    myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
 }
@@ -10551,11 +12217,17 @@ export interface UserUpdateWithoutMyChannelsDataInput {
 
     username?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
     password?: Optional<String>;
 
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
+
+    bio?: Optional<String>;
 
     gender?: Optional<String>;
 
@@ -10569,13 +12241,23 @@ export interface UserUpdateWithoutMyChannelsDataInput {
 
     newMessageNot?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
 
-    avatar?: Optional<FileUpdateOneInput>;
+    userFiles?: Optional<FileUpdateManyInput>;
 
     country?: Optional<CountryUpdateOneWithoutUsersInput>;
 
@@ -10587,9 +12269,9 @@ export interface UserUpdateWithoutMyChannelsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<ConnectUpdateManyWithoutToInput>;
+    connectTo?: Optional<UserUpdateManyInput>;
 
-    connectFrom?: Optional<ConnectUpdateManyWithoutFromInput>;
+    connectFrom?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -10597,9 +12279,108 @@ export interface UserUpdateWithoutMyChannelsDataInput {
 
     channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
 
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
+
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateWithoutPendingChannelsDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    bio?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newCommunityNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    verified?: Optional<Boolean>;
+
+    userFiles?: Optional<FileUpdateManyInput>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateManyWithoutUsersInput>;
+
+    messages?: Optional<MessageUpdateOneInput>;
+
+    connectTo?: Optional<UserUpdateManyInput>;
+
+    connectFrom?: Optional<UserUpdateManyInput>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
+
+    channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
+
+    myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
+
+    likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
+
+    comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateWithWhereUniqueNestedInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateDataInput>;
+}
+
+export interface UserUpdateWithWhereUniqueWithoutBlockedChannelsInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateWithoutBlockedChannelsDataInput>;
 }
 
 export interface UserUpdateWithWhereUniqueWithoutChannelsInput {
@@ -10651,6 +12432,20 @@ export interface UserUpdateWithWhereUniqueWithoutLikedArticlesInput {
     data: NonNull<UserUpdateWithoutLikedArticlesDataInput>;
 }
 
+export interface UserUpdateWithWhereUniqueWithoutModeratorsChannelsInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateWithoutModeratorsChannelsDataInput>;
+}
+
+export interface UserUpdateWithWhereUniqueWithoutPendingChannelsInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateWithoutPendingChannelsDataInput>;
+}
+
 export interface UserUpsertNestedInput {
 
     update: NonNull<UserUpdateDataInput>;
@@ -10672,25 +12467,29 @@ export interface UserUpsertWithoutCommentsInput {
     create: NonNull<UserCreateWithoutCommentsInput>;
 }
 
-export interface UserUpsertWithoutConnectFromInput {
-
-    update: NonNull<UserUpdateWithoutConnectFromDataInput>;
-
-    create: NonNull<UserCreateWithoutConnectFromInput>;
-}
-
-export interface UserUpsertWithoutConnectToInput {
-
-    update: NonNull<UserUpdateWithoutConnectToDataInput>;
-
-    create: NonNull<UserCreateWithoutConnectToInput>;
-}
-
 export interface UserUpsertWithoutMyChannelsInput {
 
     update: NonNull<UserUpdateWithoutMyChannelsDataInput>;
 
     create: NonNull<UserCreateWithoutMyChannelsInput>;
+}
+
+export interface UserUpsertWithWhereUniqueNestedInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateDataInput>;
+
+    create: NonNull<UserCreateInput>;
+}
+
+export interface UserUpsertWithWhereUniqueWithoutBlockedChannelsInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateWithoutBlockedChannelsDataInput>;
+
+    create: NonNull<UserCreateWithoutBlockedChannelsInput>;
 }
 
 export interface UserUpsertWithWhereUniqueWithoutChannelsInput {
@@ -10754,6 +12553,24 @@ export interface UserUpsertWithWhereUniqueWithoutLikedArticlesInput {
     update: NonNull<UserUpdateWithoutLikedArticlesDataInput>;
 
     create: NonNull<UserCreateWithoutLikedArticlesInput>;
+}
+
+export interface UserUpsertWithWhereUniqueWithoutModeratorsChannelsInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateWithoutModeratorsChannelsDataInput>;
+
+    create: NonNull<UserCreateWithoutModeratorsChannelsInput>;
+}
+
+export interface UserUpsertWithWhereUniqueWithoutPendingChannelsInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateWithoutPendingChannelsDataInput>;
+
+    create: NonNull<UserCreateWithoutPendingChannelsInput>;
 }
 
 export interface UserWhereInput {
@@ -11043,6 +12860,140 @@ export interface UserWhereInput {
      */
     username_not_ends_with?: Optional<String>;
 
+    avatar?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    avatar_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    avatar_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    avatar_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    avatar_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    avatar_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    avatar_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    avatar_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    avatar_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    avatar_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    avatar_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    avatar_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    avatar_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    avatar_not_ends_with?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    headerImage_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    headerImage_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    headerImage_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    headerImage_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    headerImage_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    headerImage_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    headerImage_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    headerImage_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    headerImage_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    headerImage_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    headerImage_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    headerImage_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    headerImage_not_ends_with?: Optional<String>;
+
     password?: Optional<String>;
 
     /**
@@ -11243,6 +13194,73 @@ export interface UserWhereInput {
      * All values not ending with the given string.
      */
     lastname_not_ends_with?: Optional<String>;
+
+    bio?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    bio_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    bio_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    bio_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    bio_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    bio_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    bio_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    bio_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    bio_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    bio_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    bio_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    bio_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    bio_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    bio_not_ends_with?: Optional<String>;
 
     gender?: Optional<String>;
 
@@ -11466,12 +13484,47 @@ export interface UserWhereInput {
      */
     newMessageNot_not?: Optional<Boolean>;
 
+    newCommunityNot?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    newCommunityNot_not?: Optional<Boolean>;
+
     newProfileNot?: Optional<Boolean>;
 
     /**
      * All values that are not equal to given value.
      */
     newProfileNot_not?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    topWeeklyArticleNot_not?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    mentionMeNot_not?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    enableBrowserPushNot_not?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    enableMobilePushNot_not?: Optional<Boolean>;
 
     completedProfile?: Optional<Int>;
 
@@ -11517,7 +13570,11 @@ export interface UserWhereInput {
      */
     verified_not?: Optional<Boolean>;
 
-    avatar?: Optional<FileWhereInput>;
+    userFiles_every?: Optional<FileWhereInput>;
+
+    userFiles_some?: Optional<FileWhereInput>;
+
+    userFiles_none?: Optional<FileWhereInput>;
 
     country?: Optional<CountryWhereInput>;
 
@@ -11533,17 +13590,17 @@ export interface UserWhereInput {
 
     messages?: Optional<MessageWhereInput>;
 
-    connectTo_every?: Optional<ConnectWhereInput>;
+    connectTo_every?: Optional<UserWhereInput>;
 
-    connectTo_some?: Optional<ConnectWhereInput>;
+    connectTo_some?: Optional<UserWhereInput>;
 
-    connectTo_none?: Optional<ConnectWhereInput>;
+    connectTo_none?: Optional<UserWhereInput>;
 
-    connectFrom_every?: Optional<ConnectWhereInput>;
+    connectFrom_every?: Optional<UserWhereInput>;
 
-    connectFrom_some?: Optional<ConnectWhereInput>;
+    connectFrom_some?: Optional<UserWhereInput>;
 
-    connectFrom_none?: Optional<ConnectWhereInput>;
+    connectFrom_none?: Optional<UserWhereInput>;
 
     articles_every?: Optional<ArticleWhereInput>;
 
@@ -11568,6 +13625,24 @@ export interface UserWhereInput {
     myChannels_some?: Optional<ChannelsWhereInput>;
 
     myChannels_none?: Optional<ChannelsWhereInput>;
+
+    pendingChannels_every?: Optional<ChannelsWhereInput>;
+
+    pendingChannels_some?: Optional<ChannelsWhereInput>;
+
+    pendingChannels_none?: Optional<ChannelsWhereInput>;
+
+    blockedChannels_every?: Optional<ChannelsWhereInput>;
+
+    blockedChannels_some?: Optional<ChannelsWhereInput>;
+
+    blockedChannels_none?: Optional<ChannelsWhereInput>;
+
+    moderatorsChannels_every?: Optional<ChannelsWhereInput>;
+
+    moderatorsChannels_some?: Optional<ChannelsWhereInput>;
+
+    moderatorsChannels_none?: Optional<ChannelsWhereInput>;
 
     likedArticles_every?: Optional<ArticleWhereInput>;
 

@@ -11,10 +11,8 @@ export const USER_FRAGMENT = gql`
     username
     email
     gender
-    avatar{
-      url
-      name
-    }
+    avatar
+    headerImage
     type
     userType
     newConnectNot
@@ -61,9 +59,8 @@ export const ARTICLE_FRAGMENT = gql`
       id
       username
       email
-      avatar{
-        url
-      }
+      avatar
+      headerImage
       firstname
       lastname
       type

@@ -19,9 +19,9 @@ const UserProfileBox = (props: Props) => {
       <Avatar 
         size={60} 
         // tslint:disable-next-line:max-line-length
-        url={props.me.avatar ? props.me.avatar.url : ''} presence={false} />
+        url={props.me ? (props.me.avatar ? props.me.avatar : 'http://ghgh.vh/hjh.png') : ''} presence={false} />
 
-        <p className="uk-text-bold" style={{fontSize: 16}}>{props.me.firstname} {props.me.lastname}</p>
+        <p className="uk-text-bold" style={{fontSize: 16}}>{props.me ? props.me.firstname : ''} {props.me ? props.me.lastname : ''}</p>
         <p style={{fontSize: 12}}>Founder at Gueva Technologies. Geek, programmer, interest in AI and Machine Learning, Big Data, love basketball.</p>
         
         <div className="ui small two buttons">

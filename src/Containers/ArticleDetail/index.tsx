@@ -91,7 +91,7 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
                     <div className="uk-grid-small uk-flex uk-width-4-5" uk-grid={true}>
                         <div className="uk-width-auto">
                             <Avatar 
-                              url={author.avatar ? author.avatar.url : 'https://getuikit.com/docs/images/avatar.jpg'} 
+                              url={author.avatar ? author.avatar : 'https://getuikit.com/docs/images/avatar.jpg'} 
                               size={50}
                               presence={false} />
                         </div>

@@ -5,8 +5,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { ApolloClient } from 'apollo-client';
 // import { setContext } from 'apollo-link-context';
 // import QueueLink from 'apollo-link-queue';
-// import { InMemoryCache } from 'apollo-cache-inmemory';
-import { Hermes } from 'apollo-cache-hermes';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+// import { Hermes } from 'apollo-cache-hermes';
 import { ApolloProvider } from 'react-apollo';
 import registerServiceWorker from './registerServiceWorker';
 import { ApolloLink } from 'apollo-link';
@@ -96,7 +96,7 @@ const link = split(
 export const client = new ApolloClient({
   ssrForceFetchDelay: 100,
   link: ApolloLink.from(links),
-  cache: new Hermes().restore(window.__APOLLO_STATE__),
+  cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
   connectToDevTools: true,
 });
 
@@ -128,11 +128,11 @@ const container = document.getElementById('root') as HTMLElement;
 
 const app = (
   <AsyncComponentProvider rehydrateState={asyncComponentsRehydrateState}>
-  <ApolloProvider client={client}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-  </ApolloProvider>
+    <ApolloProvider client={client}>
+        <BrowserRouter>
+          <App maintenanceMode={true} />
+        </BrowserRouter>
+    </ApolloProvider>
   </AsyncComponentProvider>
 );
 

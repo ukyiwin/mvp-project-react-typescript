@@ -38,7 +38,7 @@ class ArticleItem extends React.Component<Props> {
                         <div className="uk-grid-small uk-flex" uk-grid={true}>
                             <div className="uk-width-auto">
                                 <Avatar
-                                  url={author.avatar ? author.avatar.url : 'https://getuikit.com/docs/images/avatar.jpg'} 
+                                  url={author.avatar ? author.avatar : 'https://getuikit.com/docs/images/avatar.jpg'} 
                                   size={40}
                                   presence={false}
                                 />

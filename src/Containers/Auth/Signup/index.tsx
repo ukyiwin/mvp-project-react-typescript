@@ -98,12 +98,13 @@ class Signup extends React.Component<RouteComponentProps<any> & Props & ChildPro
             .then((result) => {
                 const token = result.data.signup.token;
                 cookies.set(AUTH_TOKEN, token);
-                cookies.set(CURRENT_USER, result.data.login.user);
+                cookies.set(CURRENT_USER, result.data.signup.user);
                 this.props.refreshToken(token);
                 this.setState({ loading: false });
                 this.props.history.replace('/add/profile');
             })
             .catch((err) => {
+                console.log(err);
                 this.setState({ loading: false });
                 UIkit.notification(`${err.message}`, { status: 'danger', pos: 'top-right' });
             });

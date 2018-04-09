@@ -1,8 +1,26 @@
 import * as React from 'react';
 // import UIkit from 'uikit/src/js/uikit';
-import { Link } from 'react-router-dom';
 import { User } from 'CustomTypings/schema';
 import SearchContainer from 'Components/SearchContainer';
+import { Button, IconButton } from 'Components/Buttons';
+import Link from 'Components/Link';
+import Icon from 'Components/Icons';
+import {
+  NavContainer,
+  Tabs,
+  LogoTab,
+  MenuTab,
+  PricingTab,
+  SupportTab,
+  AuthTab,
+  LogoLink,
+  AuthLink,
+  PricingLink,
+  SupportLink,
+  ExploreLink,
+  MenuContainer,
+  MenuOverlay,
+} from 'Containers/Style';
 import './style.scss';
 
 // import * as Logo from 'Assets/main/unizonn.png';
@@ -13,31 +31,20 @@ interface Props {
   avatar?: string;
   // tslint:disable-next-line:no-any
   logout: any;
+  location?: any;
 }
 
 // tslint:disable-next-line:max-line-length
 const PublicHeader = (props: Props) => {
-
     return (
-      <div
-        data-uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky mdc-toolbar mdc-toolbar--fixed"
-        style={{marginBottom: 0}}
-      >
+      <div className="uk-position-top">
         <nav 
-          className="uk-navbar-container uk-margin uk-background-secondary raised mdc-toolbar mdc-toolbar--fixed uk-dark" 
+          className="uk-navbar-container uk-navbar-transparent uk-margin uk-dark" 
           // tslint:disable-next-line:jsx-boolean-value
           uk-navbar
           style={{marginBottom: 0}}
         >
           <div className="nav-overlay uk-navbar-left">
-            <button
-              className="uk-navbar-toggle nav-overlay uk-hidden@m"
-              type="button" 
-              // tslint:disable-next-line:jsx-boolean-value
-              uk-navbar-toggle-icon
-              uk-toggle="target: #offcanvas-nav"
-              uk-icon="icon: menu; ratio: 1.5"
-            />
             <Link to="/" className="uk-navbar-item uk-logo uk-visible@m" href="#">
               <img 
                 src={require('../../../../Assets/unizonn/uniz_.svg')} 
@@ -55,10 +62,37 @@ const PublicHeader = (props: Props) => {
               />
             </Link>
             <div className="nav-overlay uk-navbar-right uk-visible@s">
+              <Tabs>
+                <PricingTab
+                  dark={true}
+                  selected={props.location === 'blog'}
+                  to="/blog"
+                >
+                  Blog
+                </PricingTab>
+                <SupportTab
+                  dark={true}
+                  selected={props.location === 'support'}
+                  to="/support"
+                >
+                  Support
+                </SupportTab>
+              </Tabs>
               <div className="uk-navbar-nav uk-padding-small">
-                <Link to="/login" className="uk-button uk-button-primary uk-dark uk-button-small">
-                Get started
-                </Link>
+                <AuthTab dark={true}>
+                  <Link to="/login">
+                    <Button
+                      className="uk-button"
+                      style={{
+                        fontWeight: '700',
+                        fontSize: '16px',
+                        letterSpacing: '0.5px',
+                      }}
+                    >
+                      Get started
+                    </Button>
+                  </Link>
+                </AuthTab>
               </div>
             </div>
             <div className="nav-overlay uk-navbar-right uk-hidden@s">

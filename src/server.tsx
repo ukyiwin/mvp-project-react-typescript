@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as React from 'react';
-import { renderToString } from 'react-dom/server';
+import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
@@ -15,6 +15,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import fetch from 'node-fetch';
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 import 'isomorphic-unfetch';
 import App from './Containers/App';
 // import { createPersistedQueryLink } from 'apollo-link-persisted-queries';
@@ -81,8 +82,9 @@ server
     
     const context = {} as any;
     const modules = [] as any;
+    const sheet = new ServerStyleSheet();
     const asyncContext = createAsyncContext();
-    const markup = (
+    const markup = sheet.collectStyles(
       // tslint:disable-next-line:no-unused-expression
       <AsyncComponentProvider asyncContext={asyncContext} >
         <ApolloProvider client={client}>
@@ -93,13 +95,15 @@ server
       </AsyncComponentProvider>
     );
 
+    const styleTags = sheet.getStyleTags();
+
     asyncBootstrapper(markup).then(() => {
 
       const asyncState = asyncContext.getState();
       renderToStringWithData(markup).then((content) => {
         res.status(200);
-        const html = <Html assets={assets} markup={markup} client={client} asyncState={asyncState} />;
-        res.send(`<!doctype html>\n${renderToString(html)}`);
+        const html = <Html assets={assets} markup={markup} client={client} asyncState={asyncState} styleTags={styleTags}/>;
+        res.send(`<!doctype html>\n${renderToStaticMarkup(html)}`);
         res.end();
       })
       .catch((e) => {
@@ -111,12 +115,12 @@ server
           }`
         );*/
         res.status(200);
-        const html = <Html assets={assets} markup={markup} client={client} asyncState={asyncState} />;
-        res.send(`<!doctype html>\n${renderToString(html)}`);
+        const html = <Html assets={assets} markup={markup} client={client} asyncState={asyncState} styleTags={styleTags} />;
+        // html.prepend(styleTags);
+        res.send(`<!doctype html>\n${renderToStaticMarkup(html)}`);
         res.end();
       });
     });
-    
   })
   .use(bodyParser.json());
 

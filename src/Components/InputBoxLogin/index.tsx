@@ -4,6 +4,7 @@ import { compose, graphql, withApollo } from 'react-apollo';
 import { ChildProps } from 'react-apollo/types';
 import { USER_EXIST } from 'Graphql/Query';
 import * as jquery from 'jquery';
+import MobileStoreButton from 'react-mobile-store-button';
 
 // import { Link } from 'react-router-dom';
 
@@ -97,7 +98,7 @@ class InputBoxLogin extends React.Component<RouteComponentProps<any> & Props & C
                 </form>
               </div>
           </div>
-          <div className="uk-visible@s">
+          <div className="uk-visible@s" style={{paddingTop: 20}}>
               <h1 className="uk-heading-primary uk-text-bold uk-text-uppercase" style={{fontSize: '8vw', color: '#fff'}}>unizonn</h1>
               <p className=" uk-margin uk-text-bold" style={{fontSize: '1.3vw', color: '#fff'}}>
                 Friendly and inclusive community for students and academia
@@ -121,10 +122,18 @@ class InputBoxLogin extends React.Component<RouteComponentProps<any> & Props & C
                     {loading ? (
                         <div data-uk-spinner="ratio: 1" className="ui center middle" style={{ marginLeft: 15, color: 'green' }} />
                     ) : (
-                        <button className="ui label positive button" type="submit">
+                        <button className="ui label positive button" style={{fontSize: 13}} type="submit">
                           GET STARTED
                         </button>
                     )}
+                  </div>
+                  <div className="uk-flex uk-flex-around uk-margin input fluid">
+                    <MobileStoreButton
+                      store="android"
+                    />
+                    <MobileStoreButton
+                      store="ios"
+                    />
                   </div>
                 </form>
               </div>

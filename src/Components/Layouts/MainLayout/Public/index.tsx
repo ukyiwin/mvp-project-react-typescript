@@ -28,10 +28,10 @@ const PublicLayout: React.SFC<RouteComponentProps<any> & DefaultProps> = (props)
             exact={exact !== null ? exact : true}
             render={(matchProps) =>
                 isAuthenticated !== true ? (
-                    <React.Fragment>
+                    <div className="uk-position-relative">
                       <PublicHeader me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
                       <Component {...matchProps} refreshToken={refreshToken} />
-                    </React.Fragment>
+                    </div>
                 ) : (
                     <Redirect to={{ pathname: '/home' }} />
                 )

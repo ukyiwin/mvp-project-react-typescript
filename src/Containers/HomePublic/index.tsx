@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import InputBoxLogin from 'Components/InputBoxLogin';
-// import * as Jquery from 'jquery';
-
+import { Parallax } from 'react-scroll-parallax';
+import * as Jquery from 'jquery';
+import { CommunitySearch, Yours } from 'Components/SearchBoxHome';
 import './style.scss';
 import { FooterPublic } from 'Components/Layouts/FooterPublic';
 
@@ -43,33 +44,84 @@ class HomePublic extends React.Component<Props> {
         // const { classes } = this.props;
         return (
             <div 
-              className="uk-width-1-1 ui"
+              className="uk-width-1-1"
+              style={{backgroundColor: '#ffffff'}}
             >
                 <Helmet>
                     <title>Unizonn | Home</title>
                     <meta name="an inclusive community" content="Unizonn community" />
                 </Helmet>
                 <div
-                  id="bg1"
-                  className="uk-section backgroundOne uk-width-1-1 uk-height-1-1 uk-light uk-background-cover"
-                  style={{ height: '91vh' }}
+                    id="bg1"
+                    className="uk-section backgroundTwo uk-width-1-1 uk-height-1-1 uk-light uk-background-cover"
+                    style={{ minHeight: '100vh' }}
                 >
-                   <div className="uk-container">
-                    <div className="uk-grid-match uk-flex uk-width-1-1" uk-grid>
-                      <div className="uk-padding uk-width-1-2@m uk-width-1-1@s">
+                    <div className="uk-container">
+                      <div className="uk-grid-match uk-flex uk-width-1-1" uk-grid>
+                        <div className="uk-padding uk-width-1-2@m uk-width-1-1@s">
                           <InputBoxLogin />
+                        </div>
+                        <div className="uk-width-1-2@m uk-visible@s">
+                          <div className="uk-visible@s phoneImg" />
+                        </div>
                       </div>
-                      <div className="uk-padding uk-width-1-2@m uk-visible@s">
-                          .
+                    </div>
+                </div>
+                <div
+                  className="uk-section uk-width-1-1 uk-height-1-1 uk-light uk-background-cover"
+                >
+                  <div className="uk-container">
+                    <div className="uk-child-width-1-3@s uk-grid-match" data-uk-grid>
+                      <div>
+                          <div className="uk-card uk-card-default uk-text-center uk-card-hover uk-card-body">
+                            <span data-uk-icon="icon: hashtag; ratio: 5" />
+                            <h3 className="uk-card-title">Default</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                          </div>
+                      </div>
+                      <div>
+                        <div className="uk-card uk-card-default uk-text-center uk-card-hover uk-card-body">
+                            <span data-uk-icon="icon: world; ratio: 5" />
+                            <h3 className="uk-card-title  uk-padding-top-small">Collaborate without limit</h3>
+                            <p>Connect with students and academia around the world and your university.
+                              collaborate easily and effectively share ideas and grow your network.
+                            </p>
+                        </div>
+                      </div>
+                      <div>
+                          <div className="uk-card uk-card-default uk-text-center uk-card-hover uk-card-body">
+                            <span data-uk-icon="icon: rss; ratio: 5" />
+                            <h3 className="uk-card-title uk-padding-top-small">Refined Articles</h3>
+                            <p>Join unizonn to read and get exciting articles around your field of study, learn from other
+                              students and academic heads at large or you can just write yours.</p>
+                          </div>
                       </div>
                     </div>
                   </div>
-                  <div className="uk-position-bottom uk-visible@s">
-                  <FooterPublic />
+                  
+                </div>
+                <CommunitySearch/>
+                <div
+                  className="uk-section uk-width-1-1 uk-light uk-background-cover"
+                >
+                  <div className="uk-container">
+                    <div>
+                      <div className="uk-card uk-card-small uk-text-center">
+                        <iframe 
+                          width="595" 
+                          height="350"
+                          className="video"
+                          src="https://www.youtube.com/embed/a_ONcLi8tfY" 
+                          frameborder="0" allow="autoplay; encrypted-media" 
+                          allowfullscreen 
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
+                <Yours />
+                <FooterPublic />
             </div>
-            
         );
     }
 }

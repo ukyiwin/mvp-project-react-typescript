@@ -86,19 +86,19 @@ class InterestPage extends React.Component<RouteComponentProps<any> & Props, Sta
                 <StackGrid columnWidth={200}>
                     {this.props.interests.allInterest.map((data, i) => (
                         <InterestItem
-                            key={i}
-                            name={data.name}
-                            id={data.id}
-                            url={data.avatar}
-                            checked={this.state.selected.indexOf(data.id) === -1 ? false : true}
-                            onClickAdd={this.onSelectAdd}
+                          key={i}
+                          name={data.name}
+                          id={data.id}
+                          url={data.avatar}
+                          checked={this.state.selected.indexOf(data.id) === -1 ? false : true}
+                          onClickAdd={this.onSelectAdd}
                         />
                     ))}
                 </StackGrid>
                 <div className="uk-padding-small" style={{ position: 'fixed', bottom: 0, right: 40 }}>
                     <button
                         className="uk-button uk-button-primary"
-                        disabled={this.state.selected.length > 1 ? false : true}
+                        disabled={this.state.selected.length > 5 ? false : true}
                         onClick={() => this.save()}
                     >
                         SAVE INTEREST

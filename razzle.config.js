@@ -14,11 +14,12 @@ module.exports = {
   modify(baseConfig, { target, dev }, webpack) {
     const config = razzleHeroku(baseConfig, {target, dev}, webpack);
     
-    config.resolve.modules = ['src', 'node_modules', 'src/Components', 'src/Graphql', 'src/Containers'];
+    config.resolve.modules = ['src', 'shared', 'node_modules', 'src/Components', 'src/Graphql', 'src/Containers'];
     config.resolve.alias.Components = path.resolve('./src/Components');
     config.resolve.alias.Graphql = path.resolve('./src/Graphql');
     config.resolve.alias.Containers = path.resolve('./src/Containers');
     config.resolve.alias.Assets = path.resolve('./src/Assets');
+    config.resolve.alias.Assets = path.resolve('./shared');
     config.resolve.alias.Utils = path.resolve('./src/Utils');
     config.resolve.alias.jquery = path.resolve('node_modules/jquery/src/jquery');
     config.resolve.alias['@material'] = path.resolve('./node_modules/@material');
@@ -188,11 +189,6 @@ module.exports = {
         use: ["style-loader", cssLoader, postCSSLoader, sassLoader]
       });
 
-      config.module.rules.push({
-        test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
-      });
-
       config.plugins.push(
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new webpack.IgnorePlugin(/moment/, /react-kronos/),
@@ -220,11 +216,6 @@ module.exports = {
             fallback: "style-loader",
             use: [cssLoader, postCSSLoader, sassLoader]
           })
-        });
-
-        config.module.rules.push({
-          test: /\.css$/,
-          use: [ 'style-loader', 'css-loader' ]
         });
 
         config.plugins.push(
