@@ -84,16 +84,14 @@ export const ME = gql`
   query me {
     me{
       ...userFragment
-      connectTo(where: {status: 2}){
+      connectTo{
         id
       }
-      connectFrom(where: {status: 2}){
+      connectFrom{
         id
       }
-      avatar{
-        url
-        name
-      }
+      avatar
+      headerImage
       articles{
         id
         title
@@ -111,16 +109,14 @@ export const GET_USER_BY_USERNAME = gql`
   query getUserByUsername($username: String!) {
     getUserByUsername(username: $username) {
       ...userFragment
-      connectTo(where: {status: 2}){
+      connectTo{
         id
       }
-      connectFrom(where: {status: 2}){
+      connectFrom{
         id
       }
-      avatar{
-        url
-        name
-      }
+      avatar
+      headerImage
       articles{
         id
         title

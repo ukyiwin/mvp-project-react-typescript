@@ -2,12 +2,11 @@
 import * as React from 'react';
 import serialize from 'serialize-javascript';
 import Helmet from 'react-helmet';
-
 const helmet = Helmet.renderStatic();
 // const htmlAttrs = helmet.htmlAttributes.toComponent();
 // const bodyAttrs = helmet.bodyAttributes.toComponent();
 
-const Html = ({ assets, markup, client: { cache }, asyncState }) => (
+const Html = ({ assets, markup, client: { cache }, asyncState, styleTags }) => (
   <html lang="en">
     <head>
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -59,8 +58,6 @@ const Html = ({ assets, markup, client: { cache }, asyncState }) => (
           ? <script src={assets.client.js} defer />
           : <script src={assets.client.js} defer crossOrigin="anonymous" />
       }
-
-      
     </head>
     <body>
       <div id="root">{markup}</div>

@@ -1,10 +1,9 @@
 import * as React from 'react';
-// import 'medium-draft/lib/index.css';
-
 import {
   Editor,
   createEditorState,
 } from 'medium-draft';
+import 'medium-draft/lib/index.css';
 
 export default class UnizonnEditor extends React.Component {
   
@@ -34,6 +33,7 @@ export default class UnizonnEditor extends React.Component {
         ref={(ref) => this.editor = ref}
         editorState={editorState}
         onChange={this.onChange} 
+        className={'threadComposer'}
       />
     );
   }

@@ -43,7 +43,7 @@ export default class PopoverLink extends React.Component<Props> {
                   <div className="uk-background-primary uk-width-1-1 uk-position-top" style={{height: 80}} />
                   <Avatar 
                     size={60} 
-                    url={user.avatar ? user.avatar.url : ''} presence={false}
+                    url={user.avatar ? user.avatar : ''} presence={false}
                   />
                   <p className="uk-text-bold" style={{fontSize: 16, paddingBottom: 1, marginBottom: 1}}>{user.firstname} {user.lastname}</p>
                   <p className="" style={{fontSize: 12}}>@{user.username}</p>

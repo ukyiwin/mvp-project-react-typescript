@@ -1,26 +1,46 @@
 import * as React from 'react';
 import glamorous from 'glamorous';
+import { LinkBlock, LinkBlockA, Footer, Flexer } from 'Containers/Style';
+import { FlexRow } from 'Components/Globals';
+import Link from 'Components/Link';
+import Icon from 'Components/Icons';
 
-// var winWidth = $(window).width();
-// var winHeight = $(window).height();
+const FooterPublic = () => {
+  return (
+    <Footer>
+      <FlexRow>
+        <Link to="/">
+          <Icon glyph="logo" size={32} />
+        </Link>
+      </FlexRow>
+      <Flexer>
+        <LinkBlock to="/about">
+          <div>About</div>
+        </LinkBlock>
+        <LinkBlock to="/job">
+          <div>Job</div>
+        </LinkBlock>
+        <LinkBlock to="/privacy">
+          <div>Privacy</div>
+        </LinkBlock>
+        <LinkBlock to="/terms">
+          <div>Terms</div>
+        </LinkBlock>
+      </Flexer>
+    </Footer>
+  );
+};
 
-/*const videoOpts = {
-  height: winHeight,
-  width: winWidth,
-  playerVars: { // https://developers.google.com/youtube/player_parameters
-    autoplay: 1
-  }
-};*/
-
+/*
 const A = glamorous.a({
     color: '#fff',
 });
 
 const FooterPublic = () => {
     return (
+      <div className="backgroundFour" style={{minHeight: 400}}>
       <div
-        className="uk-flex uk-width-1-1 uk-flex-between uk-padding-small"
-        style={{backgroundColor: '#21212199'}}
+        className="uk-flex uk-width-1-1 uk-flex-between uk-position-bottom uk-padding-small background-four"
       >
         <div className="uk-width-1-3@m uk-width-1-1@s" style={{color: '#fff', fontWeight: 'bold', fontSize: '1vw'}}>
           Copyright @2017 Unizonn, All Rights Reserved
@@ -38,36 +58,8 @@ const FooterPublic = () => {
           </div>
         </div>
       </div>
+      </div>
     );
 };
-
+*/
 export { FooterPublic };
-
-/*
-<div className="uk-section uk-light" style={{ backgroundColor: '#333333' }}>
-                <div className="uk-container" id="footerText">
-                    <h3 style={{ marginBottom: 10 }}>Unizonn</h3>
-                    <div className="uk-column-1-2@m uk-column-1-1@s">
-                        <div>
-                            <ul>
-                                <li>
-                                    <A href="#">Articles</A>
-                                </li>
-                                <li>
-                                    <A href="#">Forum</A>
-                                </li>
-                                <li>
-                                    <A href="#">Library</A>
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <p>Join Unizonn now and reach out to new possibilies</p>
-                        </div>
-                        <div>
-                            <button className="uk-button uk-button-primary">Get started</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            */

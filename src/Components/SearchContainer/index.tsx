@@ -1,73 +1,70 @@
-// tslint:disable
 import * as React from 'react';
-import _ from 'lodash';
-import SearchBar from 'Components/SearchBar';
+import styled from 'styled-components';
+import Link from 'Components/Link';
+import Icon from 'Components/Icons';
+import {
+  Shadow,
+  Gradient,
+  FlexCol,
+  Transition,
+  HorizontalRule,
+} from 'Components/Globals';
+import Search from 'Components/Search';
+import Section from 'Components/ThemedSection';
+import { Conversation, Discover } from 'Components/Illustrations';
+import {
+  Tagline,
+  Copy,
+  Bullets,
+  Bullet,
+  BulletHeading,
+  BulletTitle,
+  BulletCopy,
+  Flexer,
+  PrimaryCTA,
+  SecondaryCTA,
+  Content,
+} from 'Containers/Style';
+import Avatar from 'Components/Avatar';
 
-export default class SearchContainer extends React.Component {
+type Props = object;
 
-  state = {
-    isLoading: false,
-    results: [],
-    value: '',
-    showDropdown: false,
-    posts: [],
-    users: [],
-    tags: []
-  }
+export const HeaderSearch = (props: Props) => {
+  const ThisContent = styled(Content)`
+    flex-direction: column;
+    width: 640px;
+    align-content: center;
+    align-self: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding: 16px;
 
-  componentWillMount() {
-    this.resetComponent();
-  }
-
-  resetComponent = () =>
-    this.setState({ isLoading: false, results: [], value: '' });
-
-  handleResultSelect = (e, { result }) =>
-    this.setState({ value: result.title });
-
-  handleSearchChange = (e, { value }) => {
-    this.setState({ isLoading: true, value });
-
-    setTimeout(() => {
-      if (this.state.value.length < 1) return this.resetComponent();
-
-      const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
-      const isMatch = result => re.test(result.title);
-
-      this.setState({
-        isLoading: false,
-        results: 'klk'
-      });
-    }, 300);
-  };
-
-  render () {
-    const { isLoading, value, results } = this.state;
-    return (
-      <SearchBar
-        loading={isLoading}
-        onResultSelect={this.handleResultSelect}
-        onSearchChange={() => _.debounce(this.handleSearchChange, 500, {
-          leading: true
-        })}
-        results={results}
-        noResultsDescription={"Course not available"}
-        value={value}
-        className="uk-width-1-1"
-        {...this.props}
-      />
-    );
-  }
-
-  renderSearchResults() {
-    if (!this.state.showDropdown ||
-       (this.state.posts.length === 0 && this.state.users.length === 0 
-        && this.state.tags.length === 0)) {
-      return;
+    @media (max-width: 640px) {
+      margin-top: 80px;
+      margin-bottom: 0;
+      width: 100%;
     }
+  `;
 
-    return (
-      null
-    );
-  }
-}
+  const ThisTagline = styled(Tagline)`
+    margin-bottom: 16px;
+  `;
+
+  const ThisCopy = styled(Copy)`
+    font-size: 18px;
+    margin-bottom: 32px;
+    font-weight: 500;
+    text-align: center;
+    max-width: 640px;
+
+    @media (max-width: 768px) {
+      text-align: left;
+    }
+  `;
+
+  return (
+    <Search />
+  );
+};
+
+export default HeaderSearch;

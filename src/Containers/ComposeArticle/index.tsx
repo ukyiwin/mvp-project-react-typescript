@@ -6,6 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { compose, graphql, withApollo } from 'react-apollo';
 // import { Helmet } from 'react-helmet';
 import AvatarImageCropper from 'react-avatar-image-cropper';
+import Textarea from 'react-textarea-autosize';
 import { ChildProps } from 'react-apollo/types';
 import { Interest, Article } from 'CustomTypings/schema';
 import { Editor, createEditorState } from 'medium-draft';
@@ -14,13 +15,24 @@ import mediumDraftImporter from 'medium-draft/lib/importer';
 import { convertToRaw } from 'draft-js';
 import mediumDraftExporter from 'medium-draft/lib/exporter';
 import axios from 'axios';
-
-// import 'react-select-plus/dist/react-select-plus.css';
-// import 'medium-draft/lib/index.css';
-import './style.scss';
 import { CREATE_ARTICLE } from 'Graphql/Mutation';
 import { urltoFile, b64toBlob } from 'Utils/helper';
+import {
+  Container,
+  ThreadDescription,
+  ThreadTitle,
+  ThreadInputs,
+  Actions,
+  Dropdowns,
+  RequiredSelector,
+  DisabledWarning,
+} from './style';
 
+import 'react-select-plus/dist/react-select-plus.css';
+import 'medium-draft/lib/index.css';
+import './style.scss';
+import { Button, TextButton } from 'Components/Buttons';
+import { FlexRow } from 'Components/Globals';
 interface Props {
   // tslint:disable-next-line:no-any
   allInterest: any;
@@ -42,7 +54,8 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
   state = {
     title: '',
     body: null,
-    category: [],
+    interest: '',
+    category: '',
     removeSelected: true,
     value: [],
     tags: [],
@@ -198,9 +211,13 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
     this.setState({title: e.target.value});
   }
 
+  setCategory= (e) => {
+    this.setState({interest: e.target.value});
+  }
+
   save = () => {
-    const { editorState, title, category, tags, article, photoId  } = this.state;
-    if (editorState !== null || title.length > 0 || category.length > 0 || tags.length > 0) {
+    const { editorState, title, category, tags, article, photoId, interest  } = this.state;
+    if (title !== '' || category !== '' || tags.length > 0 || interest !== '') {
       const id = article.id;
       const edi = this.state.editorState;
       const renderedHTML = mediumDraftExporter(edi.getCurrentContent());
@@ -224,7 +241,7 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
     
   }
   render() {
-    const {value, category, title, editorState} = this.state;
+    const {value, category, title, editorState, interest} = this.state;
     console.log(title);
 
     return (
@@ -241,30 +258,54 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
             backgroundColor: '#454d5d',
             padding: 4
           }}>
-            <div className="uk-flex-around">
+            <FlexRow>
               <button
-                className="uk-button uk-button-small uk-button-secondary"
-                type="button"
-                onClick={() => this.props.history.goBack()}>
+                onClick={() => this.props.history.goBack()}
+                className="uk-button uk-light uk-button-small uk-margin-left uk-button-secondary"
+                type="button">
                 Back
               </button>
-            </div>
-            <div className="uk-flex-around">
+            </FlexRow>
+            <div className="uk-flex uk-flex-around">
+              <Dropdowns
+                style={{backgroundColor: 'transparent'}}
+              >
+                <span>Category:</span>
+                {this.props.allInterest.loading ? (
+                  <div />
+                ) : (
+                  <RequiredSelector
+                    data-cy="composer-community-selector"
+                    style={{minWidth: 180}}
+                    onChange={this.setCategory}
+                  >
+                    {this.props.allInterest.allInterest.map((interest) => {
+                      return (
+                        <option key={interest.id} value={interest.id}>
+                          {interest.name}
+                        </option>
+                      );
+                    })}
+                  </RequiredSelector>
+                )}
+              </Dropdowns>
+              <FlexRow>
               <button
-                className="uk-button uk-light uk-button-small uk-button-default uk-width-1-2"
+                className="uk-button uk-light uk-button-small uk-margin-left uk-button-default"
                 type="button">
                 Drafts
               </button>
               <button
-                className="uk-button uk-button-small uk-button-primary uk-width-1-2"
+                className="uk-button uk-button-small uk-margin-left uk-button-primary"
                 type="button">
                 Publish
               </button>
+              </FlexRow>
             </div>
           </div>
-          <ul uk-accordion="multiple: true">
-            <li className="uk-open">
-                <a className="uk-accordion-title" href="#">Image</a>
+          <ul uk-accordion="multiple: false">
+            <li className="">
+                <a className="uk-accordion-title" href="#">Add header image</a>
                 <div className="uk-accordion-content">
                   <div
                     className="uk-width-1-1 uk-inline"
@@ -286,49 +327,32 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
           <div
             className="uk-width-1-1 uk-padding-large mdc-card mdc-elevation--z5 uk-padding-remove-vertical">
             <div
-              className="uk-width-1-1 uk-padding-large uk-margin-top uk-padding-remove-vertical">
-              <div
-                className="uk-width-1-1 uk-padding-large uk-margin-top uk-padding-remove-vertical">
-                {!this.props.allInterest.loading
-                  ? (<Select
-                    name="form-field-name"
-                    value={value}
-                    onChange={this.handleChange}
-                    placeholder="Add categories or interest"
-                    multi={true}
-                    closeOnSelect={true}
-                    style={{
-                    borderWidth: 0
-                  }}
-                    removeSelected={this.state.removeSelected}
-                    simpleValue={false}
-                    options={category}/>)
-                  : null}
-              </div>
-            </div>
-            <div
               className="uk-width-1-1 uk-padding-large uk-padding-remove-vertical uk-margin-top">
               <div className="uk-width-1-1 uk-padding-large uk-padding-remove-vertical">
-                <textarea
-                  rows={2}
-                  className="uk-article-title uk-width-1-1"
-                  style={{ borderWidth: 0, fontWeight: 'bolder' }}
-                  placeholder="Title of article"
-                  value={title}
+                <Textarea
+                  data-cy="composer-title-input"
                   onChange={this.onChangetitle}
+                  style={ThreadTitle}
+                  value={title}
+                  placeholder={'Title of article'}
+                  // tslint:disable-next-line:jsx-no-string-ref
+                  ref={'titleTextarea'}
+                  autoFocus={true}
                 />
               </div>
             </div>
             <div
               className="uk-width-1-1 uk-padding-large uk-padding-remove-vertical"
               style={{
-              minHeight: '40vh'
+              minHeight: '80vh'
             }}>
               <div className="uk-width-1-1 uk-padding-large uk-padding-remove-vertical">
                 <Editor
                   ref={(ref) => this.editor = ref}
                   editorState={editorState}
-                  onChange={this.onChangeBody} 
+                  onChange={this.onChangeBody}
+                  placeholder="Write article content"
+                  className={'threadComposer'}
                 />
               </div>
             </div>
