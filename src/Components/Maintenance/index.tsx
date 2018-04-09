@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FlexCol } from 'Components/Globals';
-import { Tagline, Copy } from 'Containers/Style';
+import { Tagline, Copy } from 'Containers/style';
 import ViewSegment from 'Components/ThemedSection';
 
 const Emoji = styled.div`

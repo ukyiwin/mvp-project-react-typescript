@@ -20,7 +20,7 @@ import {
   ExploreLink,
   MenuContainer,
   MenuOverlay,
-} from 'Containers/Style';
+} from 'Containers/style';
 import './style.scss';
 
 // import * as Logo from 'Assets/main/unizonn.png';

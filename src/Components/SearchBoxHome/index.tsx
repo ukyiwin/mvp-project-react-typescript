@@ -24,7 +24,7 @@ import {
   PrimaryCTA,
   SecondaryCTA,
   Content,
-} from 'Containers/Style';
+} from 'Containers/style';
 import Avatar from 'Components/Avatar';
 
 type Props = object;
