@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f73e980b5aa669059575"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "a5649a41b6f55ccc99df"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -20446,13 +20446,13 @@ const Text = __WEBPACK_IMPORTED_MODULE_1_styled_components___default()(__WEBPACK
   }
 `;
 const MaintenanceDowntime = () => {
-    const timeInUTC = 'Aprill 10, 2018 08:00:00 UTC';
+    const timeInUTC = 'Aprill 10, 2018 08:00:00 GMT+1';
     return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_Components_ThemedSection__["a" /* default */], { background: "constellations", style: { height: '100vh' } },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Wrapper, null,
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Emoji, null, "\uD83D\uDEE0"),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_Containers_Style__["l" /* Tagline */], null, "Unizonn is currently undergoing maintenance"),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Text, null,
-                "We'll be back by 8am GMT+1 (",
+                "We'll be back by 8AM GMT+1 (",
                 new Date(timeInUTC)
                     .toLocaleTimeString()
                     .replace(/:\d\d:\d\d\s/, '')

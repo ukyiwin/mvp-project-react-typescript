@@ -34,14 +34,14 @@ const Text = styled(Copy)`
 `;
 
 const MaintenanceDowntime = () => {
-  const timeInUTC = 'Aprill 10, 2018 08:00:00 UTC';
+  const timeInUTC = 'Aprill 10, 2018 08:00:00 GMT+1';
   return (
     <ViewSegment background="constellations" style={{height: '100vh'}}>
       <Wrapper>
         <Emoji>🛠</Emoji>
         <Tagline>Unizonn is currently undergoing maintenance</Tagline>
         <Text>
-          We'll be back by 8am GMT+1 ({new Date(timeInUTC)
+          We'll be back by 8AM GMT+1 ({new Date(timeInUTC)
             .toLocaleTimeString()
             .replace(/:\d\d:\d\d\s/, '')
             .toLowerCase()}{' '}
