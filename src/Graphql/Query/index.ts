@@ -252,3 +252,21 @@ export const GET_COMMENTS = gql`
     
   }
 `;
+
+export const ACTIVITY = gql`
+  query activity($username: String!) {
+    activity(username: $username){
+      ...articleFragment
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+export const GET_ARTICLES_BY_USERNAME = gql`
+  query getArticlesByUsername($username: String!) {
+    getArticlesByUsername(username: $username){
+      ...articleFragment
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;

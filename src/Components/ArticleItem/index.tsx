@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Article } from '../../CustomTypings/schema';
-import Avatar from '../Avatar';
+import Avatar from '../Avatar/avatar';
 import { Link } from 'react-router-dom';
 import Likebutton from '../LikeButton';
 import PopoverLink from '../PopoverLink';
@@ -38,9 +38,18 @@ class ArticleItem extends React.Component<Props> {
                         <div className="uk-grid-small uk-flex" uk-grid={true}>
                             <div className="uk-width-auto">
                                 <Avatar
-                                  url={author.avatar ? author.avatar : 'https://getuikit.com/docs/images/avatar.jpg'} 
+                                  user={author}
                                   size={40}
-                                  presence={false}
+                                  radius={64}
+                                  onlineSize={'large'}
+                                  isOnline={false}
+                                  src={`${author.avatar ? author.avatar : ''}`}
+                                  noLink
+                                  style={{
+                                    boxShadow: '0 0 0 2px #fff',
+                                    flex: '0 0 64px',
+                                    marginRight: '0',
+                                  }}
                                 />
                             </div>
                             <div className="uk-width-auto">

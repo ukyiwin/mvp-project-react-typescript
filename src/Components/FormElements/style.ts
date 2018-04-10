@@ -101,6 +101,54 @@ export const StyledInput = styled.input`
   }
 `;
 
+export const StyledSelect = styled.select`
+  flex: 1 0 auto;
+  background: ${(props) =>
+    props.disabled ? props.theme.bg.wash : props.theme.bg.default};
+  font-weight: 500;
+  width: 100%;
+  font-size: 14px;
+  border: 2px solid
+    ${(props) =>
+      props.disabled ? props.theme.bg.border : props.theme.bg.inactive};
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-top: 2px;
+  box-shadow: none;
+  transition: ${Transition.hover.off};
+
+  ${(props: any) =>
+    props.type === 'checkbox' &&
+    css`
+      flex: initial;
+      width: initial;
+      margin-right: 0.5em;
+    `} &::placeholder {
+    color: ${({ theme }) => theme.text.placeholder};
+  }
+  &::-webkit-select-placeholder {
+    color: ${({ theme }) => theme.text.placeholder};
+  }
+  &:-moz-placeholder {
+    color: ${({ theme }) => theme.text.placeholder};
+  }
+  &:-ms-select-placeholder {
+    color: ${({ theme }) => theme.text.placeholder};
+  }
+
+  &:focus {
+    border-color: ${({ theme }) => theme.brand.default};
+    transition: ${Transition.hover.on};
+  }
+
+  &[type='file'] {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    visibility: hidden;
+  }
+`;
+
 export const StyledTextArea = styled(Textarea)`
   flex: 1 0 auto;
   width: 100%;

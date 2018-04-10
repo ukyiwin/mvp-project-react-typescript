@@ -9,7 +9,7 @@ import ContentLoader from 'react-content-loader';
 
 // const MyFacebookLoader = () => <Facebook />;
 
-const MyLoader = () => (
+export const MyLoader = () => (
     <ContentLoader height={200} width={400} speed={2} primaryColor={'#f3f3f3'} secondaryColor={'#ecebeb'}>
         <rect x="70" y="15" rx="4" ry="4" width="117" height="6.4" />
         <rect x="70" y="35" rx="3" ry="3" width="85" height="6.4" />

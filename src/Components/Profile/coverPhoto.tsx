@@ -20,7 +20,7 @@ const PhotoContainer = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  border-radius: ${(props: any) => (props.large ? '0' : '12px 12px 0 0')};
+  border-radius: ${(props: any) => (props.large ? '0' : '0px 0px 0 0')};
 
   @media (max-width: 768px) {
     flex: 0 0 ${(props: any) => (props.large ? '160px' : '64px')};

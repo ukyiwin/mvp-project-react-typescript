@@ -5,6 +5,7 @@ import FollowButton from 'Components/FollowButton';
 import Avatar from 'Components/Avatar';
 import { cookies } from 'link';
 import { CURRENT_USER } from '../../constants';
+import { UserProfile } from 'Components/Profile';
 
 interface Props {
     link: string;
@@ -38,20 +39,13 @@ export default class PopoverLink extends React.Component<Props> {
           {user.id === me.id ?
             null :
             <div uk-drop="boundary: .boundary; animation: uk-animation-slide-top-small; duration: 500">
-              <div className="uk-card uk-card-body uk-card-default">
+              <div className="uk-card uk-card-body uk-card-default" style={{padding: 0}}>
                 <div className="uk-text-center content">
-                  <div className="uk-background-primary uk-width-1-1 uk-position-top" style={{height: 80}} />
-                  <Avatar 
-                    size={60} 
-                    url={user.avatar ? user.avatar : ''} presence={false}
+                  <UserProfile
+                    user={user}
+                    username={user.username}
+                    profileSize="simple"
                   />
-                  <p className="uk-text-bold" style={{fontSize: 16, paddingBottom: 1, marginBottom: 1}}>{user.firstname} {user.lastname}</p>
-                  <p className="" style={{fontSize: 12}}>@{user.username}</p>
-                  <p style={{fontSize: 12}}>
-                  Founder at Gueva Technologies. Geek, programmer, interest in AI and Machine Learning, Big Data, love basketball.
-                  </p>
-                  <p className="uk-text-bold ui label">{user.type}</p>
-                  <hr />
                   <div className="ui small two buttons">
                     <FollowButton liked={false} unFollowClick={() => alert('hj')} followClick={() => alert('hoS')} />
                   </div>

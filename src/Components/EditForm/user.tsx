@@ -15,6 +15,7 @@ import {
   TextArea,
   Error,
   PhotoInput,
+  Select,
   CoverInput,
 } from '../FormElements';
 import { StyledLabel } from '../FormElements/style';
@@ -42,7 +43,8 @@ import { ME } from 'Graphql/Query';
 
 interface State {
   website?: string;
-  name: string;
+  firstname: string;
+  lastname: string;
   username: string;
   description?: string;
   image: string;
@@ -73,7 +75,13 @@ class UserWithData extends React.Component<Props, any> {
 
     this.state = {
       website: user.firstname ? user.firstname : '',
-      name: user.firstname ? user.firstname : '',
+      firstname: user.firstname ? user.firstname : '',
+      department: user.department ? user.department.name : '',
+      institution: user.institution ? user.institution.title : '',
+      type: user.type ? user.type : '',
+      gender: user.gender ? user.gender : '',
+      email: user.email ? user.email : '',
+      lastname: user.lastname ? user.lastname : '',
       username: user.username ? user.username : '',
       description: user.bio ? user.bio : '',
       image: user.avatar,
@@ -228,7 +236,6 @@ class UserWithData extends React.Component<Props, any> {
 
       this.setState({
         coverFile: file,
-        // $FlowFixMe
         coverPhoto: reader.result,
         photoSizeError: '',
         proGifError: false,
@@ -243,7 +250,8 @@ class UserWithData extends React.Component<Props, any> {
     e.preventDefault();
 
     const {
-      name,
+      firstname,
+      lastname,
       description,
       website,
       file,
@@ -254,7 +262,8 @@ class UserWithData extends React.Component<Props, any> {
     } = this.state;
 
     const input = {
-      name,
+      firstname,
+      lastname,
       description,
       website,
       file,
@@ -322,7 +331,6 @@ class UserWithData extends React.Component<Props, any> {
       });
     }
 
-    // $FlowIssue
     this.search(username);
   }
 
@@ -376,8 +384,11 @@ class UserWithData extends React.Component<Props, any> {
   render() {
     const { user } = this.props;
     const {
-      name,
+      firstname,
+      lastname,
       username,
+      type,
+      email,
       description,
       website,
       image,
@@ -421,11 +432,20 @@ class UserWithData extends React.Component<Props, any> {
 
           <Input
             type="text"
-            defaultValue={name}
+            defaultValue={firstname}
             onChange={this.changeName}
-            placeholder={'What\'s your name?'}
+            placeholder={'What\'s your firstname?'}
           >
-            Name
+            Firstname
+          </Input>
+
+          <Input
+            type="text"
+            defaultValue={lastname}
+            onChange={this.changeName}
+            placeholder={'What\'s your lastname?'}
+          >
+            Lastname
           </Input>
 
           {nameError && <Error>Names can be up to 50 characters.</Error>}
@@ -450,20 +470,29 @@ class UserWithData extends React.Component<Props, any> {
           <TextArea
             defaultValue={description}
             onChange={this.changeDescription}
-            placeholder={'Introduce yourself to the class...'}
+            placeholder={'Introduce yourself to the unizonners...'}
           >
             Bio
           </TextArea>
 
           {descriptionError && <Error>Bios can be up to 140 characters.</Error>}
 
-          <Input defaultValue={website} onChange={this.changeWebsite}>
-            Optional: Add your website
+          <Select defaultValue={type} onChange={this.changeWebsite} type="select">
+            <option key={''}>Who are you?</option>
+            <option key={'Student'}>Student</option>
+            <option key={'Lecturer'}>Lecturer</option>
+          </Select>
+          <Input
+            type="text"
+            defaultValue={email}
+            disabled={true}
+            placeholder={'Your primary email address?'}
+          >
+            Primary email
           </Input>
-
           <Actions>
             <Button
-              disabled={!name || nameError || !username || usernameError}
+              disabled={!firstname || nameError || !username || usernameError}
               loading={isLoading}
               onClick={this.save}
             >
