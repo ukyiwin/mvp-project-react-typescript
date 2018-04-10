@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import 'medium-draft/lib/index.css';
+import 'medium-draft/lib/index.css';
 import './style.scss';
 
 import {
@@ -7,14 +7,11 @@ import {
   createEditorState,
 } from 'medium-draft';
 
-export default class CommentEditor extends React.Component {
+export default class CommentEditor extends React.Component<any> {
   
   // tslint:disable-next-line:no-any
   editor: any;
 
-  state = {
-    editorState: createEditorState(), // for empty content
-  };
   // tslint:disable-next-line:typedef
   constructor(props) {
     super(props);
@@ -29,14 +26,12 @@ export default class CommentEditor extends React.Component {
   }
 
   render() {
-    const { editorState } = this.state;
+    const { editorState } = this.props;
     return (
       <div className="uk-width-1-1">
         <Editor
           ref={(ref) => this.editor = ref}
           editorState={editorState}
-          onChange={this.onChange}
-          placeholder="Write you comment..."
         />
       </div>
     );

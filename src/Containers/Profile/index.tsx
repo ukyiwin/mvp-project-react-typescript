@@ -91,9 +91,9 @@ componentDidUpdate(prevProps) {
               backRoute={'/'}
               noComposer
             />
-            <Grid>
-              <CoverPhoto src={user.avatar ? user.avatar : ''} />
-              <Meta>
+            <Grid  style={{backgroundColor: 'transparent'}}>
+              <CoverPhoto src={user.avatar ? user.avatar : ''} style={{ backgroundColor: '#fff' }}/>
+              <Meta style={{ backgroundColor: '#fff' }}>
                 <UserProfile
                   user={user}
                   username={username}
@@ -114,7 +114,7 @@ componentDidUpdate(prevProps) {
                   )}
               </Meta>
               <Content>
-                <SegmentedControl style={{ margin: '16px 0 0 0' }}>
+                <SegmentedControl style={{ margin: '0 0 0 0', paddingTop: 16, backgroundColor: '#fff' }}>
                   <DesktopSegment
                     segmentLabel="search"
                     onClick={() => this.handleSegmentClick('search')}

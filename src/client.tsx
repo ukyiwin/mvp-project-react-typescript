@@ -130,7 +130,7 @@ const app = (
   <AsyncComponentProvider rehydrateState={asyncComponentsRehydrateState}>
     <ApolloProvider client={client}>
         <BrowserRouter>
-          <App maintenanceMode={true} />
+          <App maintenanceMode={process.env.MAINTANANCE} />
         </BrowserRouter>
     </ApolloProvider>
   </AsyncComponentProvider>

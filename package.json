@@ -144,6 +144,7 @@
     "semantic-ui-react": "^0.79.1",
     "semantic-ui-react-less-loader": "^0.2.0",
     "serve-favicon": "^2.5.0",
+    "slugg": "^1.2.1",
     "spectre.css": "^0.5.1",
     "string-replace-to-array": "^1.0.3",
     "styled-components": "^3.2.5",
