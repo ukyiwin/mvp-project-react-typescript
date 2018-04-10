@@ -232,3 +232,23 @@ export const GET_ALL_MY_CHANNEL = gql`
     }
   }
 `;
+
+export const GET_COMMENTS = gql`
+  query comments($articleId: ID!){
+    comments(articleId: $articleId){
+      id
+      slug
+      body
+      createdAt
+      author{
+        id
+        firstname
+        lastname
+        avatar
+        username
+        headerImage
+      }
+    }
+    
+  }
+`;

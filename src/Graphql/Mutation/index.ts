@@ -91,3 +91,26 @@ export const CREATE_MESSAGE = gql`
   }
   ${MESSAGE_FRAGMENT}
 `;
+
+export const CREATE_COMMENT = gql`
+  mutation commentArticle($articleId: ID!, $text: String!){
+    commentArticle(articleId: $articleId, text: $text){
+      id
+      slug
+      createdAt
+      body
+      article{
+        id
+        slug
+      }
+      author{
+        id
+        username
+        firstname
+        lastname
+        avatar
+        headerImage
+      }
+    }
+  }
+`;

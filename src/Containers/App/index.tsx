@@ -335,7 +335,7 @@ class App extends React.Component<Props & ChildProps<Response & Props>, State> {
                         />
 
                         <EmptyLayout 
-                          component={Search} 
+                          component={Settings} 
                           path="/n/:username/settings"
                           exact={true} 
                           isAuthenticated={isAuthenticated}

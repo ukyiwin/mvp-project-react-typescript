@@ -1,21 +1,26 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
-import { compose, withApollo } from 'react-apollo';
+import { compose, withApollo, Query, Mutation } from 'react-apollo';
 import { Editor, createEditorState } from 'medium-draft';
 // import { Helmet } from 'react-helmet';
-import { Article } from 'CustomTypings/schema';
+import { Article, Comment } from 'CustomTypings/schema';
 import Avatar from 'Components/Avatar';
 import ArticleItem from 'Components/ArticleItem';
 import CommentEditor from 'Components/CommentEditor';
+import CommentItem from 'Components/CommentItem';
 import TopInterest from 'Components/TopInterest';
 import Likebutton from 'Components/LikeButton';
 import PopoverLink from 'Components/PopoverLink';
 import TimeAgo from 'react-timeago';
-import { GET_ARTICLE_BY_ID } from 'Graphql/Query';
+import { GET_ARTICLE_BY_ID, GET_COMMENTS } from 'Graphql/Query';
 import Label from 'Components/Label';
 import mediumDraftImporter from 'medium-draft/lib/importer';
 import { convertToRaw } from 'draft-js';
+import { CREATE_COMMENT } from 'Graphql/Mutation';
+import mediumDraftExporter from 'medium-draft/lib/exporter';
+import LoadingComponent from 'Components/Loading';
+import { ErrorComponent } from 'Components/EmptyStates';
 // import 'medium-draft/lib/index.css';
 
 interface Props {
@@ -24,11 +29,15 @@ interface Props {
 }
 
 class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
+    
+    editor: any;
+    
     state = {
         // tslint:disable-next-line:no-object-literal-type-assertion
         currentArticle: {} as Article,
         loading: true,
-        editorState: createEditorState()
+        editorState: createEditorState(),
+        commentEditorState: createEditorState()
     };
 
     componentWillMount() {
@@ -75,9 +84,9 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
             });
     }
 
-    componentWillUnmount() {
-        // allows us to ignore
-    }
+    onChange = (commentEditorState) => {
+      this.setState({ commentEditorState });
+    }  
 
     renderArticle(article: Article) {
         const { author } = article;
@@ -172,77 +181,87 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
     }
 
     renderCommentBox() {
-        return (
-            <div
-              className="uk-card card uk-card-small uk-width-1-1"
-              style={{ borderRadius: 1, marginBottom: 30, padding: 10, backgroundColor: '#fff' }}
-            >
-                <div className="uk-grid-small uk-flex" uk-grid={true} style={{ padding: 0, marginTop: 3 }}>
-                    <div className="uk-width-auto">
-                        <Avatar url={'https://getuikit.com/docs/images/avatar.jpg'} size={30} presence={false} />
-                    </div>
-                    <div className="uk-width-auto post-info">John Doe</div>
-                </div>
-                <CommentEditor />
-                <div>
-                <button className="uk-button uk-button-primary uk-button-small uk-text-right">Comment</button>
-                </div>
-            </div>
-        );
-    }
-
-    renderComment() {
-        return (
-            <article
-                className="uk-comment card uk-visible-toggle uk-padding-small"
-                style={{ backgroundColor: '#fff', marginBottom: 10 }}
-            >
-                <header className="uk-comment-header uk-position-relative">
-                    <div className="uk-grid-medium uk-flex-middle" data-uk-grid={true}>
-                        <div className="uk-width-auto">
-                            <Avatar url="https://getuikit.com/docs/images/avatar.jpg" size={40} presence={false} />
-                        </div>
-                        <div className="uk-width-expand">
-                            <h4 className="uk-comment-title uk-margin-remove">
-                                <a className="uk-link-reset" href="#">
-                                    Author
-                                </a>
-                            </h4>
-                            <p className="uk-comment-meta uk-margin-remove-top">
-                                <a className="uk-link-reset" href="#">
-                                    12 days ago
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-                    <div className="uk-position-top-right uk-position-small uk-hidden-hover">
-                        <a className="uk-link-muted" href="#">
-                            Reply
-                        </a>
-                    </div>
-                </header>
-                <div className="uk-comment-body">
-                    <p>
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
-                        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo
-                        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor
-                        sit amet.
-                    </p>
-                </div>
-            </article>
-        );
+      const { commentEditorState } = this.state;
+      return (
+        <Mutation mutation={CREATE_COMMENT} >
+        {(commentArticle, { data, loading }) => (
+          <div
+            className="uk-card card uk-card-small uk-width-1-1"
+            style={{ borderRadius: 1, marginBottom: 30, padding: 10, backgroundColor: '#fff' }}
+          >
+              <div className="uk-grid-small uk-flex" uk-grid={true} style={{ padding: 0, marginTop: 3 }}>
+                  <div className="uk-width-auto">
+                      <Avatar url={'https://getuikit.com/docs/images/avatar.jpg'} size={30} presence={false} />
+                  </div>
+                  <div className="uk-width-auto post-info">John Doe</div>
+              </div>
+              <Editor
+                ref={(ref) => this.editor = ref}
+                editorState={commentEditorState}
+                onChange={this.onChange}
+                placeholder="Write you comment..."
+              />
+              <div>
+              <button 
+                className="uk-button uk-button-primary uk-button-small uk-text-right"
+                disabled={loading}
+                onClick={() => {
+                  console.log(data);
+                  const articleId = this.state.currentArticle.id;
+                  const edi = this.state.commentEditorState;
+                  const renderedHTML = mediumDraftExporter(edi.getCurrentContent());
+                  commentArticle({
+                    variables: {
+                      articleId,
+                      text: renderedHTML
+                    }
+                  }).then((res) => {
+                    this.setState({commentEditorState: createEditorState()});
+                  }).catch((err) => {
+                    console.log(err);
+                  });
+                }}
+              >
+                Comment
+              </button>
+              </div>
+          </div>
+        )}
+        </Mutation>
+      );
     }
 
     renderCommentList() {
+        const articleId = this.state.currentArticle.id;
         return (
-            <div
-              id="comments"
-              className="uk-card uk-card-small uk-card-small uk-width-1-1"
-              style={{ backgroundColor: 'transparent' }}
-            >
+          <Query query={GET_COMMENTS} variables={{articleId}} pollInterval={1000} >
+          {({ loading, error, data }) => {
+            if (loading) {
+                return <LoadingComponent />;
+            }
+            if (error) {
+              console.log(error);
+              return <ErrorComponent />;
+            }
+            console.log(data);
+            if (data.comments.length === 0) {
+              return null;
+            }
+            return (
+              <div
+                id="comments"
+                className="uk-card uk-card-small uk-card-small uk-width-1-1"
+                style={{ backgroundColor: 'transparent', marginBottom: 10 }}
+              >
                 <Label text="Comment responses" />
-                {this.renderComment()}
-            </div>
+                {data.comments.map((comments, i) => (
+                    <CommentItem comments={comments} />
+                ))}
+                
+              </div>
+            );
+          }}
+        </Query>
         );
     }
 

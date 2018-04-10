@@ -554,7 +554,7 @@ export const MenuOverlay = styled.div`
   height: 100vh;
   min-height: 100vh;
   background-color: ${(props) => hexa(props.theme.bg.reverse, 0.5)};
-  display: ${(props) => (props.open ? 'block' : 'none')};
+  display: ${(props: any) => (props.open ? 'block' : 'none')};
   z-index: 1;
 `;
 
@@ -571,7 +571,7 @@ export const MenuTab = styled.div`
     }
   }
   ${MenuContainer} {
-    display: ${(props) => (props.open ? 'grid' : 'none')};
+    display: ${(props: any) => (props.open ? 'grid' : 'none')};
   }
   @media (min-width: 768px) {
     display: none;
