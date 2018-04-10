@@ -114,3 +114,43 @@ export const CREATE_COMMENT = gql`
     }
   }
 `;
+
+export const LIKE_ARTICLE = gql`
+  mutation likeArticle($id: ID!) {
+  likeArticle(id: $id){
+      id
+      title
+      title
+    }
+  }
+`;
+
+export const UNLIKE_ARTICLE = gql`
+  mutation unLikeArticle($id: ID!){
+    likeArticle(id: $id){
+      id
+      title
+      title
+    }
+  }
+`;
+
+export const SAVE_ARTICLE = gql`
+  mutation saveArticle($id: ID!){
+    favourite(id: $id){
+      id
+      title
+      title
+    }
+  }
+`;
+
+export const UNSAVE_ARTICLE = gql`
+  mutation unSaveArticle($id: ID!){
+    unFavourite(id: $id){
+      id
+      title
+      title
+    }
+  }
+`;

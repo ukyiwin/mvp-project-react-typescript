@@ -45,9 +45,15 @@ export const USER_EXIST = gql`
  * @description check if current user article
  */
 export const ARTICLES = gql`
-  query articles {
+  query articles($myUsername: String) {
     articles{
       ...articleFragment
+      saved: userFavourited(where: {username: $myUsername }) {
+      id
+    }
+    liked: likes(where: {username: $myUsername }) {
+      id
+    }
     }
   }
   ${ARTICLE_FRAGMENT}
@@ -57,9 +63,15 @@ export const ARTICLES = gql`
  * @description get one article by id
  */
 export const GET_ARTICLE_BY_ID = gql`
-  query getArticleById($id: ID!){
+  query getArticleById($id: ID!, $myUsername: String){
     getArticleById(id: $id){
       ...articleFragment
+      saved: userFavourited(where: {username: $myUsername }) {
+        id
+      }
+      liked: likes(where: {username: $myUsername }) {
+        id
+      }
     }
   }
   ${ARTICLE_FRAGMENT}
@@ -69,9 +81,15 @@ export const GET_ARTICLE_BY_ID = gql`
  * @description get one article by slug
  */
 export const GET_ARTICLE_BY_SLUG = gql`
-  query getArticleBySlug($slug: ID!){
+  query getArticleBySlug($slug: ID!, $myUsername: String){
     getArticleBySlug(slug: $slug){
       ...articleFragment
+      saved: userFavourited(where: {username: $myUsername }) {
+        id
+      }
+      liked: likes(where: {username: $myUsername }) {
+        id
+      }
     }
   }
   ${ARTICLE_FRAGMENT}
@@ -254,18 +272,30 @@ export const GET_COMMENTS = gql`
 `;
 
 export const ACTIVITY = gql`
-  query activity($username: String!) {
+  query activity($username: String!, $myUsername: String) {
     activity(username: $username){
       ...articleFragment
+      saved: userFavourited(where: {username: $myUsername }) {
+        id
+      }
+      liked: likes(where: {username: $myUsername }) {
+        id
+      }
     }
   }
   ${ARTICLE_FRAGMENT}
 `;
 
 export const GET_ARTICLES_BY_USERNAME = gql`
-  query getArticlesByUsername($username: String!) {
-    getArticlesByUsername(username: $username){
+  query getArticlesByUsername($username: String!, $myUsername: String) {
+    getArticlesByUsername(username: $myUsername){
       ...articleFragment
+      saved: userFavourited(where: {username: $myUsername }) {
+      id
+      }
+      liked: likes(where: {username: $myUsername }) {
+        id
+      }
     }
   }
   ${ARTICLE_FRAGMENT}

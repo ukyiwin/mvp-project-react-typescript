@@ -51,6 +51,13 @@ export const ARTICLE_FRAGMENT = gql`
     createdAt
     updatedAt
     tags
+    comments{
+      id
+    }
+    likes{
+      username
+      avatar
+    }
     headerImage {
       id
       url

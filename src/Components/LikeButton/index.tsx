@@ -1,13 +1,19 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import OverlayTriggerButton from 'Components/OverlayTriggerButton';
+import Icon from 'Components/Icons';
 
 interface Props {
-    liked: boolean;
-    likeCount: number;
-    likeableType?: string;
-    likeableId?: string;
-    disableOverlay?: false;
-    overlayHeading?: string;
+    liked?: boolean;
+    likeCount?: number | string;
+    buttonType?: string;
+    text?: string;
+    frontIcon: string;
+    link?: string;
+    backIcon?: string;
+    size?: number;
+    backClick?: any;
+    frontClick?: any;
 }
 
 export default class LikeButton extends React.Component<Props> {
@@ -18,14 +24,6 @@ export default class LikeButton extends React.Component<Props> {
 
     constructor(props: Props) {
         super(props);
-
-        this.state = {
-            liked: this.props.liked,
-            likeCount: this.props.likeCount,
-        };
-
-        this.onUnlikeClick = this.onUnlikeClick.bind(this);
-        this.onLikeClick = this.onLikeClick.bind(this);
     }
 
     componentWillMount() {
@@ -42,54 +40,49 @@ export default class LikeButton extends React.Component<Props> {
     }
 
     render() {
-        return (
-            <div className="like-button">
-                <div className="like-button-wrapper">{this.renderLikeButton()}</div>
-                {this.renderLikeCount()}
-            </div>
-        );
+      return (
+        this.renderLikeButton()
+      );
     }
 
     renderLikeButton() {
-        if (this.state.liked) {
+      if (this.props.link) {
+        return (
+          <Link to={this.props.link} className="response-count uk-flex uk-inline uk-margin-left uk-margin-right">
+            <Icon glyph={this.props.frontIcon} size={this.props.size ? this.props.size : 24} />
+            {this.props.text ? (<div className="uk-visible@s">{this.props.text + ' ' + this.props.likeCount}</div>) : ''}
+          </Link>
+        );
+      } else {
+      if (this.props.buttonType === 'two') {
+        if (!this.props.liked) {
             return (
-                <button className="response-count unlike-button uk-text-center" onClick={this.onUnlikeClick}>
-                    <i className="fa fa-heart fa-5x animated bounceIn" />
-                </button>
+              <a className="response-count uk-flex uk-inline" onClick={() => this.props.frontClick()}>
+                <Icon glyph={this.props.frontIcon} size={this.props.size ? this.props.size : 24} />
+                {this.props.text ? (<div className="uk-visible@s">{this.props.text + ' ' 
+                + (this.props.likeCount ? this.props.likeCount : '')}</div>) : ''}
+              </a>
             );
         } else {
             return (
-                <button className="response-count uk-margin-left uk-margin-right" onClick={this.onLikeClick}>
-                    <i className="fa fa-heart-o fa-5x animated bounceIn" />
-                </button>
+              <a className="response-count uk-flex uk-inline" onClick={() => this.props.backClick()}>
+                <Icon glyph={this.props.backIcon} size={this.props.size ? this.props.size : 24} />
+                {this.props.text ? (<div className="uk-visible@s">{this.props.text + ' ' 
+                +  (this.props.likeCount ? this.props.likeCount : '')}</div>) : ''}
+              </a>
             );
         }
-    }
-
-    renderLikeCount() {
-        if (this.state.likeCount === 0) {
-            return null;
-        }
-        if (this.props.disableOverlay) {
-            return <span className="like-count">{this.state.likeCount}</span>;
-        }
+      } else {
         return (
-            <span className="like-count" style={{ cursor: 'pointer' }}>
-                <OverlayTriggerButton
-                    text={this.state.likeCount.toString()}
-                    overlayHeading={this.props.overlayHeading ? this.props.overlayHeading : ''}
-                />
-            </span>
+          <a className="response-count uk-flex uk-inline" onClick={() => this.props.frontClick()}>
+            <Icon glyph={this.props.frontIcon} size={this.props.size ? this.props.size : 24} />
+            {this.props.text ? (<div className="uk-visible@s">{this.props.text + ' ' 
+            + (this.props.likeCount ? this.props.likeCount : '')}</div>) : ''}
+          </a>
         );
-    }
+      }
 
-    // tslint:disable-next-line:typedef
-    onUnlikeClick(e) {
-        // this.setState({ liked: data.liked, likeCount: data.count });
-    }
-
-    // tslint:disable-next-line:typedef
-    onLikeClick(e) {
-        // this.setState({ liked: data.liked, likeCount: data.count });
+      }
+        
     }
 }

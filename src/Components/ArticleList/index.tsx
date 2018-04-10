@@ -4,8 +4,10 @@ import { graphql, QueryProps, Query } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
 import { ErrorComponent, LoadingComponent } from 'Components/EmptyStates';
 import { ARTICLES } from 'Graphql/Query';
-import { Article } from 'CustomTypings/schema';
+import { Article, User } from 'CustomTypings/schema';
 import ContentLoader from 'react-content-loader';
+import { cookies } from 'link';
+import { CURRENT_USER } from '../../constants';
 
 // const MyFacebookLoader = () => <Facebook />;
 
@@ -36,24 +38,20 @@ interface Response {
 
 type WrappedProps = Response & QueryProps;
 
-const ArticleList = graphql<Response, {}, WrappedProps>(ARTICLES, {
-    props: ({ data }) => ({ ...data }),
-    options: {
-      pollInterval: 1000
-    }
-});
+const user = cookies.get(CURRENT_USER) as User;
 
-export default ArticleList(({ loading, articles, error }) => {
-    // tslint:disable-next-line:jsx-wrap-multiline
+const ArticleList = () => (
+  <Query query={ARTICLES} variables={{myUsername: user.username}} pollInterval={2000} >
+  {({ loading, error, data, fetchMore, networkStatus }) => {
     if (loading) {
       return (
         <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
           <MyLoader />
-          <div className="uk-width-1-1" style={{height: 10}}/>
+          <br />
           <MyLoader />
-          <div className="uk-width-1-1" style={{height: 10, margin: 20}}/>
+          <br />
           <MyLoader />
-          <div className="uk-width-1-1" style={{height: 10}}/>
+          <br />
           <MyLoader />
         </div>
       );
@@ -63,20 +61,25 @@ export default ArticleList(({ loading, articles, error }) => {
     }
     return (
         <InfiniteScroll
-            pageStart={0}
-            hasMore={true || false}
-            loader={
-                <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
-                    <MyLoader />
-                </div>
-            // tslint:disable-next-line:jsx-curly-spacing
-            }
+          pageStart={0}
+          hasMore={loading}
+          loadMore={() => fetchMore()}
+          loader={
+            <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
+              <MyLoader />
+            </div>
+          // tslint:disable-next-line:jsx-curly-spacing
+          }
         >
-            {articles ? articles.map((article) => (
+            {data.articles ? data.articles.map((article) => (
                 <div key={article.id}>
                     <ArticleItem article={article} />
                 </div>
             )) : null}
         </InfiniteScroll>
     );
-});
+    }}
+  </Query>
+);
+
+export default ArticleList;

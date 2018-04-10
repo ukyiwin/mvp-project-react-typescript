@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "1082b848fd88b2b79fc6"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "d3afaf11ff0eb1ff34d3"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1174,11 +1174,16 @@ const Wrapper = __WEBPACK_IMPORTED_MODULE_0_styled_components___default()(__WEBP
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Avatar_avatar__ = __webpack_require__("./src/Components/Avatar/avatar.tsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom__ = __webpack_require__("react-router-dom");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LikeButton__ = __webpack_require__("./src/Components/LikeButton/index.tsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__PopoverLink__ = __webpack_require__("./src/Components/PopoverLink/index.tsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_timeago__ = __webpack_require__("react-timeago");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_timeago___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_timeago__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_Utils_helper__ = __webpack_require__("./src/Utils/helper.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_apollo__ = __webpack_require__("react-apollo");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_apollo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_apollo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__LikeButton__ = __webpack_require__("./src/Components/LikeButton/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__PopoverLink__ = __webpack_require__("./src/Components/PopoverLink/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_timeago__ = __webpack_require__("react-timeago");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_timeago___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_timeago__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_Utils_helper__ = __webpack_require__("./src/Utils/helper.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__ = __webpack_require__("./src/Graphql/Mutation/index.ts");
+
+
 
 
 
@@ -1191,10 +1196,58 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     componentDidMount() {
         // UIkit.notification('MyMessage', 'danger');
     }
+    save() {
+        this.props.client.mutate({
+            mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["l" /* UNSAVE_ARTICLE */],
+            variable: {
+                id: this.props.article.id
+            }
+        }).then((res) => {
+            // dhjh
+        }).catch((err) => {
+            // ghg
+        });
+    }
+    unSave() {
+        this.props.client.mutate({
+            mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["i" /* SAVE_ARTICLE */],
+            variable: {
+                id: this.props.article.id
+            }
+        }).then((res) => {
+            // dhjh
+        }).catch((err) => {
+            // ghg
+        });
+    }
+    like() {
+        this.props.client.mutate({
+            mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["g" /* LIKE_ARTICLE */],
+            variable: {
+                id: this.props.article.id
+            },
+        }).then((res) => {
+            // dhjh
+        }).catch((err) => {
+            // ghg
+        });
+    }
+    unLike() {
+        this.props.client.mutate({
+            mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["k" /* UNLIKE_ARTICLE */],
+            variable: {
+                id: this.props.article.id
+            }
+        }).then((res) => {
+            // dhjh
+        }).catch((err) => {
+            // ghg
+        });
+    }
     render() {
         const { article } = this.props;
         const { author } = article;
-        const body = Object(__WEBPACK_IMPORTED_MODULE_6_Utils_helper__["b" /* strip_html_tags */])(article.body);
+        const body = Object(__WEBPACK_IMPORTED_MODULE_7_Utils_helper__["b" /* strip_html_tags */])(article.body);
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-card uk-card-default raised uk-width-1-1", style: {
                 marginBottom: this.props.small ? 7 : 15,
                 backgroundColor: '#fff',
@@ -1209,13 +1262,13 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                                     marginRight: '0',
                                 } })),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-auto" },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__PopoverLink__["a" /* default */], { link: article.id, user: author },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__PopoverLink__["a" /* default */], { link: article.id, user: author },
                                 author.firstname,
                                 " ",
                                 author.lastname),
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { className: "uk-text-meta uk-margin-remove-top" },
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("time", { dateTime: article.createdAt },
-                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5_react_timeago___default.a, { className: "timeago", date: article.createdAt }),
+                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_react_timeago___default.a, { className: "timeago", date: article.createdAt }),
                                     " \u0095",
                                     ' ',
                                     body.lengthInMinutes())))))),
@@ -1227,11 +1280,8 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { style: { color: '#212121', fontFamily: 'Muli', fontSize: this.props.small ? 14 : 17 } }, this.props.small ? body.truncString('...', 70) : body.truncString('...', 140))),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "post-stats clearfix uk-padding-small" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex pull-left" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__LikeButton__["a" /* default */], { liked: true, likeCount: 2 }),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["Link"], { to: `/article/${article.id}#comments`, className: "response-count uk-flex uk-inline uk-margin-left uk-margin-right" },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: comment; ratio: 1.0" }),
-                            " ",
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-visible@s" }, "Comments")),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__LikeButton__["a" /* default */], { liked: article.liked !== null, likeCount: 1, text: "Like", frontIcon: "like", frontClick: this.like(), backClick: this.unLike(), backIcon: "like-fill", buttonType: "two" }),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__LikeButton__["a" /* default */], { likeCount: article.comments ? article.comments.length : '', link: `/article/${article.id}#comments`, frontIcon: "post-fill", text: "Comment" }),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "response-count uk-flex uk-inline" },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: forward; ratio: 1.2" }),
                             " ",
@@ -1254,11 +1304,10 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { href: "#", className: "uk-text-bold" },
                                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: info; ratio: 1" }),
                                             " Report"))))),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-text" },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: bookmark; ratio: 1.2" })))))));
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__LikeButton__["a" /* default */], { frontIcon: "down", text: "Save", backIcon: "down-fill", buttonType: "two", frontClick: this.save(), backClick: this.unSave(), liked: article.saved !== null }))))));
     }
 }
-/* harmony default export */ __webpack_exports__["a"] = (ArticleItem);
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_3_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_3_react_apollo__["withApollo"])(ArticleItem));
 /*
 
           <{this.props.small && (this.props.article.link === null) ? null : (
@@ -1301,6 +1350,10 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__ = __webpack_require__("./src/Graphql/Query/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_content_loader__ = __webpack_require__("react-content-loader");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_content_loader___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_content_loader__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_link__ = __webpack_require__("./src/link.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__constants__ = __webpack_require__("./src/constants.ts");
+
+
 
 
 
@@ -1325,31 +1378,26 @@ const MyLoader = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__W
     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("rect", { x: "325.5", y: "177.27", rx: "0", ry: "0", width: "23", height: "16" })));
 /* harmony export (immutable) */ __webpack_exports__["a"] = MyLoader;
 
-const ArticleList = Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["e" /* ARTICLES */], {
-    props: ({ data }) => (Object.assign({}, data)),
-    options: {
-        pollInterval: 1000
-    }
-});
-/* harmony default export */ __webpack_exports__["b"] = (ArticleList(({ loading, articles, error }) => {
-    // tslint:disable-next-line:jsx-wrap-multiline
+const user = __WEBPACK_IMPORTED_MODULE_7_link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_8__constants__["b" /* CURRENT_USER */]);
+const ArticleList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["f" /* ARTICLES */], variables: { myUsername: user.username }, pollInterval: 2000 }, ({ loading, error, data, fetchMore, networkStatus }) => {
     if (loading) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1", style: { height: 10 } }),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1", style: { height: 10, margin: 20 } }),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1", style: { height: 10 } }),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)));
     }
     if (error) {
         return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__["a" /* ErrorComponent */], null);
     }
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: true || false, loader: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)) }, articles ? articles.map((article) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: article.id },
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: loading, loadMore: () => fetchMore(), loader: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)) }, data.articles ? data.articles.map((article) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: article.id },
         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_ArticleItem__["a" /* default */], { article: article })))) : null));
 }));
+/* harmony default export */ __webpack_exports__["b"] = (ArticleList);
 
 
 /***/ }),
@@ -2346,7 +2394,7 @@ class CommentItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 
 
 
-const ConnectBox = Object(__WEBPACK_IMPORTED_MODULE_1_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["e" /* ARTICLES */], {
+const ConnectBox = Object(__WEBPACK_IMPORTED_MODULE_1_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["f" /* ARTICLES */], {
     props: ({ data }) => (Object.assign({}, data)),
 });
 /* harmony default export */ __webpack_exports__["a"] = (ConnectBox(({ loading, articles, error, refetch }) => {
@@ -3794,7 +3842,7 @@ class UserWithData extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 // check the db to see if this channel slug exists
                 this.props.client
                     .query({
-                    query: __WEBPACK_IMPORTED_MODULE_13_Graphql_Query__["k" /* ME */]
+                    query: __WEBPACK_IMPORTED_MODULE_13_Graphql_Query__["l" /* ME */]
                 })
                     .then((res) => {
                     const user = res.data.me;
@@ -5395,6 +5443,39 @@ const Glyph = ({ glyph }) => {
         case 'logo':
             return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("path", { id: "logo", d: "M6,14.5c0,0.828 0.672,1.5 1.5,1.5l1.5,0c3.866,0 7,3.134 7,7l0,1.5c0,0.828 0.672,1.5 1.5,1.5l7,0c0.828,0 1.5,-0.672 1.5,-1.5l0,-1.5c0,-9.389 -7.611,-17 -17,-17l-1.5,0c-0.828,0 -1.5,0.672 -1.5,1.5l0,7Z" })));
+        case 'comment':
+            return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("path", { d: "M401.625,325.125h-191.25c-10.557,0-19.125,8.568-19.125,19.125s8.568,19.125,19.125,19.125h191.25     c10.557,0,19.125-8.568,19.125-19.125S412.182,325.125,401.625,325.125z M439.875,210.375h-267.75     c-10.557,0-19.125,8.568-19.125,19.125s8.568,19.125,19.125,19.125h267.75c10.557,0,19.125-8.568,19.125-19.125     S450.432,210.375,439.875,210.375z M306,0C137.012,0,0,119.875,0,267.75c0,84.514,44.848,159.751,114.75,208.826V612     l134.047-81.339c18.552,3.061,37.638,4.839,57.203,4.839c169.008,0,306-119.875,306-267.75C612,119.875,475.008,0,306,0z      M306,497.25c-22.338,0-43.911-2.601-64.643-7.019l-90.041,54.123l1.205-88.701C83.5,414.133,38.25,345.513,38.25,267.75     c0-126.741,119.875-229.5,267.75-229.5c147.875,0,267.75,102.759,267.75,229.5S453.875,497.25,306,497.25z", fill: "#32c748" })));
+        case 'fav':
+            return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("polygon", { points: "60.044,0 60.044,298.823 149.413,215.094 238.78,298.824 238.78,0 " }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null)));
+        case 'un-fav':
+            return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("path", { d: "M63.565,476.737c0,12.84,7.755,24.473,19.61,29.367c3.941,1.621,8.073,2.415,12.173,2.415\r\n\t\t\t\t\tc8.263,0,16.4-3.242,22.47-9.312L254.26,362.765l136.442,136.442c6.07,6.07,14.207,9.312,22.47,9.312\r\n\t\t\t\t\tc4.1,0,8.232-0.795,12.141-2.415c11.887-4.894,19.642-16.527,19.642-29.367V95.347H63.565V476.737z" }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("path", { d: "M413.172,0H95.347C77.804,0,63.565,14.239,63.565,31.782v31.782h381.39V31.782\r\n            C444.955,14.239,430.716,0,413.172,0z" })));
+        case 'love':
+            return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("path", { style: "fill:#C03A2B;", d: "M24.85,10.126c2.018-4.783,6.628-8.125,11.99-8.125c7.223,0,12.425,6.179,13.079,13.543\r\n              c0,0,0.353,1.828-0.424,5.119c-1.058,4.482-3.545,8.464-6.898,11.503L24.85,48L7.402,32.165c-3.353-3.038-5.84-7.021-6.898-11.503\r\n              c-0.777-3.291-0.424-5.119-0.424-5.119C0.734,8.179,5.936,2,13.159,2C18.522,2,22.832,5.343,24.85,10.126z" }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("path", { style: "fill:#ED7161;", d: "M6,18.078c-0.553,0-1-0.447-1-1c0-5.514,4.486-10,10-10c0.553,0,1,0.447,1,1s-0.447,1-1,1\r\n              c-4.411,0-8,3.589-8,8C7,17.631,6.553,18.078,6,18.078z" })));
+        case 'love_empty':
+            return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("path", { d: "M51.911,16.242C51.152,7.888,45.239,1.827,37.839,1.827c-4.93,0-9.444,2.653-11.984,6.905\r\n            c-2.517-4.307-6.846-6.906-11.697-6.906c-7.399,0-13.313,6.061-14.071,14.415c-0.06,0.369-0.306,2.311,0.442,5.478\r\n            c1.078,4.568,3.568,8.723,7.199,12.013l18.115,16.439l18.426-16.438c3.631-3.291,6.121-7.445,7.199-12.014\r\n            C52.216,18.553,51.97,16.611,51.911,16.242z M49.521,21.261c-0.984,4.172-3.265,7.973-6.59,10.985L25.855,47.481L9.072,32.25\r\n            c-3.331-3.018-5.611-6.818-6.596-10.99c-0.708-2.997-0.417-4.69-0.416-4.701l0.015-0.101C2.725,9.139,7.806,3.826,14.158,3.826\r\n            c4.687,0,8.813,2.88,10.771,7.515l0.921,2.183l0.921-2.183c1.927-4.564,6.271-7.514,11.069-7.514\r\n            c6.351,0,11.433,5.313,12.096,12.727C49.938,16.57,50.229,18.264,49.521,21.261z" }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("path", { d: "M15.999,7.904c-5.514,0-10,4.486-10,10c0,0.553,0.447,1,1,1s1-0.447,1-1c0-4.411,3.589-8,8-8c0.553,0,1-0.447,1-1\r\n            S16.551,7.904,15.999,7.904z" })));
         case 'member-add':
             return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("g", null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("path", { d: "M23.981,7c-0.552,0 -1,0.448 -1,1l0,2l-2,0c-0.552,0 -1,0.448 -1,1c0,0.552 0.448,1 1,1l2,0l0,2c0,0.552 0.448,1 1,1c0.553,0 1,-0.448 1,-1l0,-2l2,0c0.553,0 1,-0.448 1,-1c0,-0.552 -0.447,-1 -1,-1l-2,0l0,-2c0,-0.552 -0.447,-1 -1,-1Z" }),
@@ -5742,7 +5823,7 @@ class InputBoxLogin extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             this.setState({ loading: true });
             this.props.client
                 .query({
-                query: __WEBPACK_IMPORTED_MODULE_3_Graphql_Query__["l" /* USER_EXIST */],
+                query: __WEBPACK_IMPORTED_MODULE_3_Graphql_Query__["m" /* USER_EXIST */],
                 variables: {
                     email: this.state.text,
                 },
@@ -5792,7 +5873,7 @@ class InputBoxLogin extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_react_mobile_store_button___default.a, { store: "ios" })))))));
     }
 }
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_3_Graphql_Query__["l" /* USER_EXIST */], {
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_3_Graphql_Query__["m" /* USER_EXIST */], {
     name: 'userExist',
     options: {
         variables: {
@@ -7193,7 +7274,7 @@ const A = __WEBPACK_IMPORTED_MODULE_5_glamorous___default.a.a({
 class LeftSideBar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     render() {
         // const { loading } = this.state;
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_6_Graphql_Query__["k" /* ME */] }, ({ data, loading, error }) => {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_6_Graphql_Query__["l" /* ME */] }, ({ data, loading, error }) => {
             if (loading) {
                 return null;
             }
@@ -7231,7 +7312,10 @@ class LeftSideBar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_Components_OverlayTriggerButton__ = __webpack_require__("./src/Components/OverlayTriggerButton/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__("react-router-dom");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_Components_Icons__ = __webpack_require__("./src/Components/Icons/index.tsx");
+
 
 
 class LikeButton extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
@@ -7241,12 +7325,6 @@ class LikeButton extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             liked: false,
             likeCount: 0,
         };
-        this.state = {
-            liked: this.props.liked,
-            likeCount: this.props.likeCount,
-        };
-        this.onUnlikeClick = this.onUnlikeClick.bind(this);
-        this.onLikeClick = this.onLikeClick.bind(this);
     }
     componentWillMount() {
         /*const { likeableType, likeableId } = this.props;
@@ -7260,37 +7338,36 @@ class LikeButton extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         // PubSub.unsubscribe(this.token);
     }
     render() {
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "like-button" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "like-button-wrapper" }, this.renderLikeButton()),
-            this.renderLikeCount()));
+        return (this.renderLikeButton());
     }
     renderLikeButton() {
-        if (this.state.liked) {
-            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "response-count unlike-button uk-text-center", onClick: this.onUnlikeClick },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "fa fa-heart fa-5x animated bounceIn" })));
+        if (this.props.link) {
+            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: this.props.link, className: "response-count uk-flex uk-inline uk-margin-left uk-margin-right" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Icons__["a" /* default */], { glyph: this.props.frontIcon, size: this.props.size ? this.props.size : 24 }),
+                this.props.text ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-visible@s" }, this.props.text + ' ' + this.props.likeCount)) : ''));
         }
         else {
-            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "response-count uk-margin-left uk-margin-right", onClick: this.onLikeClick },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "fa fa-heart-o fa-5x animated bounceIn" })));
+            if (this.props.buttonType === 'two') {
+                if (!this.props.liked) {
+                    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "response-count uk-flex uk-inline", onClick: () => this.props.frontClick() },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Icons__["a" /* default */], { glyph: this.props.frontIcon, size: this.props.size ? this.props.size : 24 }),
+                        this.props.text ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-visible@s" }, this.props.text + ' '
+                            + (this.props.likeCount ? this.props.likeCount : ''))) : ''));
+                }
+                else {
+                    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "response-count uk-flex uk-inline", onClick: () => this.props.backClick() },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Icons__["a" /* default */], { glyph: this.props.backIcon, size: this.props.size ? this.props.size : 24 }),
+                        this.props.text ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-visible@s" }, this.props.text + ' '
+                            + (this.props.likeCount ? this.props.likeCount : ''))) : ''));
+                }
+            }
+            else {
+                return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "response-count uk-flex uk-inline", onClick: () => this.props.frontClick() },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Icons__["a" /* default */], { glyph: this.props.frontIcon, size: this.props.size ? this.props.size : 24 }),
+                    this.props.text ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-visible@s" }, this.props.text + ' '
+                        + (this.props.likeCount ? this.props.likeCount : ''))) : ''));
+            }
         }
-    }
-    renderLikeCount() {
-        if (this.state.likeCount === 0) {
-            return null;
-        }
-        if (this.props.disableOverlay) {
-            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "like-count" }, this.state.likeCount);
-        }
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "like-count", style: { cursor: 'pointer' } },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_OverlayTriggerButton__["a" /* default */], { text: this.state.likeCount.toString(), overlayHeading: this.props.overlayHeading ? this.props.overlayHeading : '' })));
-    }
-    // tslint:disable-next-line:typedef
-    onUnlikeClick(e) {
-        // this.setState({ liked: data.liked, likeCount: data.count });
-    }
-    // tslint:disable-next-line:typedef
-    onLikeClick(e) {
-        // this.setState({ liked: data.liked, likeCount: data.count });
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = LikeButton;
@@ -7976,38 +8053,6 @@ const UserListItemContainer = __WEBPACK_IMPORTED_MODULE_0_styled_components___de
   border-bottom: 1px solid ${(props) => props.theme.bg.wash};
 `;
 /* unused harmony export UserListItemContainer */
-
-
-
-/***/ }),
-
-/***/ "./src/Components/OverlayTriggerButton/index.tsx":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-
-class OverlayTriggerButton extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
-    constructor(props) {
-        super(props);
-        this.handleOpenClick = this.handleOpenClick.bind(this);
-    }
-    render() {
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", null,
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { dangerouslySetInnerHTML: { __html: this.props.text }, onClick: this.handleOpenClick })));
-    }
-    // tslint:disable-next-line:typedef
-    handleOpenClick(event) {
-        /* Notify UserOverlay component
-    PubSub.publish('OverlayTriggerButton:onClick', {
-      endpoint: this.props.apiEndpoint,
-      overlayHeading: this.props.overlayHeading
-    });
-    */
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = OverlayTriggerButton;
 
 
 
@@ -10484,7 +10529,7 @@ const Subtitle = __WEBPACK_IMPORTED_MODULE_0_styled_components___default.a.p `
 
 
 
-const TopInterest = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["d" /* ALL_INTEREST */] }, ({ loading, error, data }) => {
+const TopInterest = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["e" /* ALL_INTEREST */] }, ({ loading, error, data }) => {
     if (loading) {
         return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_EmptyStates__["b" /* LoadingComponent */], null);
     }
@@ -11193,7 +11238,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
     componentWillMount() {
         this.props.client.query({
-            query: __WEBPACK_IMPORTED_MODULE_14_Graphql_Query__["k" /* ME */]
+            query: __WEBPACK_IMPORTED_MODULE_14_Graphql_Query__["l" /* ME */]
         }).then((res) => {
             console.log(res.data.me);
             this.setState({ me: res.data.me });
@@ -11236,7 +11281,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     loadMe() {
         this.props.client
             .query({
-            query: __WEBPACK_IMPORTED_MODULE_14_Graphql_Query__["k" /* ME */],
+            query: __WEBPACK_IMPORTED_MODULE_14_Graphql_Query__["l" /* ME */],
         })
             .then(({ data }) => {
             // tslint:disable-next-line:no-console
@@ -11360,6 +11405,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_medium_draft_lib_exporter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16_medium_draft_lib_exporter__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_Components_Loading__ = __webpack_require__("./src/Components/Loading/index.tsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_Components_EmptyStates__ = __webpack_require__("./src/Components/EmptyStates/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_link__ = __webpack_require__("./src/link.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__constants__ = __webpack_require__("./src/constants.ts");
+
+
 
 
 
@@ -11417,11 +11466,12 @@ class ArticleDetail extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         }
     }
     fetchArticleandOthers(slugOrId) {
+        const user = __WEBPACK_IMPORTED_MODULE_19_link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_20__constants__["b" /* CURRENT_USER */]);
         this.props.client
             .query({
-            query: __WEBPACK_IMPORTED_MODULE_11_Graphql_Query__["g" /* GET_ARTICLE_BY_ID */],
+            query: __WEBPACK_IMPORTED_MODULE_11_Graphql_Query__["h" /* GET_ARTICLE_BY_ID */],
             variables: {
-                id: slugOrId,
+                id: slugOrId, myUsername: user.username
             },
         })
             .then((result) => {
@@ -11463,12 +11513,13 @@ class ArticleDetail extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_TopInterest__["a" /* default */], null)),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "post-stats clearfix uk-padding-small uk-padding-remove-horizontal", style: { paddingTop: 10, paddingBottom: 1 } },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex pull-left uk-padding-small" },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8_Components_LikeButton__["a" /* default */], { liked: true, likeCount: 2 }),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "response-count uk-margin-left" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon:  forward; ratio: 1.2" }),
-                        "Share")),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex  response-count pull-right uk-padding-small" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex pull-left" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8_Components_LikeButton__["a" /* default */], { liked: true, likeCount: 1, text: "Like", frontIcon: "like", backIcon: "like-fill", buttonType: "two" }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "response-count uk-flex uk-inline" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: forward; ratio: 1.2" }),
+                        " ",
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-visible@s" }, "Share"))),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex  response-count pull-right" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "dropdown" },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-text uk-margin-right", type: "button" },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: more; ratio: 1.0" })),
@@ -11486,9 +11537,7 @@ class ArticleDetail extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { href: "#", className: "uk-text-bold" },
                                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: info; ratio: 1" }),
                                         " Report"))))),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-text" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: bookmark; ratio: 1.2" }),
-                        " Favourite")))));
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8_Components_LikeButton__["a" /* default */], { liked: false, frontIcon: "down", text: "Save", backIcon: "down-fill", buttonType: "two" })))));
     }
     renderCommentBox() {
         const { commentEditorState } = this.state;
@@ -11518,7 +11567,7 @@ class ArticleDetail extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
     renderCommentList() {
         const articleId = this.state.currentArticle.id;
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_11_Graphql_Query__["h" /* GET_COMMENTS */], variables: { articleId }, pollInterval: 1000 }, ({ loading, error, data }) => {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_11_Graphql_Query__["i" /* GET_COMMENTS */], variables: { articleId }, pollInterval: 1000 }, ({ loading, error, data }) => {
             if (loading) {
                 return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_17_Components_Loading__["b" /* default */], null);
             }
@@ -11691,7 +11740,7 @@ class Login extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                  uk-align-right`, to: "/signup" }, "Sign up now"))))));
     }
 }
-/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_4_Graphql_Mutation__["g" /* LOGIN_USER */], {
+/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_4_Graphql_Mutation__["h" /* LOGIN_USER */], {
     name: 'login',
 }))(Login)));
 
@@ -11985,7 +12034,7 @@ class Signup extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                  uk-align-right`, to: "/login" }, "Login now"))))));
     }
 }
-/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_3_Graphql_Mutation__["h" /* SIGNUP_USER */], {
+/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_3_Graphql_Mutation__["j" /* SIGNUP_USER */], {
     name: 'signup',
 }))(Signup)));
 
@@ -12080,7 +12129,7 @@ class InterestPage extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-primary", disabled: this.state.selected.length > 5 ? false : true, onClick: () => this.save() }, "SAVE INTEREST"))));
     }
 }
-/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["d" /* ALL_INTEREST */], { name: 'interests' }), Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_7_Graphql_Mutation__["a" /* ADD_INTERESTS */], { name: 'addInterests' }))(InterestPage)));
+/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["e" /* ALL_INTEREST */], { name: 'interests' }), Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_7_Graphql_Mutation__["a" /* ADD_INTERESTS */], { name: 'addInterests' }))(InterestPage)));
 
 
 /***/ }),
@@ -12213,7 +12262,7 @@ class SignupProfile extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     getCountry() {
         this.props.client
             .query({
-            query: __WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["a" /* ALL_COUNTRIES */],
+            query: __WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["b" /* ALL_COUNTRIES */],
         })
             .then((result) => {
             // tslint:disable-next-line:no-console
@@ -12227,7 +12276,7 @@ class SignupProfile extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     getInstitution(value) {
         this.props.client
             .query({
-            query: __WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["c" /* ALL_INSTITUTION */],
+            query: __WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["d" /* ALL_INSTITUTION */],
             variables: {
                 idCountry: value,
             },
@@ -12244,7 +12293,7 @@ class SignupProfile extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     getDepartment(value) {
         this.props.client
             .query({
-            query: __WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["b" /* ALL_DEPARTMENTS */],
+            query: __WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["c" /* ALL_DEPARTMENTS */],
             variables: {
                 idInstitutions: value,
             },
@@ -12371,7 +12420,7 @@ class SignupProfile extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-margin" }, this.state.loading ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "data-uk-spinner": "ratio: 1" })) : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: `uk-button uk-button-primary uk-width-1-1 ${isDisabled ? 'disabled' : 'disabled'}`, disabled: isDisabled, type: "submit" }, "SAVE & NEXT"))))));
     }
 }
-/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["a" /* ALL_COUNTRIES */], { name: 'country' }), Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_7_Graphql_Mutation__["b" /* ADD_PROFILE */], { name: 'addProfile' }), Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_7_Graphql_Mutation__["b" /* ADD_PROFILE */], {
+/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["b" /* ALL_COUNTRIES */], { name: 'country' }), Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_7_Graphql_Mutation__["b" /* ADD_PROFILE */], { name: 'addProfile' }), Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_7_Graphql_Mutation__["b" /* ADD_PROFILE */], {
     name: 'addProfile',
 }))(SignupProfile)));
 
@@ -12469,7 +12518,7 @@ class ChatDetail extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     render() {
         const { open, emoji, text } = this.state;
         const { channelId } = this.props;
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_react_apollo__["Query"], { pollInterval: 3000, query: __WEBPACK_IMPORTED_MODULE_11_Graphql_Query__["i" /* GET_MESSAGES */], variables: { channelId } }, ({ loading, error, data }) => {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_react_apollo__["Query"], { pollInterval: 3000, query: __WEBPACK_IMPORTED_MODULE_11_Graphql_Query__["j" /* GET_MESSAGES */], variables: { channelId } }, ({ loading, error, data }) => {
             if (loading) {
                 return null;
             }
@@ -12739,7 +12788,7 @@ class ComposeWrite extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         this
             .props
             .client
-            .query({ query: __WEBPACK_IMPORTED_MODULE_1_Graphql_Query__["d" /* ALL_INTEREST */] })
+            .query({ query: __WEBPACK_IMPORTED_MODULE_1_Graphql_Query__["e" /* ALL_INTEREST */] })
             .then((result) => {
             // tslint:disable-next-line:no-any
             const tempList = [];
@@ -12784,7 +12833,7 @@ class ComposeWrite extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
     fetchArticle(id) {
         this.props.client.query({
-            query: __WEBPACK_IMPORTED_MODULE_1_Graphql_Query__["g" /* GET_ARTICLE_BY_ID */],
+            query: __WEBPACK_IMPORTED_MODULE_1_Graphql_Query__["h" /* GET_ARTICLE_BY_ID */],
             variables: {
                 id
             }
@@ -12853,7 +12902,7 @@ class ComposeWrite extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_medium_draft__["Editor"], { ref: (ref) => this.editor = ref, editorState: editorState, onChange: this.onChangeBody, placeholder: "Write article content", className: 'threadComposer' })))))));
     }
 }
-/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_3_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_3_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_3_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_1_Graphql_Query__["d" /* ALL_INTEREST */], { name: 'allInterest' }))(ComposeWrite)));
+/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_3_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_3_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_3_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_1_Graphql_Query__["e" /* ALL_INTEREST */], { name: 'allInterest' }))(ComposeWrite)));
 
 
 /***/ }),
@@ -13411,7 +13460,7 @@ class Forum extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 this.props.channels.Loading ? this.renderLoading() : this.renderContent())));
     }
 }
-/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_14_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_14_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_14_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_16_Graphql_Query__["f" /* GET_ALL_MY_CHANNEL */], {
+/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_14_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_14_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_14_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_16_Graphql_Query__["g" /* GET_ALL_MY_CHANNEL */], {
     name: 'channels',
 }), Object(__WEBPACK_IMPORTED_MODULE_14_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_15_Graphql_Mutation__["f" /* CREATE_MESSAGE */], { name: 'sendMessage' }))(Forum)));
 /*
@@ -14061,7 +14110,7 @@ class Profile extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
     render() {
         const { username, hasNoThreads, selectedView, hasThreads } = this.state;
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_apollo__["Query"], { pollInterval: 3000, query: __WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["j" /* GET_USER_BY_USERNAME */], variables: { username } }, ({ loading, error, data }) => {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_apollo__["Query"], { pollInterval: 3000, query: __WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["k" /* GET_USER_BY_USERNAME */], variables: { username } }, ({ loading, error, data }) => {
             if (loading) {
                 return null;
             }
@@ -14106,7 +14155,7 @@ class Profile extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_ArticleList__["b" /* default */], null))),
                         selectedView === 'search' &&
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#e1eaf1' } },
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_apollo__["Query"], { pollInterval: 3000, query: ACTIVITY, variables: { username } }, ({ loading, error, data }) => {
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_apollo__["Query"], { pollInterval: 3000, query: __WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["a" /* ACTIVITY */], variables: { username, myUsername: currentUser.id } }, ({ loading, error, data }) => {
                                     if (loading) {
                                         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
                                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_ArticleList__["a" /* MyLoader */], null),
@@ -14611,7 +14660,7 @@ class UserSettings extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         // track('user', 'settings viewed', null);
     }
     render() {
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__["k" /* ME */] }, ({ loading, error, data }) => {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__["l" /* ME */] }, ({ loading, error, data }) => {
             if (loading) {
                 return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5_Components_Loading__["a" /* Loading */], null);
             }
@@ -15373,6 +15422,13 @@ const ARTICLE_FRAGMENT = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
     createdAt
     updatedAt
     tags
+    comments{
+      id
+    }
+    likes{
+      username
+      avatar
+    }
     headerImage {
       id
       url
@@ -15454,7 +15510,7 @@ const SIGNUP_USER = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["c" /* USER_FRAGMENT */]}
 `;
-/* harmony export (immutable) */ __webpack_exports__["h"] = SIGNUP_USER;
+/* harmony export (immutable) */ __webpack_exports__["j"] = SIGNUP_USER;
 
 /**
  * @description user login for graphql mutation
@@ -15471,7 +15527,7 @@ const LOGIN_USER = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["c" /* USER_FRAGMENT */]}
 `;
-/* harmony export (immutable) */ __webpack_exports__["g"] = LOGIN_USER;
+/* harmony export (immutable) */ __webpack_exports__["h"] = LOGIN_USER;
 
 const ADD_PROFILE = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
   mutation addProfile($photoId: ID!, $countryId: ID!, $institutionId: ID!, $departmentId: ID!){
@@ -15562,6 +15618,50 @@ const CREATE_COMMENT = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
 `;
 /* harmony export (immutable) */ __webpack_exports__["e"] = CREATE_COMMENT;
 
+const LIKE_ARTICLE = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation likeArticle($id: ID!) {
+  likeArticle(id: $id){
+      id
+      title
+      title
+    }
+  }
+`;
+/* harmony export (immutable) */ __webpack_exports__["g"] = LIKE_ARTICLE;
+
+const UNLIKE_ARTICLE = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation unLikeArticle($id: ID!){
+    likeArticle(id: $id){
+      id
+      title
+      title
+    }
+  }
+`;
+/* harmony export (immutable) */ __webpack_exports__["k"] = UNLIKE_ARTICLE;
+
+const SAVE_ARTICLE = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation saveArticle($id: ID!){
+    favourite(id: $id){
+      id
+      title
+      title
+    }
+  }
+`;
+/* harmony export (immutable) */ __webpack_exports__["i"] = SAVE_ARTICLE;
+
+const UNSAVE_ARTICLE = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation unSaveArticle($id: ID!){
+    unFavourite(id: $id){
+      id
+      title
+      title
+    }
+  }
+`;
+/* harmony export (immutable) */ __webpack_exports__["l"] = UNSAVE_ARTICLE;
+
 
 
 /***/ }),
@@ -15616,41 +15716,59 @@ const USER_EXIST = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
     userExist( email: $email)
   }
 `;
-/* harmony export (immutable) */ __webpack_exports__["l"] = USER_EXIST;
+/* harmony export (immutable) */ __webpack_exports__["m"] = USER_EXIST;
 
 /**
  * @description check if current user article
  */
 const ARTICLES = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
-  query articles {
+  query articles($myUsername: String) {
     articles{
       ...articleFragment
+      saved: userFavourited(where: {username: $myUsername }) {
+      id
+    }
+    liked: likes(where: {username: $myUsername }) {
+      id
+    }
     }
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["a" /* ARTICLE_FRAGMENT */]}
 `;
-/* harmony export (immutable) */ __webpack_exports__["e"] = ARTICLES;
+/* harmony export (immutable) */ __webpack_exports__["f"] = ARTICLES;
 
 /**
  * @description get one article by id
  */
 const GET_ARTICLE_BY_ID = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
-  query getArticleById($id: ID!){
+  query getArticleById($id: ID!, $myUsername: String){
     getArticleById(id: $id){
       ...articleFragment
+      saved: userFavourited(where: {username: $myUsername }) {
+        id
+      }
+      liked: likes(where: {username: $myUsername }) {
+        id
+      }
     }
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["a" /* ARTICLE_FRAGMENT */]}
 `;
-/* harmony export (immutable) */ __webpack_exports__["g"] = GET_ARTICLE_BY_ID;
+/* harmony export (immutable) */ __webpack_exports__["h"] = GET_ARTICLE_BY_ID;
 
 /**
  * @description get one article by slug
  */
 const GET_ARTICLE_BY_SLUG = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
-  query getArticleBySlug($slug: ID!){
+  query getArticleBySlug($slug: ID!, $myUsername: String){
     getArticleBySlug(slug: $slug){
       ...articleFragment
+      saved: userFavourited(where: {username: $myUsername }) {
+        id
+      }
+      liked: likes(where: {username: $myUsername }) {
+        id
+      }
     }
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["a" /* ARTICLE_FRAGMENT */]}
@@ -15681,7 +15799,7 @@ const ME = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["c" /* USER_FRAGMENT */]}
 `;
-/* harmony export (immutable) */ __webpack_exports__["k"] = ME;
+/* harmony export (immutable) */ __webpack_exports__["l"] = ME;
 
 /**
  * @description check if current user article
@@ -15707,7 +15825,7 @@ const GET_USER_BY_USERNAME = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["c" /* USER_FRAGMENT */]}
 `;
-/* harmony export (immutable) */ __webpack_exports__["j"] = GET_USER_BY_USERNAME;
+/* harmony export (immutable) */ __webpack_exports__["k"] = GET_USER_BY_USERNAME;
 
 /**
  * @description get all countries
@@ -15721,7 +15839,7 @@ const ALL_COUNTRIES = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
     }
   }
 `;
-/* harmony export (immutable) */ __webpack_exports__["a"] = ALL_COUNTRIES;
+/* harmony export (immutable) */ __webpack_exports__["b"] = ALL_COUNTRIES;
 
 /**
  * @description get all departments in institution
@@ -15734,7 +15852,7 @@ const ALL_DEPARTMENTS = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
     }
   }
 `;
-/* harmony export (immutable) */ __webpack_exports__["b"] = ALL_DEPARTMENTS;
+/* harmony export (immutable) */ __webpack_exports__["c"] = ALL_DEPARTMENTS;
 
 /**
  * @description get all departments
@@ -15747,7 +15865,7 @@ const ALL_INSTITUTION = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
     }
   }
 `;
-/* harmony export (immutable) */ __webpack_exports__["c"] = ALL_INSTITUTION;
+/* harmony export (immutable) */ __webpack_exports__["d"] = ALL_INSTITUTION;
 
 /**
  * @description get all interest
@@ -15762,7 +15880,7 @@ const ALL_INTEREST = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
     }
   }
 `;
-/* harmony export (immutable) */ __webpack_exports__["d"] = ALL_INTEREST;
+/* harmony export (immutable) */ __webpack_exports__["e"] = ALL_INTEREST;
 
 /**
  * @description get all interest
@@ -15794,7 +15912,7 @@ const GET_MESSAGES = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
     }
   }
 `;
-/* harmony export (immutable) */ __webpack_exports__["i"] = GET_MESSAGES;
+/* harmony export (immutable) */ __webpack_exports__["j"] = GET_MESSAGES;
 
 /**
  * @description get all messages
@@ -15820,7 +15938,7 @@ const GET_ALL_MY_CHANNEL = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
     }
   }
 `;
-/* harmony export (immutable) */ __webpack_exports__["f"] = GET_ALL_MY_CHANNEL;
+/* harmony export (immutable) */ __webpack_exports__["g"] = GET_ALL_MY_CHANNEL;
 
 const GET_COMMENTS = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
   query comments($articleId: ID!){
@@ -15841,22 +15959,34 @@ const GET_COMMENTS = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
     
   }
 `;
-/* harmony export (immutable) */ __webpack_exports__["h"] = GET_COMMENTS;
+/* harmony export (immutable) */ __webpack_exports__["i"] = GET_COMMENTS;
 
 const ACTIVITY = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
-  query activity($username: String!) {
+  query activity($username: String!, $myUsername: String) {
     activity(username: $username){
       ...articleFragment
+      saved: userFavourited(where: {username: $myUsername }) {
+        id
+      }
+      liked: likes(where: {username: $myUsername }) {
+        id
+      }
     }
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["a" /* ARTICLE_FRAGMENT */]}
 `;
-/* unused harmony export ACTIVITY */
+/* harmony export (immutable) */ __webpack_exports__["a"] = ACTIVITY;
 
 const GET_ARTICLES_BY_USERNAME = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
-  query getArticlesByUsername($username: String!) {
-    getArticlesByUsername(username: $username){
+  query getArticlesByUsername($username: String!, $myUsername: String) {
+    getArticlesByUsername(username: $myUsername){
       ...articleFragment
+      saved: userFavourited(where: {username: $myUsername }) {
+      id
+      }
+      liked: likes(where: {username: $myUsername }) {
+        id
+      }
     }
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["a" /* ARTICLE_FRAGMENT */]}
