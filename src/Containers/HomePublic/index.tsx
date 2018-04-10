@@ -75,8 +75,10 @@ class HomePublic extends React.Component<Props> {
                       <div>
                           <div className="uk-card uk-card-default uk-text-center uk-card-hover uk-card-body">
                             <span data-uk-icon="icon: hashtag; ratio: 5" />
-                            <h3 className="uk-card-title">Default</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                            <h3 className="uk-card-title">Interact with Students</h3>
+                            <p>Chat, talk and communicate with other students anywhere and everywhere you are.
+                              Take advantage to know students around and abroad and grow your network.
+                            </p>
                           </div>
                       </div>
                       <div>

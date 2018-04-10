@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router-dom';
+import ArticleItem from 'Components/ArticleItem';
+import InfiniteScroll from 'react-infinite-scroller';
 import Avatar from 'Components/Avatar';
 import { compose, graphql, withApollo, QueryProps, Query } from 'react-apollo';
 import { ME, GET_USER_BY_USERNAME } from 'Graphql/Query';
 import { User } from 'CustomTypings/schema';
 import SeoMaker from 'Components/SeoMaker';
-import ArticleList from 'Components/ArticleList';
+import ArticleList, { MyLoader } from 'Components/ArticleList';
 import FollowButton from 'Components/FollowButton';
 import AppViewWrapper from 'Components/AppViewWrapper';
 import Titlebar from 'Components/Titlebar';
@@ -25,6 +27,9 @@ import { CoverPhoto } from 'Components/Profile/coverPhoto';
 import { Grid, Meta, Content, Extras, ColumnHeading } from './style';
 import './style.scss';
 import { LoginButton } from 'Components/MoreViews/style';
+import { cookies } from 'link';
+import { CURRENT_USER } from '../../constants';
+import { ErrorComponent } from 'Components/EmptyStates';
 
 interface Response {
   me: User;
@@ -43,7 +48,7 @@ export default class Profile extends React.Component<Props> {
     is_typing: false,
     username: '',
     hasNoThreads: false,
-    selectedView: 'participant',
+    selectedView: 'search',
     hasThreads: true,
   };
 
@@ -70,15 +75,14 @@ componentDidUpdate(prevProps) {
 
   render() {
     const { username, hasNoThreads, selectedView, hasThreads } = this.state;
-
+  
     return (
-      
       <Query pollInterval={3000} query={GET_USER_BY_USERNAME} variables={{ username }} >
         {({loading, error, data}) => {
           if (loading) { return null; }
           if (error) { return `Error!: ${error}`; }
           console.log(data);
-          const currentUser = data.getUserByUsername as User;
+          const currentUser = cookies.get(CURRENT_USER) as User;
           const user = data.getUserByUsername as User;
           const { username } = user;
           return(
@@ -91,8 +95,8 @@ componentDidUpdate(prevProps) {
               backRoute={'/'}
               noComposer
             />
-            <Grid  style={{backgroundColor: 'transparent'}}>
-              <CoverPhoto src={user.avatar ? user.avatar : ''} style={{ backgroundColor: '#fff' }}/>
+            <Grid  style={{backgroundColor: ''}}>
+              <CoverPhoto src={user.headerImage ? user.headerImage : ''} style={{ backgroundColor: '#fff' }}/>
               <Meta style={{ backgroundColor: '#fff' }}>
                 <UserProfile
                   user={user}
@@ -120,7 +124,7 @@ componentDidUpdate(prevProps) {
                     onClick={() => this.handleSegmentClick('search')}
                     selected={selectedView === 'search'}
                   >
-                    Search
+                  {user.articles ? user.articles.length : ''}  Articles
                   </DesktopSegment>
   
                   <DesktopSegment
@@ -128,7 +132,7 @@ componentDidUpdate(prevProps) {
                     onClick={() => this.handleSegmentClick('participant')}
                     selected={selectedView === 'participant'}
                   >
-                    Replies
+                   {user.connectTo ? user.connectTo.length : ''} Connections
                   </DesktopSegment>
   
                   <DesktopSegment
@@ -136,28 +140,28 @@ componentDidUpdate(prevProps) {
                     onClick={() => this.handleSegmentClick('creator')}
                     selected={selectedView === 'creator'}
                   >
-                    Threads
+                    Media
                   </DesktopSegment>
                   <MobileSegment
                     segmentLabel="search"
                     onClick={() => this.handleSegmentClick('search')}
                     selected={selectedView === 'search'}
                   >
-                    Search
+                    Articles
                   </MobileSegment>
                   <MobileSegment
                     segmentLabel="participant"
                     onClick={() => this.handleSegmentClick('participant')}
                     selected={selectedView === 'participant'}
                   >
-                    Replies
+                   {user.connectTo ? user.connectTo.length : ''} Connections
                   </MobileSegment>
                   <MobileSegment
                     segmentLabel="creator"
                     onClick={() => this.handleSegmentClick('creator')}
                     selected={selectedView === 'creator'}
                   >
-                    Threads
+                    Media
                   </MobileSegment>
                 </SegmentedControl>
   
@@ -169,7 +173,49 @@ componentDidUpdate(prevProps) {
                     </div>
                   )}
   
-                {selectedView === 'search' && <Search user={user} />}
+                {selectedView === 'search' && 
+                  <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
+                      <Query pollInterval={3000} query={ACTIVITY} variables={{ username }} >
+                        {({loading, error, data}) => {
+                          if (loading) {
+                            return (
+                              <div>
+                                <MyLoader />
+                                <br/>
+                                <br/>
+                                <MyLoader />
+                                <br/>
+                                <br/>
+                                <MyLoader />
+                              </div>
+                              );
+                          }
+                          if (loading) {
+                            return <ErrorComponent />;
+                          }
+
+                          return (
+                            <InfiniteScroll
+                              pageStart={0}
+                              hasMore={true || false}
+                              loader={
+                                  <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
+                                      <MyLoader />
+                                  </div>
+                              // tslint:disable-next-line:jsx-curly-spacing
+                              }
+                            >
+                              {data.activity ? data.activity.map((article) => (
+                                  <div key={article.id}>
+                                    <ArticleItem article={article} />
+                                  </div>
+                              )) : null}
+                            </InfiniteScroll>
+                          );
+                        }}
+                      </Query>
+                  </div>
+                }
   
                 {!hasThreads && <NullState bg="null" heading={nullHeading} />}
               </Content>

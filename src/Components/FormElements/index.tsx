@@ -14,6 +14,7 @@ import {
   StyledError,
   StyledSuccess,
   PhotoInputLabel,
+  StyledSelect,
   CoverInputLabel,
   InputOverlay,
   CoverImage,
@@ -50,6 +51,14 @@ export const Input = (props: InputProps) => {
         data-cy={props.dataCy}
       />
     </StyledLabel>
+  );
+};
+
+export const Select = (props: InputProps) => {
+  return (
+      <StyledSelect
+        {...props}
+      />
   );
 };
 

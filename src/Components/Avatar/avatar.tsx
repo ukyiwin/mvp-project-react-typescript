@@ -3,6 +3,7 @@ import { optimize } from 'Utils/images';
 import HoverProfile from './hoverProfile';
 import AvatarImage from './image';
 import { Status, AvatarLink, AvatarNoLink } from './style';
+import { User } from 'CustomTypings/schema';
 
 const LinkHandler = (props) => {
   if (props.link && !props.noLink) {
@@ -14,8 +15,7 @@ const LinkHandler = (props) => {
 
 interface AvatarProps {
   src: string;
-  community?: any;
-  user?: any;
+  user?: User;
   size?: string;
   mobileSize?: string;
   link?: string;
@@ -66,7 +66,7 @@ export default class Avatar extends Component<AvatarProps, State> {
       >
         <LinkHandler {...this.props}>
           <AvatarImage
-            src={optimizedAvatar}
+            src={source}
             size={size}
             mobileSize={mobileSize}
           />

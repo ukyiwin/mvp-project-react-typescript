@@ -20,7 +20,7 @@ const PhotoContainer = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  border-radius: ${(props: any) => (props.large ? '0' : '12px 12px 0 0')};
+  border-radius: ${(props: any) => (props.large ? '0' : '0px 0px 0 0')};
 
   @media (max-width: 768px) {
     flex: 0 0 ${(props: any) => (props.large ? '160px' : '64px')};
@@ -39,7 +39,7 @@ export const CoverPhoto = (props: any) => {
     return (
       <PhotoContainer coverURL={props.user.coverPhoto}>
         {props.currentUser && props.currentUser.id === props.user.id ? (
-          <Link to={`../users/${props.user.username}/settings`}>
+          <Link to={`../n/${props.user.username}/settings`}>
             <CoverAction
               glyph="settings"
               color="text.reverse"
@@ -55,7 +55,7 @@ export const CoverPhoto = (props: any) => {
             color="text.reverse"
             hoverColor="text.reverse"
             onClick={props.onClick}
-            tipText={`Message ${props.user.name}`}
+            tipText={`Message ${props.user.firstname}`}
             tipLocation={'left'}
           />
         ) : null}
