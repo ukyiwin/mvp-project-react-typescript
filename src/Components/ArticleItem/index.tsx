@@ -26,7 +26,7 @@ class ArticleItem extends React.Component<Props> {
 
     save() {
       this.props.client.mutate({
-        query: UNSAVE_ARTICLE,
+        mutation: UNSAVE_ARTICLE,
         variable: {
           id: this.props.article.id
         }
@@ -39,7 +39,7 @@ class ArticleItem extends React.Component<Props> {
 
     unSave() {
       this.props.client.mutate({
-        query: SAVE_ARTICLE,
+        mutation: SAVE_ARTICLE,
         variable: {
           id: this.props.article.id
         }
@@ -52,11 +52,11 @@ class ArticleItem extends React.Component<Props> {
 
     like() {
       this.props.client.mutate({
-        query: LIKE_ARTICLE,
+        mutation: LIKE_ARTICLE,
         variable: {
           id: this.props.article.id
         },
-        
+
       }).then((res) => {
         // dhjh
       }).catch((err) => {
@@ -66,7 +66,7 @@ class ArticleItem extends React.Component<Props> {
 
     unLike() {
       this.props.client.mutate({
-        query: UNLIKE_ARTICLE,
+        mutation: UNLIKE_ARTICLE,
         variable: {
           id: this.props.article.id
         }

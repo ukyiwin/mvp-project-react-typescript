@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "15c0ade666fbfbcbfca6"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "d3afaf11ff0eb1ff34d3"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1198,7 +1198,7 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
     save() {
         this.props.client.mutate({
-            query: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["l" /* UNSAVE_ARTICLE */],
+            mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["l" /* UNSAVE_ARTICLE */],
             variable: {
                 id: this.props.article.id
             }
@@ -1210,7 +1210,7 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
     unSave() {
         this.props.client.mutate({
-            query: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["i" /* SAVE_ARTICLE */],
+            mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["i" /* SAVE_ARTICLE */],
             variable: {
                 id: this.props.article.id
             }
@@ -1222,7 +1222,7 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
     like() {
         this.props.client.mutate({
-            query: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["g" /* LIKE_ARTICLE */],
+            mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["g" /* LIKE_ARTICLE */],
             variable: {
                 id: this.props.article.id
             },
@@ -1234,7 +1234,7 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
     unLike() {
         this.props.client.mutate({
-            query: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["k" /* UNLIKE_ARTICLE */],
+            mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["k" /* UNLIKE_ARTICLE */],
             variable: {
                 id: this.props.article.id
             }
