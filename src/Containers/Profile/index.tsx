@@ -25,6 +25,8 @@ import { CoverPhoto } from 'Components/Profile/coverPhoto';
 import { Grid, Meta, Content, Extras, ColumnHeading } from './style';
 import './style.scss';
 import { LoginButton } from 'Components/MoreViews/style';
+import { cookies } from 'link';
+import { CURRENT_USER } from '../../constants';
 
 interface Response {
   me: User;
@@ -70,15 +72,14 @@ componentDidUpdate(prevProps) {
 
   render() {
     const { username, hasNoThreads, selectedView, hasThreads } = this.state;
-
+  
     return (
-      
       <Query pollInterval={3000} query={GET_USER_BY_USERNAME} variables={{ username }} >
         {({loading, error, data}) => {
           if (loading) { return null; }
           if (error) { return `Error!: ${error}`; }
           console.log(data);
-          const currentUser = data.getUserByUsername as User;
+          const currentUser = cookies.get(CURRENT_USER) as User;
           const user = data.getUserByUsername as User;
           const { username } = user;
           return(
@@ -92,7 +93,7 @@ componentDidUpdate(prevProps) {
               noComposer
             />
             <Grid  style={{backgroundColor: 'transparent'}}>
-              <CoverPhoto src={user.avatar ? user.avatar : ''} style={{ backgroundColor: '#fff' }}/>
+              <CoverPhoto src={user.headerImage ? user.headerImage : ''} style={{ backgroundColor: '#fff' }}/>
               <Meta style={{ backgroundColor: '#fff' }}>
                 <UserProfile
                   user={user}
@@ -120,7 +121,7 @@ componentDidUpdate(prevProps) {
                     onClick={() => this.handleSegmentClick('search')}
                     selected={selectedView === 'search'}
                   >
-                    Search
+                    Articles
                   </DesktopSegment>
   
                   <DesktopSegment
@@ -128,7 +129,7 @@ componentDidUpdate(prevProps) {
                     onClick={() => this.handleSegmentClick('participant')}
                     selected={selectedView === 'participant'}
                   >
-                    Replies
+                    Connections
                   </DesktopSegment>
   
                   <DesktopSegment
@@ -136,28 +137,28 @@ componentDidUpdate(prevProps) {
                     onClick={() => this.handleSegmentClick('creator')}
                     selected={selectedView === 'creator'}
                   >
-                    Threads
+                    Media
                   </DesktopSegment>
                   <MobileSegment
                     segmentLabel="search"
                     onClick={() => this.handleSegmentClick('search')}
                     selected={selectedView === 'search'}
                   >
-                    Search
+                    Articles
                   </MobileSegment>
                   <MobileSegment
                     segmentLabel="participant"
                     onClick={() => this.handleSegmentClick('participant')}
                     selected={selectedView === 'participant'}
                   >
-                    Replies
+                    Connections
                   </MobileSegment>
                   <MobileSegment
                     segmentLabel="creator"
                     onClick={() => this.handleSegmentClick('creator')}
                     selected={selectedView === 'creator'}
                   >
-                    Threads
+                    Media
                   </MobileSegment>
                 </SegmentedControl>
   

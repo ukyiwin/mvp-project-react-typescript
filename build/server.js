@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "8184ee2c1cdf48830123"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "bbd39fb93d342bb9424b"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1392,7 +1392,7 @@ class Avatar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         source = [optimizedAvatar, userFallback];
         return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__style__["f" /* Status */], Object.assign({ size: size, mobileSize: mobileSize }, this.props, { onMouseEnter: this.hover, onMouseLeave: this.hover }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(LinkHandler, Object.assign({}, this.props),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__image__["a" /* default */], { src: optimizedAvatar, size: size, mobileSize: mobileSize })),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__image__["a" /* default */], { src: source, size: size, mobileSize: mobileSize })),
             showProfile &&
                 isHovering && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__hoverProfile__["a" /* default */], Object.assign({ source: source }, this.props))));
     }
@@ -1580,7 +1580,7 @@ class AvatarImage extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             /* istanbul ignore else */
             if (cache[this.sourceList[i]] === true) {
                 this.state = { currentIndex: i, isLoading: false, isLoaded: true };
-                return true;
+                return;
             }
         }
         this.state = this.sourceList.length
@@ -7103,7 +7103,9 @@ class SideBar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_Components_TopInterest__ = __webpack_require__("./src/Components/TopInterest/index.tsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_glamorous__ = __webpack_require__("glamorous");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_glamorous___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_glamorous__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_Components_UserProfileBox__ = __webpack_require__("./src/Components/UserProfileBox/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_Graphql_Query__ = __webpack_require__("./src/Graphql/Query/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_Components_Profile__ = __webpack_require__("./src/Components/Profile/index.tsx");
+
 
 
 
@@ -7124,23 +7126,31 @@ const A = __WEBPACK_IMPORTED_MODULE_5_glamorous___default.a.a({
 class LeftSideBar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     render() {
         // const { loading } = this.state;
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: " uk-width-1-1" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 raised card", style: { paddingTop: 30, marginBottom: 10 } },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_UserProfileBox__["a" /* default */], { me: this.props.user })),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 raised card", style: { marginBottom: 10, padding: 0 } },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_Label__["a" /* default */], { text: "Top Interests" }),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_TopInterest__["a" /* default */], null),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "fluid uk-padding-small" },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "ui mini celled horizontal list" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "item" }, "About Us"),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "item" }, "Terms & Terms"),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "item" }, "Privacy"),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "item" }, "Career"),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "item" }, "Support")),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", null, "Copyright @ 2018, Unizonn")))),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null)));
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_6_Graphql_Query__["k" /* ME */] }, ({ data, loading, error }) => {
+            if (loading) {
+                return null;
+            }
+            if (error) {
+                return null;
+            }
+            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: " uk-width-1-1" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 raised card", style: { marginBottom: 10, backgroundColor: '#000' } },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Profile__["a" /* UserProfile */], { user: data.me, username: data.me.username, profileSize: "simple" })),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 raised card", style: { marginBottom: 10, padding: 0 } },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_Label__["a" /* default */], { text: "Top Interests" }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_TopInterest__["a" /* default */], null),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "fluid uk-padding-small" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "ui mini celled horizontal list" },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "item" }, "About Us"),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "item" }, "Terms & Terms"),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "item" }, "Privacy"),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "item" }, "Career"),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "item" }, "Support")),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", null, "Copyright @ 2018, Unizonn")))),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null)));
+        }));
     }
 }
 /* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_2_react_apollo__["withApollo"])(LeftSideBar)));
@@ -8671,8 +8681,8 @@ const CoverAction = __WEBPACK_IMPORTED_MODULE_1_styled_components___default()(__
 const CoverPhoto = (props) => {
     if (props.user) {
         return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(PhotoContainer, { coverURL: props.user.coverPhoto },
-            props.currentUser && props.currentUser.id === props.user.id ? (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_Components_Link__["a" /* default */], { to: `../users/${props.user.username}/settings` },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(CoverAction, { glyph: "settings", color: "text.reverse", opacity: "0.5", hoverColor: "text.reverse", tipText: `Edit profile`, tipLocation: 'left' }))) : props.currentUser ? (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(CoverAction, { glyph: "message-fill", color: "text.reverse", hoverColor: "text.reverse", onClick: props.onClick, tipText: `Message ${props.user.name}`, tipLocation: 'left' })) : null,
+            props.currentUser && props.currentUser.id === props.user.id ? (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_Components_Link__["a" /* default */], { to: `../n/${props.user.username}/settings` },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(CoverAction, { glyph: "settings", color: "text.reverse", opacity: "0.5", hoverColor: "text.reverse", tipText: `Edit profile`, tipLocation: 'left' }))) : props.currentUser ? (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(CoverAction, { glyph: "message-fill", color: "text.reverse", hoverColor: "text.reverse", onClick: props.onClick, tipText: `Message ${props.user.firstname}`, tipLocation: 'left' })) : null,
             props.children));
     }
     else {
@@ -9141,7 +9151,7 @@ const UserWithData = ({ user, profileSize, currentUser, history }) => {
     switch (componentSize) {
         case 'full':
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["h" /* FullProfile */], null,
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__Avatar_avatar__["a" /* default */], { user: user, size: 128, onlineSize: 'large', src: `${user.avatar ? user.avatar : ''}`, noLink: true, style: {
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__Avatar_avatar__["a" /* default */], { user: user, size: 128, onlineSize: 'large', src: user.avatar ? user.avatar : '', noLink: true, style: {
                         boxShadow: '0 0 0 2px #fff',
                         marginRight: '0',
                     } }),
@@ -9150,44 +9160,49 @@ const UserWithData = ({ user, profileSize, currentUser, history }) => {
                     "@",
                     user.username),
                 (user.firstname || user.lastname) && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["g" /* FullDescription */], null,
-                    user.firstname && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", null, user.firstname),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9__Reputation__["a" /* default */], { reputation: 90 }),
-                    user.firstname && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["f" /* ExtLink */], null,
+                    user.bio ? user.bio : 'Your bio is empty please go to profile settings to enter it',
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9__Reputation__["a" /* default */], { reputation: 0 }),
+                    user.department && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["f" /* ExtLink */], null,
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__Icons__["a" /* default */], { glyph: "link", size: 24 }),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { target: "_blank", rel: "noopener noreferrer", href: Object(__WEBPACK_IMPORTED_MODULE_5_Utils_normalizeUrl__["a" /* default */])(user.firstname) }, user.firstname)))))));
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { target: "_blank", rel: "noopener noreferrer", href: Object(__WEBPACK_IMPORTED_MODULE_5_Utils_normalizeUrl__["a" /* default */])(user.department.name) }, user.department.name))),
+                    user.institution && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["f" /* ExtLink */], null,
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__Icons__["a" /* default */], { glyph: "link", size: 24 }),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { target: "_blank", rel: "noopener noreferrer", href: Object(__WEBPACK_IMPORTED_MODULE_5_Utils_normalizeUrl__["a" /* default */])(user.institution.title) }, user.institution.title)))))));
         case 'simple':
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__Card__["b" /* default */], null,
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7__coverPhoto__["a" /* CoverPhoto */], { user: user, onClick: () => initMessage(), currentUser: currentUser }),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["b" /* CoverLink */], { to: `/users/${user.username}` },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["b" /* CoverLink */], { to: `/n/${user.username}` },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__Avatar_avatar__["a" /* default */], { user: user, size: 64, radius: 64, onlineSize: 'large', isOnline: false, src: `${user.avatar ? user.avatar : ''}`, noLink: true, style: {
                             boxShadow: '0 0 0 2px #fff',
                             flex: '0 0 64px',
                             marginRight: '0',
                         } }),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["e" /* CoverTitle */], null, user.firstname + ' ' + user.firstname)),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["e" /* CoverTitle */], null, user.firstname + ' ' + user.lastname)),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["d" /* CoverSubtitle */], { center: true },
                     user.username && `@${user.username}`,
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9__Reputation__["a" /* default */], { tipText: 'Total rep across all communities', size: 'large', reputation: 0 })),
-                user.firstname && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["a" /* CoverDescription */], null,
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", null, user.firstname)))));
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9__Reputation__["a" /* default */], { tipText: 'Total reading score', size: 'large', reputation: 0 })),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["a" /* CoverDescription */], null,
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", null, user.bio ? user.bio : 'Your bio is empty please go to profile settings to enter it'))));
         case 'default':
         default:
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__Card__["b" /* default */], null,
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["k" /* ProfileHeader */], null,
-                    user.username ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["m" /* ProfileHeaderLink */], { to: `/users/${user.username}` },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__Avatar_avatar__["a" /* default */], { user: user, size: 32, radius: 32, isOnline: false, src: `${user.avatar ? user.avatar : ''}`, noLink: true, style: { marginRight: '16px' } }),
+                    user.username ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["m" /* ProfileHeaderLink */], { to: `/n/${user.username}` },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__Avatar_avatar__["a" /* default */], { user: user, size: 32, radius: 32, isOnline: false, src: user.avatar ? user.avatar : '', noLink: true, style: { marginRight: '16px' } }),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["n" /* ProfileHeaderMeta */], null,
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["q" /* Title */], null, user.firstname + ' ' + user.lastname),
                             user.username && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["p" /* Subtitle */], null,
                                 "@",
                                 user.username))))) : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["o" /* ProfileHeaderNoLink */], null,
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__Avatar_avatar__["a" /* default */], { user: user, size: 32, radius: 32, isOnline: false, src: `${user.avatar ? user.avatar : ''}`, noLink: true, style: { marginRight: '16px' } }),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__Avatar_avatar__["a" /* default */], { user: user, size: 32, radius: 32, isOnline: false, src: user.avatar ? user.avatar : '', noLink: true, style: { marginRight: '16px' } }),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["n" /* ProfileHeaderMeta */], null,
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["q" /* Title */], null, user.firstname + ' ' + user.lastname),
                             user.username && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["p" /* Subtitle */], null,
                                 "@",
                                 user.username,
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9__Reputation__["a" /* default */], { tipText: 'Total rep across all communities', size: 'large', reputation: 90 })))))),
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9__Reputation__["a" /* default */], { tipText: 'Total reading score', size: 'large', reputation: 90 })))))),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["a" /* CoverDescription */], null,
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", null, user.bio ? user.bio : 'Your bio is empty please go to profile settings to enter it')),
                     currentUser && currentUser.id === user.id ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_Link__["a" /* default */], { to: `../n/${currentUser.username}/settings` },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["l" /* ProfileHeaderAction */], { glyph: "settings", tipText: 'Edit profile', tipLocation: 'top-left' }))) : (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10__style__["l" /* ProfileHeaderAction */], { glyph: "message-fill", color: "text.alt", hoverColor: "brand.alt", onClick: () => initMessage(), tipText: `Message ${user.firstname + ' ' + user.lastname}`, tipLocation: 'top-left' })))));
     }
@@ -10917,36 +10932,6 @@ const JoinChannelSubtitle = __WEBPACK_IMPORTED_MODULE_0_styled_components___defa
 `;
 /* unused harmony export JoinChannelSubtitle */
 
-
-
-/***/ }),
-
-/***/ "./src/Components/UserProfileBox/index.tsx":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_Components_Avatar__ = __webpack_require__("./src/Components/Avatar/index.tsx");
-
-
-// tslint:disable-next-line:typedef
-const UserProfileBox = (props) => {
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-text-center uk-padding-small" },
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-background-primary uk-width-1-1 uk-position-top", style: { height: 75 } }),
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_Avatar__["a" /* default */], { size: 60, 
-            // tslint:disable-next-line:max-line-length
-            url: props.me ? (props.me.avatar ? props.me.avatar : 'http://ghgh.vh/hjh.png') : '', presence: false }),
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { className: "uk-text-bold", style: { fontSize: 16 } },
-            props.me ? props.me.firstname : '',
-            " ",
-            props.me ? props.me.lastname : ''),
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { style: { fontSize: 12 } }, "Founder at Gueva Technologies. Geek, programmer, interest in AI and Machine Learning, Big Data, love basketball."),
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "ui small two buttons" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "ui left positive attached button" }, "29k Posts"),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "right positive attached ui button" }, "Connects 56k"))));
-};
-/* harmony default export */ __webpack_exports__["a"] = (UserProfileBox);
 
 
 /***/ }),
@@ -13507,8 +13492,8 @@ class HomePublic extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-card uk-card-default uk-text-center uk-card-hover uk-card-body" },
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "data-uk-icon": "icon: hashtag; ratio: 5" }),
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h3", { className: "uk-card-title" }, "Default"),
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", null, "Lorem ipsum dolor sit amet, consectetur adipisicing elit."))),
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h3", { className: "uk-card-title" }, "Interact with Students"),
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", null, "Chat, talk and communicate with other students anywhere and everywhere you are. Take advantage to know students around and abroad and grow your network."))),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-card uk-card-default uk-text-center uk-card-hover uk-card-body" },
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "data-uk-icon": "icon: world; ratio: 5" }),
@@ -13958,6 +13943,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__style_scss__ = __webpack_require__("./src/Containers/Profile/style.scss");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__style_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__style_scss__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_Components_MoreViews_style__ = __webpack_require__("./src/Components/MoreViews/style.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_link__ = __webpack_require__("./src/link.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__constants__ = __webpack_require__("./src/constants.ts");
 
 
 
@@ -13969,6 +13956,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 // import Search from './components/search';
+
+
 
 
 
@@ -14017,14 +14006,14 @@ class Profile extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 return `Error!: ${error}`;
             }
             console.log(data);
-            const currentUser = data.getUserByUsername;
+            const currentUser = __WEBPACK_IMPORTED_MODULE_15_link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_16__constants__["b" /* CURRENT_USER */]);
             const user = data.getUserByUsername;
             const { username } = user;
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5_Components_AppViewWrapper__["a" /* default */], { "data-cy": "user-view" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_SeoMaker__["a" /* default */], { title: user.firstname + ' ' + user.lastname }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Titlebar__["a" /* default */], { title: data.firstname + ' ' + data.lastname, subtitle: 'Posts By', provideBack: true, backRoute: '/', noComposer: true }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12__style__["b" /* Grid */], { style: { backgroundColor: 'transparent' } },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_11_Components_Profile_coverPhoto__["a" /* CoverPhoto */], { src: user.avatar ? user.avatar : '', style: { backgroundColor: '#fff' } }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_11_Components_Profile_coverPhoto__["a" /* CoverPhoto */], { src: user.headerImage ? user.headerImage : '', style: { backgroundColor: '#fff' } }),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12__style__["c" /* Meta */], { style: { backgroundColor: '#fff' } },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8_Components_Profile__["a" /* UserProfile */], { user: user, username: username, profileSize: "full" }),
                         currentUser &&
@@ -14036,12 +14025,12 @@ class Profile extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_14_Components_MoreViews_style__["a" /* LoginButton */], { isMember: true }, "Edit Profile")))),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12__style__["a" /* Content */], null,
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_SegmentedControl__["c" /* SegmentedControl */], { style: { margin: '0 0 0 0', paddingTop: 16, backgroundColor: '#fff' } },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_SegmentedControl__["a" /* DesktopSegment */], { segmentLabel: "search", onClick: () => this.handleSegmentClick('search'), selected: selectedView === 'search' }, "Search"),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_SegmentedControl__["a" /* DesktopSegment */], { segmentLabel: "participant", onClick: () => this.handleSegmentClick('participant'), selected: selectedView === 'participant' }, "Replies"),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_SegmentedControl__["a" /* DesktopSegment */], { segmentLabel: "creator", onClick: () => this.handleSegmentClick('creator'), selected: selectedView === 'creator' }, "Threads"),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_SegmentedControl__["b" /* MobileSegment */], { segmentLabel: "search", onClick: () => this.handleSegmentClick('search'), selected: selectedView === 'search' }, "Search"),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_SegmentedControl__["b" /* MobileSegment */], { segmentLabel: "participant", onClick: () => this.handleSegmentClick('participant'), selected: selectedView === 'participant' }, "Replies"),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_SegmentedControl__["b" /* MobileSegment */], { segmentLabel: "creator", onClick: () => this.handleSegmentClick('creator'), selected: selectedView === 'creator' }, "Threads")),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_SegmentedControl__["a" /* DesktopSegment */], { segmentLabel: "search", onClick: () => this.handleSegmentClick('search'), selected: selectedView === 'search' }, "Articles"),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_SegmentedControl__["a" /* DesktopSegment */], { segmentLabel: "participant", onClick: () => this.handleSegmentClick('participant'), selected: selectedView === 'participant' }, "Connections"),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_SegmentedControl__["a" /* DesktopSegment */], { segmentLabel: "creator", onClick: () => this.handleSegmentClick('creator'), selected: selectedView === 'creator' }, "Media"),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_SegmentedControl__["b" /* MobileSegment */], { segmentLabel: "search", onClick: () => this.handleSegmentClick('search'), selected: selectedView === 'search' }, "Articles"),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_SegmentedControl__["b" /* MobileSegment */], { segmentLabel: "participant", onClick: () => this.handleSegmentClick('participant'), selected: selectedView === 'participant' }, "Connections"),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_SegmentedControl__["b" /* MobileSegment */], { segmentLabel: "creator", onClick: () => this.handleSegmentClick('creator'), selected: selectedView === 'creator' }, "Media")),
                         hasThreads &&
                             (selectedView === 'creator' ||
                                 selectedView === 'participant') && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#e1eaf1' } },
@@ -16629,7 +16618,7 @@ const errorLink = Object(__WEBPACK_IMPORTED_MODULE_3_apollo_link_error__["onErro
 });
 /* harmony export (immutable) */ __webpack_exports__["b"] = errorLink;
 
-const httpLink = new __WEBPACK_IMPORTED_MODULE_1_apollo_link_http__["HttpLink"]({ uri: 'https://uniserver.now.sh', fetch: __WEBPACK_IMPORTED_MODULE_10_node_fetch___default.a });
+const httpLink = new __WEBPACK_IMPORTED_MODULE_1_apollo_link_http__["HttpLink"]({ uri: 'https://uniserver.herokuapp.com', fetch: __WEBPACK_IMPORTED_MODULE_10_node_fetch___default.a });
 /* unused harmony export httpLink */
 
 const middlewareLink = new __WEBPACK_IMPORTED_MODULE_0_apollo_link__["ApolloLink"]((operation, forward) => {

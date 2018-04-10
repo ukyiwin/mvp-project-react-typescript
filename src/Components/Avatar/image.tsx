@@ -11,6 +11,7 @@ interface ImageProps {
 const cache = {};
 
 class AvatarImage extends Component<ImageProps, any> {
+  i: any;
   sourceList: any[];
   static defaultProps = {
     loader: false,
@@ -35,7 +36,7 @@ class AvatarImage extends Component<ImageProps, any> {
       /* istanbul ignore else */
       if (cache[this.sourceList[i]] === true) {
         this.state = { currentIndex: i, isLoading: false, isLoaded: true };
-        return true;
+        return;
       }
     }
 

@@ -39,7 +39,7 @@ export const CoverPhoto = (props: any) => {
     return (
       <PhotoContainer coverURL={props.user.coverPhoto}>
         {props.currentUser && props.currentUser.id === props.user.id ? (
-          <Link to={`../users/${props.user.username}/settings`}>
+          <Link to={`../n/${props.user.username}/settings`}>
             <CoverAction
               glyph="settings"
               color="text.reverse"
@@ -55,7 +55,7 @@ export const CoverPhoto = (props: any) => {
             color="text.reverse"
             hoverColor="text.reverse"
             onClick={props.onClick}
-            tipText={`Message ${props.user.name}`}
+            tipText={`Message ${props.user.firstname}`}
             tipLocation={'left'}
           />
         ) : null}

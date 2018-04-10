@@ -58,7 +58,7 @@ const UserWithData = (
             user={user}
             size={128}
             onlineSize={'large'}
-            src={`${user.avatar ? user.avatar : ''}`}
+            src={user.avatar ? user.avatar : ''}
             noLink
             style={{
               boxShadow: '0 0 0 2px #fff',
@@ -70,22 +70,34 @@ const UserWithData = (
             @{user.username}
           </Subtitle>
           {(user.firstname || user.lastname) && (
-            <FullDescription>
-              {user.firstname && <p>{user.firstname}</p>}
+            <FullDescription> 
+              {user.bio ? user.bio : 'Your bio is empty please go to profile settings to enter it'}
               <Reputation
                 reputation={
-                  90
+                  0
                 }
               />
-              {user.firstname && (
+              {user.department && (
                 <ExtLink>
                   <Icon glyph="link" size={24} />
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={addProtocolToString(user.firstname)}
+                    href={addProtocolToString(user.department.name)}
                   >
-                    {user.firstname}
+                    {user.department.name}
+                  </a>
+                </ExtLink>
+              )}
+              {user.institution && (
+                <ExtLink>
+                  <Icon glyph="link" size={24} />
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={addProtocolToString(user.institution.title)}
+                  >
+                    {user.institution.title}
                   </a>
                 </ExtLink>
               )}
@@ -101,7 +113,7 @@ const UserWithData = (
             onClick={() => initMessage()}
             currentUser={currentUser}
           />
-          <CoverLink to={`/users/${user.username}`}>
+          <CoverLink to={`/n/${user.username}`}>
             <Avatar
               user={user}
               size={64}
@@ -116,24 +128,21 @@ const UserWithData = (
                 marginRight: '0',
               }}
             />
-            <CoverTitle>{user.firstname + ' ' + user.firstname}</CoverTitle>
+            <CoverTitle>{user.firstname + ' ' + user.lastname}</CoverTitle>
           </CoverLink>
           <CoverSubtitle center>
             {user.username && `@${user.username}`}
             <Reputation
-              tipText={'Total rep across all communities'}
+              tipText={'Total reading score'}
               size={'large'}
               reputation={
                 0
               }
             />
           </CoverSubtitle>
-
-          {user.firstname && (
-            <CoverDescription>
-              <p>{user.firstname}</p>
-            </CoverDescription>
-          )}
+          <CoverDescription>
+            <p>{user.bio ? user.bio : 'Your bio is empty please go to profile settings to enter it'}</p>
+          </CoverDescription>
         </Card>
       );
     case 'default':
@@ -142,13 +151,13 @@ const UserWithData = (
         <Card>
           <ProfileHeader>
             {user.username ? (
-              <ProfileHeaderLink to={`/users/${user.username}`}>
+              <ProfileHeaderLink to={`/n/${user.username}`}>
                 <Avatar
                   user={user}
                   size={32}
                   radius={32}
                   isOnline={false}
-                  src={`${user.avatar ? user.avatar : ''}`}
+                  src={user.avatar ? user.avatar : ''}
                   noLink
                   style={{ marginRight: '16px' }}
                 />
@@ -168,7 +177,7 @@ const UserWithData = (
                   size={32}
                   radius={32}
                   isOnline={false}
-                  src={`${user.avatar ? user.avatar : ''}`}
+                  src={user.avatar ? user.avatar : ''}
                   noLink
                   style={{ marginRight: '16px' }}
                 />
@@ -178,7 +187,7 @@ const UserWithData = (
                     <Subtitle>
                       @{user.username}
                       <Reputation
-                        tipText={'Total rep across all communities'}
+                        tipText={'Total reading score'}
                         size={'large'}
                         reputation={
                           90
@@ -189,6 +198,9 @@ const UserWithData = (
                 </ProfileHeaderMeta>
               </ProfileHeaderNoLink>
             )}
+            <CoverDescription>
+              <p>{user.bio ? user.bio : 'Your bio is empty please go to profile settings to enter it'}</p>
+            </CoverDescription>
             {currentUser && currentUser.id === user.id ? (
               <Link to={`../n/${currentUser.username}/settings`}>
                 <ProfileHeaderAction
