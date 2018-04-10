@@ -5,7 +5,7 @@ import ArticleItem from 'Components/ArticleItem';
 import InfiniteScroll from 'react-infinite-scroller';
 import Avatar from 'Components/Avatar';
 import { compose, graphql, withApollo, QueryProps, Query } from 'react-apollo';
-import { ME, GET_USER_BY_USERNAME } from 'Graphql/Query';
+import { ME, GET_USER_BY_USERNAME, ACTIVITY } from 'Graphql/Query';
 import { User } from 'CustomTypings/schema';
 import SeoMaker from 'Components/SeoMaker';
 import ArticleList, { MyLoader } from 'Components/ArticleList';
@@ -175,7 +175,7 @@ componentDidUpdate(prevProps) {
   
                 {selectedView === 'search' && 
                   <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
-                      <Query pollInterval={3000} query={ACTIVITY} variables={{ username }} >
+                      <Query pollInterval={3000} query={ACTIVITY} variables={{ username, myUsername: currentUser.id }} >
                         {({loading, error, data}) => {
                           if (loading) {
                             return (

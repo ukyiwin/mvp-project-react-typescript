@@ -2,22 +2,79 @@ import * as React from 'react';
 import { Article } from '../../CustomTypings/schema';
 import Avatar from '../Avatar/avatar';
 import { Link } from 'react-router-dom';
+import { withApollo, compose } from 'react-apollo';
 import Likebutton from '../LikeButton';
 import PopoverLink from '../PopoverLink';
 import TimeAgo from 'react-timeago';
 import { strip_html_tags } from 'Utils/helper';
+import Icon from 'semantic-ui-react';
+import { UNLIKE_ARTICLE, LIKE_ARTICLE, SAVE_ARTICLE, UNSAVE_ARTICLE } from 'Graphql/Mutation';
 // import UIkit from 'uikit/src/js/uikit';
 // import { Link } from 'react-router-dom';
 
 interface Props {
     article: Article;
     small?: boolean;
+    client: any;
 }
 
 // tslint:disable-next-line:no-any
 class ArticleItem extends React.Component<Props> {
     componentDidMount() {
         // UIkit.notification('MyMessage', 'danger');
+    }
+
+    save() {
+      this.props.client.mutate({
+        query: UNSAVE_ARTICLE,
+        variable: {
+          id: this.props.article.id
+        }
+      }).then((res) => {
+        // dhjh
+      }).catch((err) => {
+        // ghg
+      });
+    }
+
+    unSave() {
+      this.props.client.mutate({
+        query: SAVE_ARTICLE,
+        variable: {
+          id: this.props.article.id
+        }
+      }).then((res) => {
+        // dhjh
+      }).catch((err) => {
+        // ghg
+      });
+    }
+
+    like() {
+      this.props.client.mutate({
+        query: LIKE_ARTICLE,
+        variable: {
+          id: this.props.article.id
+        },
+        
+      }).then((res) => {
+        // dhjh
+      }).catch((err) => {
+        // ghg
+      });
+    }
+
+    unLike() {
+      this.props.client.mutate({
+        query: UNLIKE_ARTICLE,
+        variable: {
+          id: this.props.article.id
+        }
+      }).then((res) => {
+        // dhjh
+      }).catch((err) => {
+        // ghg
+      });
     }
 
     render() {
@@ -88,10 +145,22 @@ class ArticleItem extends React.Component<Props> {
                     className="post-stats clearfix uk-padding-small"
                 >
                     <div className="uk-flex pull-left">
-                        <Likebutton liked={true} likeCount={2} />
-                        <Link to={`/article/${article.id}#comments`} className="response-count uk-flex uk-inline uk-margin-left uk-margin-right">
-                            <span uk-icon="icon: comment; ratio: 1.0" /> <div className="uk-visible@s">Comments</div>
-                        </Link>
+                        <Likebutton 
+                          liked={article.liked !== null} 
+                          likeCount={1} 
+                          text="Like" 
+                          frontIcon="like" 
+                          frontClick={this.like()}
+                          backClick={this.unLike()}
+                          backIcon="like-fill" 
+                          buttonType="two" />
+
+                        <Likebutton 
+                          likeCount={article.comments ? article.comments.length : ''} 
+                          link={`/article/${article.id}#comments`}
+                          frontIcon="post-fill" 
+                          text="Comment"
+                        />
                         <a className="response-count uk-flex uk-inline">
                             <span uk-icon="icon: forward; ratio: 1.2" /> <div className="uk-visible@s">Share</div>
                         </a>
@@ -111,7 +180,7 @@ class ArticleItem extends React.Component<Props> {
                                     </li>
                                     <li className="menu-item uk-padding-small">
                                         <a href="#" className="uk-text-bold">
-                                            <span uk-icon="icon: warning; ratio: 1" /> Don't like this
+                                          <span uk-icon="icon: warning; ratio: 1" /> Don't like this
                                         </a>
                                     </li>
                                     <li className="menu-item uk-padding-small">
@@ -122,9 +191,15 @@ class ArticleItem extends React.Component<Props> {
                                 </ul>
                             </div>
                         </div>
-                        <button className="uk-button uk-button-text">
-                            <span uk-icon="icon: bookmark; ratio: 1.2" />
-                        </button>
+                        <Likebutton
+                          frontIcon="down" 
+                          text="Save" 
+                          backIcon="down-fill" 
+                          buttonType="two"
+                          frontClick={this.save()}
+                          backClick={this.unSave()}
+                          liked={article.saved !== null} 
+                        />
                     </div>
                 </div>
                 </div>
@@ -133,7 +208,7 @@ class ArticleItem extends React.Component<Props> {
     }
 }
 
-export default ArticleItem;
+export default compose(withApollo)(ArticleItem);
 
 /*
 

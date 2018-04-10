@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { compose, withApollo, Query, Mutation } from 'react-apollo';
 import { Editor, createEditorState } from 'medium-draft';
 // import { Helmet } from 'react-helmet';
-import { Article, Comment } from 'CustomTypings/schema';
+import { Article, Comment, User } from 'CustomTypings/schema';
 import Avatar from 'Components/Avatar';
 import ArticleItem from 'Components/ArticleItem';
 import CommentEditor from 'Components/CommentEditor';
@@ -21,6 +21,8 @@ import { CREATE_COMMENT } from 'Graphql/Mutation';
 import mediumDraftExporter from 'medium-draft/lib/exporter';
 import LoadingComponent from 'Components/Loading';
 import { ErrorComponent } from 'Components/EmptyStates';
+import { cookies } from 'link';
+import { CURRENT_USER } from '../../constants';
 // import 'medium-draft/lib/index.css';
 
 interface Props {
@@ -64,24 +66,25 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
     }
 
     fetchArticleandOthers(slugOrId: string) {
-        this.props.client
-            .query({
-                query: GET_ARTICLE_BY_ID,
-                variables: {
-                    id: slugOrId,
-                },
-            })
-            .then((result) => {
-                // tslint:disable-next-line:no-console
-                console.log(result.data.getArticleById);
-                const editorState = createEditorState(convertToRaw(mediumDraftImporter(result.data.getArticleById.body)));
-                this.setState({ currentArticle: result.data.getArticleById, loading: false, editorState });
-            })
-            .catch((err) => {
-                // tslint:disable-next-line:no-console
-                console.log(err);
-                this.props.history.replace('/not-found');
-            });
+      const user = cookies.get(CURRENT_USER) as User;
+      this.props.client
+          .query({
+              query: GET_ARTICLE_BY_ID,
+              variables: {
+                  id: slugOrId, myUsername: user.username
+              },
+          })
+          .then((result) => {
+              // tslint:disable-next-line:no-console
+              console.log(result.data.getArticleById);
+              const editorState = createEditorState(convertToRaw(mediumDraftImporter(result.data.getArticleById.body)));
+              this.setState({ currentArticle: result.data.getArticleById, loading: false, editorState });
+          })
+          .catch((err) => {
+              // tslint:disable-next-line:no-console
+              console.log(err);
+              this.props.history.replace('/not-found');
+          });
     }
 
     onChange = (commentEditorState) => {
@@ -139,41 +142,38 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
                     className="post-stats clearfix uk-padding-small uk-padding-remove-horizontal"
                     style={{ paddingTop: 10, paddingBottom: 1 }}
                 >
-                  <div className="uk-flex pull-left uk-padding-small">
-                        <Likebutton liked={true} likeCount={2} />
-                        <a className="response-count uk-margin-left">
-                            <span uk-icon="icon:  forward; ratio: 1.2" />Share
-                        </a>
+                  <div className="uk-flex pull-left">
+                      <Likebutton liked={true} likeCount={1} text="Like" frontIcon="like" backIcon="like-fill" buttonType="two" />
+                      <a className="response-count uk-flex uk-inline">
+                          <span uk-icon="icon: forward; ratio: 1.2" /> <div className="uk-visible@s">Share</div>
+                      </a>
                   </div>
-
-                  <div className="uk-flex  response-count pull-right uk-padding-small">
-                        <div className="dropdown">
-                            <button className="uk-button uk-button-text uk-margin-right" type="button">
-                                <span uk-icon="icon: more; ratio: 1.0" />
-                            </button>
-                            <div data-uk-drop="mode: click; pos: bottom-right">
-                                <ul className="menu">
-                                    <li className="menu-item uk-padding-small">
-                                        <a href="#" className="uk-text-bold">
-                                            <span uk-icon="icon: plus-circle; ratio: 1" /> Activity
-                                        </a>
-                                    </li>
-                                    <li className="menu-item uk-padding-small">
-                                        <a href="#" className="uk-text-bold">
-                                            <span uk-icon="icon: warning; ratio: 1" /> Don't like this
-                                        </a>
-                                    </li>
-                                    <li className="menu-item uk-padding-small">
-                                        <a href="#" className="uk-text-bold">
-                                            <span uk-icon="icon: info; ratio: 1" /> Report
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <button className="uk-button uk-button-text">
-                            <span uk-icon="icon: bookmark; ratio: 1.2" /> Favourite
-                        </button>
+                  <div className="uk-flex  response-count pull-right">
+                      <div className="dropdown">
+                          <button className="uk-button uk-button-text uk-margin-right" type="button">
+                              <span uk-icon="icon: more; ratio: 1.0" />
+                          </button>
+                          <div data-uk-drop="mode: click; pos: bottom-right">
+                              <ul className="menu">
+                                  <li className="menu-item uk-padding-small">
+                                      <a href="#" className="uk-text-bold">
+                                          <span uk-icon="icon: plus-circle; ratio: 1" /> Activity
+                                      </a>
+                                  </li>
+                                  <li className="menu-item uk-padding-small">
+                                      <a href="#" className="uk-text-bold">
+                                        <span uk-icon="icon: warning; ratio: 1" /> Don't like this
+                                      </a>
+                                  </li>
+                                  <li className="menu-item uk-padding-small">
+                                      <a href="#" className="uk-text-bold">
+                                          <span uk-icon="icon: info; ratio: 1" /> Report
+                                      </a>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                      <Likebutton liked={false} frontIcon="down" text="Save" backIcon="down-fill" buttonType="two" />
                   </div>
                 </div>
             </div>
