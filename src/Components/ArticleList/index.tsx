@@ -2,7 +2,7 @@ import * as React from 'react';
 import ArticleItem from 'Components/ArticleItem';
 import { graphql, QueryProps, Query } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
-import { ErrorComponent, LoadingComponent } from 'Components/EmptyStates';
+import { ErrorComponent, LoadingComponent, EmptyComponent } from 'Components/EmptyStates';
 import { ARTICLES } from 'Graphql/Query';
 import { Article, User } from 'CustomTypings/schema';
 import ContentLoader from 'react-content-loader';
@@ -42,7 +42,7 @@ const user = cookies.get(CURRENT_USER) as User;
 
 const ArticleList = () => (
   <Query query={ARTICLES} variables={{myUsername: user.username}} pollInterval={2000} >
-  {({ loading, error, data, fetchMore, networkStatus }) => {
+  {({ loading, error, data, fetchMore, networkStatus, refetch }) => {
     if (loading) {
       return (
         <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>

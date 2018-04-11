@@ -23,6 +23,7 @@ import LoadingComponent from 'Components/Loading';
 import { ErrorComponent } from 'Components/EmptyStates';
 import { cookies } from 'link';
 import { CURRENT_USER } from '../../constants';
+import InterestItemSlim from 'Components/InterestItemSlim';
 // import 'medium-draft/lib/index.css';
 
 interface Props {
@@ -135,9 +136,10 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
                       editorEnabled={false}
                     />
                 </div>
-                <div className="uk-padding-small">
-                    <TopInterest />
-                </div>
+                {article.category ? <div className="uk-padding-small">
+                  <InterestItemSlim key={article.category.id} url={article.category.avatar} name={article.category.name} />
+                </div> : null
+                }
                 <div
                     className="post-stats clearfix uk-padding-small uk-padding-remove-horizontal"
                     style={{ paddingTop: 10, paddingBottom: 1 }}
@@ -234,7 +236,7 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
     renderCommentList() {
         const articleId = this.state.currentArticle.id;
         return (
-          <Query query={GET_COMMENTS} variables={{articleId}} pollInterval={1000} >
+          <Query query={GET_COMMENTS} variables={{articleId}} >
           {({ loading, error, data }) => {
             if (loading) {
                 return <LoadingComponent />;
@@ -255,7 +257,7 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
               >
                 <Label text="Comment responses" />
                 {data.comments.map((comments, i) => (
-                    <CommentItem comments={comments} />
+                    <CommentItem comments={comments}  key={comments.id}/>
                 ))}
                 
               </div>

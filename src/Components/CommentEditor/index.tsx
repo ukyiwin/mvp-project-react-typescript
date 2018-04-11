@@ -32,6 +32,8 @@ export default class CommentEditor extends React.Component<any> {
         <Editor
           ref={(ref) => this.editor = ref}
           editorState={editorState}
+          editorEnabled={false}
+          style={{paddingTop: 0, marginTop: 0}}
         />
       </div>
     );

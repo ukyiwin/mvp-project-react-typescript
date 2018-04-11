@@ -127,7 +127,7 @@ export const LIKE_ARTICLE = gql`
 
 export const UNLIKE_ARTICLE = gql`
   mutation unLikeArticle($id: ID!){
-    likeArticle(id: $id){
+    unLikeArticle(id: $id){
       id
       title
       title
