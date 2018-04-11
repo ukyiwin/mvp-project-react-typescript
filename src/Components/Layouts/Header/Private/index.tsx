@@ -192,6 +192,7 @@ class PrivateHeader extends React.Component<Props> {
                 <NotificationsTab
                   location={props.history.location}
                   currentUser={props.me}
+                  hideText={true}
                   data-badge="8"
                   active={props.history.location.pathname.includes('/notifications')}
                 />

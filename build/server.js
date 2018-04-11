@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "20c320e85ac54e5db6be"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "1fa6b90d3bf31c2e2e6b"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -6256,7 +6256,7 @@ class PrivateHeader extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-navbar-nav uk-padding-small" },
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/search", className: "", style: { color: '#fff' } },
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Icons__["a" /* default */], { glyph: "search", size: 34 }))),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__Components_notificationsTab__["a" /* default */], { location: props.history.location, currentUser: props.me, "data-badge": "8", active: props.history.location.pathname.includes('/notifications') }),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__Components_notificationsTab__["a" /* default */], { location: props.history.location, currentUser: props.me, hideText: true, "data-badge": "8", active: props.history.location.pathname.includes('/notifications') }),
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("ul", { className: "uk-navbar-nav" },
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { href: "#" },
