@@ -54,14 +54,6 @@ class PrivateHeader extends React.Component<Props> {
             style={{marginBottom: 0, backgroundColor: '#020202'}}
           >
             <div className="nav-overlay uk-navbar-left">
-              <button
-                className="uk-navbar-toggle nav-overlay uk-hidden@m"
-                type="button" 
-                // tslint:disable-next-line:jsx-boolean-value
-                uk-navbar-toggle-icon
-                uk-toggle="target: #offcanvas-nav"
-                uk-icon="icon: menu; ratio: 1.5"
-              />
               <Link to="/" className="uk-navbar-item uk-logo uk-visible@m" href="#">
                 <img 
                   src={require('../../../../Assets/unizonn/unizz_small.svg')} 
@@ -113,6 +105,7 @@ class PrivateHeader extends React.Component<Props> {
                     location={props.history.location}
                     currentUser={props.me}
                     data-badge="8"
+                    hideText={true}
                     active={props.history.location.pathname.includes('/notifications')}
                   />
                 </ul>
@@ -193,8 +186,8 @@ class PrivateHeader extends React.Component<Props> {
                 </div>
               </div>
               <div className="uk-navbar-right uk-hidden@s">
-                <div className="uk-flex">
-                  <SearchContainer />
+                <div className="uk-navbar-nav uk-padding-small">
+                  <Link to="/search" className="" style={{color: '#fff'}}><Icon glyph="search" size={34} /></Link>
                 </div>
                 <NotificationsTab
                   location={props.history.location}
@@ -275,7 +268,7 @@ class PrivateHeader extends React.Component<Props> {
                   </li>
                 </ul>
                 <div className="uk-navbar-nav uk-padding-small">
-                  <Link to="/write" className="uk-button uk-button-primary uk-button-small">Write</Link>
+                  <Link to="/write" className="" style={{color: '#fff'}}><Icon glyph="post" size={34} /></Link>
                 </div>
               </div>
             </div>

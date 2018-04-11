@@ -65,7 +65,7 @@ const NotificationDropdownPure = (props) => {
   } = props;
 
   return (
-    <Dropdown style={{ width: '400px' }}>
+    <Dropdown style={{ width: '400px', zIndex: 5 }}>
       <DropdownHeader>
         <Link to={`/n/${currentUser.username}/settings`}>
           <Icon glyph="settings" />

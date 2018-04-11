@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "4ec6c89bf1a6f6afa312"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "20c320e85ac54e5db6be"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -5942,7 +5942,7 @@ const NotificationContainer = (props) => {
 };
 const NotificationDropdownPure = (props) => {
     const { rawNotifications, currentUser, history, markAllAsSeen, count, markSingleNotificationAsSeenInState, loading, } = props;
-    return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_Components_Dropdown__["a" /* default */], { style: { width: '400px' } },
+    return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_Components_Dropdown__["a" /* default */], { style: { width: '400px', zIndex: 5 } },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__style__["c" /* DropdownHeader */], null,
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_Components_Link__["a" /* default */], { to: `/n/${currentUser.username}/settings` },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_Components_Icons__["a" /* default */], { glyph: "settings" })),
@@ -5974,7 +5974,6 @@ const NotificationDropdown = __WEBPACK_IMPORTED_MODULE_1_recompose_compose___def
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_Components_Icons__ = __webpack_require__("./src/Components/Icons/index.tsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__notificationDropdown__ = __webpack_require__("./src/Components/Layouts/Header/Components/notificationDropdown.tsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__style__ = __webpack_require__("./src/Components/Layouts/Header/style.ts");
-// @flow
 
 
 
@@ -6137,7 +6136,7 @@ class NotificationsTab extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] 
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__style__["g" /* NotificationTab */], { padOnHover: true, onMouseOver: this.setHover },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__style__["h" /* Tab */], { "data-active": active, to: "/notifications", rel: "nofollow" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_Icons__["a" /* default */], { glyph: count > 0 ? 'notification-fill' : 'notification', withCount: count > 10 ? '10+' : count > 0 ? count : false }),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__style__["e" /* Label */], { hideOnDesktop: true }, "Notifications")),
+                !this.props.hideText ? __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__style__["e" /* Label */], { hideOnDesktop: true }, "Notifications") : null),
             shouldRenderDropdown && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__notificationDropdown__["a" /* NotificationDropdown */], { rawNotifications: notifications, count: count, currentUser: currentUser, width: '480px', loading: isLoading, error: false }))));
     }
 }
@@ -6180,7 +6179,6 @@ class PrivateHeader extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "data-uk-sticky": "sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky mdc-toolbar mdc-toolbar--fixed", style: { marginBottom: 0 } },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("nav", { className: "uk-navbar-container mdc-elevation--z2 uk-margin uk-background-secondary raised mdc-toolbar mdc-toolbar--fixed uk-dark", "uk-navbar": true, style: { marginBottom: 0, backgroundColor: '#020202' } },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "nav-overlay uk-navbar-left" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-navbar-toggle nav-overlay uk-hidden@m", type: "button", "uk-navbar-toggle-icon": true, "uk-toggle": "target: #offcanvas-nav", "uk-icon": "icon: menu; ratio: 1.5" }),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/", className: "uk-navbar-item uk-logo uk-visible@m", href: "#" },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("img", { src: __webpack_require__("./src/Assets/unizonn/unizz_small.svg"), style: { height: 40 }, "uk-svg": true })),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/", className: "uk-navbar-item uk-logo uk-hidden@m", href: "#" },
@@ -6206,7 +6204,7 @@ class PrivateHeader extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("ul", { className: "uk-iconnav" },
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex" },
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_SearchContainer__["a" /* default */], null)),
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__Components_notificationsTab__["a" /* default */], { location: props.history.location, currentUser: props.me, "data-badge": "8", active: props.history.location.pathname.includes('/notifications') })),
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__Components_notificationsTab__["a" /* default */], { location: props.history.location, currentUser: props.me, "data-badge": "8", hideText: true, active: props.history.location.pathname.includes('/notifications') })),
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("ul", { className: "uk-navbar-nav" },
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { href: "#" },
@@ -6255,8 +6253,9 @@ class PrivateHeader extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-navbar-nav uk-padding-small" },
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/write", className: "uk-button uk-button-primary uk-button-small" }, "Write"))),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-navbar-right uk-hidden@s" },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex" },
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_SearchContainer__["a" /* default */], null)),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-navbar-nav uk-padding-small" },
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/search", className: "", style: { color: '#fff' } },
+                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Icons__["a" /* default */], { glyph: "search", size: 34 }))),
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__Components_notificationsTab__["a" /* default */], { location: props.history.location, currentUser: props.me, "data-badge": "8", active: props.history.location.pathname.includes('/notifications') }),
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("ul", { className: "uk-navbar-nav" },
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
@@ -6304,7 +6303,8 @@ class PrivateHeader extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                                                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/support", className: "uk-text-bold simple-link-light" }, "Support")),
                                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", { className: "mdc-list-item uk-text-bold", role: "menuitem", onClick: props.logout }, "Logout"))))))),
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-navbar-nav uk-padding-small" },
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/write", className: "uk-button uk-button-primary uk-button-small" }, "Write")))))));
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/write", className: "", style: { color: '#fff' } },
+                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Icons__["a" /* default */], { glyph: "post", size: 34 }))))))));
         }
         else {
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { "data-uk-sticky": "sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky mdc-toolbar mdc-toolbar--fixed", style: { marginBottom: 0 } },
