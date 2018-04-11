@@ -169,7 +169,21 @@ export const ALL_DEPARTMENTS = gql`
     }
   }
 `;
-
+export const GET_LIBRARY = gql`
+  query getLibrary{
+    getLibrary{
+      id
+      createdAt
+      location{
+        longitude
+        latitude
+        type
+      }
+      description
+      name
+    }
+  }
+`;
 /**
  * @description get all departments
  */

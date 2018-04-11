@@ -19,7 +19,7 @@ declare global {
 }
 
 interface Window { anima(): any;  effects: any; slideshow: any; __ASYNC_COMPONENTS_REHYDRATE_STATE__: any; __APOLLO_STATE__: any; appUpdateAvailable: boolean;
-  location: any;
+  location: any; OneSignal: any;
  }
 
 interface String {

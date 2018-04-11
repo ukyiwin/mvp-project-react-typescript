@@ -454,7 +454,7 @@ class App extends React.Component<Props & ChildProps<Response & Props>, State> {
                           logout={this._logout}
                           me={this.state.me}
                         />
-                        <ConnectLayout 
+                        <EmptyLayout 
                           component={Connections} 
                           path="/connections" 
                           exact={true} 

@@ -1,18 +1,15 @@
 import * as React from 'react';
-// import Avatar from 'Components/Avatar';
-// import './style.scss';
+import { Link } from 'react-router-dom';
 
 interface Props {
-    url: string;
-    name: string;
+  url?: string;
+  name: string;
 }
 
-// tslint:disable-next-line:typedef
 const InterestItemSlim = (props: Props) => {
-    return <a className="ui label " style={{margin: 2}}>
-      <img className="ui right spaced avatar image" src="https://semantic-ui.com/images/avatar/small/joe.jpg" />
+    return <Link className="ui label" to={`/search/${props.url}`} style={{margin: 2}}>
       {props.name}
-    </a>;
+    </Link>;
 };
 
 export default InterestItemSlim;

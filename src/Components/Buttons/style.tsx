@@ -49,7 +49,7 @@ export const Label = styled.span`
   margin: auto;
 `;
 
-export const StyledSolidButton = styled.button`
+export const StyledSolidButton = styled.button.attrs({className: "uk-button"})`
   ${baseButton} background-color: ${(props: any) =>
   props.disabled
     ? props.theme.bg.inactive

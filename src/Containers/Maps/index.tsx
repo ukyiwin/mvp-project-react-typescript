@@ -1,9 +1,14 @@
 import * as React from 'react';
 import MapComponent from 'Components/Map';
 import { Helmet } from 'react-helmet';
+import { Query } from 'react-apollo';
 import { geolocated, GeolocatedProps } from 'react-geolocated';
 import './style.scss';
 import Label from 'Components/Label';
+import { MyLoader } from 'Components/ArticleList';
+import { ErrorComponent, EmptyComponent } from 'Components/EmptyStates';
+import LibraryItem from 'Components/LibraryItem';
+import { GET_LIBRARY } from 'Graphql/Query';
 // tslint:disable
 type Props = {
   name?: string
@@ -36,118 +41,30 @@ class Maps extends React.Component<Props & GeolocatedProps> {
             >Near Libraries
             </h4>
             <Label text="Sorting from the closest" />
-            <div className="uk-flex uk-flex-between grid grid--effect-rigel">
-              <a href="#" className="uk-card-default grid__item grid__item--c1">
-                <div className="stack">
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__figure">
-                    <img className="stack__img" src="https://tympanus.net/Development/StackMotionHoverEffects/img/2.png" alt="Image"/>
+            <Query query={GET_LIBRARY}>
+              {({data, error, loading, refetch}) => {
+                if(loading) {
+                  return <MyLoader />
+                }
+                if(error) {
+                  return <ErrorComponent />
+                }
+                if(data.getLibrary.length === 0) {
+                  return <EmptyComponent 
+                    title="Oops!!! sorry" 
+                    subtitle="Sorry there is no library found near you. Contact us if this information needs to be updated"
+                    buttonClick={() => refetch()}
+                    />
+                }
+                return (
+                  <div className="uk-flex uk-flex-between grid grid--effect-rigel">
+                    {data.getLibrary.map((library, i) => (
+                      <LibraryItem library={library} key={library.id} />
+                    ))}
                   </div>
-                </div>
-                <div className="grid__item-caption uk-padding-small">
-                  <h3 className="grid__item-title uk-text-bold">First State Library</h3>
-                  <div className="column column--left">
-                    <span className="column__text">Distance</span>
-                    <span className="column__text">Review</span>
-                  </div>
-                  <div className="column column--right">
-                    <span className="column__text">9.1 meters</span>
-                    <span className="column__text">3</span>
-                  </div>
-                </div>
-              </a>
-              <a href="#" className="uk-card-default grid__item grid__item--c1">
-                <div className="stack">
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__figure">
-                    <img className="stack__img" src="https://tympanus.net/Development/StackMotionHoverEffects/img/2.png" alt="Image"/>
-                  </div>
-                </div>
-                <div className="grid__item-caption uk-card uk-card-default uk-padding-small">
-                  <h3 className="grid__item-title uk-text-bold">City Library</h3>
-                  <div className="column column--left">
-                    <span className="column__text">Distance</span>
-                    <span className="column__text">Review</span>
-                  </div>
-                  <div className="column column--right">
-                    <span className="column__text">9.1 meters</span>
-                    <span className="column__text">3</span>
-                  </div>
-                </div>
-              </a>
-              <a href="#" className="uk-card-default grid__item grid__item--c1">
-                <div className="stack">
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__figure">
-                    <img className="stack__img" src="https://tympanus.net/Development/StackMotionHoverEffects/img/2.png" alt="Image"/>
-                  </div>
-                </div>
-                <div className="grid__item-caption uk-card uk-card-default uk-padding-small">
-                  <h3 className="grid__item-title uk-text-bold">Library de Anglon</h3>
-                  <div className="column column--left">
-                    <span className="column__text">Distance</span>
-                    <span className="column__text">Review</span>
-                  </div>
-                  <div className="column column--right">
-                    <span className="column__text">50.8 meters</span>
-                    <span className="column__text">5.0</span>
-                  </div>
-                </div>
-              </a>
-              <a href="#" className="uk-card-default grid__item grid__item--c1">
-                <div className="stack">
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__figure">
-                    <img className="stack__img" src="https://tympanus.net/Development/StackMotionHoverEffects/img/2.png" alt="Image"/>
-                  </div>
-                </div>
-                <div className="grid__item-caption uk-card uk-card-default uk-padding-small">
-                  <h3 className="grid__item-title uk-text-bold">City Library</h3>
-                  <div className="column column--left">
-                    <span className="column__text">Distance</span>
-                    <span className="column__text">Review</span>
-                  </div>
-                  <div className="column column--right">
-                    <span className="column__text">9.1 meters</span>
-                    <span className="column__text">3</span>
-                  </div>
-                </div>
-              </a>
-              <a href="#" className="uk-card-default grid__item grid__item--c1">
-                <div className="stack">
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__deco"/>
-                  <div className="stack__figure">
-                    <img className="stack__img" src="https://tympanus.net/Development/StackMotionHoverEffects/img/2.png" alt="Image"/>
-                  </div>
-                </div>
-                <div className="grid__item-caption uk-card uk-card-default uk-padding-small">
-                  <h3 className="grid__item-title uk-text-bold">Library de Anglon</h3>
-                  <div className="column column--left">
-                    <span className="column__text">Distance</span>
-                    <span className="column__text">Review</span>
-                  </div>
-                  <div className="column column--right">
-                    <span className="column__text">50.8 meters</span>
-                    <span className="column__text">5.0</span>
-                  </div>
-                </div>
-              </a>
-            </div>
+                );
+              }}
+            </Query>
           </section>
         </div>
       </div>

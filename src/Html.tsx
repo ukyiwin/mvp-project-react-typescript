@@ -53,6 +53,22 @@ const Html = ({ assets, markup, client: { cache }, asyncState, styleTags }) => (
       <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js" crossOrigin="anonymous" />
       <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js" crossOrigin="anonymous"  />
       <script src="node_modules/semantic-ui-css/semantic.min.js" crossOrigin="anonymous" />
+      <link rel="manifest" href="/manifest.json" />
+      <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async />
+      <script>
+      {
+        var OneSignal = window.OneSignal || [];
+        OneSignal.push(function() {
+          OneSignal.init({
+            appId: "9e1ee800-58fa-4035-b77c-5c65fdb5257f",
+            autoRegister: false,
+            notifyButton: {
+              enable: true,
+            },
+          })
+        });
+      }
+      </script>
       {
         process.env.NODE_ENV === 'production'
           ? <script src={assets.client.js} defer />

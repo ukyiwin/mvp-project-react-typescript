@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Button } from 'Components/Buttons';
+import Icon from 'Components/Icons';
 
 interface Props {
     // tslint:disable-next-line:no-any
@@ -19,16 +21,20 @@ export const ErrorComponent = (props: Props) => (
         </div>
     </div>
 );
-
-export const EmptyComponent = (props) => (
-    <div className="empty uk-flex-stretch uk-align-center uk-width-1-1">
+interface MessageProps {
+  title?: string;
+  subtitle?: string;
+  buttonClick?: any;
+}
+export const EmptyComponent = (props: MessageProps) => (
+    <div className="empty uk-flex-stretch uk-align-center uk-width-1-1 uk-text-center">
         <div className="empty-icon">
-            <i className="icon icon-people" />
+            <Icon glyph="emoji" size={90} />
         </div>
-        <p className="empty-title h5">You have no new article</p>
-        <p className="empty-subtitle">Click the button to find topics or people to connect to.</p>
-        <div className="empty-action">
-            <button className="btn btn-primary">Connect</button>
+        <p className="empty-title h5">{props.title ? props.title : 'You have no new article'}</p>
+        <p className="empty-subtitle">{props.subtitle ? props.subtitle : 'You have no new article'}</p>
+        <div className="empty-action uk-text-center middle center uk-flex uk-flex-center uk-width-1-1">
+            <Button className="uk-button" color="green" onClick={() => props.buttonClick()}>Refresh</Button>
         </div>
     </div>
 );
