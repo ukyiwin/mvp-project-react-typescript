@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "d3afaf11ff0eb1ff34d3"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "6eca1c18e1be50a071d0"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -936,147 +936,6 @@ exports.push([module.i, "/**\n * React Select Plus\n * =================\n * MIT
 
 /***/ }),
 
-/***/ "./node_modules/slugg/slugg.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root) {
-
-var defaultSeparator = '-'
-var defaultToStrip = /['"’‘”“]/g
-var defaultToLowerCase = true
-
-function slugg(string, separator, toStrip) {
-  // Coerce the value into a string.
-  if ([ undefined, null ].indexOf(string) !== -1) string = ''
-  string = typeof string.toString === 'function' ? string.toString() : ''
-
-  var options = {}
-
-  if (typeof separator === 'object') {
-    options = separator
-  } else {
-    options.separator = separator
-    options.toStrip = toStrip
-
-    // Separator might be omitted and toStrip in its place
-    if (options.separator instanceof RegExp) {
-      options.toStrip = separator
-      options.separator = defaultSeparator
-    }
-
-    // Only a separator was passed
-    if (typeof options.toStrip === 'undefined') options.toStrip = /['"’‘”“]/g
-  }
-
-  // Separator is optional
-  if (typeof options.separator === 'undefined') options.separator = defaultSeparator
-
-  // toStrip is optional
-  if (typeof options.toStrip === 'undefined') options.toStrip = defaultToStrip
-
-  // toLowerCase is optional
-  if (typeof options.toLowerCase === 'undefined') options.toLowerCase = defaultToLowerCase
-
-  // Make lower-case
-  if (options.toLowerCase) string = string.toLowerCase()
-
-  // Swap out non-english characters for their english equivalent
-  for (var i = 0, len = string.length; i < len; i++) {
-    if (chars[string.charAt(i)]) {
-      string = string.replace(string.charAt(i), chars[string.charAt(i)])
-    }
-  }
-
-  string = string
-    // Strip chars that shouldn't be replaced with separator
-    .replace(options.toStrip, '')
-    // Replace non-word characters with separator
-    .replace(/[\W|_]+/g, options.separator)
-    // Strip dashes from the beginning
-    .replace(new RegExp('^' + options.separator + '+'), '')
-    // Strip dashes from the end
-    .replace(new RegExp(options.separator + '+$'), '')
-
-  return string
-
-}
-
-// Conversion table. Modified version of:
-// https://github.com/dodo/node-slug/blob/master/src/slug.coffee
-var chars = slugg.chars = {
-  // Latin
-  'À': 'A', 'Á': 'A', 'Â': 'A', 'Ã': 'A', 'Ä': 'A', 'Å': 'A', 'Æ': 'AE',
-  'Ç': 'C', 'È': 'E', 'É': 'E', 'Ê': 'E', 'Ë': 'E', 'Ì': 'I', 'Í': 'I',
-  'Î': 'I', 'Ï': 'I', 'Ð': 'D', 'Ñ': 'N', 'Ò': 'O', 'Ó': 'O', 'Ô': 'O',
-  'Õ': 'O', 'Ö': 'O', 'Ő': 'O', 'Ø': 'O', 'Ù': 'U', 'Ú': 'U', 'Û': 'U',
-  'Ü': 'U', 'Ű': 'U', 'Ý': 'Y', 'Þ': 'TH', 'ß': 'ss', 'à': 'a', 'á': 'a',
-  'â': 'a', 'ã': 'a', 'ä': 'a', 'å': 'a', 'æ': 'ae', 'ç': 'c', 'è': 'e',
-  'é': 'e', 'ê': 'e', 'ë': 'e', 'ì': 'i', 'í': 'i', 'î': 'i', 'ï': 'i',
-  'ð': 'd', 'ñ': 'n', 'ò': 'o', 'ó': 'o', 'ô': 'o', 'õ': 'o', 'ö': 'o',
-  'ő': 'o', 'ø': 'o', 'ù': 'u', 'ú': 'u', 'û': 'u', 'ü': 'u', 'ű': 'u',
-  'ý': 'y', 'þ': 'th', 'ÿ': 'y', 'ẞ': 'SS', 'œ': 'oe', 'Œ': 'OE',
-  // Greek
-  'α': 'a', 'β': 'b', 'γ': 'g', 'δ': 'd', 'ε': 'e', 'ζ': 'z', 'η': 'h',
-  'θ': '8', 'ι': 'i', 'κ': 'k', 'λ': 'l', 'μ': 'm', 'ν': 'n', 'ξ': '3',
-  'ο': 'o', 'π': 'p', 'ρ': 'r', 'σ': 's', 'τ': 't', 'υ': 'y', 'φ': 'f',
-  'χ': 'x', 'ψ': 'ps', 'ω': 'w', 'ά': 'a', 'έ': 'e', 'ί': 'i', 'ό': 'o',
-  'ύ': 'y', 'ή': 'h', 'ώ': 'w', 'ς': 's', 'ϊ': 'i', 'ΰ': 'y', 'ϋ': 'y',
-  'ΐ': 'i', 'Α': 'A', 'Β': 'B', 'Γ': 'G', 'Δ': 'D', 'Ε': 'E', 'Ζ': 'Z',
-  'Η': 'H', 'Θ': '8', 'Ι': 'I', 'Κ': 'K', 'Λ': 'L', 'Μ': 'M', 'Ν': 'N',
-  'Ξ': '3', 'Ο': 'O', 'Π': 'P', 'Ρ': 'R', 'Σ': 'S', 'Τ': 'T', 'Υ': 'Y',
-  'Φ': 'F', 'Χ': 'X', 'Ψ': 'PS', 'Ω': 'W', 'Ά': 'A', 'Έ': 'E', 'Ί': 'I',
-  'Ό': 'O', 'Ύ': 'Y', 'Ή': 'H', 'Ώ': 'W', 'Ϊ': 'I', 'Ϋ': 'Y',
-  // Turkish
-  'ş': 's', 'Ş': 'S', 'ı': 'i', 'İ': 'I', 'ğ': 'g', 'Ğ': 'G',
-  // Russian
-  'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo',
-  'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm',
-  'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u',
-  'ф': 'f', 'х': 'h', 'ц': 'c', 'ч': 'ch', 'ш': 'sh', 'щ': 'sh', 'ъ': 'u',
-  'ы': 'y', 'э': 'e', 'ю': 'yu', 'я': 'ya', 'А': 'A', 'Б': 'B',
-  'В': 'V', 'Г': 'G', 'Д': 'D', 'Е': 'E', 'Ё': 'Yo', 'Ж': 'Zh', 'З': 'Z',
-  'И': 'I', 'Й': 'J', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'N', 'О': 'O',
-  'П': 'P', 'Р': 'R', 'С': 'S', 'Т': 'T', 'У': 'U', 'Ф': 'F', 'Х': 'H',
-  'Ц': 'C', 'Ч': 'Ch', 'Ш': 'Sh', 'Щ': 'Sh', 'Ъ': 'U', 'Ы': 'Y',
-  'Э': 'E', 'Ю': 'Yu', 'Я': 'Ya',
-  // Ukranian
-  'Є': 'Ye', 'І': 'I', 'Ї': 'Yi', 'Ґ': 'G',
-  'є': 'ye', 'і': 'i', 'ї': 'yi', 'ґ': 'g',
-  // Czech
-  'č': 'c', 'ď': 'd', 'ě': 'e', 'ň': 'n', 'ř': 'r', 'š': 's',
-  'ť': 't', 'ů': 'u', 'ž': 'z', 'Č': 'C', 'Ď': 'D', 'Ě': 'E',
-  'Ň': 'N', 'Ř': 'R', 'Š': 'S', 'Ť': 'T', 'Ů': 'U', 'Ž': 'Z',
-  // Polish
-  'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n', 'ś': 's',
-  'ź': 'z', 'ż': 'z', 'Ą': 'A', 'Ć': 'C', 'Ę': 'e', 'Ł': 'L',
-  'Ń': 'N', 'Ś': 'S', 'Ź': 'Z', 'Ż': 'Z',
-  // Latvian
-  'ā': 'a', 'ē': 'e', 'ģ': 'g', 'ī': 'i', 'ķ': 'k', 'ļ': 'l',
-  'ņ': 'n', 'ū': 'u', 'Ā': 'A', 'Ē': 'E', 'Ģ': 'G', 'Ī': 'i',
-  'Ķ': 'k', 'Ļ': 'L', 'Ņ': 'N', 'Ū': 'u'
-}
-
-// Be compatible with different module systems
-
-if (true) {
-  // AMD
-  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
-    return slugg
-  }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
-} else if (typeof module !== 'undefined' && module.exports) {
-  // CommonJS
-  module.exports = slugg
-} else {
-  // Script tag
-  root.slugg = slugg
-}
-
-}(this))
-
-
-/***/ }),
-
 /***/ "./src/Animation/bms-rocket.json":
 /***/ (function(module, exports) {
 
@@ -1182,6 +1041,10 @@ const Wrapper = __WEBPACK_IMPORTED_MODULE_0_styled_components___default()(__WEBP
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_timeago___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_timeago__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_Utils_helper__ = __webpack_require__("./src/Utils/helper.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__ = __webpack_require__("./src/Graphql/Mutation/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__link__ = __webpack_require__("./src/link.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__constants__ = __webpack_require__("./src/constants.ts");
+
+
 
 
 
@@ -1193,56 +1056,74 @@ const Wrapper = __WEBPACK_IMPORTED_MODULE_0_styled_components___default()(__WEBP
 
 // tslint:disable-next-line:no-any
 class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
-    componentDidMount() {
+    constructor() {
+        super(...arguments);
+        this.state = {
+            user: {},
+            saved: false,
+            liked: false
+        };
+        this.save = () => {
+            this.setState({ saved: true });
+            this.props.client.mutate({
+                mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["i" /* SAVE_ARTICLE */],
+                variables: {
+                    id: this.props.article.id
+                }
+            }).then((res) => {
+                // dhjh
+            }).catch((err) => {
+                // ghg
+            });
+        };
+        this.unSave = () => {
+            this.setState({ saved: false });
+            this.props.client.mutate({
+                mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["l" /* UNSAVE_ARTICLE */],
+                variables: {
+                    id: this.props.article.id
+                }
+            }).then((res) => {
+                // dhjh
+            }).catch((err) => {
+                // ghg
+            });
+        };
+        this.like = () => {
+            this.setState({ liked: true });
+            this.props.client.mutate({
+                mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["g" /* LIKE_ARTICLE */],
+                variables: {
+                    id: this.props.article.id
+                },
+            }).then((res) => {
+                // dhjh
+            }).catch((err) => {
+                // ghg
+            });
+        };
+        this.unLike = () => {
+            this.setState({ liked: false });
+            this.props.client.mutate({
+                mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["k" /* UNLIKE_ARTICLE */],
+                variables: {
+                    id: this.props.article.id
+                }
+            }).then((res) => {
+                // dhjh
+            }).catch((err) => {
+                // ghg
+            });
+        };
+    }
+    componentWillMount() {
         // UIkit.notification('MyMessage', 'danger');
-    }
-    save() {
-        this.props.client.mutate({
-            mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["l" /* UNSAVE_ARTICLE */],
-            variable: {
-                id: this.props.article.id
-            }
-        }).then((res) => {
-            // dhjh
-        }).catch((err) => {
-            // ghg
-        });
-    }
-    unSave() {
-        this.props.client.mutate({
-            mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["i" /* SAVE_ARTICLE */],
-            variable: {
-                id: this.props.article.id
-            }
-        }).then((res) => {
-            // dhjh
-        }).catch((err) => {
-            // ghg
-        });
-    }
-    like() {
-        this.props.client.mutate({
-            mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["g" /* LIKE_ARTICLE */],
-            variable: {
-                id: this.props.article.id
-            },
-        }).then((res) => {
-            // dhjh
-        }).catch((err) => {
-            // ghg
-        });
-    }
-    unLike() {
-        this.props.client.mutate({
-            mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["k" /* UNLIKE_ARTICLE */],
-            variable: {
-                id: this.props.article.id
-            }
-        }).then((res) => {
-            // dhjh
-        }).catch((err) => {
-            // ghg
-        });
+        const user = __WEBPACK_IMPORTED_MODULE_9__link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_10__constants__["b" /* CURRENT_USER */]);
+        const saved = this.props.article.saved ? (JSON.stringify(this.props.article.saved.length) > 0 ? true : false) : false;
+        const liked = this.props.article.liked ? (JSON.stringify(this.props.article.liked.length) > 0 ? true : false) : false;
+        this.setState({ liked });
+        this.setState({ saved });
+        this.setState({ user });
     }
     render() {
         const { article } = this.props;
@@ -1280,12 +1161,8 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { style: { color: '#212121', fontFamily: 'Muli', fontSize: this.props.small ? 14 : 17 } }, this.props.small ? body.truncString('...', 70) : body.truncString('...', 140))),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "post-stats clearfix uk-padding-small" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex pull-left" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__LikeButton__["a" /* default */], { liked: article.liked !== null, likeCount: 1, text: "Like", frontIcon: "like", frontClick: this.like(), backClick: this.unLike(), backIcon: "like-fill", buttonType: "two" }),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__LikeButton__["a" /* default */], { likeCount: article.comments ? article.comments.length : '', link: `/article/${article.id}#comments`, frontIcon: "post-fill", text: "Comment" }),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "response-count uk-flex uk-inline" },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: forward; ratio: 1.2" }),
-                            " ",
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-visible@s" }, "Share"))),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__LikeButton__["a" /* default */], { liked: this.state.liked, likeCount: article.likes ? article.likes.length : '', text: "Like", frontIcon: "like", frontClick: () => this.like(), backClick: () => this.unLike(), backIcon: "like-fill", buttonType: "two" }),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__LikeButton__["a" /* default */], { likeCount: article.comments ? article.comments.length : '', link: `/article/${article.id}#comments`, frontIcon: "post", text: "Comment" })),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex  response-count pull-right" },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "dropdown" },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-text uk-margin-right", type: "button" },
@@ -1304,7 +1181,7 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { href: "#", className: "uk-text-bold" },
                                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: info; ratio: 1" }),
                                             " Report"))))),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__LikeButton__["a" /* default */], { frontIcon: "down", text: "Save", backIcon: "down-fill", buttonType: "two", frontClick: this.save(), backClick: this.unSave(), liked: article.saved !== null }))))));
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__LikeButton__["a" /* default */], { frontIcon: "down", text: "Save", backIcon: "down-fill", buttonType: "two", liked: this.state.saved, frontClick: () => this.save(), backClick: () => this.unSave() }))))));
     }
 }
 /* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_3_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_3_react_apollo__["withApollo"])(ArticleItem));
@@ -1330,6 +1207,9 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                   </div>
                 </div>)
               }
+                        <a className="response-count uk-flex uk-inline">
+                            <span uk-icon="icon: forward; ratio: 1.2" /> <div className="uk-visible@s">Share</div>
+                        </a>
 */
 
 
@@ -3603,7 +3483,7 @@ const GithubSignin = __WEBPACK_IMPORTED_MODULE_0_styled_components___default.a.d
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router__ = __webpack_require__("react-router");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_router__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_slugg__ = __webpack_require__("./node_modules/slugg/slugg.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_slugg__ = __webpack_require__("slugg");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_slugg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_slugg__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_apollo__ = __webpack_require__("react-apollo");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_apollo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_apollo__);
@@ -7319,28 +7199,11 @@ class LeftSideBar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 
 
 class LikeButton extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
-    constructor(props) {
-        super(props);
-        this.state = {
-            liked: false,
-            likeCount: 0,
-        };
-    }
-    componentWillMount() {
-        /*const { likeableType, likeableId } = this.props;
-    this.token = PubSub.subscribe('LikeButton:onClick', (msg, data) => {
-      if (likeableType === data.type && likeableId === data.id) {
-        this.setState({ liked: data.liked, likeCount: data.count });
-      }
-    });*/
-    }
-    componentWillUnmount() {
-        // PubSub.unsubscribe(this.token);
-    }
     render() {
         return (this.renderLikeButton());
     }
     renderLikeButton() {
+        const truthy = this.props.liked ? (this.props.liked === true ? true : false) : false;
         if (this.props.link) {
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: this.props.link, className: "response-count uk-flex uk-inline uk-margin-left uk-margin-right" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Icons__["a" /* default */], { glyph: this.props.frontIcon, size: this.props.size ? this.props.size : 24 }),
@@ -7348,15 +7211,15 @@ class LikeButton extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         }
         else {
             if (this.props.buttonType === 'two') {
-                if (!this.props.liked) {
-                    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "response-count uk-flex uk-inline", onClick: () => this.props.frontClick() },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Icons__["a" /* default */], { glyph: this.props.frontIcon, size: this.props.size ? this.props.size : 24 }),
+                if (truthy) {
+                    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "response-count uk-flex uk-inline uk-animation-toggle uk-animation-shake", onClick: () => this.props.backClick() },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Icons__["a" /* default */], { glyph: this.props.backIcon, size: this.props.size ? this.props.size : 24 }),
                         this.props.text ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-visible@s" }, this.props.text + ' '
                             + (this.props.likeCount ? this.props.likeCount : ''))) : ''));
                 }
                 else {
-                    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "response-count uk-flex uk-inline", onClick: () => this.props.backClick() },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Icons__["a" /* default */], { glyph: this.props.backIcon, size: this.props.size ? this.props.size : 24 }),
+                    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "response-count uk-flex uk-inline uk-animation-toggle uk-animation-shake", onClick: () => this.props.frontClick() },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Icons__["a" /* default */], { glyph: this.props.frontIcon, size: this.props.size ? this.props.size : 24 }),
                         this.props.text ? (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-visible@s" }, this.props.text + ' '
                             + (this.props.likeCount ? this.props.likeCount : ''))) : ''));
                 }
@@ -9544,7 +9407,6 @@ ScrollManager.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__style__ = __webpack_require__("./src/Components/Search/style.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_Components_Dashboard_style__ = __webpack_require__("./src/Components/Dashboard/style.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__searchInput__ = __webpack_require__("./src/Components/Search/searchInput.tsx");
-// @flow
 
 
 
@@ -15425,6 +15287,9 @@ const ARTICLE_FRAGMENT = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
     comments{
       id
     }
+    userFavourited{
+      username
+    }
     likes{
       username
       avatar
@@ -15726,11 +15591,11 @@ const ARTICLES = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
     articles{
       ...articleFragment
       saved: userFavourited(where: {username: $myUsername }) {
-      id
-    }
-    liked: likes(where: {username: $myUsername }) {
-      id
-    }
+        username
+      }
+      liked: likes(where: {username: $myUsername }) {
+        username
+      }
     }
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["a" /* ARTICLE_FRAGMENT */]}
@@ -15745,10 +15610,10 @@ const GET_ARTICLE_BY_ID = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
     getArticleById(id: $id){
       ...articleFragment
       saved: userFavourited(where: {username: $myUsername }) {
-        id
+        username
       }
       liked: likes(where: {username: $myUsername }) {
-        id
+        username
       }
     }
   }
@@ -15764,10 +15629,10 @@ const GET_ARTICLE_BY_SLUG = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a 
     getArticleBySlug(slug: $slug){
       ...articleFragment
       saved: userFavourited(where: {username: $myUsername }) {
-        id
+        username
       }
       liked: likes(where: {username: $myUsername }) {
-        id
+        username
       }
     }
   }
@@ -15966,10 +15831,10 @@ const ACTIVITY = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
     activity(username: $username){
       ...articleFragment
       saved: userFavourited(where: {username: $myUsername }) {
-        id
+        username
       }
       liked: likes(where: {username: $myUsername }) {
-        id
+        username
       }
     }
   }
@@ -15982,10 +15847,10 @@ const GET_ARTICLES_BY_USERNAME = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___defau
     getArticlesByUsername(username: $myUsername){
       ...articleFragment
       saved: userFavourited(where: {username: $myUsername }) {
-      id
+        username
       }
       liked: likes(where: {username: $myUsername }) {
-        id
+        username
       }
     }
   }
@@ -16856,7 +16721,7 @@ const errorLink = Object(__WEBPACK_IMPORTED_MODULE_3_apollo_link_error__["onErro
 });
 /* harmony export (immutable) */ __webpack_exports__["b"] = errorLink;
 
-const httpLink = new __WEBPACK_IMPORTED_MODULE_1_apollo_link_http__["HttpLink"]({ uri: 'https://uniserver.herokuapp.com', fetch: __WEBPACK_IMPORTED_MODULE_10_node_fetch___default.a });
+const httpLink = new __WEBPACK_IMPORTED_MODULE_1_apollo_link_http__["HttpLink"]({ uri: 'http://localhost:4000', fetch: __WEBPACK_IMPORTED_MODULE_10_node_fetch___default.a });
 /* unused harmony export httpLink */
 
 const middlewareLink = new __WEBPACK_IMPORTED_MODULE_0_apollo_link__["ApolloLink"]((operation, forward) => {
@@ -17554,6 +17419,13 @@ module.exports = require("semantic-ui-react");
 /***/ (function(module, exports) {
 
 module.exports = require("serialize-javascript");
+
+/***/ }),
+
+/***/ "slugg":
+/***/ (function(module, exports) {
+
+module.exports = require("slugg");
 
 /***/ }),
 
