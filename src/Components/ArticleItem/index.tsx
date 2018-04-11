@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Article } from '../../CustomTypings/schema';
+import { Article, User } from '../../CustomTypings/schema';
 import Avatar from '../Avatar/avatar';
 import { Link } from 'react-router-dom';
 import { withApollo, compose } from 'react-apollo';
@@ -9,6 +9,8 @@ import TimeAgo from 'react-timeago';
 import { strip_html_tags } from 'Utils/helper';
 import Icon from 'semantic-ui-react';
 import { UNLIKE_ARTICLE, LIKE_ARTICLE, SAVE_ARTICLE, UNSAVE_ARTICLE } from 'Graphql/Mutation';
+import { cookies } from '../../link';
+import { CURRENT_USER } from '../../constants';
 // import UIkit from 'uikit/src/js/uikit';
 // import { Link } from 'react-router-dom';
 
@@ -20,27 +22,30 @@ interface Props {
 
 // tslint:disable-next-line:no-any
 class ArticleItem extends React.Component<Props> {
-    componentDidMount() {
-        // UIkit.notification('MyMessage', 'danger');
-    }
 
-    save() {
-      this.props.client.mutate({
-        mutation: UNSAVE_ARTICLE,
-        variable: {
-          id: this.props.article.id
-        }
-      }).then((res) => {
-        // dhjh
-      }).catch((err) => {
-        // ghg
-      });
-    }
+  state = {
+    user: {},
+    saved: false,
+    liked: false
+  };
 
-    unSave() {
+  componentWillMount() {
+      // UIkit.notification('MyMessage', 'danger');
+      const user = cookies.get(CURRENT_USER);
+
+      const saved = this.props.article.saved ? (JSON.stringify(this.props.article.saved.length) > 0 ? true : false) : false;
+      const liked = this.props.article.liked ? (JSON.stringify(this.props.article.liked.length) > 0 ? true : false) : false;
+      
+      this.setState({liked});
+      this.setState({saved});
+      this.setState({user});
+  }
+
+    save = () => {
+      this.setState({saved: true});
       this.props.client.mutate({
         mutation: SAVE_ARTICLE,
-        variable: {
+        variables: {
           id: this.props.article.id
         }
       }).then((res) => {
@@ -50,10 +55,25 @@ class ArticleItem extends React.Component<Props> {
       });
     }
 
-    like() {
+    unSave = () => {
+      this.setState({saved: false});
+      this.props.client.mutate({
+        mutation: UNSAVE_ARTICLE,
+        variables: {
+          id: this.props.article.id
+        }
+      }).then((res) => {
+        // dhjh
+      }).catch((err) => {
+        // ghg
+      });
+    }
+
+    like = () => {
+      this.setState({liked: true});
       this.props.client.mutate({
         mutation: LIKE_ARTICLE,
-        variable: {
+        variables: {
           id: this.props.article.id
         },
 
@@ -64,10 +84,11 @@ class ArticleItem extends React.Component<Props> {
       });
     }
 
-    unLike() {
+    unLike = () => {
+      this.setState({liked: false});
       this.props.client.mutate({
         mutation: UNLIKE_ARTICLE,
-        variable: {
+        variables: {
           id: this.props.article.id
         }
       }).then((res) => {
@@ -146,24 +167,20 @@ class ArticleItem extends React.Component<Props> {
                 >
                     <div className="uk-flex pull-left">
                         <Likebutton 
-                          liked={article.liked !== null} 
-                          likeCount={1} 
+                          liked={this.state.liked} 
+                          likeCount={article.likes ? article.likes.length : ''} 
                           text="Like" 
                           frontIcon="like" 
-                          frontClick={this.like()}
-                          backClick={this.unLike()}
+                          frontClick={() => this.like()}
+                          backClick={() => this.unLike()}
                           backIcon="like-fill" 
                           buttonType="two" />
-
                         <Likebutton 
                           likeCount={article.comments ? article.comments.length : ''} 
                           link={`/article/${article.id}#comments`}
-                          frontIcon="post-fill" 
+                          frontIcon="post" 
                           text="Comment"
                         />
-                        <a className="response-count uk-flex uk-inline">
-                            <span uk-icon="icon: forward; ratio: 1.2" /> <div className="uk-visible@s">Share</div>
-                        </a>
                     </div>
 
                     <div className="uk-flex  response-count pull-right">
@@ -196,9 +213,9 @@ class ArticleItem extends React.Component<Props> {
                           text="Save" 
                           backIcon="down-fill" 
                           buttonType="two"
-                          frontClick={this.save()}
-                          backClick={this.unSave()}
-                          liked={article.saved !== null} 
+                          liked={this.state.saved} 
+                          frontClick={() => this.save()}
+                          backClick={() => this.unSave()}
                         />
                     </div>
                 </div>
@@ -231,5 +248,8 @@ export default compose(withApollo)(ArticleItem);
                       </a>
                   </div>
                 </div>)
-              }
+              }  
+                        <a className="response-count uk-flex uk-inline">
+                            <span uk-icon="icon: forward; ratio: 1.2" /> <div className="uk-visible@s">Share</div>
+                        </a>
 */

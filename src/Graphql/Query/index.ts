@@ -49,11 +49,11 @@ export const ARTICLES = gql`
     articles{
       ...articleFragment
       saved: userFavourited(where: {username: $myUsername }) {
-      id
-    }
-    liked: likes(where: {username: $myUsername }) {
-      id
-    }
+        username
+      }
+      liked: likes(where: {username: $myUsername }) {
+        username
+      }
     }
   }
   ${ARTICLE_FRAGMENT}
@@ -67,10 +67,10 @@ export const GET_ARTICLE_BY_ID = gql`
     getArticleById(id: $id){
       ...articleFragment
       saved: userFavourited(where: {username: $myUsername }) {
-        id
+        username
       }
       liked: likes(where: {username: $myUsername }) {
-        id
+        username
       }
     }
   }
@@ -85,10 +85,10 @@ export const GET_ARTICLE_BY_SLUG = gql`
     getArticleBySlug(slug: $slug){
       ...articleFragment
       saved: userFavourited(where: {username: $myUsername }) {
-        id
+        username
       }
       liked: likes(where: {username: $myUsername }) {
-        id
+        username
       }
     }
   }
@@ -276,10 +276,10 @@ export const ACTIVITY = gql`
     activity(username: $username){
       ...articleFragment
       saved: userFavourited(where: {username: $myUsername }) {
-        id
+        username
       }
       liked: likes(where: {username: $myUsername }) {
-        id
+        username
       }
     }
   }
@@ -291,10 +291,10 @@ export const GET_ARTICLES_BY_USERNAME = gql`
     getArticlesByUsername(username: $myUsername){
       ...articleFragment
       saved: userFavourited(where: {username: $myUsername }) {
-      id
+        username
       }
       liked: likes(where: {username: $myUsername }) {
-        id
+        username
       }
     }
   }

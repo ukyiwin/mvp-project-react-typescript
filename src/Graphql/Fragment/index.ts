@@ -54,6 +54,9 @@ export const ARTICLE_FRAGMENT = gql`
     comments{
       id
     }
+    userFavourited{
+      username
+    }
     likes{
       username
       avatar
