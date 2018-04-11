@@ -1,4 +1,3 @@
-// @flow
 import * as React from 'react';
 import { withApollo } from 'react-apollo';
 import { connect } from 'react-redux';
@@ -22,6 +21,7 @@ interface Props {
   isRefetching: boolean;
   markAllNotificationsSeen: any;
   activeInboxThread?: string;
+  hideText?: boolean;
   count: number;
 }
 
@@ -202,7 +202,7 @@ class NotificationsTab extends React.Component<any, any> {
             glyph={count > 0 ? 'notification-fill' : 'notification'}
             withCount={count > 10 ? '10+' : count > 0 ? count : false}
           />
-          <Label hideOnDesktop>Notifications</Label>
+          {!this.props.hideText ? <Label hideOnDesktop>Notifications</Label> : null}
         </Tab>
 
         {shouldRenderDropdown && (

@@ -4,7 +4,7 @@ import ArticleList from 'Components/ArticleList';
 import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { User } from 'CustomTypings/schema';
-// import ArcticleListComponent from 'Components/ArticleList';
+import Titlebar from 'Components/Titlebar';
 
 interface Props {
     me?: User;

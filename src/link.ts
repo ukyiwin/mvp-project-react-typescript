@@ -1,16 +1,19 @@
-import { ApolloLink } from 'apollo-link';
+import { ApolloLink, split } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { onError } from 'apollo-link-error';
 import { getMainDefinition } from 'apollo-utilities';
 import { Cookies } from 'react-cookie-banner';
+import { SubscriptionClient } from 'subscriptions-transport-ws';
 // import { createPersistedQueryLink } from 'apollo-link-persisted-queries';
 import { RetryLink } from 'apollo-link-retry';
 import resolvers from 'Graphql/Resolvers';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state';
 import fetch from 'node-fetch';
+import { BatchHttpLink } from 'apollo-link-batch-http';
 
+// const link = new BatchHttpLink({ uri: "/graphql" });
 const AUTH_TOKEN = 'token';
 export const cookies = new Cookies('unizonn');
 
@@ -80,6 +83,37 @@ export const requestLink = ({ queryOrMutationLink, subscriptionLink }) =>
     },
     subscriptionLink,
     queryOrMutationLink
+);
+
+export const wsLink = new WebSocketLink({
+  uri: `ws://localhost:4000`,
+  options: {
+    reconnect: true,
+    connectionParams: {
+      Authorization: cookies.get(AUTH_TOKEN) ? `Bearer ${cookies.get(AUTH_TOKEN)}` : '',
+    },
+  }
+});
+
+export const wsClient = new SubscriptionClient(`ws://localhost:4000`, {
+  reconnect: true,
+  connectionParams: {
+    Authorization: cookies.get(AUTH_TOKEN) ? `Bearer ${cookies.get(AUTH_TOKEN)}` : '',
+  },
+});
+
+export const wsLinks = new WebSocketLink(wsClient);
+
+// using the ability to split links, you can send data to each link
+// depending on what kind of operation is being sent
+export const netLink = split(
+  // split based on operation type
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query);
+    return kind === 'OperationDefinition' && operation === 'subscription';
+  },
+  wsLinks,
+  httpLink,
 );
 
 const defaults = { appState: 'INITIAL' };
