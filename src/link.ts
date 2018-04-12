@@ -36,7 +36,7 @@ export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
-export const httpLink = new HttpLink({ uri: 'http://localhost:4000', fetch });
+export const httpLink = new HttpLink({ uri: 'http://uniserver.herokuapp.com', fetch });
 
 export const middlewareLink = new ApolloLink((operation: any, forward: any) => {
   // get the authentication token from local storage if it exists
@@ -87,7 +87,7 @@ export const requestLink = ({ queryOrMutationLink, subscriptionLink }) =>
 );
 
 export const wsLink = new WebSocketLink({
-  uri: `ws://localhost:4000`,
+  uri: `ws://uniserver.herokuapp.com`,
   options: {
     reconnect: true,
     connectionParams: {
@@ -96,7 +96,7 @@ export const wsLink = new WebSocketLink({
   }
 });
 
-export const wsClient = new SubscriptionClient(`ws://localhost:4000`, {
+export const wsClient = new SubscriptionClient(`ws://uniserver.herokuapp.com`, {
   reconnect: true,
   connectionParams: {
     Authorization: cookies.get(AUTH_TOKEN) ? `Bearer ${cookies.get(AUTH_TOKEN)}` : '',

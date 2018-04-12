@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "48b0315d33d5be2fbfa5"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "6ff09c79e3a466a81c8d"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -17323,7 +17323,7 @@ const errorLink = Object(__WEBPACK_IMPORTED_MODULE_3_apollo_link_error__["onErro
 });
 /* harmony export (immutable) */ __webpack_exports__["b"] = errorLink;
 
-const httpLink = new __WEBPACK_IMPORTED_MODULE_1_apollo_link_http__["HttpLink"]({ uri: 'http://localhost:4000', fetch: __WEBPACK_IMPORTED_MODULE_11_node_fetch___default.a });
+const httpLink = new __WEBPACK_IMPORTED_MODULE_1_apollo_link_http__["HttpLink"]({ uri: 'http://uniserver.herokuapp.com', fetch: __WEBPACK_IMPORTED_MODULE_11_node_fetch___default.a });
 /* unused harmony export httpLink */
 
 const middlewareLink = new __WEBPACK_IMPORTED_MODULE_0_apollo_link__["ApolloLink"]((operation, forward) => {
@@ -17367,7 +17367,7 @@ __WEBPACK_IMPORTED_MODULE_0_apollo_link__["ApolloLink"].split(({ query }) => {
 /* unused harmony export requestLink */
 
 const wsLink = new __WEBPACK_IMPORTED_MODULE_2_apollo_link_ws__["WebSocketLink"]({
-    uri: `ws://localhost:4000`,
+    uri: `ws://uniserver.herokuapp.com`,
     options: {
         reconnect: true,
         connectionParams: {
@@ -17377,7 +17377,7 @@ const wsLink = new __WEBPACK_IMPORTED_MODULE_2_apollo_link_ws__["WebSocketLink"]
 });
 /* unused harmony export wsLink */
 
-const wsClient = new __WEBPACK_IMPORTED_MODULE_6_subscriptions_transport_ws__["SubscriptionClient"](`ws://localhost:4000`, {
+const wsClient = new __WEBPACK_IMPORTED_MODULE_6_subscriptions_transport_ws__["SubscriptionClient"](`ws://uniserver.herokuapp.com`, {
     reconnect: true,
     connectionParams: {
         Authorization: cookies.get(AUTH_TOKEN) ? `Bearer ${cookies.get(AUTH_TOKEN)}` : '',
