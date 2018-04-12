@@ -1,6 +1,6 @@
 import { ApolloLink, split } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
-import { WebSocketLink } from 'apollo-link-ws';
+// import { WebSocketLink } from 'apollo-link-ws';
 import { onError } from 'apollo-link-error';
 import { getMainDefinition } from 'apollo-utilities';
 import { Cookies } from 'react-cookie-banner';
@@ -50,7 +50,7 @@ export const middlewareLink = new ApolloLink((operation: any, forward: any) => {
 
 export const httpLinkAuth = middlewareLink.concat(httpLink);
 
-export const subscriptionLink = (config = {}) =>
+/* export const subscriptionLink = (config = {}) =>
   new WebSocketLink({
     uri:
       process.env.NODE_ENV !== 'production'
@@ -59,7 +59,7 @@ export const subscriptionLink = (config = {}) =>
     options: { reconnect: true },
     ...config,
   });
-
+*/
 export const queryOrMutationLink = (config = {}) =>
   // turn on CDN support via GET
   // createPersistedQueryLink({ useGETForHashedQueries: true }).concat(
