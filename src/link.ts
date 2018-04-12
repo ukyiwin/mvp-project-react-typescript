@@ -11,6 +11,7 @@ import resolvers from 'Graphql/Resolvers';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state';
 import fetch from 'node-fetch';
+import WebSocket from 'ws';
 import { BatchHttpLink } from 'apollo-link-batch-http';
 
 // const link = new BatchHttpLink({ uri: "/graphql" });
@@ -100,7 +101,7 @@ export const wsClient = new SubscriptionClient(`ws://localhost:4000`, {
   connectionParams: {
     Authorization: cookies.get(AUTH_TOKEN) ? `Bearer ${cookies.get(AUTH_TOKEN)}` : '',
   },
-});
+},                                             WebSocket);
 
 export const wsLinks = new WebSocketLink(wsClient);
 

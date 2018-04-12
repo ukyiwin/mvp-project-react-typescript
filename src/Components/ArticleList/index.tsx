@@ -46,18 +46,25 @@ const ArticleList = () => (
     if (loading) {
       return (
         <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
-          <MyLoader />
+          <div><MyLoader /></div>
           <br />
-          <MyLoader />
+          <div><MyLoader /></div>
           <br />
-          <MyLoader />
+          <div><MyLoader /></div>
           <br />
-          <MyLoader />
+          <div><MyLoader /></div>
         </div>
       );
     }
     if (error) {
         return <ErrorComponent />;
+    }
+    if (data.articles === null) {
+      return (
+        <EmptyComponent 
+          title="There is no article for you" 
+          subtitle="Connect to other students or update your interest in your profile settings"
+        />);
     }
     return (
         <InfiniteScroll

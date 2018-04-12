@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "1fa6b90d3bf31c2e2e6b"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "48b0315d33d5be2fbfa5"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1262,16 +1262,23 @@ const user = __WEBPACK_IMPORTED_MODULE_7_link__["a" /* cookies */].get(__WEBPACK
 const ArticleList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["f" /* ARTICLES */], variables: { myUsername: user.username }, pollInterval: 2000 }, ({ loading, error, data, fetchMore, networkStatus, refetch }) => {
     if (loading) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)));
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null))));
     }
     if (error) {
         return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__["b" /* ErrorComponent */], null);
+    }
+    if (data.articles === null) {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__["a" /* EmptyComponent */], { title: "There is no article for you", subtitle: "Connect to other students or update your interest in your profile settings" }));
     }
     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: loading, loadMore: () => fetchMore(), loader: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)) }, data.articles ? data.articles.map((article) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: article.id },
@@ -3830,10 +3837,10 @@ const UserSettings = __WEBPACK_IMPORTED_MODULE_4_recompose_compose___default()(_
 const ErrorComponent = (props) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex uk-flex-stretch uk-width-1-1" },
     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "empty uk-text-center uk-width-1-1" },
         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "redo icon" }),
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h5", { className: "empty-title h5" }, "There was an error"),
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { className: "empty-subtitle" }, "Click to refresh."),
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "empty-action" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button circle button uk-button-primary", onClick: () => props.refresh }, "Refresh")))));
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h5", { className: "empty-title h5" }, "Oops!!! There was an error"),
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { className: "empty-subtitle" }, "Please try refreshing to see if it solves the problem"),
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "empty-action uk-text-center middle center uk-flex uk-flex-center uk-width-1-1" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_Buttons__["a" /* Button */], { className: "uk-button", onClick: () => window.location.reload(true) }, "Refresh")))));
 /* harmony export (immutable) */ __webpack_exports__["b"] = ErrorComponent;
 
 const EmptyComponent = (props) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "empty uk-flex-stretch uk-align-center uk-width-1-1 uk-text-center" },
@@ -3842,7 +3849,7 @@ const EmptyComponent = (props) => (__WEBPACK_IMPORTED_MODULE_0_react__["createEl
     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { className: "empty-title h5" }, props.title ? props.title : 'You have no new article'),
     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { className: "empty-subtitle" }, props.subtitle ? props.subtitle : 'You have no new article'),
     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "empty-action uk-text-center middle center uk-flex uk-flex-center uk-width-1-1" },
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_Buttons__["a" /* Button */], { className: "uk-button", color: "green", onClick: () => props.buttonClick() }, "Refresh"))));
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_Buttons__["a" /* Button */], { className: "uk-button", color: "green", onClick: () => props.buttonClick ? props.buttonClick() : window.location.reload(true) }, "Refresh"))));
 /* harmony export (immutable) */ __webpack_exports__["a"] = EmptyComponent;
 
 const LoadingComponent = (props) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: " uk-flex-stretch uk-text-center uk-width-1-1", style: { justifyContent: 'center', alignSelf: 'center' } },
@@ -10514,7 +10521,7 @@ const TopInterest = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
         return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_EmptyStates__["b" /* ErrorComponent */], null);
     }
     console.log(data);
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "tags-wrapper uk-padding-small undefined" }, data.allInterest.map((interest, i) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_InterestItemSlim__["a" /* default */], { key: interest.id, url: interest.avatar, name: interest.name })))));
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "tags-wrapper uk-padding-small undefined" }, data.allInterest.map((interest, i) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_InterestItemSlim__["a" /* default */], { key: interest.id, url: `/interest/${interest.name}`, name: interest.name })))));
 }));
 /* harmony default export */ __webpack_exports__["a"] = (TopInterest);
 
@@ -17279,6 +17286,8 @@ if (true) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_apollo_link_state___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_apollo_link_state__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_node_fetch__ = __webpack_require__("node-fetch");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_node_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_node_fetch__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ws__ = __webpack_require__("ws");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ws___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_ws__);
 
 
 
@@ -17287,6 +17296,7 @@ if (true) {
 
 
 // import { createPersistedQueryLink } from 'apollo-link-persisted-queries';
+
 
 
 
@@ -17372,7 +17382,7 @@ const wsClient = new __WEBPACK_IMPORTED_MODULE_6_subscriptions_transport_ws__["S
     connectionParams: {
         Authorization: cookies.get(AUTH_TOKEN) ? `Bearer ${cookies.get(AUTH_TOKEN)}` : '',
     },
-});
+}, __WEBPACK_IMPORTED_MODULE_12_ws___default.a);
 /* unused harmony export wsClient */
 
 const wsLinks = new __WEBPACK_IMPORTED_MODULE_2_apollo_link_ws__["WebSocketLink"](wsClient);
@@ -18078,6 +18088,13 @@ module.exports = require("subscriptions-transport-ws");
 /***/ (function(module, exports) {
 
 module.exports = require("uikit");
+
+/***/ }),
+
+/***/ "ws":
+/***/ (function(module, exports) {
+
+module.exports = require("ws");
 
 /***/ })
 
