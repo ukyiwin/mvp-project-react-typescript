@@ -41,7 +41,7 @@ type WrappedProps = Response & QueryProps;
 const user = cookies.get(CURRENT_USER) as User;
 
 const ArticleList = () => (
-  <Query query={ARTICLES} variables={{myUsername: user.username}} pollInterval={2000} >
+  <Query query={ARTICLES} variables={{myUsername: user.username, limit: 10 }} pollInterval={5000} >
   {({ loading, error, data, fetchMore, networkStatus, refetch }) => {
     if (loading) {
       return (
@@ -69,8 +69,21 @@ const ArticleList = () => (
     return (
         <InfiniteScroll
           pageStart={0}
-          hasMore={loading}
-          loadMore={() => fetchMore()}
+          hasMore={true}
+          loadMore={() =>
+            fetchMore({
+              variables: {
+                limit: 10,
+                offset: data.articles.length
+              },
+              updateQuery: (prev, { fetchMoreResult }) =>  {
+                if (!fetchMoreResult) {
+                  // this.set;
+                  return prev;
+                }
+                return {...prev, articles: [...prev.articles, ...fetchMoreResult.articles]};
+              },
+            })}
           loader={
             <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
               <MyLoader />

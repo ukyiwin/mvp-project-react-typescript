@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "1c0e73bc93d278966e6b"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "1f590cb9955e02378fbc"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1259,7 +1259,7 @@ const MyLoader = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__W
 /* harmony export (immutable) */ __webpack_exports__["a"] = MyLoader;
 
 const user = __WEBPACK_IMPORTED_MODULE_7_link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_8__constants__["b" /* CURRENT_USER */]);
-const ArticleList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["f" /* ARTICLES */], variables: { myUsername: user.username }, pollInterval: 2000 }, ({ loading, error, data, fetchMore, networkStatus, refetch }) => {
+const ArticleList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["f" /* ARTICLES */], variables: { myUsername: user.username, limit: 10 }, pollInterval: 5000 }, ({ loading, error, data, fetchMore, networkStatus, refetch }) => {
     if (loading) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
@@ -1280,7 +1280,19 @@ const ArticleList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
     if (data.articles === null) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__["a" /* EmptyComponent */], { title: "There is no article for you", subtitle: "Connect to other students or update your interest in your profile settings" }));
     }
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: loading, loadMore: () => fetchMore(), loader: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: true, loadMore: () => fetchMore({
+            variables: {
+                limit: 10,
+                offset: data.articles.length
+            },
+            updateQuery: (prev, { fetchMoreResult }) => {
+                if (!fetchMoreResult) {
+                    // this.set;
+                    return prev;
+                }
+                return Object.assign({}, prev, { articles: [...prev.articles, ...fetchMoreResult.articles] });
+            },
+        }), loader: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)) }, data.articles ? data.articles.map((article) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: article.id },
         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_ArticleItem__["a" /* default */], { article: article })))) : null));
 }));
@@ -7680,7 +7692,7 @@ const MaintenanceDowntime = () => {
 
 
 const MapComponent = Object(__WEBPACK_IMPORTED_MODULE_1_recompose__["compose"])(Object(__WEBPACK_IMPORTED_MODULE_1_recompose__["withProps"])({
-    googleMapURL: 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places',
+    googleMapURL: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAoa373lwAsdouzumRvpxb7Vdw5IPLhacQ&v=3.exp&libraries=geometry,drawing,places',
     loadingElement: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { style: { height: `100%` } }),
     containerElement: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { style: { height: `400px` } }),
     mapElement: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { style: { height: `100%` } }),
@@ -10101,8 +10113,8 @@ const theme = {
         inactive: '#DFE7EF',
     },
     brand: {
-        default: '#4400CC',
-        alt: '#7B16FF',
+        default: '#e1eaf1',
+        alt: '#2ac554',
         wash: '#E8E5FF',
         border: '#DDD9FF',
         dark: '#08a84b',
@@ -10134,15 +10146,15 @@ const theme = {
         },
     },
     space: {
-        default: '#0062D6',
-        alt: '#1CD2F2',
+        default: '#e1eaf1',
+        alt: '#8ce770',
         wash: '#E5F0FF',
         border: '#BDD8FF',
-        dark: '#0F015E',
+        dark: '#233e24',
     },
     special: {
-        default: '#E58306',
-        alt: '#F1C742',
+        default: '#028383',
+        alt: '#1faeae',
         dark: '#7D4A00',
         wash: '#FFF5E5',
         border: '#FFE6BF',
@@ -16163,8 +16175,8 @@ const USER_EXIST = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
  * @description check if current user article
  */
 const ARTICLES = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
-  query articles($myUsername: String) {
-    articles{
+  query articles($myUsername: String, $offset: Int, $limit: Int) {
+    articles (offset: $offset, limit: $limit){
       ...articleFragment
       saved: userFavourited(where: {username: $myUsername }) {
         username
@@ -17267,26 +17279,24 @@ if (true) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_apollo_link___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_apollo_link__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_apollo_link_http__ = __webpack_require__("apollo-link-http");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_apollo_link_http___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_apollo_link_http__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_apollo_link_ws__ = __webpack_require__("apollo-link-ws");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_apollo_link_ws___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_apollo_link_ws__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_apollo_link_error__ = __webpack_require__("apollo-link-error");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_apollo_link_error___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_apollo_link_error__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_apollo_utilities__ = __webpack_require__("apollo-utilities");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_apollo_utilities___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_apollo_utilities__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_cookie_banner__ = __webpack_require__("react-cookie-banner");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_cookie_banner___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_cookie_banner__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_apollo_link_retry__ = __webpack_require__("apollo-link-retry");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_apollo_link_retry___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_apollo_link_retry__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_Graphql_Resolvers__ = __webpack_require__("./src/Graphql/Resolvers/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_apollo_cache_inmemory__ = __webpack_require__("apollo-cache-inmemory");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_apollo_cache_inmemory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_apollo_cache_inmemory__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_apollo_link_state__ = __webpack_require__("apollo-link-state");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_apollo_link_state___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_apollo_link_state__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_node_fetch__ = __webpack_require__("node-fetch");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_node_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_node_fetch__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_apollo_link_error__ = __webpack_require__("apollo-link-error");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_apollo_link_error___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_apollo_link_error__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_apollo_utilities__ = __webpack_require__("apollo-utilities");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_apollo_utilities___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_apollo_utilities__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_cookie_banner__ = __webpack_require__("react-cookie-banner");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_cookie_banner___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react_cookie_banner__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_apollo_link_retry__ = __webpack_require__("apollo-link-retry");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_apollo_link_retry___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_apollo_link_retry__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_Graphql_Resolvers__ = __webpack_require__("./src/Graphql/Resolvers/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_apollo_cache_inmemory__ = __webpack_require__("apollo-cache-inmemory");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_apollo_cache_inmemory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_apollo_cache_inmemory__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_apollo_link_state__ = __webpack_require__("apollo-link-state");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_apollo_link_state___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_apollo_link_state__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_node_fetch__ = __webpack_require__("node-fetch");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_node_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_node_fetch__);
 
 
-
+// import { WebSocketLink } from 'apollo-link-ws';
 
 
 
@@ -17298,10 +17308,10 @@ if (true) {
 
 // const link = new BatchHttpLink({ uri: "/graphql" });
 const AUTH_TOKEN = 'token';
-const cookies = new __WEBPACK_IMPORTED_MODULE_5_react_cookie_banner__["Cookies"]('unizonn');
+const cookies = new __WEBPACK_IMPORTED_MODULE_4_react_cookie_banner__["Cookies"]('unizonn');
 /* harmony export (immutable) */ __webpack_exports__["a"] = cookies;
 
-const errorLink = Object(__WEBPACK_IMPORTED_MODULE_3_apollo_link_error__["onError"])(({ graphQLErrors, networkError }) => {
+const errorLink = Object(__WEBPACK_IMPORTED_MODULE_2_apollo_link_error__["onError"])(({ graphQLErrors, networkError }) => {
     /*
     onError receives a callback in the event a GraphQL or network error occurs.
     This example is a bit contrived, but in the real world, you could connect
@@ -17317,7 +17327,7 @@ const errorLink = Object(__WEBPACK_IMPORTED_MODULE_3_apollo_link_error__["onErro
 });
 /* harmony export (immutable) */ __webpack_exports__["b"] = errorLink;
 
-const httpLink = new __WEBPACK_IMPORTED_MODULE_1_apollo_link_http__["HttpLink"]({ uri: 'http://uniserver.herokuapp.com', fetch: __WEBPACK_IMPORTED_MODULE_10_node_fetch___default.a });
+const httpLink = new __WEBPACK_IMPORTED_MODULE_1_apollo_link_http__["HttpLink"]({ uri: 'http://localhost:4000', fetch: __WEBPACK_IMPORTED_MODULE_9_node_fetch___default.a });
 /* unused harmony export httpLink */
 
 const middlewareLink = new __WEBPACK_IMPORTED_MODULE_0_apollo_link__["ApolloLink"]((operation, forward) => {
@@ -17336,11 +17346,16 @@ const middlewareLink = new __WEBPACK_IMPORTED_MODULE_0_apollo_link__["ApolloLink
 const httpLinkAuth = middlewareLink.concat(httpLink);
 /* harmony export (immutable) */ __webpack_exports__["c"] = httpLinkAuth;
 
-const subscriptionLink = (config = {}) => new __WEBPACK_IMPORTED_MODULE_2_apollo_link_ws__["WebSocketLink"](Object.assign({ uri:  true
+/* export const subscriptionLink = (config = {}) =>
+  new WebSocketLink({
+    uri:
+      process.env.NODE_ENV !== 'production'
         ? 'ws://uniserver.now.sh'
-        : 'wss://uniserver.now.sh', options: { reconnect: true } }, config));
-/* unused harmony export subscriptionLink */
-
+        : 'wss://uniserver.now.sh',
+    options: { reconnect: true },
+    ...config,
+  });
+*/
 const queryOrMutationLink = (config = {}) => 
 // turn on CDN support via GET
 // createPersistedQueryLink({ useGETForHashedQueries: true }).concat(
@@ -17355,42 +17370,43 @@ const requestLink = ({ queryOrMutationLink, subscriptionLink }) =>
   If it is a query or mutation, we retrieve data over HTTP.
 */
 __WEBPACK_IMPORTED_MODULE_0_apollo_link__["ApolloLink"].split(({ query }) => {
-    const { kind, operation } = Object(__WEBPACK_IMPORTED_MODULE_4_apollo_utilities__["getMainDefinition"])(query);
+    const { kind, operation } = Object(__WEBPACK_IMPORTED_MODULE_3_apollo_utilities__["getMainDefinition"])(query);
     return kind === 'OperationDefinition' && operation === 'subscription';
 }, subscriptionLink, queryOrMutationLink);
 /* unused harmony export requestLink */
 
-const wsLink = new __WEBPACK_IMPORTED_MODULE_2_apollo_link_ws__["WebSocketLink"]({
-    uri: `ws://uniserver.herokuapp.com`,
-    options: {
-        reconnect: true,
-        connectionParams: {
-            Authorization: cookies.get(AUTH_TOKEN) ? `Bearer ${cookies.get(AUTH_TOKEN)}` : '',
-        },
-    }
+/*
+export const wsLink = new WebSocketLink({
+  uri: `ws://uniserver.herokuapp.com`,
+  options: {
+    reconnect: true,
+    connectionParams: {
+      Authorization: cookies.get(AUTH_TOKEN) ? `Bearer ${cookies.get(AUTH_TOKEN)}` : '',
+    },
+  }
 });
-/* unused harmony export wsLink */
-
+*/
 // using the ability to split links, you can send data to each link
 // depending on what kind of operation is being sent
-const netLink = Object(__WEBPACK_IMPORTED_MODULE_0_apollo_link__["split"])(
-// split based on operation type
-({ query }) => {
-    const { kind, operation } = Object(__WEBPACK_IMPORTED_MODULE_4_apollo_utilities__["getMainDefinition"])(query);
+/* export const netLink = split(
+  // split based on operation type
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query);
     return kind === 'OperationDefinition' && operation === 'subscription';
-}, wsLink, httpLink);
-/* unused harmony export netLink */
-
+  },
+  wsLink,
+  httpLink,
+);*/
 const defaults = { appState: 'INITIAL' };
-const retryLink = new __WEBPACK_IMPORTED_MODULE_6_apollo_link_retry__["RetryLink"]();
+const retryLink = new __WEBPACK_IMPORTED_MODULE_5_apollo_link_retry__["RetryLink"]();
 /* harmony export (immutable) */ __webpack_exports__["d"] = retryLink;
 
-const cache = new __WEBPACK_IMPORTED_MODULE_8_apollo_cache_inmemory__["InMemoryCache"]();
+const cache = new __WEBPACK_IMPORTED_MODULE_7_apollo_cache_inmemory__["InMemoryCache"]();
 /* unused harmony export cache */
 
-const stateLink = Object(__WEBPACK_IMPORTED_MODULE_9_apollo_link_state__["withClientState"])({
+const stateLink = Object(__WEBPACK_IMPORTED_MODULE_8_apollo_link_state__["withClientState"])({
     cache,
-    resolvers: __WEBPACK_IMPORTED_MODULE_7_Graphql_Resolvers__["a" /* default */],
+    resolvers: __WEBPACK_IMPORTED_MODULE_6_Graphql_Resolvers__["a" /* default */],
     defaults
 });
 /* harmony export (immutable) */ __webpack_exports__["e"] = stateLink;
@@ -17700,13 +17716,6 @@ module.exports = require("apollo-link-retry");
 /***/ (function(module, exports) {
 
 module.exports = require("apollo-link-state");
-
-/***/ }),
-
-/***/ "apollo-link-ws":
-/***/ (function(module, exports) {
-
-module.exports = require("apollo-link-ws");
 
 /***/ }),
 
