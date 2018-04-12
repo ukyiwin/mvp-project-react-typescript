@@ -4,14 +4,12 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { onError } from 'apollo-link-error';
 import { getMainDefinition } from 'apollo-utilities';
 import { Cookies } from 'react-cookie-banner';
-import { SubscriptionClient } from 'subscriptions-transport-ws';
 // import { createPersistedQueryLink } from 'apollo-link-persisted-queries';
 import { RetryLink } from 'apollo-link-retry';
 import resolvers from 'Graphql/Resolvers';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state';
 import fetch from 'node-fetch';
-import WebSocket from 'ws';
 import { BatchHttpLink } from 'apollo-link-batch-http';
 
 // const link = new BatchHttpLink({ uri: "/graphql" });
@@ -96,15 +94,6 @@ export const wsLink = new WebSocketLink({
   }
 });
 
-export const wsClient = new SubscriptionClient(`ws://uniserver.herokuapp.com`, {
-  reconnect: true,
-  connectionParams: {
-    Authorization: cookies.get(AUTH_TOKEN) ? `Bearer ${cookies.get(AUTH_TOKEN)}` : '',
-  },
-},                                             WebSocket);
-
-export const wsLinks = new WebSocketLink(wsClient);
-
 // using the ability to split links, you can send data to each link
 // depending on what kind of operation is being sent
 export const netLink = split(
@@ -113,7 +102,7 @@ export const netLink = split(
     const { kind, operation } = getMainDefinition(query);
     return kind === 'OperationDefinition' && operation === 'subscription';
   },
-  wsLinks,
+  wsLink,
   httpLink,
 );
 
