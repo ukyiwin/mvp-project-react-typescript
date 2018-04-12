@@ -11,12 +11,12 @@ export const ErrorComponent = (props: Props) => (
     <div className="uk-flex uk-flex-stretch uk-width-1-1">
         <div className="empty uk-text-center uk-width-1-1">
             <i className="redo icon" />
-            <h5 className="empty-title h5">There was an error</h5>
-            <p className="empty-subtitle">Click to refresh.</p>
-            <div className="empty-action">
-                <button className="uk-button circle button uk-button-primary" onClick={() => props.refresh}>
-                    Refresh
-                </button>
+            <h5 className="empty-title h5">Oops!!! There was an error</h5>
+            <p className="empty-subtitle">Please try refreshing to see if it solves the problem</p>
+            <div className="empty-action uk-text-center middle center uk-flex uk-flex-center uk-width-1-1">
+              <Button className="uk-button" onClick={() => window.location.reload(true)}>
+                Refresh
+              </Button>
             </div>
         </div>
     </div>
@@ -34,7 +34,9 @@ export const EmptyComponent = (props: MessageProps) => (
         <p className="empty-title h5">{props.title ? props.title : 'You have no new article'}</p>
         <p className="empty-subtitle">{props.subtitle ? props.subtitle : 'You have no new article'}</p>
         <div className="empty-action uk-text-center middle center uk-flex uk-flex-center uk-width-1-1">
-            <Button className="uk-button" color="green" onClick={() => props.buttonClick()}>Refresh</Button>
+            <Button className="uk-button" color="green" onClick={() => props.buttonClick ? props.buttonClick() :  window.location.reload(true)}>
+              Refresh
+            </Button>
         </div>
     </div>
 );
