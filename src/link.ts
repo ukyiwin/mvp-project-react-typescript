@@ -83,7 +83,7 @@ export const requestLink = ({ queryOrMutationLink, subscriptionLink }) =>
     subscriptionLink,
     queryOrMutationLink
 );
-
+/*
 export const wsLink = new WebSocketLink({
   uri: `ws://uniserver.herokuapp.com`,
   options: {
@@ -93,10 +93,10 @@ export const wsLink = new WebSocketLink({
     },
   }
 });
-
+*/
 // using the ability to split links, you can send data to each link
 // depending on what kind of operation is being sent
-export const netLink = split(
+/* export const netLink = split(
   // split based on operation type
   ({ query }) => {
     const { kind, operation } = getMainDefinition(query);
@@ -104,7 +104,7 @@ export const netLink = split(
   },
   wsLink,
   httpLink,
-);
+);*/
 
 const defaults = { appState: 'INITIAL' };
 
