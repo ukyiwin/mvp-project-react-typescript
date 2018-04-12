@@ -45,8 +45,8 @@ export const USER_EXIST = gql`
  * @description check if current user article
  */
 export const ARTICLES = gql`
-  query articles($myUsername: String) {
-    articles{
+  query articles($myUsername: String, $offset: Int, $limit: Int) {
+    articles (offset: $offset, limit: $limit){
       ...articleFragment
       saved: userFavourited(where: {username: $myUsername }) {
         username
