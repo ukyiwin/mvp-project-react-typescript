@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "6ff09c79e3a466a81c8d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "1c0e73bc93d278966e6b"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -17275,20 +17275,15 @@ if (true) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_apollo_utilities___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_apollo_utilities__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_cookie_banner__ = __webpack_require__("react-cookie-banner");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_cookie_banner___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_cookie_banner__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_subscriptions_transport_ws__ = __webpack_require__("subscriptions-transport-ws");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_subscriptions_transport_ws___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_subscriptions_transport_ws__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_apollo_link_retry__ = __webpack_require__("apollo-link-retry");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_apollo_link_retry___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_apollo_link_retry__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_Graphql_Resolvers__ = __webpack_require__("./src/Graphql/Resolvers/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_apollo_cache_inmemory__ = __webpack_require__("apollo-cache-inmemory");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_apollo_cache_inmemory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_apollo_cache_inmemory__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_apollo_link_state__ = __webpack_require__("apollo-link-state");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_apollo_link_state___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_apollo_link_state__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_node_fetch__ = __webpack_require__("node-fetch");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_node_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_node_fetch__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ws__ = __webpack_require__("ws");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ws___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_ws__);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_apollo_link_retry__ = __webpack_require__("apollo-link-retry");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_apollo_link_retry___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_apollo_link_retry__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_Graphql_Resolvers__ = __webpack_require__("./src/Graphql/Resolvers/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_apollo_cache_inmemory__ = __webpack_require__("apollo-cache-inmemory");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_apollo_cache_inmemory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_apollo_cache_inmemory__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_apollo_link_state__ = __webpack_require__("apollo-link-state");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_apollo_link_state___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_apollo_link_state__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_node_fetch__ = __webpack_require__("node-fetch");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_node_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_node_fetch__);
 
 
 
@@ -17296,7 +17291,6 @@ if (true) {
 
 
 // import { createPersistedQueryLink } from 'apollo-link-persisted-queries';
-
 
 
 
@@ -17323,7 +17317,7 @@ const errorLink = Object(__WEBPACK_IMPORTED_MODULE_3_apollo_link_error__["onErro
 });
 /* harmony export (immutable) */ __webpack_exports__["b"] = errorLink;
 
-const httpLink = new __WEBPACK_IMPORTED_MODULE_1_apollo_link_http__["HttpLink"]({ uri: 'http://uniserver.herokuapp.com', fetch: __WEBPACK_IMPORTED_MODULE_11_node_fetch___default.a });
+const httpLink = new __WEBPACK_IMPORTED_MODULE_1_apollo_link_http__["HttpLink"]({ uri: 'http://uniserver.herokuapp.com', fetch: __WEBPACK_IMPORTED_MODULE_10_node_fetch___default.a });
 /* unused harmony export httpLink */
 
 const middlewareLink = new __WEBPACK_IMPORTED_MODULE_0_apollo_link__["ApolloLink"]((operation, forward) => {
@@ -17377,17 +17371,6 @@ const wsLink = new __WEBPACK_IMPORTED_MODULE_2_apollo_link_ws__["WebSocketLink"]
 });
 /* unused harmony export wsLink */
 
-const wsClient = new __WEBPACK_IMPORTED_MODULE_6_subscriptions_transport_ws__["SubscriptionClient"](`ws://uniserver.herokuapp.com`, {
-    reconnect: true,
-    connectionParams: {
-        Authorization: cookies.get(AUTH_TOKEN) ? `Bearer ${cookies.get(AUTH_TOKEN)}` : '',
-    },
-}, __WEBPACK_IMPORTED_MODULE_12_ws___default.a);
-/* unused harmony export wsClient */
-
-const wsLinks = new __WEBPACK_IMPORTED_MODULE_2_apollo_link_ws__["WebSocketLink"](wsClient);
-/* unused harmony export wsLinks */
-
 // using the ability to split links, you can send data to each link
 // depending on what kind of operation is being sent
 const netLink = Object(__WEBPACK_IMPORTED_MODULE_0_apollo_link__["split"])(
@@ -17395,19 +17378,19 @@ const netLink = Object(__WEBPACK_IMPORTED_MODULE_0_apollo_link__["split"])(
 ({ query }) => {
     const { kind, operation } = Object(__WEBPACK_IMPORTED_MODULE_4_apollo_utilities__["getMainDefinition"])(query);
     return kind === 'OperationDefinition' && operation === 'subscription';
-}, wsLinks, httpLink);
+}, wsLink, httpLink);
 /* unused harmony export netLink */
 
 const defaults = { appState: 'INITIAL' };
-const retryLink = new __WEBPACK_IMPORTED_MODULE_7_apollo_link_retry__["RetryLink"]();
+const retryLink = new __WEBPACK_IMPORTED_MODULE_6_apollo_link_retry__["RetryLink"]();
 /* harmony export (immutable) */ __webpack_exports__["d"] = retryLink;
 
-const cache = new __WEBPACK_IMPORTED_MODULE_9_apollo_cache_inmemory__["InMemoryCache"]();
+const cache = new __WEBPACK_IMPORTED_MODULE_8_apollo_cache_inmemory__["InMemoryCache"]();
 /* unused harmony export cache */
 
-const stateLink = Object(__WEBPACK_IMPORTED_MODULE_10_apollo_link_state__["withClientState"])({
+const stateLink = Object(__WEBPACK_IMPORTED_MODULE_9_apollo_link_state__["withClientState"])({
     cache,
-    resolvers: __WEBPACK_IMPORTED_MODULE_8_Graphql_Resolvers__["a" /* default */],
+    resolvers: __WEBPACK_IMPORTED_MODULE_7_Graphql_Resolvers__["a" /* default */],
     defaults
 });
 /* harmony export (immutable) */ __webpack_exports__["e"] = stateLink;
@@ -18077,24 +18060,10 @@ module.exports = require("styled-components");
 
 /***/ }),
 
-/***/ "subscriptions-transport-ws":
-/***/ (function(module, exports) {
-
-module.exports = require("subscriptions-transport-ws");
-
-/***/ }),
-
 /***/ "uikit":
 /***/ (function(module, exports) {
 
 module.exports = require("uikit");
-
-/***/ }),
-
-/***/ "ws":
-/***/ (function(module, exports) {
-
-module.exports = require("ws");
 
 /***/ })
 
