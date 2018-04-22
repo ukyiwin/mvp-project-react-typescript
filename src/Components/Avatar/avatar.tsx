@@ -3,7 +3,7 @@ import { optimize } from 'Utils/images';
 import HoverProfile from './hoverProfile';
 import AvatarImage from './image';
 import { Status, AvatarLink, AvatarNoLink } from './style';
-import { User } from 'CustomTypings/schema';
+import { User, Channels } from 'CustomTypings/schema';
 
 const LinkHandler = (props) => {
   if (props.link && !props.noLink) {
@@ -16,6 +16,7 @@ const LinkHandler = (props) => {
 interface AvatarProps {
   src: string;
   user?: User;
+  channel?: Channels;
   size?: string;
   mobileSize?: string;
   link?: string;
@@ -33,13 +34,16 @@ export default class Avatar extends Component<AvatarProps, State> {
     this.setState(({ isHovering }) => ({ isHovering: !isHovering }))
 
   render() {
+    
     const {
       src,
       user,
       size = '32',
       mobileSize,
+      channel,
       showProfile,
     } = this.props;
+
     const { isHovering } = this.state;
 
     const optimizedAvatar =
@@ -55,7 +59,7 @@ export default class Avatar extends Component<AvatarProps, State> {
 
     // tslint:disable-next-line:prefer-conditional-expression
     source = [optimizedAvatar, userFallback];
-
+    
     return (
       <Status
         size={size}

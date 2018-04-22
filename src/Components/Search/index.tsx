@@ -26,12 +26,6 @@ class Search extends React.Component<Props, State> {
 
     return (
       <View>
-        <Titlebar
-          provideBack
-          noComposer
-          title={'Search'}
-          style={{ gridArea: 'header' }}
-        />
 
         <SearchInput handleSubmit={this.handleSubmit} />
 

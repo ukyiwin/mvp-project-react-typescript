@@ -140,11 +140,6 @@ class PrivateHeader extends React.Component<Props> {
                                 <span uk-icon="icon: bookmark; ratio: 1" /> Favourites
                               </Link>
                             </li>
-                            <li className="mdc-list-item" role="menuitem">
-                              <Link to="/score" className="uk-text-bold simple-link-light">
-                                <span uk-icon="icon: thumbnails; ratio: 1" /> Reading Score
-                              </Link>
-                            </li>
                             <li className="mdc-list-item " role="menuitem">
                               <Link to="/favourites" className="uk-text-bold simple-link-light">
                                 <span uk-icon="icon: pencil; ratio: 1" /> Drafts

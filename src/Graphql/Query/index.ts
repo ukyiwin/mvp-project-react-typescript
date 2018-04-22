@@ -102,10 +102,10 @@ export const ME = gql`
   query me {
     me{
       ...userFragment
-      connectTo{
+      connectOne{
         id
       }
-      connectFrom{
+      connectTwo{
         id
       }
       avatar
@@ -127,10 +127,10 @@ export const GET_USER_BY_USERNAME = gql`
   query getUserByUsername($username: String!) {
     getUserByUsername(username: $username) {
       ...userFragment
-      connectTo{
+      connectOne{
         id
       }
-      connectFrom{
+      connectTwo{
         id
       }
       avatar
@@ -313,4 +313,108 @@ export const GET_ARTICLES_BY_USERNAME = gql`
     }
   }
   ${ARTICLE_FRAGMENT}
+`;
+
+export const GET_RECOMMENDENDED_CON_BY_INT = gql`
+  query getRecommendedConnectionsByInterest{
+    getRecommendedConnectionsByInterest{
+      id
+      username
+      type
+      firstname
+      lastname
+      institution{
+        id
+        title
+      }
+      verified
+      connectOne{
+        user1{
+          username
+          id
+        }
+        user2{
+          username
+          id
+        }
+      }
+      interest{
+        name
+        id
+      }
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+export const GET_SUGGESTED_CONNECTIONS = gql`
+  query getSuggestedConnections{
+    getSuggestedConnections{
+      id
+      username
+      type
+      firstname
+      lastname
+      institution{
+        id
+        title
+      }
+      verified
+      connectOne{
+        user1{
+          username
+          id
+        }
+        user2{
+          username
+          id
+        }
+      }
+      interest{
+        name
+        id
+      }
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+export const GET_SIMILAR_ARTICLES = gql`
+  query getSuggestedConnections{
+    getSuggestedConnections{
+      id
+      username
+      type
+      firstname
+      lastname
+      institution{
+        id
+        title
+      }
+      verified
+      connectOne{
+        user1{
+          username
+          id
+        }
+        user2{
+          username
+          id
+        }
+      }
+      interest{
+        name
+        id
+      }
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+export const NOTIFICATION = gql`
+  query notification{
+    notification{
+      id
+    }
+  }
 `;

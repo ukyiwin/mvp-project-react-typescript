@@ -575,7 +575,19 @@ export type MessageOrderByInput = (
 
     "text_ASC" |
 
-    "text_DESC"
+    "text_DESC" |
+
+    "seen_ASC" |
+
+    "seen_DESC" |
+
+    "delivered_ASC" |
+
+    "delivered_DESC" |
+
+    "sent_ASC" |
+
+    "sent_DESC"
 );
 
 export type MutationType = (
@@ -585,6 +597,60 @@ export type MutationType = (
     "UPDATED" |
 
     "DELETED"
+);
+
+export type NotificationOrderByInput = (
+
+    "id_ASC" |
+
+    "id_DESC" |
+
+    "createdAt_ASC" |
+
+    "createdAt_DESC" |
+
+    "updatedAt_ASC" |
+
+    "updatedAt_DESC" |
+
+    "verb_ASC" |
+
+    "verb_DESC" |
+
+    "type_ASC" |
+
+    "type_DESC" |
+
+    "slug_ASC" |
+
+    "slug_DESC" |
+
+    "seen_ASC" |
+
+    "seen_DESC" |
+
+    "sent_ASC" |
+
+    "sent_DESC"
+);
+
+export type NotificationType = (
+
+    "Message" |
+
+    "Connect" |
+
+    "Invitation" |
+
+    "Articles" |
+
+    "Comment" |
+
+    "Like" |
+
+    "Saved" |
+
+    "General"
 );
 
 export type PostOrderByInput = (
@@ -707,6 +773,10 @@ export type UserOrderByInput = (
     "enableMobilePushNot_ASC" |
 
     "enableMobilePushNot_DESC" |
+
+    "enableLocation_ASC" |
+
+    "enableLocation_DESC" |
 
     "completedProfile_ASC" |
 
@@ -944,6 +1014,11 @@ export interface AggregateLocation {
 }
 
 export interface AggregateMessage {
+
+    count: NonNull<Int>;
+}
+
+export interface AggregateNotification {
 
     count: NonNull<Int>;
 }
@@ -1270,6 +1345,10 @@ export interface Connect extends Node {
     updatedAt: NonNull<DateTime>;
 
     status: NonNull<Int>;
+
+    user1: NonNull<User>;
+
+    user2: NonNull<User>;
 }
 
 /**
@@ -1933,6 +2012,12 @@ export interface Message extends Node {
     text: NonNull<String>;
 
     user: NonNull<User>;
+
+    seen?: Optional<Boolean>;
+
+    delivered?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
 }
 
 /**
@@ -1978,6 +2063,12 @@ export interface MessagePreviousValues {
     updatedAt: NonNull<DateTime>;
 
     text: NonNull<String>;
+
+    seen?: Optional<Boolean>;
+
+    delivered?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
 }
 
 export interface MessageSubscriptionPayload {
@@ -2017,6 +2108,8 @@ export interface Mutation {
 
     createConnect: NonNull<Connect>;
 
+    createNotification: NonNull<Notification>;
+
     createChannels: NonNull<Channels>;
 
     createMessage: NonNull<Message>;
@@ -2046,6 +2139,8 @@ export interface Mutation {
     updateUser?: Optional<User>;
 
     updateConnect?: Optional<Connect>;
+
+    updateNotification?: Optional<Notification>;
 
     updateChannels?: Optional<Channels>;
 
@@ -2077,6 +2172,8 @@ export interface Mutation {
 
     deleteConnect?: Optional<Connect>;
 
+    deleteNotification?: Optional<Notification>;
+
     deleteChannels?: Optional<Channels>;
 
     deleteMessage?: Optional<Message>;
@@ -2106,6 +2203,8 @@ export interface Mutation {
     upsertUser: NonNull<User>;
 
     upsertConnect: NonNull<Connect>;
+
+    upsertNotification: NonNull<Notification>;
 
     upsertChannels: NonNull<Channels>;
 
@@ -2137,6 +2236,8 @@ export interface Mutation {
 
     updateManyConnects: NonNull<BatchPayload>;
 
+    updateManyNotifications: NonNull<BatchPayload>;
+
     updateManyChannelses: NonNull<BatchPayload>;
 
     updateManyMessages: NonNull<BatchPayload>;
@@ -2167,11 +2268,106 @@ export interface Mutation {
 
     deleteManyConnects: NonNull<BatchPayload>;
 
+    deleteManyNotifications: NonNull<BatchPayload>;
+
     deleteManyChannelses: NonNull<BatchPayload>;
 
     deleteManyMessages: NonNull<BatchPayload>;
 
     deleteManyJoinSettingses: NonNull<BatchPayload>;
+}
+
+export interface Notification extends Node {
+
+    id: NonNull<ID>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
+    target: NonNull<User>;
+
+    actor: NonNull<User>;
+
+    verb: NonNull<String>;
+
+    type: NonNull<NotificationType>;
+
+    slug?: Optional<String>;
+
+    article?: Optional<Article>;
+
+    message?: Optional<Message>;
+
+    connect?: Optional<Connect>;
+
+    seen?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
+}
+
+/**
+ * A connection to a list of items.
+ */
+export interface NotificationConnection {
+
+    /**
+     * Information to aid in pagination.
+     */
+    pageInfo: NonNull<PageInfo>;
+
+    /**
+     * A list of edges.
+     */
+    edges: NonNull<List<Optional<NotificationEdge>>>;
+
+    aggregate: NonNull<AggregateNotification>;
+}
+
+/**
+ * An edge in a connection.
+ */
+export interface NotificationEdge {
+
+    /**
+     * The item at the end of the edge.
+     */
+    node: NonNull<Notification>;
+
+    /**
+     * A cursor for use in pagination.
+     */
+    cursor: NonNull<String>;
+}
+
+export interface NotificationPreviousValues {
+
+    id: NonNull<ID>;
+
+    createdAt: NonNull<DateTime>;
+
+    updatedAt: NonNull<DateTime>;
+
+    verb: NonNull<String>;
+
+    type: NonNull<NotificationType>;
+
+    slug?: Optional<String>;
+
+    seen?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
+}
+
+export interface NotificationSubscriptionPayload {
+
+    mutation: NonNull<MutationType>;
+
+    node?: Optional<Notification>;
+
+    updatedFields?: List<NonNull<String>>;
+
+    previousValues?: Optional<NotificationPreviousValues>;
 }
 
 /**
@@ -2301,6 +2497,8 @@ export interface Query {
 
     connects: NonNull<List<Optional<Connect>>>;
 
+    notifications: NonNull<List<Optional<Notification>>>;
+
     channelses: NonNull<List<Optional<Channels>>>;
 
     messages: NonNull<List<Optional<Message>>>;
@@ -2331,6 +2529,8 @@ export interface Query {
 
     connect?: Optional<Connect>;
 
+    notification?: Optional<Notification>;
+
     channels?: Optional<Channels>;
 
     message?: Optional<Message>;
@@ -2360,6 +2560,8 @@ export interface Query {
     usersConnection: NonNull<UserConnection>;
 
     connectsConnection: NonNull<ConnectConnection>;
+
+    notificationsConnection: NonNull<NotificationConnection>;
 
     channelsesConnection: NonNull<ChannelsConnection>;
 
@@ -2398,6 +2600,8 @@ export interface Subscription {
     user?: Optional<UserSubscriptionPayload>;
 
     connect?: Optional<ConnectSubscriptionPayload>;
+
+    notification?: Optional<NotificationSubscriptionPayload>;
 
     channels?: Optional<ChannelsSubscriptionPayload>;
 
@@ -2444,9 +2648,9 @@ export interface User extends Node {
 
     messages?: Optional<Message>;
 
-    connectTo?: List<NonNull<User>>;
+    ConnectOne?: List<NonNull<Connect>>;
 
-    connectFrom?: List<NonNull<User>>;
+    ConnectTwo?: List<NonNull<Connect>>;
 
     type?: Optional<String>;
 
@@ -2488,9 +2692,19 @@ export interface User extends Node {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
+    deviceIds?: List<NonNull<String>>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    location?: Optional<Location>;
+
+    notifications?: List<NonNull<Notification>>;
+
+    actorNotifications?: List<NonNull<Notification>>;
 }
 
 /**
@@ -2575,6 +2789,10 @@ export interface UserPreviousValues {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
+    deviceIds?: List<NonNull<String>>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
@@ -2643,6 +2861,13 @@ export interface ArticleCreateManyWithoutUserFavouritedInput {
     create?: List<NonNull<ArticleCreateWithoutUserFavouritedInput>>;
 
     connect?: List<NonNull<ArticleWhereUniqueInput>>;
+}
+
+export interface ArticleCreateOneInput {
+
+    create?: Optional<ArticleCreateInput>;
+
+    connect?: Optional<ArticleWhereUniqueInput>;
 }
 
 export interface ArticleCreateOneWithoutCommentsInput {
@@ -2819,6 +3044,39 @@ export interface ArticleSubscriptionWhereInput {
     node?: Optional<ArticleWhereInput>;
 }
 
+export interface ArticleUpdateDataInput {
+
+    slug?: Optional<String>;
+
+    isPublished?: Optional<Boolean>;
+
+    title?: Optional<String>;
+
+    body?: Optional<String>;
+
+    type?: Optional<Arcticletype>;
+
+    link?: Optional<String>;
+
+    description?: Optional<String>;
+
+    viewCount?: Optional<Int>;
+
+    tags?: Optional<ArticleUpdatetagsInput>;
+
+    headerImage?: Optional<FileUpdateOneInput>;
+
+    category?: Optional<InterestUpdateOneInput>;
+
+    author?: Optional<UserUpdateOneWithoutArticlesInput>;
+
+    likes?: Optional<UserUpdateManyWithoutLikedArticlesInput>;
+
+    comments?: Optional<CommentUpdateManyWithoutArticleInput>;
+
+    userFavourited?: Optional<UserUpdateManyWithoutFavouritesInput>;
+}
+
 export interface ArticleUpdateInput {
 
     slug?: Optional<String>;
@@ -2895,6 +3153,21 @@ export interface ArticleUpdateManyWithoutUserFavouritedInput {
     update?: List<NonNull<ArticleUpdateWithWhereUniqueWithoutUserFavouritedInput>>;
 
     upsert?: List<NonNull<ArticleUpsertWithWhereUniqueWithoutUserFavouritedInput>>;
+}
+
+export interface ArticleUpdateOneInput {
+
+    create?: Optional<ArticleCreateInput>;
+
+    connect?: Optional<ArticleWhereUniqueInput>;
+
+    disconnect?: Optional<Boolean>;
+
+    delete?: Optional<Boolean>;
+
+    update?: Optional<ArticleUpdateDataInput>;
+
+    upsert?: Optional<ArticleUpsertNestedInput>;
 }
 
 export interface ArticleUpdateOneWithoutCommentsInput {
@@ -3058,6 +3331,13 @@ export interface ArticleUpdateWithWhereUniqueWithoutUserFavouritedInput {
     where: NonNull<ArticleWhereUniqueInput>;
 
     data: NonNull<ArticleUpdateWithoutUserFavouritedDataInput>;
+}
+
+export interface ArticleUpsertNestedInput {
+
+    update: NonNull<ArticleUpdateDataInput>;
+
+    create: NonNull<ArticleCreateInput>;
 }
 
 export interface ArticleUpsertWithoutCommentsInput {
@@ -5349,6 +5629,45 @@ export interface CommentWhereUniqueInput {
 export interface ConnectCreateInput {
 
     status?: Optional<Int>;
+
+    user1: NonNull<UserCreateOneWithoutConnectOneInput>;
+
+    user2: NonNull<UserCreateOneWithoutConnectTwoInput>;
+}
+
+export interface ConnectCreateManyWithoutUser1Input {
+
+    create?: List<NonNull<ConnectCreateWithoutUser1Input>>;
+
+    connect?: List<NonNull<ConnectWhereUniqueInput>>;
+}
+
+export interface ConnectCreateManyWithoutUser2Input {
+
+    create?: List<NonNull<ConnectCreateWithoutUser2Input>>;
+
+    connect?: List<NonNull<ConnectWhereUniqueInput>>;
+}
+
+export interface ConnectCreateOneInput {
+
+    create?: Optional<ConnectCreateInput>;
+
+    connect?: Optional<ConnectWhereUniqueInput>;
+}
+
+export interface ConnectCreateWithoutUser1Input {
+
+    status?: Optional<Int>;
+
+    user2: NonNull<UserCreateOneWithoutConnectTwoInput>;
+}
+
+export interface ConnectCreateWithoutUser2Input {
+
+    status?: Optional<Int>;
+
+    user1: NonNull<UserCreateOneWithoutConnectOneInput>;
 }
 
 export interface ConnectSubscriptionWhereInput {
@@ -5389,9 +5708,120 @@ export interface ConnectSubscriptionWhereInput {
     node?: Optional<ConnectWhereInput>;
 }
 
+export interface ConnectUpdateDataInput {
+
+    status?: Optional<Int>;
+
+    user1?: Optional<UserUpdateOneWithoutConnectOneInput>;
+
+    user2?: Optional<UserUpdateOneWithoutConnectTwoInput>;
+}
+
 export interface ConnectUpdateInput {
 
     status?: Optional<Int>;
+
+    user1?: Optional<UserUpdateOneWithoutConnectOneInput>;
+
+    user2?: Optional<UserUpdateOneWithoutConnectTwoInput>;
+}
+
+export interface ConnectUpdateManyWithoutUser1Input {
+
+    create?: List<NonNull<ConnectCreateWithoutUser1Input>>;
+
+    connect?: List<NonNull<ConnectWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<ConnectWhereUniqueInput>>;
+
+    delete?: List<NonNull<ConnectWhereUniqueInput>>;
+
+    update?: List<NonNull<ConnectUpdateWithWhereUniqueWithoutUser1Input>>;
+
+    upsert?: List<NonNull<ConnectUpsertWithWhereUniqueWithoutUser1Input>>;
+}
+
+export interface ConnectUpdateManyWithoutUser2Input {
+
+    create?: List<NonNull<ConnectCreateWithoutUser2Input>>;
+
+    connect?: List<NonNull<ConnectWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<ConnectWhereUniqueInput>>;
+
+    delete?: List<NonNull<ConnectWhereUniqueInput>>;
+
+    update?: List<NonNull<ConnectUpdateWithWhereUniqueWithoutUser2Input>>;
+
+    upsert?: List<NonNull<ConnectUpsertWithWhereUniqueWithoutUser2Input>>;
+}
+
+export interface ConnectUpdateOneInput {
+
+    create?: Optional<ConnectCreateInput>;
+
+    connect?: Optional<ConnectWhereUniqueInput>;
+
+    disconnect?: Optional<Boolean>;
+
+    delete?: Optional<Boolean>;
+
+    update?: Optional<ConnectUpdateDataInput>;
+
+    upsert?: Optional<ConnectUpsertNestedInput>;
+}
+
+export interface ConnectUpdateWithoutUser1DataInput {
+
+    status?: Optional<Int>;
+
+    user2?: Optional<UserUpdateOneWithoutConnectTwoInput>;
+}
+
+export interface ConnectUpdateWithoutUser2DataInput {
+
+    status?: Optional<Int>;
+
+    user1?: Optional<UserUpdateOneWithoutConnectOneInput>;
+}
+
+export interface ConnectUpdateWithWhereUniqueWithoutUser1Input {
+
+    where: NonNull<ConnectWhereUniqueInput>;
+
+    data: NonNull<ConnectUpdateWithoutUser1DataInput>;
+}
+
+export interface ConnectUpdateWithWhereUniqueWithoutUser2Input {
+
+    where: NonNull<ConnectWhereUniqueInput>;
+
+    data: NonNull<ConnectUpdateWithoutUser2DataInput>;
+}
+
+export interface ConnectUpsertNestedInput {
+
+    update: NonNull<ConnectUpdateDataInput>;
+
+    create: NonNull<ConnectCreateInput>;
+}
+
+export interface ConnectUpsertWithWhereUniqueWithoutUser1Input {
+
+    where: NonNull<ConnectWhereUniqueInput>;
+
+    update: NonNull<ConnectUpdateWithoutUser1DataInput>;
+
+    create: NonNull<ConnectCreateWithoutUser1Input>;
+}
+
+export interface ConnectUpsertWithWhereUniqueWithoutUser2Input {
+
+    where: NonNull<ConnectWhereUniqueInput>;
+
+    update: NonNull<ConnectUpdateWithoutUser2DataInput>;
+
+    create: NonNull<ConnectCreateWithoutUser2Input>;
 }
 
 export interface ConnectWhereInput {
@@ -5583,6 +6013,10 @@ export interface ConnectWhereInput {
      * All values greater than or equal the given value.
      */
     status_gte?: Optional<Int>;
+
+    user1?: Optional<UserWhereInput>;
+
+    user2?: Optional<UserWhereInput>;
 }
 
 export interface ConnectWhereUniqueInput {
@@ -8664,6 +9098,8 @@ export interface LocationUpdateOneInput {
 
     connect?: Optional<LocationWhereUniqueInput>;
 
+    disconnect?: Optional<Boolean>;
+
     delete?: Optional<Boolean>;
 
     update?: Optional<LocationUpdateDataInput>;
@@ -8982,6 +9418,12 @@ export interface MessageCreateInput {
 
     text: NonNull<String>;
 
+    seen?: Optional<Boolean>;
+
+    delivered?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
+
     channel: NonNull<ChannelsCreateOneWithoutMessagesInput>;
 
     user: NonNull<UserCreateOneInput>;
@@ -9004,6 +9446,12 @@ export interface MessageCreateOneInput {
 export interface MessageCreateWithoutChannelInput {
 
     text: NonNull<String>;
+
+    seen?: Optional<Boolean>;
+
+    delivered?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
 
     user: NonNull<UserCreateOneInput>;
 }
@@ -9050,6 +9498,12 @@ export interface MessageUpdateDataInput {
 
     text?: Optional<String>;
 
+    seen?: Optional<Boolean>;
+
+    delivered?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
+
     channel?: Optional<ChannelsUpdateOneWithoutMessagesInput>;
 
     user?: Optional<UserUpdateOneInput>;
@@ -9058,6 +9512,12 @@ export interface MessageUpdateDataInput {
 export interface MessageUpdateInput {
 
     text?: Optional<String>;
+
+    seen?: Optional<Boolean>;
+
+    delivered?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
 
     channel?: Optional<ChannelsUpdateOneWithoutMessagesInput>;
 
@@ -9097,6 +9557,12 @@ export interface MessageUpdateOneInput {
 export interface MessageUpdateWithoutChannelDataInput {
 
     text?: Optional<String>;
+
+    seen?: Optional<Boolean>;
+
+    delivered?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
 
     user?: Optional<UserUpdateOneInput>;
 }
@@ -9344,12 +9810,611 @@ export interface MessageWhereInput {
      */
     text_not_ends_with?: Optional<String>;
 
+    seen?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    seen_not?: Optional<Boolean>;
+
+    delivered?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    delivered_not?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    sent_not?: Optional<Boolean>;
+
     channel?: Optional<ChannelsWhereInput>;
 
     user?: Optional<UserWhereInput>;
 }
 
 export interface MessageWhereUniqueInput {
+
+    id?: Optional<ID>;
+}
+
+export interface NotificationCreateInput {
+
+    verb: NonNull<String>;
+
+    type: NonNull<NotificationType>;
+
+    slug?: Optional<String>;
+
+    seen?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
+
+    target: NonNull<UserCreateOneWithoutNotificationsInput>;
+
+    actor: NonNull<UserCreateOneWithoutActorNotificationsInput>;
+
+    article?: Optional<ArticleCreateOneInput>;
+
+    message?: Optional<MessageCreateOneInput>;
+
+    connect?: Optional<ConnectCreateOneInput>;
+}
+
+export interface NotificationCreateManyWithoutActorInput {
+
+    create?: List<NonNull<NotificationCreateWithoutActorInput>>;
+
+    connect?: List<NonNull<NotificationWhereUniqueInput>>;
+}
+
+export interface NotificationCreateManyWithoutTargetInput {
+
+    create?: List<NonNull<NotificationCreateWithoutTargetInput>>;
+
+    connect?: List<NonNull<NotificationWhereUniqueInput>>;
+}
+
+export interface NotificationCreateWithoutActorInput {
+
+    verb: NonNull<String>;
+
+    type: NonNull<NotificationType>;
+
+    slug?: Optional<String>;
+
+    seen?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
+
+    target: NonNull<UserCreateOneWithoutNotificationsInput>;
+
+    article?: Optional<ArticleCreateOneInput>;
+
+    message?: Optional<MessageCreateOneInput>;
+
+    connect?: Optional<ConnectCreateOneInput>;
+}
+
+export interface NotificationCreateWithoutTargetInput {
+
+    verb: NonNull<String>;
+
+    type: NonNull<NotificationType>;
+
+    slug?: Optional<String>;
+
+    seen?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
+
+    actor: NonNull<UserCreateOneWithoutActorNotificationsInput>;
+
+    article?: Optional<ArticleCreateOneInput>;
+
+    message?: Optional<MessageCreateOneInput>;
+
+    connect?: Optional<ConnectCreateOneInput>;
+}
+
+export interface NotificationSubscriptionWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<NotificationSubscriptionWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<NotificationSubscriptionWhereInput>>;
+
+    /**
+     * The subscription event gets dispatched when it's listed in mutation_in
+     */
+    mutation_in?: List<NonNull<MutationType>>;
+
+    /**
+     * The subscription event gets only dispatched when one of the updated fields names 
+     * is included in this list
+     */
+    updatedFields_contains?: Optional<String>;
+
+    /**
+     * The subscription event gets only dispatched when all of the field names included 
+     * in this list have been updated
+     */
+    updatedFields_contains_every?: List<NonNull<String>>;
+
+    /**
+     * The subscription event gets only dispatched when some of the field names 
+     * included in this list have been updated
+     */
+    updatedFields_contains_some?: List<NonNull<String>>;
+
+    node?: Optional<NotificationWhereInput>;
+}
+
+export interface NotificationUpdateInput {
+
+    verb?: Optional<String>;
+
+    type?: Optional<NotificationType>;
+
+    slug?: Optional<String>;
+
+    seen?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
+
+    target?: Optional<UserUpdateOneWithoutNotificationsInput>;
+
+    actor?: Optional<UserUpdateOneWithoutActorNotificationsInput>;
+
+    article?: Optional<ArticleUpdateOneInput>;
+
+    message?: Optional<MessageUpdateOneInput>;
+
+    connect?: Optional<ConnectUpdateOneInput>;
+}
+
+export interface NotificationUpdateManyWithoutActorInput {
+
+    create?: List<NonNull<NotificationCreateWithoutActorInput>>;
+
+    connect?: List<NonNull<NotificationWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<NotificationWhereUniqueInput>>;
+
+    delete?: List<NonNull<NotificationWhereUniqueInput>>;
+
+    update?: List<NonNull<NotificationUpdateWithWhereUniqueWithoutActorInput>>;
+
+    upsert?: List<NonNull<NotificationUpsertWithWhereUniqueWithoutActorInput>>;
+}
+
+export interface NotificationUpdateManyWithoutTargetInput {
+
+    create?: List<NonNull<NotificationCreateWithoutTargetInput>>;
+
+    connect?: List<NonNull<NotificationWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<NotificationWhereUniqueInput>>;
+
+    delete?: List<NonNull<NotificationWhereUniqueInput>>;
+
+    update?: List<NonNull<NotificationUpdateWithWhereUniqueWithoutTargetInput>>;
+
+    upsert?: List<NonNull<NotificationUpsertWithWhereUniqueWithoutTargetInput>>;
+}
+
+export interface NotificationUpdateWithoutActorDataInput {
+
+    verb?: Optional<String>;
+
+    type?: Optional<NotificationType>;
+
+    slug?: Optional<String>;
+
+    seen?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
+
+    target?: Optional<UserUpdateOneWithoutNotificationsInput>;
+
+    article?: Optional<ArticleUpdateOneInput>;
+
+    message?: Optional<MessageUpdateOneInput>;
+
+    connect?: Optional<ConnectUpdateOneInput>;
+}
+
+export interface NotificationUpdateWithoutTargetDataInput {
+
+    verb?: Optional<String>;
+
+    type?: Optional<NotificationType>;
+
+    slug?: Optional<String>;
+
+    seen?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
+
+    actor?: Optional<UserUpdateOneWithoutActorNotificationsInput>;
+
+    article?: Optional<ArticleUpdateOneInput>;
+
+    message?: Optional<MessageUpdateOneInput>;
+
+    connect?: Optional<ConnectUpdateOneInput>;
+}
+
+export interface NotificationUpdateWithWhereUniqueWithoutActorInput {
+
+    where: NonNull<NotificationWhereUniqueInput>;
+
+    data: NonNull<NotificationUpdateWithoutActorDataInput>;
+}
+
+export interface NotificationUpdateWithWhereUniqueWithoutTargetInput {
+
+    where: NonNull<NotificationWhereUniqueInput>;
+
+    data: NonNull<NotificationUpdateWithoutTargetDataInput>;
+}
+
+export interface NotificationUpsertWithWhereUniqueWithoutActorInput {
+
+    where: NonNull<NotificationWhereUniqueInput>;
+
+    update: NonNull<NotificationUpdateWithoutActorDataInput>;
+
+    create: NonNull<NotificationCreateWithoutActorInput>;
+}
+
+export interface NotificationUpsertWithWhereUniqueWithoutTargetInput {
+
+    where: NonNull<NotificationWhereUniqueInput>;
+
+    update: NonNull<NotificationUpdateWithoutTargetDataInput>;
+
+    create: NonNull<NotificationCreateWithoutTargetInput>;
+}
+
+export interface NotificationWhereInput {
+
+    /**
+     * Logical AND on all given filters.
+     */
+    AND?: List<NonNull<NotificationWhereInput>>;
+
+    /**
+     * Logical OR on all given filters.
+     */
+    OR?: List<NonNull<NotificationWhereInput>>;
+
+    id?: Optional<ID>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    id_not?: Optional<ID>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    id_in?: List<NonNull<ID>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    id_not_in?: List<NonNull<ID>>;
+
+    /**
+     * All values less than the given value.
+     */
+    id_lt?: Optional<ID>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    id_lte?: Optional<ID>;
+
+    /**
+     * All values greater than the given value.
+     */
+    id_gt?: Optional<ID>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    id_gte?: Optional<ID>;
+
+    /**
+     * All values containing the given string.
+     */
+    id_contains?: Optional<ID>;
+
+    /**
+     * All values not containing the given string.
+     */
+    id_not_contains?: Optional<ID>;
+
+    /**
+     * All values starting with the given string.
+     */
+    id_starts_with?: Optional<ID>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    id_not_starts_with?: Optional<ID>;
+
+    /**
+     * All values ending with the given string.
+     */
+    id_ends_with?: Optional<ID>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    id_not_ends_with?: Optional<ID>;
+
+    createdAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    createdAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    createdAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    createdAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    createdAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    createdAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    createdAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    createdAt_gte?: Optional<DateTime>;
+
+    updatedAt?: Optional<DateTime>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    updatedAt_not?: Optional<DateTime>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    updatedAt_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    updatedAt_not_in?: List<NonNull<DateTime>>;
+
+    /**
+     * All values less than the given value.
+     */
+    updatedAt_lt?: Optional<DateTime>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    updatedAt_lte?: Optional<DateTime>;
+
+    /**
+     * All values greater than the given value.
+     */
+    updatedAt_gt?: Optional<DateTime>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    updatedAt_gte?: Optional<DateTime>;
+
+    verb?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    verb_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    verb_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    verb_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    verb_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    verb_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    verb_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    verb_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    verb_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    verb_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    verb_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    verb_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    verb_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    verb_not_ends_with?: Optional<String>;
+
+    type?: Optional<NotificationType>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    type_not?: Optional<NotificationType>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    type_in?: List<NonNull<NotificationType>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    type_not_in?: List<NonNull<NotificationType>>;
+
+    slug?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    slug_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    slug_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    slug_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    slug_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    slug_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    slug_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    slug_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    slug_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    slug_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    slug_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    slug_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    slug_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    slug_not_ends_with?: Optional<String>;
+
+    seen?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    seen_not?: Optional<Boolean>;
+
+    sent?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    sent_not?: Optional<Boolean>;
+
+    target?: Optional<UserWhereInput>;
+
+    actor?: Optional<UserWhereInput>;
+
+    article?: Optional<ArticleWhereInput>;
+
+    message?: Optional<MessageWhereInput>;
+
+    connect?: Optional<ConnectWhereInput>;
+}
+
+export interface NotificationWhereUniqueInput {
 
     id?: Optional<ID>;
 }
@@ -9710,6 +10775,11 @@ export interface PostWhereUniqueInput {
     id?: Optional<ID>;
 }
 
+export interface UserCreatedeviceIdsInput {
+
+    set?: List<NonNull<String>>;
+}
+
 export interface UserCreateInput {
 
     email: NonNull<String>;
@@ -9752,9 +10822,13 @@ export interface UserCreateInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
 
     userFiles?: Optional<FileCreateManyInput>;
 
@@ -9768,9 +10842,9 @@ export interface UserCreateInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<UserCreateManyInput>;
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserCreateManyInput>;
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -9789,13 +10863,12 @@ export interface UserCreateInput {
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
-}
 
-export interface UserCreateManyInput {
+    location?: Optional<LocationCreateOneInput>;
 
-    create?: List<NonNull<UserCreateInput>>;
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
 
-    connect?: List<NonNull<UserWhereUniqueInput>>;
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
 }
 
 export interface UserCreateManyWithoutBlockedChannelsInput {
@@ -9875,6 +10948,13 @@ export interface UserCreateOneInput {
     connect?: Optional<UserWhereUniqueInput>;
 }
 
+export interface UserCreateOneWithoutActorNotificationsInput {
+
+    create?: Optional<UserCreateWithoutActorNotificationsInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+}
+
 export interface UserCreateOneWithoutArticlesInput {
 
     create?: Optional<UserCreateWithoutArticlesInput>;
@@ -9889,11 +10969,121 @@ export interface UserCreateOneWithoutCommentsInput {
     connect?: Optional<UserWhereUniqueInput>;
 }
 
+export interface UserCreateOneWithoutConnectOneInput {
+
+    create?: Optional<UserCreateWithoutConnectOneInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+}
+
+export interface UserCreateOneWithoutConnectTwoInput {
+
+    create?: Optional<UserCreateWithoutConnectTwoInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+}
+
 export interface UserCreateOneWithoutMyChannelsInput {
 
     create?: Optional<UserCreateWithoutMyChannelsInput>;
 
     connect?: Optional<UserWhereUniqueInput>;
+}
+
+export interface UserCreateOneWithoutNotificationsInput {
+
+    create?: Optional<UserCreateWithoutNotificationsInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutActorNotificationsInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    bio?: Optional<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newCommunityNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    enableLocation?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
+
+    userFiles?: Optional<FileCreateManyInput>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateManyWithoutUsersInput>;
+
+    messages?: Optional<MessageCreateOneInput>;
+
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
+
+    channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
+
+    myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
+
+    likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
+
+    comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
 }
 
 export interface UserCreateWithoutArticlesInput {
@@ -9938,9 +11128,13 @@ export interface UserCreateWithoutArticlesInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
 
     userFiles?: Optional<FileCreateManyInput>;
 
@@ -9954,9 +11148,9 @@ export interface UserCreateWithoutArticlesInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<UserCreateManyInput>;
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserCreateManyInput>;
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
 
     favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
 
@@ -9973,6 +11167,12 @@ export interface UserCreateWithoutArticlesInput {
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
 }
 
 export interface UserCreateWithoutBlockedChannelsInput {
@@ -10017,9 +11217,13 @@ export interface UserCreateWithoutBlockedChannelsInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
 
     userFiles?: Optional<FileCreateManyInput>;
 
@@ -10033,9 +11237,9 @@ export interface UserCreateWithoutBlockedChannelsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<UserCreateManyInput>;
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserCreateManyInput>;
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -10052,6 +11256,12 @@ export interface UserCreateWithoutBlockedChannelsInput {
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
 }
 
 export interface UserCreateWithoutChannelsInput {
@@ -10096,9 +11306,13 @@ export interface UserCreateWithoutChannelsInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
 
     userFiles?: Optional<FileCreateManyInput>;
 
@@ -10112,9 +11326,9 @@ export interface UserCreateWithoutChannelsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<UserCreateManyInput>;
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserCreateManyInput>;
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -10131,6 +11345,12 @@ export interface UserCreateWithoutChannelsInput {
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
 }
 
 export interface UserCreateWithoutCommentsInput {
@@ -10175,9 +11395,13 @@ export interface UserCreateWithoutCommentsInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
 
     userFiles?: Optional<FileCreateManyInput>;
 
@@ -10191,9 +11415,9 @@ export interface UserCreateWithoutCommentsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<UserCreateManyInput>;
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserCreateManyInput>;
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -10210,6 +11434,190 @@ export interface UserCreateWithoutCommentsInput {
     moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
+}
+
+export interface UserCreateWithoutConnectOneInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    bio?: Optional<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newCommunityNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    enableLocation?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
+
+    userFiles?: Optional<FileCreateManyInput>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateManyWithoutUsersInput>;
+
+    messages?: Optional<MessageCreateOneInput>;
+
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
+
+    channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
+
+    myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
+
+    likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
+
+    comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
+}
+
+export interface UserCreateWithoutConnectTwoInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    bio?: Optional<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newCommunityNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    enableLocation?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
+
+    userFiles?: Optional<FileCreateManyInput>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateManyWithoutUsersInput>;
+
+    messages?: Optional<MessageCreateOneInput>;
+
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
+
+    channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
+
+    myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
+
+    likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
+
+    comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
 }
 
 export interface UserCreateWithoutCountryInput {
@@ -10254,9 +11662,13 @@ export interface UserCreateWithoutCountryInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
 
     userFiles?: Optional<FileCreateManyInput>;
 
@@ -10268,9 +11680,9 @@ export interface UserCreateWithoutCountryInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<UserCreateManyInput>;
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserCreateManyInput>;
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -10289,6 +11701,12 @@ export interface UserCreateWithoutCountryInput {
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
 }
 
 export interface UserCreateWithoutDepartmentInput {
@@ -10333,9 +11751,13 @@ export interface UserCreateWithoutDepartmentInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
 
     userFiles?: Optional<FileCreateManyInput>;
 
@@ -10347,9 +11769,9 @@ export interface UserCreateWithoutDepartmentInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<UserCreateManyInput>;
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserCreateManyInput>;
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -10368,6 +11790,12 @@ export interface UserCreateWithoutDepartmentInput {
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
 }
 
 export interface UserCreateWithoutFavouritesInput {
@@ -10412,9 +11840,13 @@ export interface UserCreateWithoutFavouritesInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
 
     userFiles?: Optional<FileCreateManyInput>;
 
@@ -10428,9 +11860,9 @@ export interface UserCreateWithoutFavouritesInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<UserCreateManyInput>;
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserCreateManyInput>;
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -10447,6 +11879,12 @@ export interface UserCreateWithoutFavouritesInput {
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
 }
 
 export interface UserCreateWithoutInstitutionInput {
@@ -10491,9 +11929,13 @@ export interface UserCreateWithoutInstitutionInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
 
     userFiles?: Optional<FileCreateManyInput>;
 
@@ -10505,9 +11947,9 @@ export interface UserCreateWithoutInstitutionInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<UserCreateManyInput>;
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserCreateManyInput>;
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -10526,6 +11968,12 @@ export interface UserCreateWithoutInstitutionInput {
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
 }
 
 export interface UserCreateWithoutInterestInput {
@@ -10570,9 +12018,13 @@ export interface UserCreateWithoutInterestInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
 
     userFiles?: Optional<FileCreateManyInput>;
 
@@ -10584,9 +12036,9 @@ export interface UserCreateWithoutInterestInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<UserCreateManyInput>;
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserCreateManyInput>;
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -10605,6 +12057,12 @@ export interface UserCreateWithoutInterestInput {
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
 }
 
 export interface UserCreateWithoutLikedArticlesInput {
@@ -10649,9 +12107,13 @@ export interface UserCreateWithoutLikedArticlesInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
 
     userFiles?: Optional<FileCreateManyInput>;
 
@@ -10665,9 +12127,9 @@ export interface UserCreateWithoutLikedArticlesInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<UserCreateManyInput>;
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserCreateManyInput>;
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -10684,6 +12146,12 @@ export interface UserCreateWithoutLikedArticlesInput {
     moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
 }
 
 export interface UserCreateWithoutModeratorsChannelsInput {
@@ -10728,9 +12196,13 @@ export interface UserCreateWithoutModeratorsChannelsInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
 
     userFiles?: Optional<FileCreateManyInput>;
 
@@ -10744,9 +12216,9 @@ export interface UserCreateWithoutModeratorsChannelsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<UserCreateManyInput>;
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserCreateManyInput>;
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -10763,6 +12235,12 @@ export interface UserCreateWithoutModeratorsChannelsInput {
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
 }
 
 export interface UserCreateWithoutMyChannelsInput {
@@ -10807,9 +12285,13 @@ export interface UserCreateWithoutMyChannelsInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
 
     userFiles?: Optional<FileCreateManyInput>;
 
@@ -10823,9 +12305,9 @@ export interface UserCreateWithoutMyChannelsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<UserCreateManyInput>;
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserCreateManyInput>;
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -10842,6 +12324,101 @@ export interface UserCreateWithoutMyChannelsInput {
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
+}
+
+export interface UserCreateWithoutNotificationsInput {
+
+    email: NonNull<String>;
+
+    username?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    password: NonNull<String>;
+
+    firstname: NonNull<String>;
+
+    lastname: NonNull<String>;
+
+    bio?: Optional<String>;
+
+    gender: NonNull<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newCommunityNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    enableLocation?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
+
+    userFiles?: Optional<FileCreateManyInput>;
+
+    country?: Optional<CountryCreateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestCreateManyWithoutUsersInput>;
+
+    messages?: Optional<MessageCreateOneInput>;
+
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+
+    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
+
+    favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
+
+    channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
+
+    myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
+
+    likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
+
+    comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
 }
 
 export interface UserCreateWithoutPendingChannelsInput {
@@ -10886,9 +12463,13 @@ export interface UserCreateWithoutPendingChannelsInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserCreatedeviceIdsInput>;
 
     userFiles?: Optional<FileCreateManyInput>;
 
@@ -10902,9 +12483,9 @@ export interface UserCreateWithoutPendingChannelsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    connectTo?: Optional<UserCreateManyInput>;
+    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserCreateManyInput>;
+    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -10921,6 +12502,12 @@ export interface UserCreateWithoutPendingChannelsInput {
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
 
     comments?: Optional<CommentCreateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationCreateOneInput>;
+
+    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -11003,9 +12590,13 @@ export interface UserUpdateDataInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -11019,9 +12610,9 @@ export interface UserUpdateDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -11040,6 +12631,17 @@ export interface UserUpdateDataInput {
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
+}
+
+export interface UserUpdatedeviceIdsInput {
+
+    set?: List<NonNull<String>>;
 }
 
 export interface UserUpdateInput {
@@ -11084,9 +12686,13 @@ export interface UserUpdateInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -11100,9 +12706,9 @@ export interface UserUpdateInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -11121,21 +12727,12 @@ export interface UserUpdateInput {
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
-}
 
-export interface UserUpdateManyInput {
+    location?: Optional<LocationUpdateOneInput>;
 
-    create?: List<NonNull<UserCreateInput>>;
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
 
-    connect?: List<NonNull<UserWhereUniqueInput>>;
-
-    disconnect?: List<NonNull<UserWhereUniqueInput>>;
-
-    delete?: List<NonNull<UserWhereUniqueInput>>;
-
-    update?: List<NonNull<UserUpdateWithWhereUniqueNestedInput>>;
-
-    upsert?: List<NonNull<UserUpsertWithWhereUniqueNestedInput>>;
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
 }
 
 export interface UserUpdateManyWithoutBlockedChannelsInput {
@@ -11303,6 +12900,19 @@ export interface UserUpdateOneInput {
     upsert?: Optional<UserUpsertNestedInput>;
 }
 
+export interface UserUpdateOneWithoutActorNotificationsInput {
+
+    create?: Optional<UserCreateWithoutActorNotificationsInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+
+    delete?: Optional<Boolean>;
+
+    update?: Optional<UserUpdateWithoutActorNotificationsDataInput>;
+
+    upsert?: Optional<UserUpsertWithoutActorNotificationsInput>;
+}
+
 export interface UserUpdateOneWithoutArticlesInput {
 
     create?: Optional<UserCreateWithoutArticlesInput>;
@@ -11329,6 +12939,32 @@ export interface UserUpdateOneWithoutCommentsInput {
     upsert?: Optional<UserUpsertWithoutCommentsInput>;
 }
 
+export interface UserUpdateOneWithoutConnectOneInput {
+
+    create?: Optional<UserCreateWithoutConnectOneInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+
+    delete?: Optional<Boolean>;
+
+    update?: Optional<UserUpdateWithoutConnectOneDataInput>;
+
+    upsert?: Optional<UserUpsertWithoutConnectOneInput>;
+}
+
+export interface UserUpdateOneWithoutConnectTwoInput {
+
+    create?: Optional<UserCreateWithoutConnectTwoInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+
+    delete?: Optional<Boolean>;
+
+    update?: Optional<UserUpdateWithoutConnectTwoDataInput>;
+
+    upsert?: Optional<UserUpsertWithoutConnectTwoInput>;
+}
+
 export interface UserUpdateOneWithoutMyChannelsInput {
 
     create?: Optional<UserCreateWithoutMyChannelsInput>;
@@ -11340,6 +12976,108 @@ export interface UserUpdateOneWithoutMyChannelsInput {
     update?: Optional<UserUpdateWithoutMyChannelsDataInput>;
 
     upsert?: Optional<UserUpsertWithoutMyChannelsInput>;
+}
+
+export interface UserUpdateOneWithoutNotificationsInput {
+
+    create?: Optional<UserCreateWithoutNotificationsInput>;
+
+    connect?: Optional<UserWhereUniqueInput>;
+
+    delete?: Optional<Boolean>;
+
+    update?: Optional<UserUpdateWithoutNotificationsDataInput>;
+
+    upsert?: Optional<UserUpsertWithoutNotificationsInput>;
+}
+
+export interface UserUpdateWithoutActorNotificationsDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    bio?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newCommunityNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    enableLocation?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
+
+    userFiles?: Optional<FileUpdateManyInput>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateManyWithoutUsersInput>;
+
+    messages?: Optional<MessageUpdateOneInput>;
+
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
+
+    channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
+
+    myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
+
+    likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
+
+    comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
 }
 
 export interface UserUpdateWithoutArticlesDataInput {
@@ -11384,9 +13122,13 @@ export interface UserUpdateWithoutArticlesDataInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -11400,9 +13142,9 @@ export interface UserUpdateWithoutArticlesDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
 
@@ -11419,6 +13161,12 @@ export interface UserUpdateWithoutArticlesDataInput {
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
 }
 
 export interface UserUpdateWithoutBlockedChannelsDataInput {
@@ -11463,9 +13211,13 @@ export interface UserUpdateWithoutBlockedChannelsDataInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -11479,9 +13231,9 @@ export interface UserUpdateWithoutBlockedChannelsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -11498,6 +13250,12 @@ export interface UserUpdateWithoutBlockedChannelsDataInput {
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
 }
 
 export interface UserUpdateWithoutChannelsDataInput {
@@ -11542,9 +13300,13 @@ export interface UserUpdateWithoutChannelsDataInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -11558,9 +13320,9 @@ export interface UserUpdateWithoutChannelsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -11577,6 +13339,12 @@ export interface UserUpdateWithoutChannelsDataInput {
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
 }
 
 export interface UserUpdateWithoutCommentsDataInput {
@@ -11621,9 +13389,13 @@ export interface UserUpdateWithoutCommentsDataInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -11637,9 +13409,9 @@ export interface UserUpdateWithoutCommentsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -11656,6 +13428,190 @@ export interface UserUpdateWithoutCommentsDataInput {
     moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
+}
+
+export interface UserUpdateWithoutConnectOneDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    bio?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newCommunityNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    enableLocation?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
+
+    userFiles?: Optional<FileUpdateManyInput>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateManyWithoutUsersInput>;
+
+    messages?: Optional<MessageUpdateOneInput>;
+
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
+
+    channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
+
+    myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
+
+    likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
+
+    comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
+}
+
+export interface UserUpdateWithoutConnectTwoDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    bio?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newCommunityNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    enableLocation?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
+
+    userFiles?: Optional<FileUpdateManyInput>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateManyWithoutUsersInput>;
+
+    messages?: Optional<MessageUpdateOneInput>;
+
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
+
+    channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
+
+    myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
+
+    likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
+
+    comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
 }
 
 export interface UserUpdateWithoutCountryDataInput {
@@ -11700,9 +13656,13 @@ export interface UserUpdateWithoutCountryDataInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -11714,9 +13674,9 @@ export interface UserUpdateWithoutCountryDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -11735,6 +13695,12 @@ export interface UserUpdateWithoutCountryDataInput {
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
 }
 
 export interface UserUpdateWithoutDepartmentDataInput {
@@ -11779,9 +13745,13 @@ export interface UserUpdateWithoutDepartmentDataInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -11793,9 +13763,9 @@ export interface UserUpdateWithoutDepartmentDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -11814,6 +13784,12 @@ export interface UserUpdateWithoutDepartmentDataInput {
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
 }
 
 export interface UserUpdateWithoutFavouritesDataInput {
@@ -11858,9 +13834,13 @@ export interface UserUpdateWithoutFavouritesDataInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -11874,9 +13854,9 @@ export interface UserUpdateWithoutFavouritesDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -11893,6 +13873,12 @@ export interface UserUpdateWithoutFavouritesDataInput {
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
 }
 
 export interface UserUpdateWithoutInstitutionDataInput {
@@ -11937,9 +13923,13 @@ export interface UserUpdateWithoutInstitutionDataInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -11951,9 +13941,9 @@ export interface UserUpdateWithoutInstitutionDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -11972,6 +13962,12 @@ export interface UserUpdateWithoutInstitutionDataInput {
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
 }
 
 export interface UserUpdateWithoutInterestDataInput {
@@ -12016,9 +14012,13 @@ export interface UserUpdateWithoutInterestDataInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -12030,9 +14030,9 @@ export interface UserUpdateWithoutInterestDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -12051,6 +14051,12 @@ export interface UserUpdateWithoutInterestDataInput {
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
 }
 
 export interface UserUpdateWithoutLikedArticlesDataInput {
@@ -12095,9 +14101,13 @@ export interface UserUpdateWithoutLikedArticlesDataInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -12111,9 +14121,9 @@ export interface UserUpdateWithoutLikedArticlesDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -12130,6 +14140,12 @@ export interface UserUpdateWithoutLikedArticlesDataInput {
     moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
 }
 
 export interface UserUpdateWithoutModeratorsChannelsDataInput {
@@ -12174,9 +14190,13 @@ export interface UserUpdateWithoutModeratorsChannelsDataInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -12190,9 +14210,9 @@ export interface UserUpdateWithoutModeratorsChannelsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -12209,6 +14229,12 @@ export interface UserUpdateWithoutModeratorsChannelsDataInput {
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
 }
 
 export interface UserUpdateWithoutMyChannelsDataInput {
@@ -12253,9 +14279,13 @@ export interface UserUpdateWithoutMyChannelsDataInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -12269,9 +14299,9 @@ export interface UserUpdateWithoutMyChannelsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -12288,6 +14318,101 @@ export interface UserUpdateWithoutMyChannelsDataInput {
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
+}
+
+export interface UserUpdateWithoutNotificationsDataInput {
+
+    email?: Optional<String>;
+
+    username?: Optional<String>;
+
+    avatar?: Optional<String>;
+
+    headerImage?: Optional<String>;
+
+    password?: Optional<String>;
+
+    firstname?: Optional<String>;
+
+    lastname?: Optional<String>;
+
+    bio?: Optional<String>;
+
+    gender?: Optional<String>;
+
+    type?: Optional<String>;
+
+    userType?: Optional<String>;
+
+    newConnectNot?: Optional<Boolean>;
+
+    newCommentNot?: Optional<Boolean>;
+
+    newMessageNot?: Optional<Boolean>;
+
+    newCommunityNot?: Optional<Boolean>;
+
+    newProfileNot?: Optional<Boolean>;
+
+    topWeeklyArticleNot?: Optional<Boolean>;
+
+    mentionMeNot?: Optional<Boolean>;
+
+    enableBrowserPushNot?: Optional<Boolean>;
+
+    enableMobilePushNot?: Optional<Boolean>;
+
+    enableLocation?: Optional<Boolean>;
+
+    completedProfile?: Optional<Int>;
+
+    verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
+
+    userFiles?: Optional<FileUpdateManyInput>;
+
+    country?: Optional<CountryUpdateOneWithoutUsersInput>;
+
+    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
+
+    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
+
+    interest?: Optional<InterestUpdateManyWithoutUsersInput>;
+
+    messages?: Optional<MessageUpdateOneInput>;
+
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+
+    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
+
+    favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
+
+    channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
+
+    myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
+
+    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
+
+    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
+
+    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
+
+    likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
+
+    comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
+
+    location?: Optional<LocationUpdateOneInput>;
+
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
 }
 
 export interface UserUpdateWithoutPendingChannelsDataInput {
@@ -12332,9 +14457,13 @@ export interface UserUpdateWithoutPendingChannelsDataInput {
 
     enableMobilePushNot?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     verified?: Optional<Boolean>;
+
+    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
 
     userFiles?: Optional<FileUpdateManyInput>;
 
@@ -12348,9 +14477,9 @@ export interface UserUpdateWithoutPendingChannelsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    connectTo?: Optional<UserUpdateManyInput>;
+    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
 
-    connectFrom?: Optional<UserUpdateManyInput>;
+    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -12367,13 +14496,12 @@ export interface UserUpdateWithoutPendingChannelsDataInput {
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
-}
 
-export interface UserUpdateWithWhereUniqueNestedInput {
+    location?: Optional<LocationUpdateOneInput>;
 
-    where: NonNull<UserWhereUniqueInput>;
+    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
 
-    data: NonNull<UserUpdateDataInput>;
+    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
 }
 
 export interface UserUpdateWithWhereUniqueWithoutBlockedChannelsInput {
@@ -12453,6 +14581,13 @@ export interface UserUpsertNestedInput {
     create: NonNull<UserCreateInput>;
 }
 
+export interface UserUpsertWithoutActorNotificationsInput {
+
+    update: NonNull<UserUpdateWithoutActorNotificationsDataInput>;
+
+    create: NonNull<UserCreateWithoutActorNotificationsInput>;
+}
+
 export interface UserUpsertWithoutArticlesInput {
 
     update: NonNull<UserUpdateWithoutArticlesDataInput>;
@@ -12467,6 +14602,20 @@ export interface UserUpsertWithoutCommentsInput {
     create: NonNull<UserCreateWithoutCommentsInput>;
 }
 
+export interface UserUpsertWithoutConnectOneInput {
+
+    update: NonNull<UserUpdateWithoutConnectOneDataInput>;
+
+    create: NonNull<UserCreateWithoutConnectOneInput>;
+}
+
+export interface UserUpsertWithoutConnectTwoInput {
+
+    update: NonNull<UserUpdateWithoutConnectTwoDataInput>;
+
+    create: NonNull<UserCreateWithoutConnectTwoInput>;
+}
+
 export interface UserUpsertWithoutMyChannelsInput {
 
     update: NonNull<UserUpdateWithoutMyChannelsDataInput>;
@@ -12474,13 +14623,11 @@ export interface UserUpsertWithoutMyChannelsInput {
     create: NonNull<UserCreateWithoutMyChannelsInput>;
 }
 
-export interface UserUpsertWithWhereUniqueNestedInput {
+export interface UserUpsertWithoutNotificationsInput {
 
-    where: NonNull<UserWhereUniqueInput>;
+    update: NonNull<UserUpdateWithoutNotificationsDataInput>;
 
-    update: NonNull<UserUpdateDataInput>;
-
-    create: NonNull<UserCreateInput>;
+    create: NonNull<UserCreateWithoutNotificationsInput>;
 }
 
 export interface UserUpsertWithWhereUniqueWithoutBlockedChannelsInput {
@@ -13526,6 +15673,13 @@ export interface UserWhereInput {
      */
     enableMobilePushNot_not?: Optional<Boolean>;
 
+    enableLocation?: Optional<Boolean>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    enableLocation_not?: Optional<Boolean>;
+
     completedProfile?: Optional<Int>;
 
     /**
@@ -13590,17 +15744,17 @@ export interface UserWhereInput {
 
     messages?: Optional<MessageWhereInput>;
 
-    connectTo_every?: Optional<UserWhereInput>;
+    ConnectOne_every?: Optional<ConnectWhereInput>;
 
-    connectTo_some?: Optional<UserWhereInput>;
+    ConnectOne_some?: Optional<ConnectWhereInput>;
 
-    connectTo_none?: Optional<UserWhereInput>;
+    ConnectOne_none?: Optional<ConnectWhereInput>;
 
-    connectFrom_every?: Optional<UserWhereInput>;
+    ConnectTwo_every?: Optional<ConnectWhereInput>;
 
-    connectFrom_some?: Optional<UserWhereInput>;
+    ConnectTwo_some?: Optional<ConnectWhereInput>;
 
-    connectFrom_none?: Optional<UserWhereInput>;
+    ConnectTwo_none?: Optional<ConnectWhereInput>;
 
     articles_every?: Optional<ArticleWhereInput>;
 
@@ -13655,6 +15809,20 @@ export interface UserWhereInput {
     comments_some?: Optional<CommentWhereInput>;
 
     comments_none?: Optional<CommentWhereInput>;
+
+    location?: Optional<LocationWhereInput>;
+
+    notifications_every?: Optional<NotificationWhereInput>;
+
+    notifications_some?: Optional<NotificationWhereInput>;
+
+    notifications_none?: Optional<NotificationWhereInput>;
+
+    actorNotifications_every?: Optional<NotificationWhereInput>;
+
+    actorNotifications_some?: Optional<NotificationWhereInput>;
+
+    actorNotifications_none?: Optional<NotificationWhereInput>;
 }
 
 export interface UserWhereUniqueInput {
