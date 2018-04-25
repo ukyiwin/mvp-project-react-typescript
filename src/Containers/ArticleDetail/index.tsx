@@ -24,6 +24,7 @@ import { ErrorComponent } from 'Components/EmptyStates';
 import { cookies } from 'link';
 import { CURRENT_USER } from '../../constants';
 import InterestItemSlim from 'Components/InterestItemSlim';
+import SimilarArticleList from 'Components/SimilarArticleList';
 // import 'medium-draft/lib/index.css';
 
 interface Props {
@@ -290,10 +291,7 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
                         {this.renderCommentList()}
                     </div>
                     <div className="uk-width-1-3@m uk-width-1-1@s">
-                        <Label text="Similar articles" />
-                        <ArticleItem article={this.state.currentArticle} small={true} />
-                        <ArticleItem article={this.state.currentArticle} small={true} />
-                        <ArticleItem article={this.state.currentArticle} small={true} />
+                      <SimilarArticleList articleId={this.state.currentArticle.id} />
                     </div>
                 </div>
             </div>

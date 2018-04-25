@@ -51,7 +51,7 @@ const SavedList = () => (
     if (error) {
         return <ErrorComponent />;
     }
-    if (data.saved === null) {
+    if (data.saved.length < 1) {
       return (
         <EmptyComponent 
           title="No saved Articles" 

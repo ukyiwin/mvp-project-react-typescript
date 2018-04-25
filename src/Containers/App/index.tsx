@@ -20,8 +20,6 @@ import { ME } from 'Graphql/Query';
 import { FlexCol } from 'Components/Globals';
 import ScrollManager from 'Components/ScrollManager';
 import 'Theme/application.scss';
-// import 'Theme/theme.less';
-// import '../semantic-ui-theme';
 import { cookies } from 'link';
 // import { cookies } from '../../link';
 

@@ -1,9 +1,10 @@
 import * as React from 'react';
-import DraftsItem from 'Components/DraftsItem';
+import ArticleItem from 'Components/ArticleItem';
 import { graphql, QueryProps, Query } from 'react-apollo';
+import Label from 'Components/Label';
 import InfiniteScroll from 'react-infinite-scroller';
 import { ErrorComponent, LoadingComponent, EmptyComponent } from 'Components/EmptyStates';
-import { DRAFTS } from 'Graphql/Query';
+import { GET_SIMILAR_ARTICLES } from 'Graphql/Query';
 import { Article, User } from 'CustomTypings/schema';
 import ContentLoader from 'react-content-loader';
 import { cookies } from 'link';
@@ -29,10 +30,14 @@ export const MyLoader = () => (
     </ContentLoader>
 );
 
+interface Props {
+  articleId: string;
+}
+
 const user = cookies.get(CURRENT_USER) as User;
 
-const DraftsList = () => (
-  <Query query={DRAFTS} variables={{ limit: 10 }} pollInterval={5000} >
+const SimilarArticleList = (props: Props) => (
+  <Query query={GET_SIMILAR_ARTICLES} variables={{id: props.articleId}} pollInterval={5000} >
   {({ loading, error, data, fetchMore, networkStatus, refetch }) => {
     if (loading) {
       return (
@@ -50,14 +55,16 @@ const DraftsList = () => (
     if (error) {
         return <ErrorComponent />;
     }
-    if (data.drafts.length < 1) {
+    if (data.getSimilarArticles === null) {
       return (
         <EmptyComponent 
-          title="You have no Draft" 
-          subtitle="Please write an article to see your drafts"
+          title="Articles for You" 
+          subtitle="We could not recommend articles for you"
         />);
     }
     return (
+      <div className="uk-card person">
+        <Label text="Suggested People to Follow" />
         <InfiniteScroll
           pageStart={0}
           hasMore={true}
@@ -65,14 +72,14 @@ const DraftsList = () => (
             fetchMore({
               variables: {
                 limit: 10,
-                offset: data.drafts.length
+                offset: data.getSimilarArticles.length
               },
               updateQuery: (prev, { fetchMoreResult }) =>  {
                 if (!fetchMoreResult) {
                   // this.set;
                   return prev;
                 }
-                return {...prev, drafts: [...prev.drafts, ...fetchMoreResult.drafts]};
+                return {...prev, getSimilarArticles: [...prev.getSimilarArticles, ...fetchMoreResult.getSimilarArticles]};
               },
             })}
           loader={
@@ -82,15 +89,16 @@ const DraftsList = () => (
           // tslint:disable-next-line:jsx-curly-spacing
           }
         >
-            {data.drafts ? data.drafts.map((article) => (
+            {data.getSimilarArticles ? data.getSimilarArticles.map((article) => (
                 <div key={article.id}>
-                    <DraftsItem article={article} />
+                    <ArticleItem small={true} article={article} />
                 </div>
             )) : null}
         </InfiniteScroll>
+      </div>
     );
     }}
   </Query>
 );
 
-export default DraftsList;
+export default SimilarArticleList;

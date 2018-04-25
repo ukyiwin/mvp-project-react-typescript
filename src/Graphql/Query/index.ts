@@ -359,7 +359,7 @@ export const GET_ARTICLES_BY_USERNAME = gql`
   ${ARTICLE_FRAGMENT}
 `;
 
-export const GET_RECOMMENDENDED_CON_BY_INT = gql`
+export const GET_RECOMMENDED_CON_BY_INT = gql`
   query getRecommendedConnectionsByInterest{
     getRecommendedConnectionsByInterest{
       id
@@ -401,6 +401,8 @@ export const GET_SUGGESTED_CONNECTIONS = gql`
       connections{
         username
         id
+        firstname
+        lastname
       }
       interest{
         name
@@ -408,30 +410,27 @@ export const GET_SUGGESTED_CONNECTIONS = gql`
       }
     }
   }
-  ${ARTICLE_FRAGMENT}
 `;
 
 export const GET_SIMILAR_ARTICLES = gql`
-  query getSuggestedConnections{
-    getSuggestedConnections{
-      id
-      username
-      type
-      firstname
-      lastname
-      institution{
-        id
-        title
-      }
-      verified
-      connections{
+  query getSimilarArticles($id: ID!){
+    getSimilarArticles(id :$id){
+      ...articleFragment
+      saved: userFavourited(where: {username: $myUsername }) {
         username
-        id
       }
-      interest{
-        name
-        id
+      liked: likes(where: {username: $myUsername }) {
+        username
       }
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+export const GET_SUGGESTED_ARTICLES = gql`
+  query getSuggestedArticles{
+    getSuggestedArticles{
+      ...articleFragment
     }
   }
   ${ARTICLE_FRAGMENT}

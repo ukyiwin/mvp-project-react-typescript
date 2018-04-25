@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Route, Redirect, withRouter, RouteComponentProps } from 'react-router-dom';
 // import { FooterPublic } from 'Components/Layouts/FooterPublic';
 import { User } from 'CustomTypings/schema';
-import { PrivateHeader, BottomNav } from 'Components/Layouts/Header';
-import './style.scss';
+import { PrivateHeader } from 'Components/Layouts/Header';
 
 interface DefaultProps {
     // tslint:disable-next-line:no-any
@@ -18,7 +17,7 @@ interface DefaultProps {
     logout: any;
 }
 
-const EmptyLayout: React.SFC<RouteComponentProps<any> & DefaultProps> = (props) => {
+const NoTabLayout: React.SFC<RouteComponentProps<any> & DefaultProps> = (props) => {
     const { component: Component, isAuthenticated, exact, ...rest} = props;
 
     return (
@@ -32,7 +31,6 @@ const EmptyLayout: React.SFC<RouteComponentProps<any> & DefaultProps> = (props) 
                     <div className="uk-width-1-1 uk-flex  uk-height-1-1 ">
                         <Component {...matctProps} />
                     </div>
-                    <BottomNav me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
                   </div>
               ) : (
                   <Redirect to={{ pathname: '/' }} />
@@ -42,4 +40,4 @@ const EmptyLayout: React.SFC<RouteComponentProps<any> & DefaultProps> = (props) 
     );
 };
 
-export default withRouter(EmptyLayout);
+export default withRouter(NoTabLayout);

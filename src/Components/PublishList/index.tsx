@@ -51,7 +51,7 @@ const PublishList = () => (
     if (error) {
         return <ErrorComponent />;
     }
-    if (data.published === null) {
+    if (data.published.length < 1) {
       return (
         <EmptyComponent 
           title="No published articles" 

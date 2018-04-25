@@ -3,6 +3,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { compose, withApollo } from 'react-apollo';
 import { User } from 'CustomTypings/schema';
 import ConnectBox from 'Components/ConnectBox';
+import SuggestedArticleList from 'Components/SuggestedArticleList';
 
 // import { Link } from 'react-router-dom';
 
@@ -23,7 +24,7 @@ class LeftSideBar extends React.Component<RouteComponentProps & Props> {
               <ConnectBox />
             </div>
             <div className="uk-width-1-1" style={{ marginBottom: 10, padding: 0 }}>
-              <ConnectBox />
+              <SuggestedArticleList />
             </div>
           </div>
         );

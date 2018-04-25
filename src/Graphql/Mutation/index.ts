@@ -77,6 +77,15 @@ export const PUBLISH_ARTICLE = gql`
   ${ARTICLE_FRAGMENT}
 `;
 
+export const DELETE_ARTICLE = gql`
+  mutation deleteArticle($id: ID!){
+    deleteArticle(id: $id){
+      ...articleFragment
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
 export const CREATE_MESSAGE = gql`
   mutation createMessage($channelId: ID!, $text: String!){
     createMessage(channelId: $id, text: $text){
