@@ -227,7 +227,6 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
           id,
           title,
           body: renderedHTML,
-          tags,
           category,
           photoId
         }

@@ -55,14 +55,14 @@ const NotificationContainer = (props) => {
               fetchMore({
                 variables: {
                   limit: 10,
-                  offset: data.articles.length
+                  offset: data.notifications.length
                 },
                 updateQuery: (prev, { fetchMoreResult }) =>  {
                   if (!fetchMoreResult) {
                     // this.set;
                     return prev;
                   }
-                  return {...prev, articles: [...prev.articles, ...fetchMoreResult.articles]};
+                  return {...prev, notifications: [...prev.notifications, ...fetchMoreResult.notifications]};
                 },
               })}
             loader={
@@ -72,8 +72,8 @@ const NotificationContainer = (props) => {
             // tslint:disable-next-line:jsx-curly-spacing
             }
           >
-              {data.articles ? data.notification.map((notif) => (
-                  <div key={article.id}>
+              {data.notifications ? data.notifications.map((notif) => (
+                  <div key={notif.id}>
                       <NotificationItem notification={notif} />
                   </div>
               )) : null}

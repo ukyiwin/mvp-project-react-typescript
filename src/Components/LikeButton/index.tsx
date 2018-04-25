@@ -14,6 +14,7 @@ interface Props {
     size?: number;
     backClick?: any;
     frontClick?: any;
+    style?: object;
 }
 
 export default class LikeButton extends React.Component<Props> {
@@ -28,7 +29,11 @@ export default class LikeButton extends React.Component<Props> {
       const truthy = this.props.liked ? (this.props.liked === true ? true : false) : false;
       if (this.props.link) {
         return (
-          <Link to={this.props.link} className="response-count uk-flex uk-inline uk-margin-left uk-margin-right">
+          <Link
+            to={this.props.link}
+            style={this.props.style}
+            className="response-count uk-flex uk-inline uk-margin-left uk-margin-right"
+          >
             <Icon glyph={this.props.frontIcon} size={this.props.size ? this.props.size : 24} />
             {this.props.text ? (<div className="uk-visible@s">{this.props.text + ' ' + this.props.likeCount}</div>) : ''}
           </Link>
@@ -37,7 +42,11 @@ export default class LikeButton extends React.Component<Props> {
       if (this.props.buttonType === 'two') {
         if (truthy) {
           return (
-            <a className="response-count uk-flex uk-inline uk-animation-toggle uk-animation-shake" onClick={() => this.props.backClick()}>
+            <a 
+              className="response-count uk-flex uk-inline uk-animation-toggle uk-animation-shake"
+              onClick={() => this.props.backClick()}
+              style={this.props.style}
+            >
               <Icon glyph={this.props.backIcon} size={this.props.size ? this.props.size : 24} />
               {this.props.text ? (<div className="uk-visible@s">{this.props.text + ' ' 
               +  (this.props.likeCount ? this.props.likeCount : '')}</div>) : ''}
@@ -45,7 +54,11 @@ export default class LikeButton extends React.Component<Props> {
           );
         } else {
           return (
-            <a className="response-count uk-flex uk-inline uk-animation-toggle uk-animation-shake" onClick={() => this.props.frontClick()}>
+            <a 
+              className="response-count uk-flex uk-inline uk-animation-toggle uk-animation-shake"
+              onClick={() => this.props.frontClick()}
+              style={this.props.style}
+            >
               <Icon glyph={this.props.frontIcon} size={this.props.size ? this.props.size : 24} />
               {this.props.text ? (<div className="uk-visible@s">{this.props.text + ' ' 
               + (this.props.likeCount ? this.props.likeCount : '')}</div>) : ''}
@@ -54,7 +67,11 @@ export default class LikeButton extends React.Component<Props> {
         }
       } else {
         return (
-          <a className="response-count uk-flex uk-inline" onClick={() => this.props.frontClick()}>
+          <a
+            className="response-count uk-flex uk-inline"
+            onClick={() => this.props.frontClick()}
+            style={this.props.style}
+          >
             <Icon glyph={this.props.frontIcon} size={this.props.size ? this.props.size : 24} />
             {this.props.text ? (<div className="uk-visible@s">{this.props.text + ' ' 
             + (this.props.likeCount ? this.props.likeCount : '')}</div>) : ''}

@@ -112,6 +112,20 @@ const Notification = asyncComponent({
   LoadingComponent: () => <LoadingComponent />,
 });
 
+const Drafts = asyncComponent({
+  resolve: () => import('Containers/Drafts'),
+  LoadingComponent: () => <LoadingComponent />,
+});
+
+const Published = asyncComponent({
+  resolve: () => import('Containers/Published'),
+  LoadingComponent: () => <LoadingComponent />,
+});
+
+const Saved = asyncComponent({
+  resolve: () => import('Containers/Saved'),
+  LoadingComponent: () => <LoadingComponent />,
+});
 const Settings = asyncComponent({
   resolve: () => import('Containers/Settings'),
   LoadingComponent: () => <LoadingComponent />,
@@ -448,6 +462,30 @@ class App extends React.Component<Props & ChildProps<Response & Props>, State> {
                           <EmptyLayout 
                             component={Maps} 
                             path="/library" 
+                            isAuthenticated={isAuthenticated}
+                            logout={this._logout}
+                            exact={true} 
+                            me={this.state.me}
+                          />
+                          <EmptyLayout 
+                            component={Drafts} 
+                            path="/drafts" 
+                            isAuthenticated={isAuthenticated}
+                            logout={this._logout}
+                            exact={true} 
+                            me={this.state.me}
+                          />
+                          <EmptyLayout 
+                            component={Published} 
+                            path="/published" 
+                            isAuthenticated={isAuthenticated}
+                            logout={this._logout}
+                            exact={true} 
+                            me={this.state.me}
+                          />
+                          <EmptyLayout 
+                            component={Saved} 
+                            path="/saved" 
                             isAuthenticated={isAuthenticated}
                             logout={this._logout}
                             exact={true} 

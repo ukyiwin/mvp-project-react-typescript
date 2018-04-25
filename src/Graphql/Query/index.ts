@@ -60,6 +60,54 @@ export const ARTICLES = gql`
 `;
 
 /**
+ * @description check if current user article
+ */
+export const DRAFTS = gql`
+  query drafts($offset: Int, $limit: Int) {
+    drafts (offset: $offset, limit: $limit){
+      ...articleFragment
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+/**
+ * @description check if current user article
+ */
+export const PUBLISHED = gql`
+  query published($myUsername: String, $offset: Int, $limit: Int) {
+    published (offset: $offset, limit: $limit){
+      saved: userFavourited(where: {username: $myUsername }) {
+        username
+      }
+      liked: likes(where: {username: $myUsername }) {
+        username
+      }
+      ...articleFragment
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+/**
+ * @description check if current user article
+ */
+export const SAVED = gql`
+  query saved($myUsername: String, $offset: Int, $limit: Int) {
+    saved (offset: $offset, limit: $limit){
+      saved: userFavourited(where: {username: $myUsername }) {
+        username
+      }
+      liked: likes(where: {username: $myUsername }) {
+        username
+      }
+      ...articleFragment
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+/**
  * @description get one article by id
  */
 export const GET_ARTICLE_BY_ID = gql`
@@ -102,10 +150,8 @@ export const ME = gql`
   query me {
     me{
       ...userFragment
-      connectOne{
-        id
-      }
-      connectTwo{
+      connections{
+        username
         id
       }
       avatar
@@ -127,10 +173,8 @@ export const GET_USER_BY_USERNAME = gql`
   query getUserByUsername($username: String!) {
     getUserByUsername(username: $username) {
       ...userFragment
-      connectOne{
-        id
-      }
-      connectTwo{
+      connections{
+        username
         id
       }
       avatar
@@ -328,15 +372,9 @@ export const GET_RECOMMENDENDED_CON_BY_INT = gql`
         title
       }
       verified
-      connectOne{
-        user1{
-          username
-          id
-        }
-        user2{
-          username
-          id
-        }
+      connections{
+        username
+        id
       }
       interest{
         name
@@ -360,15 +398,9 @@ export const GET_SUGGESTED_CONNECTIONS = gql`
         title
       }
       verified
-      connectOne{
-        user1{
-          username
-          id
-        }
-        user2{
-          username
-          id
-        }
+      connections{
+        username
+        id
       }
       interest{
         name
@@ -392,15 +424,9 @@ export const GET_SIMILAR_ARTICLES = gql`
         title
       }
       verified
-      connectOne{
-        user1{
-          username
-          id
-        }
-        user2{
-          username
-          id
-        }
+      connections{
+        username
+        id
       }
       interest{
         name
@@ -412,8 +438,8 @@ export const GET_SIMILAR_ARTICLES = gql`
 `;
 
 export const NOTIFICATION = gql`
-  query notification{
-    notification{
+  query notifications{
+    notifications{
       id
     }
   }

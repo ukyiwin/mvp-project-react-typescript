@@ -722,6 +722,18 @@ export type UserOrderByInput = (
 
     "lastname_DESC" |
 
+    "facebookAuthId_ASC" |
+
+    "facebookAuthId_DESC" |
+
+    "twitterAuthId_ASC" |
+
+    "twitterAuthId_DESC" |
+
+    "linkedInAuthId_ASC" |
+
+    "linkedInAuthId_DESC" |
+
     "bio_ASC" |
 
     "bio_DESC" |
@@ -1051,7 +1063,7 @@ export interface Article extends Node {
 
     headerImage?: Optional<File>;
 
-    tags?: List<NonNull<String>>;
+    tags?: List<NonNull<Interest>>;
 
     category?: Optional<Interest>;
 
@@ -1121,8 +1133,6 @@ export interface ArticlePreviousValues {
     title: NonNull<String>;
 
     body: NonNull<String>;
-
-    tags?: List<NonNull<String>>;
 
     type?: Optional<Arcticletype>;
 
@@ -1345,10 +1355,6 @@ export interface Connect extends Node {
     updatedAt: NonNull<DateTime>;
 
     status: NonNull<Int>;
-
-    user1: NonNull<User>;
-
-    user2: NonNull<User>;
 }
 
 /**
@@ -1728,6 +1734,10 @@ export interface Interest extends Node {
     avatar: NonNull<String>;
 
     users?: List<NonNull<User>>;
+
+    tags?: List<NonNull<Article>>;
+
+    category?: List<NonNull<Article>>;
 }
 
 /**
@@ -2632,6 +2642,12 @@ export interface User extends Node {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     userFiles?: List<NonNull<File>>;
@@ -2648,9 +2664,11 @@ export interface User extends Node {
 
     messages?: Optional<Message>;
 
-    ConnectOne?: List<NonNull<Connect>>;
+    connections?: List<NonNull<User>>;
 
-    ConnectTwo?: List<NonNull<Connect>>;
+    following?: List<NonNull<User>>;
+
+    followers?: List<NonNull<User>>;
 
     type?: Optional<String>;
 
@@ -2763,6 +2781,12 @@ export interface UserPreviousValues {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender: NonNull<String>;
@@ -2827,9 +2851,9 @@ export interface ArticleCreateInput {
 
     viewCount?: Optional<Int>;
 
-    tags?: Optional<ArticleCreatetagsInput>;
-
     headerImage?: Optional<FileCreateOneInput>;
+
+    tags?: Optional<InterestCreateManyInput>;
 
     category?: Optional<InterestCreateOneInput>;
 
@@ -2840,6 +2864,13 @@ export interface ArticleCreateInput {
     comments?: Optional<CommentCreateManyWithoutArticleInput>;
 
     userFavourited?: Optional<UserCreateManyWithoutFavouritesInput>;
+}
+
+export interface ArticleCreateManyInput {
+
+    create?: List<NonNull<ArticleCreateInput>>;
+
+    connect?: List<NonNull<ArticleWhereUniqueInput>>;
 }
 
 export interface ArticleCreateManyWithoutAuthorInput {
@@ -2877,11 +2908,6 @@ export interface ArticleCreateOneWithoutCommentsInput {
     connect?: Optional<ArticleWhereUniqueInput>;
 }
 
-export interface ArticleCreatetagsInput {
-
-    set?: List<NonNull<String>>;
-}
-
 export interface ArticleCreateWithoutAuthorInput {
 
     slug?: Optional<String>;
@@ -2900,9 +2926,9 @@ export interface ArticleCreateWithoutAuthorInput {
 
     viewCount?: Optional<Int>;
 
-    tags?: Optional<ArticleCreatetagsInput>;
-
     headerImage?: Optional<FileCreateOneInput>;
+
+    tags?: Optional<InterestCreateManyInput>;
 
     category?: Optional<InterestCreateOneInput>;
 
@@ -2931,9 +2957,9 @@ export interface ArticleCreateWithoutCommentsInput {
 
     viewCount?: Optional<Int>;
 
-    tags?: Optional<ArticleCreatetagsInput>;
-
     headerImage?: Optional<FileCreateOneInput>;
+
+    tags?: Optional<InterestCreateManyInput>;
 
     category?: Optional<InterestCreateOneInput>;
 
@@ -2962,9 +2988,9 @@ export interface ArticleCreateWithoutLikesInput {
 
     viewCount?: Optional<Int>;
 
-    tags?: Optional<ArticleCreatetagsInput>;
-
     headerImage?: Optional<FileCreateOneInput>;
+
+    tags?: Optional<InterestCreateManyInput>;
 
     category?: Optional<InterestCreateOneInput>;
 
@@ -2993,9 +3019,9 @@ export interface ArticleCreateWithoutUserFavouritedInput {
 
     viewCount?: Optional<Int>;
 
-    tags?: Optional<ArticleCreatetagsInput>;
-
     headerImage?: Optional<FileCreateOneInput>;
+
+    tags?: Optional<InterestCreateManyInput>;
 
     category?: Optional<InterestCreateOneInput>;
 
@@ -3062,9 +3088,9 @@ export interface ArticleUpdateDataInput {
 
     viewCount?: Optional<Int>;
 
-    tags?: Optional<ArticleUpdatetagsInput>;
-
     headerImage?: Optional<FileUpdateOneInput>;
+
+    tags?: Optional<InterestUpdateManyInput>;
 
     category?: Optional<InterestUpdateOneInput>;
 
@@ -3095,9 +3121,9 @@ export interface ArticleUpdateInput {
 
     viewCount?: Optional<Int>;
 
-    tags?: Optional<ArticleUpdatetagsInput>;
-
     headerImage?: Optional<FileUpdateOneInput>;
+
+    tags?: Optional<InterestUpdateManyInput>;
 
     category?: Optional<InterestUpdateOneInput>;
 
@@ -3108,6 +3134,21 @@ export interface ArticleUpdateInput {
     comments?: Optional<CommentUpdateManyWithoutArticleInput>;
 
     userFavourited?: Optional<UserUpdateManyWithoutFavouritesInput>;
+}
+
+export interface ArticleUpdateManyInput {
+
+    create?: List<NonNull<ArticleCreateInput>>;
+
+    connect?: List<NonNull<ArticleWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<ArticleWhereUniqueInput>>;
+
+    delete?: List<NonNull<ArticleWhereUniqueInput>>;
+
+    update?: List<NonNull<ArticleUpdateWithWhereUniqueNestedInput>>;
+
+    upsert?: List<NonNull<ArticleUpsertWithWhereUniqueNestedInput>>;
 }
 
 export interface ArticleUpdateManyWithoutAuthorInput {
@@ -3183,11 +3224,6 @@ export interface ArticleUpdateOneWithoutCommentsInput {
     upsert?: Optional<ArticleUpsertWithoutCommentsInput>;
 }
 
-export interface ArticleUpdatetagsInput {
-
-    set?: List<NonNull<String>>;
-}
-
 export interface ArticleUpdateWithoutAuthorDataInput {
 
     slug?: Optional<String>;
@@ -3206,9 +3242,9 @@ export interface ArticleUpdateWithoutAuthorDataInput {
 
     viewCount?: Optional<Int>;
 
-    tags?: Optional<ArticleUpdatetagsInput>;
-
     headerImage?: Optional<FileUpdateOneInput>;
+
+    tags?: Optional<InterestUpdateManyInput>;
 
     category?: Optional<InterestUpdateOneInput>;
 
@@ -3237,9 +3273,9 @@ export interface ArticleUpdateWithoutCommentsDataInput {
 
     viewCount?: Optional<Int>;
 
-    tags?: Optional<ArticleUpdatetagsInput>;
-
     headerImage?: Optional<FileUpdateOneInput>;
+
+    tags?: Optional<InterestUpdateManyInput>;
 
     category?: Optional<InterestUpdateOneInput>;
 
@@ -3268,9 +3304,9 @@ export interface ArticleUpdateWithoutLikesDataInput {
 
     viewCount?: Optional<Int>;
 
-    tags?: Optional<ArticleUpdatetagsInput>;
-
     headerImage?: Optional<FileUpdateOneInput>;
+
+    tags?: Optional<InterestUpdateManyInput>;
 
     category?: Optional<InterestUpdateOneInput>;
 
@@ -3299,9 +3335,9 @@ export interface ArticleUpdateWithoutUserFavouritedDataInput {
 
     viewCount?: Optional<Int>;
 
-    tags?: Optional<ArticleUpdatetagsInput>;
-
     headerImage?: Optional<FileUpdateOneInput>;
+
+    tags?: Optional<InterestUpdateManyInput>;
 
     category?: Optional<InterestUpdateOneInput>;
 
@@ -3310,6 +3346,13 @@ export interface ArticleUpdateWithoutUserFavouritedDataInput {
     likes?: Optional<UserUpdateManyWithoutLikedArticlesInput>;
 
     comments?: Optional<CommentUpdateManyWithoutArticleInput>;
+}
+
+export interface ArticleUpdateWithWhereUniqueNestedInput {
+
+    where: NonNull<ArticleWhereUniqueInput>;
+
+    data: NonNull<ArticleUpdateDataInput>;
 }
 
 export interface ArticleUpdateWithWhereUniqueWithoutAuthorInput {
@@ -3345,6 +3388,15 @@ export interface ArticleUpsertWithoutCommentsInput {
     update: NonNull<ArticleUpdateWithoutCommentsDataInput>;
 
     create: NonNull<ArticleCreateWithoutCommentsInput>;
+}
+
+export interface ArticleUpsertWithWhereUniqueNestedInput {
+
+    where: NonNull<ArticleWhereUniqueInput>;
+
+    update: NonNull<ArticleUpdateDataInput>;
+
+    create: NonNull<ArticleCreateInput>;
 }
 
 export interface ArticleUpsertWithWhereUniqueWithoutAuthorInput {
@@ -3924,6 +3976,12 @@ export interface ArticleWhereInput {
     viewCount_gte?: Optional<Int>;
 
     headerImage?: Optional<FileWhereInput>;
+
+    tags_every?: Optional<InterestWhereInput>;
+
+    tags_some?: Optional<InterestWhereInput>;
+
+    tags_none?: Optional<InterestWhereInput>;
 
     category?: Optional<InterestWhereInput>;
 
@@ -5629,24 +5687,6 @@ export interface CommentWhereUniqueInput {
 export interface ConnectCreateInput {
 
     status?: Optional<Int>;
-
-    user1: NonNull<UserCreateOneWithoutConnectOneInput>;
-
-    user2: NonNull<UserCreateOneWithoutConnectTwoInput>;
-}
-
-export interface ConnectCreateManyWithoutUser1Input {
-
-    create?: List<NonNull<ConnectCreateWithoutUser1Input>>;
-
-    connect?: List<NonNull<ConnectWhereUniqueInput>>;
-}
-
-export interface ConnectCreateManyWithoutUser2Input {
-
-    create?: List<NonNull<ConnectCreateWithoutUser2Input>>;
-
-    connect?: List<NonNull<ConnectWhereUniqueInput>>;
 }
 
 export interface ConnectCreateOneInput {
@@ -5654,20 +5694,6 @@ export interface ConnectCreateOneInput {
     create?: Optional<ConnectCreateInput>;
 
     connect?: Optional<ConnectWhereUniqueInput>;
-}
-
-export interface ConnectCreateWithoutUser1Input {
-
-    status?: Optional<Int>;
-
-    user2: NonNull<UserCreateOneWithoutConnectTwoInput>;
-}
-
-export interface ConnectCreateWithoutUser2Input {
-
-    status?: Optional<Int>;
-
-    user1: NonNull<UserCreateOneWithoutConnectOneInput>;
 }
 
 export interface ConnectSubscriptionWhereInput {
@@ -5711,49 +5737,11 @@ export interface ConnectSubscriptionWhereInput {
 export interface ConnectUpdateDataInput {
 
     status?: Optional<Int>;
-
-    user1?: Optional<UserUpdateOneWithoutConnectOneInput>;
-
-    user2?: Optional<UserUpdateOneWithoutConnectTwoInput>;
 }
 
 export interface ConnectUpdateInput {
 
     status?: Optional<Int>;
-
-    user1?: Optional<UserUpdateOneWithoutConnectOneInput>;
-
-    user2?: Optional<UserUpdateOneWithoutConnectTwoInput>;
-}
-
-export interface ConnectUpdateManyWithoutUser1Input {
-
-    create?: List<NonNull<ConnectCreateWithoutUser1Input>>;
-
-    connect?: List<NonNull<ConnectWhereUniqueInput>>;
-
-    disconnect?: List<NonNull<ConnectWhereUniqueInput>>;
-
-    delete?: List<NonNull<ConnectWhereUniqueInput>>;
-
-    update?: List<NonNull<ConnectUpdateWithWhereUniqueWithoutUser1Input>>;
-
-    upsert?: List<NonNull<ConnectUpsertWithWhereUniqueWithoutUser1Input>>;
-}
-
-export interface ConnectUpdateManyWithoutUser2Input {
-
-    create?: List<NonNull<ConnectCreateWithoutUser2Input>>;
-
-    connect?: List<NonNull<ConnectWhereUniqueInput>>;
-
-    disconnect?: List<NonNull<ConnectWhereUniqueInput>>;
-
-    delete?: List<NonNull<ConnectWhereUniqueInput>>;
-
-    update?: List<NonNull<ConnectUpdateWithWhereUniqueWithoutUser2Input>>;
-
-    upsert?: List<NonNull<ConnectUpsertWithWhereUniqueWithoutUser2Input>>;
 }
 
 export interface ConnectUpdateOneInput {
@@ -5771,57 +5759,11 @@ export interface ConnectUpdateOneInput {
     upsert?: Optional<ConnectUpsertNestedInput>;
 }
 
-export interface ConnectUpdateWithoutUser1DataInput {
-
-    status?: Optional<Int>;
-
-    user2?: Optional<UserUpdateOneWithoutConnectTwoInput>;
-}
-
-export interface ConnectUpdateWithoutUser2DataInput {
-
-    status?: Optional<Int>;
-
-    user1?: Optional<UserUpdateOneWithoutConnectOneInput>;
-}
-
-export interface ConnectUpdateWithWhereUniqueWithoutUser1Input {
-
-    where: NonNull<ConnectWhereUniqueInput>;
-
-    data: NonNull<ConnectUpdateWithoutUser1DataInput>;
-}
-
-export interface ConnectUpdateWithWhereUniqueWithoutUser2Input {
-
-    where: NonNull<ConnectWhereUniqueInput>;
-
-    data: NonNull<ConnectUpdateWithoutUser2DataInput>;
-}
-
 export interface ConnectUpsertNestedInput {
 
     update: NonNull<ConnectUpdateDataInput>;
 
     create: NonNull<ConnectCreateInput>;
-}
-
-export interface ConnectUpsertWithWhereUniqueWithoutUser1Input {
-
-    where: NonNull<ConnectWhereUniqueInput>;
-
-    update: NonNull<ConnectUpdateWithoutUser1DataInput>;
-
-    create: NonNull<ConnectCreateWithoutUser1Input>;
-}
-
-export interface ConnectUpsertWithWhereUniqueWithoutUser2Input {
-
-    where: NonNull<ConnectWhereUniqueInput>;
-
-    update: NonNull<ConnectUpdateWithoutUser2DataInput>;
-
-    create: NonNull<ConnectCreateWithoutUser2Input>;
 }
 
 export interface ConnectWhereInput {
@@ -6013,10 +5955,6 @@ export interface ConnectWhereInput {
      * All values greater than or equal the given value.
      */
     status_gte?: Optional<Int>;
-
-    user1?: Optional<UserWhereInput>;
-
-    user2?: Optional<UserWhereInput>;
 }
 
 export interface ConnectWhereUniqueInput {
@@ -7982,6 +7920,17 @@ export interface InterestCreateInput {
     avatar: NonNull<String>;
 
     users?: Optional<UserCreateManyWithoutInterestInput>;
+
+    tags?: Optional<ArticleCreateManyInput>;
+
+    category?: Optional<ArticleCreateManyInput>;
+}
+
+export interface InterestCreateManyInput {
+
+    create?: List<NonNull<InterestCreateInput>>;
+
+    connect?: List<NonNull<InterestWhereUniqueInput>>;
 }
 
 export interface InterestCreateManyWithoutUsersInput {
@@ -8003,6 +7952,10 @@ export interface InterestCreateWithoutUsersInput {
     name: NonNull<String>;
 
     avatar: NonNull<String>;
+
+    tags?: Optional<ArticleCreateManyInput>;
+
+    category?: Optional<ArticleCreateManyInput>;
 }
 
 export interface InterestSubscriptionWhereInput {
@@ -8050,6 +8003,10 @@ export interface InterestUpdateDataInput {
     avatar?: Optional<String>;
 
     users?: Optional<UserUpdateManyWithoutInterestInput>;
+
+    tags?: Optional<ArticleUpdateManyInput>;
+
+    category?: Optional<ArticleUpdateManyInput>;
 }
 
 export interface InterestUpdateInput {
@@ -8059,6 +8016,25 @@ export interface InterestUpdateInput {
     avatar?: Optional<String>;
 
     users?: Optional<UserUpdateManyWithoutInterestInput>;
+
+    tags?: Optional<ArticleUpdateManyInput>;
+
+    category?: Optional<ArticleUpdateManyInput>;
+}
+
+export interface InterestUpdateManyInput {
+
+    create?: List<NonNull<InterestCreateInput>>;
+
+    connect?: List<NonNull<InterestWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<InterestWhereUniqueInput>>;
+
+    delete?: List<NonNull<InterestWhereUniqueInput>>;
+
+    update?: List<NonNull<InterestUpdateWithWhereUniqueNestedInput>>;
+
+    upsert?: List<NonNull<InterestUpsertWithWhereUniqueNestedInput>>;
 }
 
 export interface InterestUpdateManyWithoutUsersInput {
@@ -8096,6 +8072,17 @@ export interface InterestUpdateWithoutUsersDataInput {
     name?: Optional<String>;
 
     avatar?: Optional<String>;
+
+    tags?: Optional<ArticleUpdateManyInput>;
+
+    category?: Optional<ArticleUpdateManyInput>;
+}
+
+export interface InterestUpdateWithWhereUniqueNestedInput {
+
+    where: NonNull<InterestWhereUniqueInput>;
+
+    data: NonNull<InterestUpdateDataInput>;
 }
 
 export interface InterestUpdateWithWhereUniqueWithoutUsersInput {
@@ -8106,6 +8093,15 @@ export interface InterestUpdateWithWhereUniqueWithoutUsersInput {
 }
 
 export interface InterestUpsertNestedInput {
+
+    update: NonNull<InterestUpdateDataInput>;
+
+    create: NonNull<InterestCreateInput>;
+}
+
+export interface InterestUpsertWithWhereUniqueNestedInput {
+
+    where: NonNull<InterestWhereUniqueInput>;
 
     update: NonNull<InterestUpdateDataInput>;
 
@@ -8413,6 +8409,18 @@ export interface InterestWhereInput {
     users_some?: Optional<UserWhereInput>;
 
     users_none?: Optional<UserWhereInput>;
+
+    tags_every?: Optional<ArticleWhereInput>;
+
+    tags_some?: Optional<ArticleWhereInput>;
+
+    tags_none?: Optional<ArticleWhereInput>;
+
+    category_every?: Optional<ArticleWhereInput>;
+
+    category_some?: Optional<ArticleWhereInput>;
+
+    category_none?: Optional<ArticleWhereInput>;
 }
 
 export interface InterestWhereUniqueInput {
@@ -10796,6 +10804,12 @@ export interface UserCreateInput {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender: NonNull<String>;
@@ -10842,9 +10856,11 @@ export interface UserCreateInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -10869,6 +10885,13 @@ export interface UserCreateInput {
     notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
 
     actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
+}
+
+export interface UserCreateManyInput {
+
+    create?: List<NonNull<UserCreateInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
 }
 
 export interface UserCreateManyWithoutBlockedChannelsInput {
@@ -10969,20 +10992,6 @@ export interface UserCreateOneWithoutCommentsInput {
     connect?: Optional<UserWhereUniqueInput>;
 }
 
-export interface UserCreateOneWithoutConnectOneInput {
-
-    create?: Optional<UserCreateWithoutConnectOneInput>;
-
-    connect?: Optional<UserWhereUniqueInput>;
-}
-
-export interface UserCreateOneWithoutConnectTwoInput {
-
-    create?: Optional<UserCreateWithoutConnectTwoInput>;
-
-    connect?: Optional<UserWhereUniqueInput>;
-}
-
 export interface UserCreateOneWithoutMyChannelsInput {
 
     create?: Optional<UserCreateWithoutMyChannelsInput>;
@@ -11012,6 +11021,12 @@ export interface UserCreateWithoutActorNotificationsInput {
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
 
     bio?: Optional<String>;
 
@@ -11059,9 +11074,11 @@ export interface UserCreateWithoutActorNotificationsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -11102,6 +11119,12 @@ export interface UserCreateWithoutArticlesInput {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender: NonNull<String>;
@@ -11148,9 +11171,11 @@ export interface UserCreateWithoutArticlesInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
 
@@ -11191,6 +11216,12 @@ export interface UserCreateWithoutBlockedChannelsInput {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender: NonNull<String>;
@@ -11237,9 +11268,11 @@ export interface UserCreateWithoutBlockedChannelsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -11280,6 +11313,12 @@ export interface UserCreateWithoutChannelsInput {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender: NonNull<String>;
@@ -11326,9 +11365,11 @@ export interface UserCreateWithoutChannelsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -11369,94 +11410,11 @@ export interface UserCreateWithoutCommentsInput {
 
     lastname: NonNull<String>;
 
-    bio?: Optional<String>;
+    facebookAuthId?: Optional<String>;
 
-    gender: NonNull<String>;
+    twitterAuthId?: Optional<String>;
 
-    type?: Optional<String>;
-
-    userType?: Optional<String>;
-
-    newConnectNot?: Optional<Boolean>;
-
-    newCommentNot?: Optional<Boolean>;
-
-    newMessageNot?: Optional<Boolean>;
-
-    newCommunityNot?: Optional<Boolean>;
-
-    newProfileNot?: Optional<Boolean>;
-
-    topWeeklyArticleNot?: Optional<Boolean>;
-
-    mentionMeNot?: Optional<Boolean>;
-
-    enableBrowserPushNot?: Optional<Boolean>;
-
-    enableMobilePushNot?: Optional<Boolean>;
-
-    enableLocation?: Optional<Boolean>;
-
-    completedProfile?: Optional<Int>;
-
-    verified?: Optional<Boolean>;
-
-    deviceIds?: Optional<UserCreatedeviceIdsInput>;
-
-    userFiles?: Optional<FileCreateManyInput>;
-
-    country?: Optional<CountryCreateOneWithoutUsersInput>;
-
-    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
-
-    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
-
-    interest?: Optional<InterestCreateManyWithoutUsersInput>;
-
-    messages?: Optional<MessageCreateOneInput>;
-
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
-
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
-
-    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
-
-    favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
-
-    channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
-
-    myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
-
-    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
-
-    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
-
-    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
-
-    likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
-
-    location?: Optional<LocationCreateOneInput>;
-
-    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
-
-    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
-}
-
-export interface UserCreateWithoutConnectOneInput {
-
-    email: NonNull<String>;
-
-    username?: Optional<String>;
-
-    avatar?: Optional<String>;
-
-    headerImage?: Optional<String>;
-
-    password: NonNull<String>;
-
-    firstname: NonNull<String>;
-
-    lastname: NonNull<String>;
+    linkedInAuthId?: Optional<String>;
 
     bio?: Optional<String>;
 
@@ -11504,7 +11462,11 @@ export interface UserCreateWithoutConnectOneInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    connections?: Optional<UserCreateManyInput>;
+
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -11521,97 +11483,6 @@ export interface UserCreateWithoutConnectOneInput {
     moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
-
-    comments?: Optional<CommentCreateManyWithoutAuthorInput>;
-
-    location?: Optional<LocationCreateOneInput>;
-
-    notifications?: Optional<NotificationCreateManyWithoutTargetInput>;
-
-    actorNotifications?: Optional<NotificationCreateManyWithoutActorInput>;
-}
-
-export interface UserCreateWithoutConnectTwoInput {
-
-    email: NonNull<String>;
-
-    username?: Optional<String>;
-
-    avatar?: Optional<String>;
-
-    headerImage?: Optional<String>;
-
-    password: NonNull<String>;
-
-    firstname: NonNull<String>;
-
-    lastname: NonNull<String>;
-
-    bio?: Optional<String>;
-
-    gender: NonNull<String>;
-
-    type?: Optional<String>;
-
-    userType?: Optional<String>;
-
-    newConnectNot?: Optional<Boolean>;
-
-    newCommentNot?: Optional<Boolean>;
-
-    newMessageNot?: Optional<Boolean>;
-
-    newCommunityNot?: Optional<Boolean>;
-
-    newProfileNot?: Optional<Boolean>;
-
-    topWeeklyArticleNot?: Optional<Boolean>;
-
-    mentionMeNot?: Optional<Boolean>;
-
-    enableBrowserPushNot?: Optional<Boolean>;
-
-    enableMobilePushNot?: Optional<Boolean>;
-
-    enableLocation?: Optional<Boolean>;
-
-    completedProfile?: Optional<Int>;
-
-    verified?: Optional<Boolean>;
-
-    deviceIds?: Optional<UserCreatedeviceIdsInput>;
-
-    userFiles?: Optional<FileCreateManyInput>;
-
-    country?: Optional<CountryCreateOneWithoutUsersInput>;
-
-    institution?: Optional<InstitutionsCreateOneWithoutUsersInput>;
-
-    department?: Optional<DepartmentCreateOneWithoutUsersInput>;
-
-    interest?: Optional<InterestCreateManyWithoutUsersInput>;
-
-    messages?: Optional<MessageCreateOneInput>;
-
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
-
-    articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
-
-    favourites?: Optional<ArticleCreateManyWithoutUserFavouritedInput>;
-
-    channels?: Optional<ChannelsCreateManyWithoutParticipantsInput>;
-
-    myChannels?: Optional<ChannelsCreateManyWithoutAuthorInput>;
-
-    pendingChannels?: Optional<ChannelsCreateManyWithoutPendingUsersInput>;
-
-    blockedChannels?: Optional<ChannelsCreateManyWithoutBlockedUsersInput>;
-
-    moderatorsChannels?: Optional<ChannelsCreateManyWithoutModeratorsInput>;
-
-    likedArticles?: Optional<ArticleCreateManyWithoutLikesInput>;
-
-    comments?: Optional<CommentCreateManyWithoutAuthorInput>;
 
     location?: Optional<LocationCreateOneInput>;
 
@@ -11636,6 +11507,12 @@ export interface UserCreateWithoutCountryInput {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender: NonNull<String>;
@@ -11680,9 +11557,11 @@ export interface UserCreateWithoutCountryInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -11725,6 +11604,12 @@ export interface UserCreateWithoutDepartmentInput {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender: NonNull<String>;
@@ -11769,9 +11654,11 @@ export interface UserCreateWithoutDepartmentInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -11814,6 +11701,12 @@ export interface UserCreateWithoutFavouritesInput {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender: NonNull<String>;
@@ -11860,9 +11753,11 @@ export interface UserCreateWithoutFavouritesInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -11902,6 +11797,12 @@ export interface UserCreateWithoutInstitutionInput {
     firstname: NonNull<String>;
 
     lastname: NonNull<String>;
+
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
 
     bio?: Optional<String>;
 
@@ -11947,9 +11848,11 @@ export interface UserCreateWithoutInstitutionInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -11992,6 +11895,12 @@ export interface UserCreateWithoutInterestInput {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender: NonNull<String>;
@@ -12036,9 +11945,11 @@ export interface UserCreateWithoutInterestInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -12081,6 +11992,12 @@ export interface UserCreateWithoutLikedArticlesInput {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender: NonNull<String>;
@@ -12127,9 +12044,11 @@ export interface UserCreateWithoutLikedArticlesInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -12170,6 +12089,12 @@ export interface UserCreateWithoutModeratorsChannelsInput {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender: NonNull<String>;
@@ -12216,9 +12141,11 @@ export interface UserCreateWithoutModeratorsChannelsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -12259,6 +12186,12 @@ export interface UserCreateWithoutMyChannelsInput {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender: NonNull<String>;
@@ -12305,9 +12238,11 @@ export interface UserCreateWithoutMyChannelsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -12348,6 +12283,12 @@ export interface UserCreateWithoutNotificationsInput {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender: NonNull<String>;
@@ -12394,9 +12335,11 @@ export interface UserCreateWithoutNotificationsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -12437,6 +12380,12 @@ export interface UserCreateWithoutPendingChannelsInput {
 
     lastname: NonNull<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender: NonNull<String>;
@@ -12483,9 +12432,11 @@ export interface UserCreateWithoutPendingChannelsInput {
 
     messages?: Optional<MessageCreateOneInput>;
 
-    ConnectOne?: Optional<ConnectCreateManyWithoutUser1Input>;
+    connections?: Optional<UserCreateManyInput>;
 
-    ConnectTwo?: Optional<ConnectCreateManyWithoutUser2Input>;
+    following?: Optional<UserCreateManyInput>;
+
+    followers?: Optional<UserCreateManyInput>;
 
     articles?: Optional<ArticleCreateManyWithoutAuthorInput>;
 
@@ -12564,6 +12515,12 @@ export interface UserUpdateDataInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -12610,9 +12567,11 @@ export interface UserUpdateDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -12660,6 +12619,12 @@ export interface UserUpdateInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -12706,9 +12671,11 @@ export interface UserUpdateInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -12733,6 +12700,21 @@ export interface UserUpdateInput {
     notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
 
     actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
+}
+
+export interface UserUpdateManyInput {
+
+    create?: List<NonNull<UserCreateInput>>;
+
+    connect?: List<NonNull<UserWhereUniqueInput>>;
+
+    disconnect?: List<NonNull<UserWhereUniqueInput>>;
+
+    delete?: List<NonNull<UserWhereUniqueInput>>;
+
+    update?: List<NonNull<UserUpdateWithWhereUniqueNestedInput>>;
+
+    upsert?: List<NonNull<UserUpsertWithWhereUniqueNestedInput>>;
 }
 
 export interface UserUpdateManyWithoutBlockedChannelsInput {
@@ -12939,32 +12921,6 @@ export interface UserUpdateOneWithoutCommentsInput {
     upsert?: Optional<UserUpsertWithoutCommentsInput>;
 }
 
-export interface UserUpdateOneWithoutConnectOneInput {
-
-    create?: Optional<UserCreateWithoutConnectOneInput>;
-
-    connect?: Optional<UserWhereUniqueInput>;
-
-    delete?: Optional<Boolean>;
-
-    update?: Optional<UserUpdateWithoutConnectOneDataInput>;
-
-    upsert?: Optional<UserUpsertWithoutConnectOneInput>;
-}
-
-export interface UserUpdateOneWithoutConnectTwoInput {
-
-    create?: Optional<UserCreateWithoutConnectTwoInput>;
-
-    connect?: Optional<UserWhereUniqueInput>;
-
-    delete?: Optional<Boolean>;
-
-    update?: Optional<UserUpdateWithoutConnectTwoDataInput>;
-
-    upsert?: Optional<UserUpsertWithoutConnectTwoInput>;
-}
-
 export interface UserUpdateOneWithoutMyChannelsInput {
 
     create?: Optional<UserCreateWithoutMyChannelsInput>;
@@ -13007,6 +12963,12 @@ export interface UserUpdateWithoutActorNotificationsDataInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -13053,9 +13015,11 @@ export interface UserUpdateWithoutActorNotificationsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -13096,6 +13060,12 @@ export interface UserUpdateWithoutArticlesDataInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -13142,9 +13112,11 @@ export interface UserUpdateWithoutArticlesDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
 
@@ -13185,6 +13157,12 @@ export interface UserUpdateWithoutBlockedChannelsDataInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -13231,9 +13209,11 @@ export interface UserUpdateWithoutBlockedChannelsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -13274,6 +13254,12 @@ export interface UserUpdateWithoutChannelsDataInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -13320,9 +13306,11 @@ export interface UserUpdateWithoutChannelsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -13363,94 +13351,11 @@ export interface UserUpdateWithoutCommentsDataInput {
 
     lastname?: Optional<String>;
 
-    bio?: Optional<String>;
+    facebookAuthId?: Optional<String>;
 
-    gender?: Optional<String>;
+    twitterAuthId?: Optional<String>;
 
-    type?: Optional<String>;
-
-    userType?: Optional<String>;
-
-    newConnectNot?: Optional<Boolean>;
-
-    newCommentNot?: Optional<Boolean>;
-
-    newMessageNot?: Optional<Boolean>;
-
-    newCommunityNot?: Optional<Boolean>;
-
-    newProfileNot?: Optional<Boolean>;
-
-    topWeeklyArticleNot?: Optional<Boolean>;
-
-    mentionMeNot?: Optional<Boolean>;
-
-    enableBrowserPushNot?: Optional<Boolean>;
-
-    enableMobilePushNot?: Optional<Boolean>;
-
-    enableLocation?: Optional<Boolean>;
-
-    completedProfile?: Optional<Int>;
-
-    verified?: Optional<Boolean>;
-
-    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
-
-    userFiles?: Optional<FileUpdateManyInput>;
-
-    country?: Optional<CountryUpdateOneWithoutUsersInput>;
-
-    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
-
-    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
-
-    interest?: Optional<InterestUpdateManyWithoutUsersInput>;
-
-    messages?: Optional<MessageUpdateOneInput>;
-
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
-
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
-
-    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
-
-    favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
-
-    channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
-
-    myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
-
-    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
-
-    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
-
-    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
-
-    likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
-
-    location?: Optional<LocationUpdateOneInput>;
-
-    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
-
-    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
-}
-
-export interface UserUpdateWithoutConnectOneDataInput {
-
-    email?: Optional<String>;
-
-    username?: Optional<String>;
-
-    avatar?: Optional<String>;
-
-    headerImage?: Optional<String>;
-
-    password?: Optional<String>;
-
-    firstname?: Optional<String>;
-
-    lastname?: Optional<String>;
+    linkedInAuthId?: Optional<String>;
 
     bio?: Optional<String>;
 
@@ -13498,7 +13403,11 @@ export interface UserUpdateWithoutConnectOneDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    connections?: Optional<UserUpdateManyInput>;
+
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -13515,97 +13424,6 @@ export interface UserUpdateWithoutConnectOneDataInput {
     moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
 
     likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
-
-    comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
-
-    location?: Optional<LocationUpdateOneInput>;
-
-    notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
-
-    actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
-}
-
-export interface UserUpdateWithoutConnectTwoDataInput {
-
-    email?: Optional<String>;
-
-    username?: Optional<String>;
-
-    avatar?: Optional<String>;
-
-    headerImage?: Optional<String>;
-
-    password?: Optional<String>;
-
-    firstname?: Optional<String>;
-
-    lastname?: Optional<String>;
-
-    bio?: Optional<String>;
-
-    gender?: Optional<String>;
-
-    type?: Optional<String>;
-
-    userType?: Optional<String>;
-
-    newConnectNot?: Optional<Boolean>;
-
-    newCommentNot?: Optional<Boolean>;
-
-    newMessageNot?: Optional<Boolean>;
-
-    newCommunityNot?: Optional<Boolean>;
-
-    newProfileNot?: Optional<Boolean>;
-
-    topWeeklyArticleNot?: Optional<Boolean>;
-
-    mentionMeNot?: Optional<Boolean>;
-
-    enableBrowserPushNot?: Optional<Boolean>;
-
-    enableMobilePushNot?: Optional<Boolean>;
-
-    enableLocation?: Optional<Boolean>;
-
-    completedProfile?: Optional<Int>;
-
-    verified?: Optional<Boolean>;
-
-    deviceIds?: Optional<UserUpdatedeviceIdsInput>;
-
-    userFiles?: Optional<FileUpdateManyInput>;
-
-    country?: Optional<CountryUpdateOneWithoutUsersInput>;
-
-    institution?: Optional<InstitutionsUpdateOneWithoutUsersInput>;
-
-    department?: Optional<DepartmentUpdateOneWithoutUsersInput>;
-
-    interest?: Optional<InterestUpdateManyWithoutUsersInput>;
-
-    messages?: Optional<MessageUpdateOneInput>;
-
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
-
-    articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
-
-    favourites?: Optional<ArticleUpdateManyWithoutUserFavouritedInput>;
-
-    channels?: Optional<ChannelsUpdateManyWithoutParticipantsInput>;
-
-    myChannels?: Optional<ChannelsUpdateManyWithoutAuthorInput>;
-
-    pendingChannels?: Optional<ChannelsUpdateManyWithoutPendingUsersInput>;
-
-    blockedChannels?: Optional<ChannelsUpdateManyWithoutBlockedUsersInput>;
-
-    moderatorsChannels?: Optional<ChannelsUpdateManyWithoutModeratorsInput>;
-
-    likedArticles?: Optional<ArticleUpdateManyWithoutLikesInput>;
-
-    comments?: Optional<CommentUpdateManyWithoutAuthorInput>;
 
     location?: Optional<LocationUpdateOneInput>;
 
@@ -13630,6 +13448,12 @@ export interface UserUpdateWithoutCountryDataInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -13674,9 +13498,11 @@ export interface UserUpdateWithoutCountryDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -13719,6 +13545,12 @@ export interface UserUpdateWithoutDepartmentDataInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -13763,9 +13595,11 @@ export interface UserUpdateWithoutDepartmentDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -13808,6 +13642,12 @@ export interface UserUpdateWithoutFavouritesDataInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -13854,9 +13694,11 @@ export interface UserUpdateWithoutFavouritesDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -13896,6 +13738,12 @@ export interface UserUpdateWithoutInstitutionDataInput {
     firstname?: Optional<String>;
 
     lastname?: Optional<String>;
+
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
 
     bio?: Optional<String>;
 
@@ -13941,9 +13789,11 @@ export interface UserUpdateWithoutInstitutionDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -13986,6 +13836,12 @@ export interface UserUpdateWithoutInterestDataInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -14030,9 +13886,11 @@ export interface UserUpdateWithoutInterestDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -14075,6 +13933,12 @@ export interface UserUpdateWithoutLikedArticlesDataInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -14121,9 +13985,11 @@ export interface UserUpdateWithoutLikedArticlesDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -14164,6 +14030,12 @@ export interface UserUpdateWithoutModeratorsChannelsDataInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -14210,9 +14082,11 @@ export interface UserUpdateWithoutModeratorsChannelsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -14253,6 +14127,12 @@ export interface UserUpdateWithoutMyChannelsDataInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -14299,9 +14179,11 @@ export interface UserUpdateWithoutMyChannelsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -14342,6 +14224,12 @@ export interface UserUpdateWithoutNotificationsDataInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -14388,9 +14276,11 @@ export interface UserUpdateWithoutNotificationsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -14431,6 +14321,12 @@ export interface UserUpdateWithoutPendingChannelsDataInput {
 
     lastname?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
     bio?: Optional<String>;
 
     gender?: Optional<String>;
@@ -14477,9 +14373,11 @@ export interface UserUpdateWithoutPendingChannelsDataInput {
 
     messages?: Optional<MessageUpdateOneInput>;
 
-    ConnectOne?: Optional<ConnectUpdateManyWithoutUser1Input>;
+    connections?: Optional<UserUpdateManyInput>;
 
-    ConnectTwo?: Optional<ConnectUpdateManyWithoutUser2Input>;
+    following?: Optional<UserUpdateManyInput>;
+
+    followers?: Optional<UserUpdateManyInput>;
 
     articles?: Optional<ArticleUpdateManyWithoutAuthorInput>;
 
@@ -14502,6 +14400,13 @@ export interface UserUpdateWithoutPendingChannelsDataInput {
     notifications?: Optional<NotificationUpdateManyWithoutTargetInput>;
 
     actorNotifications?: Optional<NotificationUpdateManyWithoutActorInput>;
+}
+
+export interface UserUpdateWithWhereUniqueNestedInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    data: NonNull<UserUpdateDataInput>;
 }
 
 export interface UserUpdateWithWhereUniqueWithoutBlockedChannelsInput {
@@ -14602,20 +14507,6 @@ export interface UserUpsertWithoutCommentsInput {
     create: NonNull<UserCreateWithoutCommentsInput>;
 }
 
-export interface UserUpsertWithoutConnectOneInput {
-
-    update: NonNull<UserUpdateWithoutConnectOneDataInput>;
-
-    create: NonNull<UserCreateWithoutConnectOneInput>;
-}
-
-export interface UserUpsertWithoutConnectTwoInput {
-
-    update: NonNull<UserUpdateWithoutConnectTwoDataInput>;
-
-    create: NonNull<UserCreateWithoutConnectTwoInput>;
-}
-
 export interface UserUpsertWithoutMyChannelsInput {
 
     update: NonNull<UserUpdateWithoutMyChannelsDataInput>;
@@ -14628,6 +14519,15 @@ export interface UserUpsertWithoutNotificationsInput {
     update: NonNull<UserUpdateWithoutNotificationsDataInput>;
 
     create: NonNull<UserCreateWithoutNotificationsInput>;
+}
+
+export interface UserUpsertWithWhereUniqueNestedInput {
+
+    where: NonNull<UserWhereUniqueInput>;
+
+    update: NonNull<UserUpdateDataInput>;
+
+    create: NonNull<UserCreateInput>;
 }
 
 export interface UserUpsertWithWhereUniqueWithoutBlockedChannelsInput {
@@ -15342,6 +15242,207 @@ export interface UserWhereInput {
      */
     lastname_not_ends_with?: Optional<String>;
 
+    facebookAuthId?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    facebookAuthId_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    facebookAuthId_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    facebookAuthId_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    facebookAuthId_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    facebookAuthId_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    facebookAuthId_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    facebookAuthId_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    facebookAuthId_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    facebookAuthId_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    facebookAuthId_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    facebookAuthId_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    facebookAuthId_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    facebookAuthId_not_ends_with?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    twitterAuthId_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    twitterAuthId_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    twitterAuthId_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    twitterAuthId_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    twitterAuthId_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    twitterAuthId_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    twitterAuthId_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    twitterAuthId_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    twitterAuthId_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    twitterAuthId_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    twitterAuthId_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    twitterAuthId_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    twitterAuthId_not_ends_with?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
+
+    /**
+     * All values that are not equal to given value.
+     */
+    linkedInAuthId_not?: Optional<String>;
+
+    /**
+     * All values that are contained in given list.
+     */
+    linkedInAuthId_in?: List<NonNull<String>>;
+
+    /**
+     * All values that are not contained in given list.
+     */
+    linkedInAuthId_not_in?: List<NonNull<String>>;
+
+    /**
+     * All values less than the given value.
+     */
+    linkedInAuthId_lt?: Optional<String>;
+
+    /**
+     * All values less than or equal the given value.
+     */
+    linkedInAuthId_lte?: Optional<String>;
+
+    /**
+     * All values greater than the given value.
+     */
+    linkedInAuthId_gt?: Optional<String>;
+
+    /**
+     * All values greater than or equal the given value.
+     */
+    linkedInAuthId_gte?: Optional<String>;
+
+    /**
+     * All values containing the given string.
+     */
+    linkedInAuthId_contains?: Optional<String>;
+
+    /**
+     * All values not containing the given string.
+     */
+    linkedInAuthId_not_contains?: Optional<String>;
+
+    /**
+     * All values starting with the given string.
+     */
+    linkedInAuthId_starts_with?: Optional<String>;
+
+    /**
+     * All values not starting with the given string.
+     */
+    linkedInAuthId_not_starts_with?: Optional<String>;
+
+    /**
+     * All values ending with the given string.
+     */
+    linkedInAuthId_ends_with?: Optional<String>;
+
+    /**
+     * All values not ending with the given string.
+     */
+    linkedInAuthId_not_ends_with?: Optional<String>;
+
     bio?: Optional<String>;
 
     /**
@@ -15744,17 +15845,23 @@ export interface UserWhereInput {
 
     messages?: Optional<MessageWhereInput>;
 
-    ConnectOne_every?: Optional<ConnectWhereInput>;
+    connections_every?: Optional<UserWhereInput>;
 
-    ConnectOne_some?: Optional<ConnectWhereInput>;
+    connections_some?: Optional<UserWhereInput>;
 
-    ConnectOne_none?: Optional<ConnectWhereInput>;
+    connections_none?: Optional<UserWhereInput>;
 
-    ConnectTwo_every?: Optional<ConnectWhereInput>;
+    following_every?: Optional<UserWhereInput>;
 
-    ConnectTwo_some?: Optional<ConnectWhereInput>;
+    following_some?: Optional<UserWhereInput>;
 
-    ConnectTwo_none?: Optional<ConnectWhereInput>;
+    following_none?: Optional<UserWhereInput>;
+
+    followers_every?: Optional<UserWhereInput>;
+
+    followers_some?: Optional<UserWhereInput>;
+
+    followers_none?: Optional<UserWhereInput>;
 
     articles_every?: Optional<ArticleWhereInput>;
 
@@ -15832,5 +15939,11 @@ export interface UserWhereUniqueInput {
     email?: Optional<String>;
 
     username?: Optional<String>;
+
+    facebookAuthId?: Optional<String>;
+
+    twitterAuthId?: Optional<String>;
+
+    linkedInAuthId?: Optional<String>;
 }
 

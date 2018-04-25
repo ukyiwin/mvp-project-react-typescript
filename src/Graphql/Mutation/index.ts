@@ -60,8 +60,8 @@ export const COMPLETE_SIGNUP = gql`
 `;
 
 export const CREATE_ARTICLE = gql`
-  mutation createArticle($id: ID, $title: String, $body: String, $tags: [String!]!, $category: [String!]!, $photoId: ID){
-    createArticle(id: $id, title: $title, body: $body, tags: $tags, category: $category, photoId: $photoId ){
+  mutation createArticle($id: ID, $title: String, $body: String, $category: [String!]!, $photoId: ID){
+    createArticle(id: $id, title: $title, body: $body, category: $category, photoId: $photoId ){
       ...articleFragment
     }
   }

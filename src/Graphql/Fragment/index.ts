@@ -50,7 +50,6 @@ export const ARTICLE_FRAGMENT = gql`
     isPublished
     createdAt
     updatedAt
-    tags
     comments{
       id
     }
