@@ -60,7 +60,7 @@ const SuggestedArticleList = () => (
     }
     return (
       <div className="uk-card person">
-        <Label text="Suggested People to Follow" />
+        <Label text="Suggested Articles for you" />
         <InfiniteScroll
           pageStart={0}
           hasMore={true}

@@ -29,7 +29,7 @@ import './style.scss';
 import { LoginButton } from 'Components/MoreViews/style';
 import { cookies } from 'link';
 import { CURRENT_USER } from '../../constants';
-import { ErrorComponent } from 'Components/EmptyStates';
+import { ErrorComponent, EmptyComponent } from 'Components/EmptyStates';
 
 interface Response {
   me: User;
@@ -175,7 +175,7 @@ componentDidUpdate(prevProps) {
   
                 {selectedView === 'search' && 
                   <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
-                      <Query pollInterval={3000} query={ACTIVITY} variables={{ username, myUsername: currentUser.id }} >
+                      <Query pollInterval={3000} query={ACTIVITY} variables={{ myUsername: currentUser.username }} >
                         {({loading, error, data}) => {
                           if (loading) {
                             return (
@@ -185,13 +185,19 @@ componentDidUpdate(prevProps) {
                                 <br/>
                                 <MyLoader />
                                 <br/>
-                                <br/>
-                                <MyLoader />
                               </div>
                               );
                           }
                           if (loading) {
                             return <ErrorComponent />;
+                          }
+
+                          if (data.activity === null) {
+                            return(
+                              <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
+                                <EmptyComponent title="Empty activity" subtitle="Try joining a community and writing content" />
+                              </div>
+                            );
                           }
 
                           return (
@@ -200,7 +206,7 @@ componentDidUpdate(prevProps) {
                               hasMore={true || false}
                               loader={
                                   <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
-                                      <MyLoader />
+                                    <Loading />
                                   </div>
                               // tslint:disable-next-line:jsx-curly-spacing
                               }
@@ -217,7 +223,7 @@ componentDidUpdate(prevProps) {
                   </div>
                 }
   
-                {!hasThreads && <NullState bg="null" heading={nullHeading} />}
+                {!hasThreads && <NullState bg="null" heading={'Write'} />}
               </Content>
             </Grid>
           </AppViewWrapper>); }}

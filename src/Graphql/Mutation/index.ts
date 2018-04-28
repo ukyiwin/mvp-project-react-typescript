@@ -149,7 +149,6 @@ export const SAVE_ARTICLE = gql`
     favourite(id: $id){
       id
       title
-      title
     }
   }
 `;
@@ -162,4 +161,94 @@ export const UNSAVE_ARTICLE = gql`
       title
     }
   }
+`;
+
+export const UPDATE_NEW_COMMUNITY_NOT = gql`
+  mutation updateNewCommunityNot($value: Boolean!){
+    updateNewCommunityNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const UPDATE_TOP_ARTICLE_NOT = gql`
+  mutation updateTopArticleNot($value: Boolean!){
+    updateTopArticleNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const UPDATE_NEW_COMMENT_NOT = gql`
+  mutation updateNewCommentNot($value: Boolean!){
+    updateNewCommentNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const UPDATE_NEW_MESSAGE_NOT = gql`
+  mutation updateNewMessageNot($value: Boolean!){
+    updateNewMessageNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const UPDATE_NEW_CONNECTION_NOT = gql`
+  mutation updateNewConnectNot($value: Boolean!){
+    updateNewConnectNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const UPDATE_MENTION_ME_NOT = gql`
+  mutation updateMentionMeNot($value: Boolean!){
+    updateMentionMeNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const LOCATION_SHARING = gql`
+  mutation locationSharing($value: Boolean!){
+    locationSharing(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const ENABLE_MOBILE_PUSH_NOT = gql`
+  mutation enableMobilePushNot($value: Boolean!){
+    enableMobilePushNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const ENABLE_WEB_PUSH_NOT = gql`
+  mutation enableMobilePushNot($value: Boolean!){
+    enableBrowserPushNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const UPDATE_USER_PROFILE = gql`
+  mutation updateUserProfile($firstname: String, $lastname: String, $bio: String, $username: String, $role: String){
+    updateUserProfile(firstname: $firstname, lastname: $lastname, bio: $bio, username: $username, role: $role){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
 `;

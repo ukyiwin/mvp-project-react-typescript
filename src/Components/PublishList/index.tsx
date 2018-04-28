@@ -8,9 +8,6 @@ import { Article, User } from 'CustomTypings/schema';
 import ContentLoader from 'react-content-loader';
 import { cookies } from 'link';
 import { CURRENT_USER } from '../../constants';
-import { PUBLISH_ARTICLE } from 'Graphql/Mutation';
-
-// const MyFacebookLoader = () => <Facebook />;
 
 export const MyLoader = () => (
     <ContentLoader height={200} width={400} speed={2} primaryColor={'#f3f3f3'} secondaryColor={'#ecebeb'}>
@@ -33,8 +30,12 @@ export const MyLoader = () => (
 const user = cookies.get(CURRENT_USER) as User;
 
 const PublishList = () => (
-  <Query query={PUBLISHED} variables={{ myUsername: user.username, limit: 10 }} pollInterval={5000} >
-  {({ loading, error, data, fetchMore, networkStatus, refetch }) => {
+  <Query
+    query={PUBLISHED}
+    variables={{username: user.username }}
+    pollInterval={5000}
+  >
+  {({ loading, error, data: { published }, fetchMore, networkStatus, refetch }) => {
     if (loading) {
       return (
         <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
@@ -51,7 +52,7 @@ const PublishList = () => (
     if (error) {
         return <ErrorComponent />;
     }
-    if (data.published.length < 1) {
+    if (published.edges.length < 1) {
       return (
         <EmptyComponent 
           title="No published articles" 
@@ -61,20 +62,27 @@ const PublishList = () => (
     return (
         <InfiniteScroll
           pageStart={0}
-          hasMore={true}
+          hasMore={published.pageInfo.hasNextPage}
           loadMore={() =>
             fetchMore({
               variables: {
-                limit: 10,
-                offset: data.published.length
+                username: user.username,
+                cursor: published.pageInfo.endCursor
               },
-              updateQuery: (prev, { fetchMoreResult }) =>  {
-                if (!fetchMoreResult) {
-                  // this.set;
-                  return prev;
-                }
-                return {...prev, published: [...prev.published, ...fetchMoreResult.published]};
-              },
+              updateQuery: (previousResult, { fetchMoreResult }) => {
+                const newEdges = fetchMoreResult.published.edges;
+                const pageInfo = fetchMoreResult.published.pageInfo;
+  
+                return newEdges.length
+                  ? {
+                      published: {
+                        __typename: previousResult.published.__typename,
+                        edges: [...previousResult.published.edges, ...newEdges],
+                        pageInfo
+                      }
+                    }
+                  : previousResult;
+              }
             })}
           loader={
             <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
@@ -83,11 +91,11 @@ const PublishList = () => (
           // tslint:disable-next-line:jsx-curly-spacing
           }
         >
-            {data.published ? data.published.map((article) => (
-                <div key={article.id}>
-                    <ArticleItem article={article} />
-                </div>
-            )) : null}
+          {published.edges.map((article) => (
+            <div key={article.node.id}>
+              <ArticleItem article={article.node} />
+            </div>
+          ))}
         </InfiniteScroll>
     );
     }}

@@ -55,7 +55,7 @@ class BottomNav extends React.Component<Props> {
                     </HomeTab>
                   </li>
                   <li>
-                    <LibraryTab data-active={props.match.url === '/forum' && props.match.isExact} to="/forum">
+                    <LibraryTab data-active={props.match.url === '/community' && props.match.isExact} to="/community">
                       <Icon glyph="message" />
                     </LibraryTab>
                   </li>

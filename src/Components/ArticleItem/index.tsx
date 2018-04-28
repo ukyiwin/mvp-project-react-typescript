@@ -11,6 +11,7 @@ import Icon from 'semantic-ui-react';
 import { UNLIKE_ARTICLE, LIKE_ARTICLE, SAVE_ARTICLE, UNSAVE_ARTICLE } from 'Graphql/Mutation';
 import { cookies } from '../../link';
 import { CURRENT_USER } from '../../constants';
+import { ARTICLES } from 'Graphql/Query';
 // import UIkit from 'uikit/src/js/uikit';
 // import { Link } from 'react-router-dom';
 
@@ -24,7 +25,8 @@ interface Props {
 class ArticleItem extends React.Component<Props> {
 
   state = {
-    user: {},
+    // tslint:disable-next-line:no-object-literal-type-assertion
+    user: {} as User,
     saved: false,
     liked: false
   };
@@ -43,10 +45,32 @@ class ArticleItem extends React.Component<Props> {
 
     save = () => {
       this.setState({saved: true});
+      // tslint:disable-next-line:ban-types
+      const arr = [] as any;
       this.props.client.mutate({
         mutation: SAVE_ARTICLE,
         variables: {
-          id: this.props.article.id
+          id: this.props.article.id,
+        },
+        update: (cache, { data: { saveArticle } }) => {
+          const { articles } = cache.readQuery({ query: ARTICLES });
+          const node = {
+            node: {
+              ...saveArticle
+            }
+          };
+          /*cache.writeQuery({
+            query: ARTICLES,
+            data: { articles: articles.edges.concat(node) }
+          });*/
+        },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          saveArticle: {
+            id: this.props.article.id,
+            __typename: 'Article',
+            saved: arr.push(this.state.user.id)
+          }
         }
       }).then((res) => {
         // dhjh
@@ -57,10 +81,33 @@ class ArticleItem extends React.Component<Props> {
 
     unSave = () => {
       this.setState({saved: false});
+      // tslint:disable-next-line:ban-types
+      const arr = [] as any;
       this.props.client.mutate({
         mutation: UNSAVE_ARTICLE,
         variables: {
           id: this.props.article.id
+        },
+        update: (cache, { data: { unSaveArticle } }) => {
+          const { articles } = cache.readQuery({ query: ARTICLES });
+          const node = {
+            node: {
+              ...unSaveArticle
+            }
+          };
+          console.log(articles);
+          /*cache.writeQuery({
+            query: ARTICLES,
+            data: { articles: articles.edges.concat(node) }
+          });*/
+        },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          unSaveArticle: {
+            id: this.props.article.id,
+            __typename: 'Article',
+            saved: null
+          }
         }
       }).then((res) => {
         // dhjh
@@ -71,11 +118,34 @@ class ArticleItem extends React.Component<Props> {
 
     like = () => {
       this.setState({liked: true});
+      // tslint:disable-next-line:ban-types
+      const arr = [] as any;
       this.props.client.mutate({
         mutation: LIKE_ARTICLE,
         variables: {
           id: this.props.article.id
         },
+        update: (cache, { data: { likeArticle } }) => {
+          const { articles } = cache.readQuery({ query: ARTICLES });
+          const node = {
+            node: {
+              ...likeArticle
+            }
+          };
+          console.log(articles);
+          /*cache.writeQuery({
+            query: ARTICLES,
+            data: { articles: articles.edges.concat(node) }
+          });*/
+        },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          likeArticle: {
+            id: this.props.article.id,
+            __typename: 'Article',
+            liked: arr.push(this.state.user.id)
+          }
+        }
 
       }).then((res) => {
         // dhjh
@@ -90,6 +160,27 @@ class ArticleItem extends React.Component<Props> {
         mutation: UNLIKE_ARTICLE,
         variables: {
           id: this.props.article.id
+        },
+        update: (cache, { data: { unLikeArticle } }) => {
+          const { articles } = cache.readQuery({ query: ARTICLES });
+          const node = {
+            node: {
+              ...unLikeArticle
+            }
+          };
+          console.log(articles);
+          /*cache.writeQuery({
+            query: ARTICLES,
+            data: { articles: articles.edges.concat(node) }
+          });*/
+        },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          unLikeArticle: {
+            id: this.props.article.id,
+            __typename: 'Article',
+            liked: []
+          }
         }
       }).then((res) => {
         // dhjh

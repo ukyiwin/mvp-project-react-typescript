@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "c547754f78cde0f60c80"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2f763e3c83ce01bedd4f"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1043,6 +1043,8 @@ const Wrapper = __WEBPACK_IMPORTED_MODULE_0_styled_components___default()(__WEBP
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__ = __webpack_require__("./src/Graphql/Mutation/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__link__ = __webpack_require__("./src/link.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__constants__ = __webpack_require__("./src/constants.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_Graphql_Query__ = __webpack_require__("./src/Graphql/Query/index.ts");
+
 
 
 
@@ -1059,16 +1061,37 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     constructor() {
         super(...arguments);
         this.state = {
+            // tslint:disable-next-line:no-object-literal-type-assertion
             user: {},
             saved: false,
             liked: false
         };
         this.save = () => {
             this.setState({ saved: true });
+            // tslint:disable-next-line:ban-types
+            const arr = [];
             this.props.client.mutate({
                 mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["k" /* SAVE_ARTICLE */],
                 variables: {
-                    id: this.props.article.id
+                    id: this.props.article.id,
+                },
+                update: (cache, { data: { saveArticle } }) => {
+                    const { articles } = cache.readQuery({ query: __WEBPACK_IMPORTED_MODULE_11_Graphql_Query__["f" /* ARTICLES */] });
+                    const node = {
+                        node: Object.assign({}, saveArticle)
+                    };
+                    /*cache.writeQuery({
+                      query: ARTICLES,
+                      data: { articles: articles.edges.concat(node) }
+                    });*/
+                },
+                optimisticResponse: {
+                    __typename: 'Mutation',
+                    saveArticle: {
+                        id: this.props.article.id,
+                        __typename: 'Article',
+                        saved: arr.push(this.state.user.id)
+                    }
                 }
             }).then((res) => {
                 // dhjh
@@ -1078,10 +1101,31 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         };
         this.unSave = () => {
             this.setState({ saved: false });
+            // tslint:disable-next-line:ban-types
+            const arr = [];
             this.props.client.mutate({
                 mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["n" /* UNSAVE_ARTICLE */],
                 variables: {
                     id: this.props.article.id
+                },
+                update: (cache, { data: { unSaveArticle } }) => {
+                    const { articles } = cache.readQuery({ query: __WEBPACK_IMPORTED_MODULE_11_Graphql_Query__["f" /* ARTICLES */] });
+                    const node = {
+                        node: Object.assign({}, unSaveArticle)
+                    };
+                    console.log(articles);
+                    /*cache.writeQuery({
+                      query: ARTICLES,
+                      data: { articles: articles.edges.concat(node) }
+                    });*/
+                },
+                optimisticResponse: {
+                    __typename: 'Mutation',
+                    unSaveArticle: {
+                        id: this.props.article.id,
+                        __typename: 'Article',
+                        saved: null
+                    }
                 }
             }).then((res) => {
                 // dhjh
@@ -1091,11 +1135,32 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         };
         this.like = () => {
             this.setState({ liked: true });
+            // tslint:disable-next-line:ban-types
+            const arr = [];
             this.props.client.mutate({
                 mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["h" /* LIKE_ARTICLE */],
                 variables: {
                     id: this.props.article.id
                 },
+                update: (cache, { data: { likeArticle } }) => {
+                    const { articles } = cache.readQuery({ query: __WEBPACK_IMPORTED_MODULE_11_Graphql_Query__["f" /* ARTICLES */] });
+                    const node = {
+                        node: Object.assign({}, likeArticle)
+                    };
+                    console.log(articles);
+                    /*cache.writeQuery({
+                      query: ARTICLES,
+                      data: { articles: articles.edges.concat(node) }
+                    });*/
+                },
+                optimisticResponse: {
+                    __typename: 'Mutation',
+                    likeArticle: {
+                        id: this.props.article.id,
+                        __typename: 'Article',
+                        liked: arr.push(this.state.user.id)
+                    }
+                }
             }).then((res) => {
                 // dhjh
             }).catch((err) => {
@@ -1108,6 +1173,25 @@ class ArticleItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 mutation: __WEBPACK_IMPORTED_MODULE_8_Graphql_Mutation__["m" /* UNLIKE_ARTICLE */],
                 variables: {
                     id: this.props.article.id
+                },
+                update: (cache, { data: { unLikeArticle } }) => {
+                    const { articles } = cache.readQuery({ query: __WEBPACK_IMPORTED_MODULE_11_Graphql_Query__["f" /* ARTICLES */] });
+                    const node = {
+                        node: Object.assign({}, unLikeArticle)
+                    };
+                    console.log(articles);
+                    /*cache.writeQuery({
+                      query: ARTICLES,
+                      data: { articles: articles.edges.concat(node) }
+                    });*/
+                },
+                optimisticResponse: {
+                    __typename: 'Mutation',
+                    unLikeArticle: {
+                        id: this.props.article.id,
+                        __typename: 'Article',
+                        liked: []
+                    }
                 }
             }).then((res) => {
                 // dhjh
@@ -1259,7 +1343,7 @@ const MyLoader = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__W
 /* harmony export (immutable) */ __webpack_exports__["a"] = MyLoader;
 
 const user = __WEBPACK_IMPORTED_MODULE_7_link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_8__constants__["b" /* CURRENT_USER */]);
-const ArticleList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["f" /* ARTICLES */], variables: { myUsername: user.username, limit: 10 }, pollInterval: 5000 }, ({ loading, error, data, fetchMore, networkStatus, refetch }) => {
+const ArticleList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["f" /* ARTICLES */], variables: { myUsername: user.username }, pollInterval: 5000 }, ({ loading, error, data: { articles }, fetchMore, networkStatus, refetch }) => {
     if (loading) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
@@ -1277,24 +1361,30 @@ const ArticleList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
     if (error) {
         return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__["b" /* ErrorComponent */], null);
     }
-    if (data.articles === null) {
+    if (articles.edges.length < 1) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__["a" /* EmptyComponent */], { title: "There is no article for you", subtitle: "Connect to other students or update your interest in your profile settings" }));
     }
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: true, loadMore: () => fetchMore({
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: articles.pageInfo.hasNextPage, loadMore: () => fetchMore({
             variables: {
-                limit: 10,
-                offset: data.articles.length
+                myUsername: user.username,
+                cursor: articles.pageInfo.endCursor
             },
-            updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) {
-                    // this.set;
-                    return prev;
-                }
-                return Object.assign({}, prev, { articles: [...prev.articles, ...fetchMoreResult.articles] });
-            },
+            updateQuery: (previousResult, { fetchMoreResult }) => {
+                const newEdges = fetchMoreResult.articles.edges;
+                const pageInfo = fetchMoreResult.articles.pageInfo;
+                return newEdges.length
+                    ? {
+                        articles: {
+                            __typename: previousResult.articles.__typename,
+                            edges: [...previousResult.articles.edges, ...newEdges],
+                            pageInfo
+                        }
+                    }
+                    : previousResult;
+            }
         }), loader: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)) }, data.articles ? data.articles.map((article) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: article.id },
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_ArticleItem__["a" /* default */], { article: article })))) : null));
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)) }, articles.edges.map((article) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: article.node.id },
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_ArticleItem__["a" /* default */], { article: article.node }))))));
 }));
 /* harmony default export */ __webpack_exports__["b"] = (ArticleList);
 
@@ -1334,7 +1424,7 @@ class Avatar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         const { src, user, size = '32', mobileSize, channel, showProfile, } = this.props;
         const { isHovering } = this.state;
         const optimizedAvatar = src &&
-            Object(__WEBPACK_IMPORTED_MODULE_1_Utils_images__["e" /* optimize */])(src, {
+            Object(__WEBPACK_IMPORTED_MODULE_1_Utils_images__["c" /* optimize */])(src, {
                 w: size,
                 dpr: '2',
                 format: 'png',
@@ -2268,6 +2358,394 @@ class CommentItem extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = CommentItem;
 
+
+
+/***/ }),
+
+/***/ "./src/Components/Community/ChannelList/index.tsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__("react-router-dom");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_anchor_ui_search_box__ = __webpack_require__("anchor-ui/search-box");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_anchor_ui_search_box___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_anchor_ui_search_box__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_anchor_ui_list__ = __webpack_require__("anchor-ui/list");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_anchor_ui_list___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_anchor_ui_list__);
+
+
+
+
+class CommunitySidebar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
+    constructor(props) {
+        super(props);
+    }
+    componentDidMount() {
+        /*let channel = pusher.subscribe('users')
+        channel.bind('newUser', (user) => {
+          this.props.receiveUser(user)
+        })*/
+    }
+    getServerId() {
+        const regex = /\d+/g;
+        const location = this.props.location.pathname;
+        return location.match(regex)[0];
+    }
+    render() {
+        // const serverId = this.props.location.pathname.includes('channels') ? this.getServerId() : '';
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { id: "chat-list", className: "uk-width-1-5@m uk-width-auto@s un-border-right", style: { backgroundColor: '#ffffff' } },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_anchor_ui_search_box___default.a, { placeholder: "Search for channels and chat" }),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_anchor_ui_list___default.a, { id: "chat-list", header: "Channels", style: { height: '81vh' } },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small" }, "Empty channel conversation"))));
+    }
+}
+/*
+{this.props.channels.getAllChat ? this.props.channels.getAllChat.map((item: Channels, index) => (
+  <ListItem
+    key={index}
+    primaryText={item.title}
+    avatar={item.avatar}
+  />
+)) : */
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(CommunitySidebar));
+/*
+<ul className="index-item-wrapper">
+          {Object.keys(servers).map((key) => {
+            const selected = key === serverId ? 'selected-server' : '';
+            return (
+              <ServerIndexItem className="server-index-item"
+              key={key} server={servers[key]} selected={selected}/>
+            ) ;
+          })}
+        </ul>
+        */ 
+
+
+/***/ }),
+
+/***/ "./src/Components/Community/CommunityList/index.tsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_apollo__ = __webpack_require__("react-apollo");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_apollo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_apollo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_Graphql_Query_Community__ = __webpack_require__("./src/Graphql/Query/Community/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_link__ = __webpack_require__("./src/link.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants__ = __webpack_require__("./src/constants.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_Components_Community_CommunitySidebar_serverName__ = __webpack_require__("./src/Components/Community/CommunitySidebar/serverName.tsx");
+
+
+
+
+
+
+const user = __WEBPACK_IMPORTED_MODULE_3_link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_4__constants__["b" /* CURRENT_USER */]);
+class CommunityList extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+    render() {
+        return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null,
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_2_Graphql_Query_Community__["b" /* MY_COMMUNITIES */], variables: { username: user.username } }, ({ data, loading, error }) => {
+                if (loading) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, "loading");
+                }
+                if (error) {
+                    return null;
+                }
+                if (data.myCommunities.length < 1) {
+                    return null;
+                }
+                return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "index-item-wrapper" }, data.myCommunities.map((community) => (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { key: community.id },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_Components_Community_CommunitySidebar_serverName__["a" /* default */], { community: community }))))));
+            })));
+    }
+}
+/* harmony default export */ __webpack_exports__["a"] = (CommunityList);
+
+
+/***/ }),
+
+/***/ "./src/Components/Community/CommunitySidebar/index.tsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__("react-router-dom");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_uikit__ = __webpack_require__("uikit");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_uikit___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_uikit__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_Components_Community_CreateCommunityForm__ = __webpack_require__("./src/Components/Community/CreateCommunityForm/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__style_scss__ = __webpack_require__("./src/Components/Community/CommunitySidebar/style.scss");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__style_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__style_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_Components_Community_CommunityList__ = __webpack_require__("./src/Components/Community/CommunityList/index.tsx");
+
+
+
+
+
+
+class CommunitySidebar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
+    constructor(props) {
+        super(props);
+    }
+    componentDidMount() {
+        /*let channel = pusher.subscribe('users')
+        channel.bind('newUser', (user) => {
+          this.props.receiveUser(user)
+        })*/
+    }
+    getServerId() {
+        const regex = /\d+/g;
+        const location = this.props.location.pathname;
+        return location.match(regex)[0];
+    }
+    render() {
+        // const serverId = this.props.location.pathname.includes('channels') ? this.getServerId() : '';
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "sidebar-wrapper" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/community/directs", className: "direct-message-link circle-base" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "direct-message-button" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "fa fa-user-o fa-2x", "aria-hidden": "true" }))),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "sidebar-text" }, "Direct Messages"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "sidebar-control" }),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "sidebar-text" }, "Communities"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5_Components_Community_CommunityList__["a" /* default */], null),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "add-server-button circle-base", onClick: () => __WEBPACK_IMPORTED_MODULE_2_uikit__["modal"]('#modal-comm').show() },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { id: "add-server-plus" }, "+")),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { id: "modal-comm", className: "uk-modal-full", style: { height: '100vh' }, "data-uk-modal": true },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-modal-dialog" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-modal-close-full uk-close-large", type: "button", "data-uk-close": true }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-grid-collapse uk-child-width-1-2@s uk-flex-middle", "data-uk-grid": true },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-large", "uk-height-viewport": true }, "djkjkj"),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-large" },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h1", null, "Create Community"),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", null, "Start a beautiful community today."),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_Community_CreateCommunityForm__["a" /* default */], null)))))));
+    }
+}
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(CommunitySidebar));
+/*
+<ul className="index-item-wrapper">
+          {Object.keys(servers).map((key) => {
+            const selected = key === serverId ? 'selected-server' : '';
+            return (
+              <ServerIndexItem className="server-index-item"
+              key={key} server={servers[key]} selected={selected}/>
+            ) ;
+          })}
+        </ul>
+        */ 
+
+
+/***/ }),
+
+/***/ "./src/Components/Community/CommunitySidebar/serverName.tsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__("react-router-dom");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__);
+
+
+class ServerIndexItem extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+    constructor(props) {
+        super(props);
+        this.state = { status: 'hide' };
+        this.hide = () => {
+            this.setState({ status: 'hide' });
+        };
+        this.show = () => {
+            this.setState({ status: 'show' });
+        };
+    }
+    render() {
+        return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "server-index-item-wrapper" },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: `server-name-highlight` }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/community/${this.props.community.slug}/` },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { className: "server-avatar", src: this.props.community.avatar, onMouseEnter: this.show, onMouseLeave: this.hide })),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "tooltip server-name-tooltip", id: this.state.status }, this.props.community.title)));
+    }
+}
+/* harmony default export */ __webpack_exports__["a"] = (ServerIndexItem);
+
+
+/***/ }),
+
+/***/ "./src/Components/Community/CommunitySidebar/style.scss":
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ "./src/Components/Community/CreateCommunityForm/index.tsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__("react-router-dom");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_Components_Buttons__ = __webpack_require__("./src/Components/Buttons/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_Components_EditForm_style__ = __webpack_require__("./src/Components/EditForm/style.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_Components_FormElements__ = __webpack_require__("./src/Components/FormElements/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_Graphql_Mutation_Community__ = __webpack_require__("./src/Graphql/Mutation/Community.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_apollo__ = __webpack_require__("react-apollo");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_apollo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_apollo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios__ = __webpack_require__("axios");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_Utils_helper__ = __webpack_require__("./src/Utils/helper.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_Graphql_Query_Community__ = __webpack_require__("./src/Graphql/Query/Community/index.ts");
+
+
+
+
+
+
+
+
+
+
+class CreateCommunityForm extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            title: '',
+            titleError: false,
+            description: '',
+            descriptionError: false,
+            photo: '',
+            photoError: false,
+            isPrivate: false,
+            isLoading: false,
+            coverPhoto: ''
+        };
+        this.changeTitle = (e) => {
+            this.setState({ title: e.target.value });
+            this.searchCommunity(e.target.value);
+        };
+        this.changeDescription = (e) => {
+            this.setState({ description: e.target.value });
+        };
+        this.changePhoto = (value) => {
+            this.setState({ photo: value });
+        };
+        this.changePrivate = (value) => {
+            this.setState({ isPrivate: value });
+        };
+        this.uploadFile = (file, dataBlob) => {
+            const block = dataBlob.split(';');
+            const contentType = block[0].split(':')[1];
+            const realData = block[1].split(',')[1];
+            // Convert it to a blob to upload
+            const blob = Object(__WEBPACK_IMPORTED_MODULE_8_Utils_helper__["a" /* b64toBlob */])(realData, contentType);
+            const data = new FormData();
+            Object(__WEBPACK_IMPORTED_MODULE_8_Utils_helper__["c" /* urltoFile */])(dataBlob, file.name, contentType)
+                .then((file) => {
+                data.append('data', file);
+                __WEBPACK_IMPORTED_MODULE_7_axios__({
+                    method: 'post',
+                    url: 'http://localhost:4000/upload',
+                    data,
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                }).then((response) => {
+                    this.setState({ photo: response.data.url, isLoading: false, });
+                });
+            });
+        };
+        this.setCoverPhoto = (e) => {
+            const reader = new FileReader();
+            const file = e.target.files[0];
+            if (!file) {
+                return;
+            }
+            this.setState({
+                isLoading: true,
+            });
+            if (file && file.type === 'image/gif') {
+                return this.setState({
+                    isLoading: false,
+                    proGifError: true,
+                });
+            }
+            reader.onloadend = () => {
+                this.setState({
+                    coverFile: file,
+                    coverPhoto: reader.result,
+                });
+            };
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                this.uploadFile(file, reader.result);
+            };
+            reader.onerror = (error) => {
+                // console.log('Error: ', error);
+            };
+        };
+        this.searchCommunity = (text) => {
+            this.props.client.query({
+                query: __WEBPACK_IMPORTED_MODULE_9_Graphql_Query_Community__["a" /* COMMUNITY_EXIST */],
+                variables: {
+                    text
+                }
+            }).then((res) => {
+                this.setState({ titleError: res.data.communityExist.exist });
+            }).catch((err) => {
+                // ghghg
+            });
+        };
+    }
+    render() {
+        const { title, titleError, description, descriptionError, photo, photoError, isPrivate, isLoading, coverPhoto } = this.state;
+        return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_apollo__["Mutation"], { mutation: __WEBPACK_IMPORTED_MODULE_5_Graphql_Mutation_Community__["a" /* CREATE_COMMUNITY */] }, (createCommunity, { loading, error }) => (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "uk-flex uk-flex-stretch" },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", { className: "uk-flex uk-flex-stretch" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("fieldset", { className: "uk-fieldset" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_Components_FormElements__["b" /* CoverInput */], { preview: true, allowGif: true, onChange: this.setCoverPhoto, defaultValue: coverPhoto }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_Components_FormElements__["d" /* Input */], { type: "text", onChange: this.changeTitle, placeholder: 'Whats your community name?' }, "Community name"),
+                    titleError && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_Components_FormElements__["c" /* Error */], null, "Community name not available."),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_Components_FormElements__["g" /* TextArea */], { onChange: this.changeDescription, placeholder: 'What is your community about' }, "Description"),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "uk-margin uk-grid-small uk-form-width-large uk-child-width-auto uk-grid" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", null, "Is Private?"),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { className: "uk-radio", type: "radio", name: "radio2", onClick: () => this.changePrivate(true) }),
+                            "Yes"),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { className: "uk-radio", type: "radio", name: "radio2", checked: true, onClick: () => this.changePrivate(false) }),
+                            "No")),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_Components_EditForm_style__["a" /* Actions */], null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "uk-margin" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_Components_Buttons__["a" /* Button */], { disabled: !title || titleError ||
+                                    !description || descriptionError ||
+                                    !photo || photoError, loading: isLoading, onClick: (e) => {
+                                    e.preventDefault();
+                                    const { title, description, photo, isPrivate } = this.state;
+                                    this.setState({ isLoading: true });
+                                    createCommunity({
+                                        variables: {
+                                            title,
+                                            description,
+                                            category: '',
+                                            isPrivate,
+                                            photo
+                                        }
+                                    }).then((res) => {
+                                        this.setState({ isLoading: false });
+                                        console.log(res);
+                                        this.props.history.redirect(`/community/${res.data.createCommunity.id}`);
+                                    }).catch((err) => {
+                                        this.setState({ isLoading: false });
+                                        console.log(err);
+                                    });
+                                } }, "Create")))))))));
+    }
+}
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_6_react_apollo__["withApollo"])(Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(CreateCommunityForm)));
 
 
 /***/ }),
@@ -3314,15 +3792,15 @@ const ContextHeaderContainer = __WEBPACK_IMPORTED_MODULE_0_styled_components___d
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_Components_DraftsItem__ = __webpack_require__("./src/Components/DraftsItem/index.tsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_apollo__ = __webpack_require__("react-apollo");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_apollo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_apollo__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller__ = __webpack_require__("react-infinite-scroller");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_apollo__ = __webpack_require__("react-apollo");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_apollo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_apollo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_infinite_scroller__ = __webpack_require__("react-infinite-scroller");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_infinite_scroller___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_infinite_scroller__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_Components_DraftsItem__ = __webpack_require__("./src/Components/DraftsItem/index.tsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__ = __webpack_require__("./src/Components/EmptyStates/index.tsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__ = __webpack_require__("./src/Graphql/Query/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_content_loader__ = __webpack_require__("react-content-loader");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_content_loader___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_content_loader__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_content_loader__ = __webpack_require__("react-content-loader");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_content_loader___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_content_loader__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_Graphql_Query__ = __webpack_require__("./src/Graphql/Query/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_link__ = __webpack_require__("./src/link.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__constants__ = __webpack_require__("./src/constants.ts");
 
@@ -3334,8 +3812,7 @@ const ContextHeaderContainer = __WEBPACK_IMPORTED_MODULE_0_styled_components___d
 
 
 
-// const MyFacebookLoader = () => <Facebook />;
-const MyLoader = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_react_content_loader___default.a, { height: 200, width: 400, speed: 2, primaryColor: '#f3f3f3', secondaryColor: '#ecebeb' },
+const MyLoader = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5_react_content_loader___default.a, { height: 200, width: 400, speed: 2, primaryColor: '#f3f3f3', secondaryColor: '#ecebeb' },
     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("rect", { x: "70", y: "15", rx: "4", ry: "4", width: "117", height: "6.4" }),
     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("rect", { x: "70", y: "35", rx: "3", ry: "3", width: "85", height: "6.4" }),
     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("rect", { x: "1", y: "136", rx: "3", ry: "3", width: "350", height: "6.4" }),
@@ -3352,7 +3829,7 @@ const MyLoader = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__W
 /* unused harmony export MyLoader */
 
 const user = __WEBPACK_IMPORTED_MODULE_7_link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_8__constants__["b" /* CURRENT_USER */]);
-const DraftsList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["g" /* DRAFTS */], variables: { limit: 10 }, pollInterval: 5000 }, ({ loading, error, data, fetchMore, networkStatus, refetch }) => {
+const DraftsList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_6_Graphql_Query__["g" /* DRAFTS */], pollInterval: 5000 }, ({ loading, error, data: { drafts }, fetchMore, networkStatus, refetch }) => {
     if (loading) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
@@ -3370,24 +3847,30 @@ const DraftsList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](_
     if (error) {
         return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__["b" /* ErrorComponent */], null);
     }
-    if (data.drafts.length < 1) {
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__["a" /* EmptyComponent */], { title: "You have no Draft", subtitle: "Please write an article to see your drafts" }));
+    if (drafts.edges.length < 1) {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__["a" /* EmptyComponent */], { title: "No saved Articles", subtitle: "Explore the articles section and save articles you like to see them here" }));
     }
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: true, loadMore: () => fetchMore({
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_infinite_scroller___default.a, { pageStart: 0, hasMore: drafts.pageInfo.hasNextPage, loadMore: () => fetchMore({
             variables: {
-                limit: 10,
-                offset: data.drafts.length
+                myUsername: user.username,
+                cursor: drafts.pageInfo.endCursor
             },
-            updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) {
-                    // this.set;
-                    return prev;
-                }
-                return Object.assign({}, prev, { drafts: [...prev.drafts, ...fetchMoreResult.drafts] });
-            },
+            updateQuery: (previousResult, { fetchMoreResult }) => {
+                const newEdges = fetchMoreResult.drafts.edges;
+                const pageInfo = fetchMoreResult.drafts.pageInfo;
+                return newEdges.length
+                    ? {
+                        drafts: {
+                            __typename: previousResult.drafts.__typename,
+                            edges: [...previousResult.drafts.edges, ...newEdges],
+                            pageInfo
+                        }
+                    }
+                    : previousResult;
+            }
         }), loader: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)) }, data.drafts ? data.drafts.map((article) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: article.id },
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_DraftsItem__["a" /* default */], { article: article })))) : null));
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)) }, drafts.edges.map((article) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: article.node.id },
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_DraftsItem__["a" /* default */], { article: article.node }))))));
 }));
 /* harmony default export */ __webpack_exports__["a"] = (DraftsList);
 
@@ -3850,6 +4333,7 @@ const GithubSignin = __WEBPACK_IMPORTED_MODULE_0_styled_components___default.a.d
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_Utils_images__ = __webpack_require__("./src/Utils/images.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_Components_ListItems_style__ = __webpack_require__("./src/Components/ListItems/style.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_Graphql_Query__ = __webpack_require__("./src/Graphql/Query/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_Graphql_Mutation__ = __webpack_require__("./src/Graphql/Mutation/index.ts");
 
 
 
@@ -3866,40 +4350,61 @@ const GithubSignin = __WEBPACK_IMPORTED_MODULE_0_styled_components___default.a.d
 
 
 
+
 class UserWithData extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     constructor(props) {
         super(props);
         this.changeName = (e) => {
-            const name = e.target.value;
-            if (name.length > 50) {
+            const firstname = e.target.value;
+            if (firstname.length > 50) {
                 this.setState({
-                    name,
-                    nameError: true,
+                    firstname,
+                    firstnameError: true,
                 });
                 return;
             }
             this.setState({
-                name,
-                nameError: false,
+                firstname,
+                firstnameError: false,
+            });
+        };
+        this.changeLastName = (e) => {
+            const lastname = e.target.value;
+            if (lastname.length > 50) {
+                this.setState({
+                    lastname,
+                    lastnameError: true,
+                });
+                return;
+            }
+            this.setState({
+                lastname,
+                lastnameError: false,
             });
         };
         this.changeDescription = (e) => {
-            const description = e.target.value;
-            if (description.length >= 140) {
+            const bio = e.target.value;
+            if (bio.length >= 140) {
                 this.setState({
-                    descriptionError: true,
+                    bioError: true,
                 });
                 return;
             }
             this.setState({
-                description,
-                descriptionError: false,
+                bio,
+                bioError: false,
             });
         };
         this.changeWebsite = (e) => {
             const website = e.target.value;
             this.setState({
                 website,
+            });
+        };
+        this.changeUserType = (e) => {
+            const type = e.target.value;
+            this.setState({
+                type,
             });
         };
         this.setProfilePhoto = (e) => {
@@ -3912,18 +4417,9 @@ class UserWithData extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 return;
             }
             if (file &&
-                file.size > __WEBPACK_IMPORTED_MODULE_11_Utils_images__["a" /* FREE_USER_MAX_IMAGE_SIZE_BYTES */]) {
+                file.size > __WEBPACK_IMPORTED_MODULE_11_Utils_images__["a" /* PRO_USER_MAX_IMAGE_SIZE_BYTES */]) {
                 return this.setState({
-                    photoSizeError: `Upgrade to Pro to upload files up to ${__WEBPACK_IMPORTED_MODULE_11_Utils_images__["d" /* PRO_USER_MAX_IMAGE_SIZE_STRING */]}. Otherwise, 
-        try uploading a photo less than ${__WEBPACK_IMPORTED_MODULE_11_Utils_images__["b" /* FREE_USER_MAX_IMAGE_SIZE_STRING */]}.`,
-                    isLoading: false,
-                });
-            }
-            if (file &&
-                file.size > __WEBPACK_IMPORTED_MODULE_11_Utils_images__["c" /* PRO_USER_MAX_IMAGE_SIZE_BYTES */] &&
-                this.props.currentUser.isPro) {
-                return this.setState({
-                    photoSizeError: `Try uploading a file less than ${__WEBPACK_IMPORTED_MODULE_11_Utils_images__["d" /* PRO_USER_MAX_IMAGE_SIZE_STRING */]}.`,
+                    photoSizeError: `Try uploading a file less than ${__WEBPACK_IMPORTED_MODULE_11_Utils_images__["b" /* PRO_USER_MAX_IMAGE_SIZE_STRING */]}.`,
                     isLoading: false,
                 });
             }
@@ -3934,10 +4430,9 @@ class UserWithData extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 });
             }
             reader.onloadend = () => {
-                track('user', 'profile photo uploaded', null);
+                // track('user', 'profile photo uploaded', null);
                 this.setState({
                     file,
-                    // $FlowFixMe
                     image: reader.result,
                     photoSizeError: '',
                     proGifError: false,
@@ -3956,17 +4451,9 @@ class UserWithData extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 isLoading: true,
             });
             if (file &&
-                file.size > __WEBPACK_IMPORTED_MODULE_11_Utils_images__["a" /* FREE_USER_MAX_IMAGE_SIZE_BYTES */]) {
+                file.size > __WEBPACK_IMPORTED_MODULE_11_Utils_images__["a" /* PRO_USER_MAX_IMAGE_SIZE_BYTES */]) {
                 return this.setState({
-                    photoSizeError: `Upgrade to Pro to upload files up to ${__WEBPACK_IMPORTED_MODULE_11_Utils_images__["d" /* PRO_USER_MAX_IMAGE_SIZE_STRING */]}. Otherwise,
-         try uploading a photo less than ${__WEBPACK_IMPORTED_MODULE_11_Utils_images__["b" /* FREE_USER_MAX_IMAGE_SIZE_STRING */]}.`,
-                    isLoading: false,
-                });
-            }
-            if (file &&
-                file.size > __WEBPACK_IMPORTED_MODULE_11_Utils_images__["c" /* PRO_USER_MAX_IMAGE_SIZE_BYTES */]) {
-                return this.setState({
-                    photoSizeError: `Try uploading a file less than ${__WEBPACK_IMPORTED_MODULE_11_Utils_images__["d" /* PRO_USER_MAX_IMAGE_SIZE_STRING */]}.`,
+                    photoSizeError: `Try uploading a file less than ${__WEBPACK_IMPORTED_MODULE_11_Utils_images__["b" /* PRO_USER_MAX_IMAGE_SIZE_STRING */]}.`,
                     isLoading: false,
                 });
             }
@@ -3989,11 +4476,11 @@ class UserWithData extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         };
         this.save = (e) => {
             e.preventDefault();
-            const { firstname, lastname, description, website, file, coverFile, photoSizeError, username, usernameError, } = this.state;
+            const { firstname, lastname, bio, website, file, coverFile, photoSizeError, username, usernameError, } = this.state;
             const input = {
                 firstname,
                 lastname,
-                description,
+                bio,
                 website,
                 file,
                 coverFile,
@@ -4051,7 +4538,7 @@ class UserWithData extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                     usernameError: '',
                 });
             }
-            this.search(username);
+            // this.search(username);
         };
         this.search = (username) => {
             if (username.length > 20) {
@@ -4113,13 +4600,14 @@ class UserWithData extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             email: user.email ? user.email : '',
             lastname: user.lastname ? user.lastname : '',
             username: user.username ? user.username : '',
-            description: user.bio ? user.bio : '',
+            bio: user.bio ? user.bio : '',
             image: user.avatar,
             coverPhoto: user.headerImage,
             file: null,
             coverFile: null,
-            descriptionError: false,
-            nameError: false,
+            bioError: false,
+            firstnameError: false,
+            lastnameError: false,
             createError: false,
             isLoading: false,
             photoSizeError: '',
@@ -4131,35 +4619,56 @@ class UserWithData extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
     render() {
         const { user } = this.props;
-        const { firstname, lastname, username, type, email, description, website, image, coverPhoto, descriptionError, createError, nameError, isLoading, photoSizeError, proGifError, usernameError, isUsernameSearching, } = this.state;
+        const { firstname, lastname, username, firstnameError, type, email, bio, website, image, coverPhoto, bioError, createError, nameError, isLoading, photoSizeError, proGifError, usernameError, lastnameError, isUsernameSearching, } = this.state;
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9__style__["g" /* StyledCard */], null,
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9__style__["f" /* Location */], null,
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Icons__["a" /* default */], { glyph: "view-back", size: 16 }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5_Components_Link__["a" /* default */], { to: `/n/${username}` }, "Return to Profile")),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9__style__["c" /* FormTitle */], null, "Profile Settings"),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9__style__["b" /* Form */], { onSubmit: this.save },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_apollo__["Mutation"], { mutation: __WEBPACK_IMPORTED_MODULE_14_Graphql_Mutation__["u" /* UPDATE_USER_PROFILE */] }, (updateUserProfile, { loading, error }) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9__style__["b" /* Form */], null,
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9__style__["d" /* ImageInputWrapper */], null,
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["b" /* CoverInput */], { onChange: this.setCoverPhoto, defaultValue: coverPhoto, preview: true, allowGif: true }),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["e" /* PhotoInput */], { onChange: this.setProfilePhoto, defaultValue: image, user: true, allowGif: true })),
                 photoSizeError && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12_Components_ListItems_style__["f" /* Notice */], { style: { marginTop: '32px' } }, photoSizeError)),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["d" /* Input */], { type: "text", defaultValue: firstname, onChange: this.changeName, placeholder: 'What\'s your firstname?' }, "Firstname"),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["d" /* Input */], { type: "text", defaultValue: lastname, onChange: this.changeName, placeholder: 'What\'s your lastname?' }, "Lastname"),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["d" /* Input */], { type: "text", defaultValue: lastname, onChange: this.changeLastName, placeholder: 'What\'s your lastname?' }, "Lastname"),
                 nameError && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["c" /* Error */], null, "Names can be up to 50 characters."),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["d" /* Input */], { type: 'text', defaultValue: username, onChange: this.changeUsername },
                     "Username",
                     isUsernameSearching && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9__style__["e" /* Loading */], null,
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_Globals__["k" /* Spinner */], { size: 16, color: 'brand.default' })))),
                 usernameError && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12_Components_ListItems_style__["f" /* Notice */], { style: { marginTop: '16px' } }, usernameError)),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["g" /* TextArea */], { defaultValue: description, onChange: this.changeDescription, placeholder: 'Introduce yourself to the unizonners...' }, "Bio"),
-                descriptionError && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["c" /* Error */], null, "Bios can be up to 140 characters."),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["g" /* TextArea */], { defaultValue: bio, onChange: this.changeDescription, placeholder: 'Introduce yourself to the unizonners...' }, "Bio"),
+                bioError && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["c" /* Error */], null, "Bios can be up to 140 characters."),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["f" /* Select */], { defaultValue: type, onChange: this.changeWebsite, type: "select" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("option", { key: '' }, "Who are you?"),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("option", { key: 'Student' }, "Student"),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("option", { key: 'Lecturer' }, "Lecturer")),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["d" /* Input */], { type: "text", defaultValue: email, disabled: true, placeholder: 'Your primary email address?' }, "Primary email"),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9__style__["a" /* Actions */], null,
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__Buttons__["a" /* Button */], { disabled: !firstname || nameError || !username || usernameError, loading: isLoading, onClick: this.save }, "Save")),
-                createError && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["c" /* Error */], null, "Please fix any errors above to save your profile.")))));
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__Buttons__["a" /* Button */], { disabled: !firstname || firstnameError ||
+                            !username || usernameError ||
+                            !lastname || lastnameError ||
+                            bioError, loading: isLoading, onClick: (e) => {
+                            e.preventDefault();
+                            const { firstname, lastname, bio, file, coverFile, type, username, } = this.state;
+                            this.setState({ isLoading: true });
+                            updateUserProfile({
+                                variables: {
+                                    firstname,
+                                    lastname,
+                                    bio,
+                                    username,
+                                    role: type
+                                }
+                            }).then((res) => {
+                                this.setState({ isLoading: false });
+                                this.props.history.redirect(`/n/${user.username}`);
+                            }).catch((err) => {
+                                this.setState({ isLoading: false });
+                            });
+                        } }, "Save")),
+                createError && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__FormElements__["c" /* Error */], null, "Please fix any errors above to save your profile.")))))));
     }
 }
 const UserSettings = __WEBPACK_IMPORTED_MODULE_4_recompose_compose___default()(__WEBPACK_IMPORTED_MODULE_1_react_router__["withRouter"], __WEBPACK_IMPORTED_MODULE_3_react_apollo__["withApollo"])(UserWithData);
@@ -6282,7 +6791,7 @@ class BottomNav extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__style__["d" /* HomeTab */], { "data-active": props.match.url === '/home' && props.match.isExact, to: "/home" },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_Icons__["a" /* default */], { glyph: "home" }))),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__style__["f" /* LibraryTab */], { "data-active": props.match.url === '/forum' && props.match.isExact, to: "/forum" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__style__["f" /* LibraryTab */], { "data-active": props.match.url === '/community' && props.match.isExact, to: "/community" },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_Icons__["a" /* default */], { glyph: "message" }))),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__style__["f" /* LibraryTab */], { "data-active": props.match.url === '/library' && props.match.isExact, to: "/library" },
@@ -6618,7 +7127,7 @@ class PrivateHeader extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Icons__["a" /* default */], { glyph: "home" }),
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__style__["e" /* Label */], null, "Articles"))),
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__style__["f" /* LibraryTab */], { "data-active": props.match.url === '/forum' && props.match.isExact, to: "/forum" },
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__style__["f" /* LibraryTab */], { "data-active": props.match.url === '/community' && props.match.isExact, to: "/community" },
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Icons__["a" /* default */], { glyph: "message" }),
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__style__["e" /* Label */], null, "Community"))),
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
@@ -6746,7 +7255,7 @@ class PrivateHeader extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Icons__["a" /* default */], { glyph: "home" }),
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__style__["e" /* Label */], null, "Articles"))),
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__style__["f" /* LibraryTab */], { "data-active": props.match.url === '/forum' && props.match.isExact, to: "/forum" },
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__style__["f" /* LibraryTab */], { "data-active": props.match.url === '/community' && props.match.isExact, to: "/community" },
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Icons__["a" /* default */], { glyph: "message" }),
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__style__["e" /* Label */], null, "Community"))),
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
@@ -7551,9 +8060,9 @@ class SideBar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "uk-margin-small-right", "uk-icon": "icon: home" }),
                             " Articles")),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/forum" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/community" },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "uk-margin-small-right", "uk-icon": "icon: thumbnails" }),
-                            " Forums")),
+                            " Community")),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: "/library" },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "uk-margin-small-right", "uk-icon": "icon: location" }),
@@ -9398,7 +9907,7 @@ const PhotoContainer = __WEBPACK_IMPORTED_MODULE_1_styled_components___default.a
   flex: 0 0 ${(props) => (props.large ? '320px' : '96px')};
   background-color: ${({ theme }) => theme.bg.reverse};
   background-image: ${(props) => props.coverURL
-    ? `url("${Object(__WEBPACK_IMPORTED_MODULE_4_Utils_images__["e" /* optimize */])(props.coverURL, {
+    ? `url("${Object(__WEBPACK_IMPORTED_MODULE_4_Utils_images__["c" /* optimize */])(props.coverURL, {
         w: props.large ? 1024 : 320,
         dpr: 2,
     })}")`
@@ -9982,7 +10491,6 @@ const User = __WEBPACK_IMPORTED_MODULE_4_recompose_compose___default()(__WEBPACK
 
 
 
-// const MyFacebookLoader = () => <Facebook />;
 const MyLoader = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_react_content_loader___default.a, { height: 200, width: 400, speed: 2, primaryColor: '#f3f3f3', secondaryColor: '#ecebeb' },
     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("rect", { x: "70", y: "15", rx: "4", ry: "4", width: "117", height: "6.4" }),
     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("rect", { x: "70", y: "35", rx: "3", ry: "3", width: "85", height: "6.4" }),
@@ -10000,7 +10508,7 @@ const MyLoader = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__W
 /* unused harmony export MyLoader */
 
 const user = __WEBPACK_IMPORTED_MODULE_7_link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_8__constants__["b" /* CURRENT_USER */]);
-const PublishList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["s" /* PUBLISHED */], variables: { myUsername: user.username, limit: 10 }, pollInterval: 5000 }, ({ loading, error, data, fetchMore, networkStatus, refetch }) => {
+const PublishList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["s" /* PUBLISHED */], variables: { username: user.username }, pollInterval: 5000 }, ({ loading, error, data: { published }, fetchMore, networkStatus, refetch }) => {
     if (loading) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
@@ -10018,24 +10526,30 @@ const PublishList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
     if (error) {
         return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__["b" /* ErrorComponent */], null);
     }
-    if (data.published.length < 1) {
+    if (published.edges.length < 1) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__["a" /* EmptyComponent */], { title: "No published articles", subtitle: "Write an article and publish to see it here" }));
     }
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: true, loadMore: () => fetchMore({
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: published.pageInfo.hasNextPage, loadMore: () => fetchMore({
             variables: {
-                limit: 10,
-                offset: data.published.length
+                username: user.username,
+                cursor: published.pageInfo.endCursor
             },
-            updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) {
-                    // this.set;
-                    return prev;
-                }
-                return Object.assign({}, prev, { published: [...prev.published, ...fetchMoreResult.published] });
-            },
+            updateQuery: (previousResult, { fetchMoreResult }) => {
+                const newEdges = fetchMoreResult.published.edges;
+                const pageInfo = fetchMoreResult.published.pageInfo;
+                return newEdges.length
+                    ? {
+                        published: {
+                            __typename: previousResult.published.__typename,
+                            edges: [...previousResult.published.edges, ...newEdges],
+                            pageInfo
+                        }
+                    }
+                    : previousResult;
+            }
         }), loader: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)) }, data.published ? data.published.map((article) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: article.id },
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_ArticleItem__["a" /* default */], { article: article })))) : null));
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)) }, published.edges.map((article) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: article.node.id },
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_ArticleItem__["a" /* default */], { article: article.node }))))));
 }));
 /* harmony default export */ __webpack_exports__["a"] = (PublishList);
 
@@ -10136,7 +10650,7 @@ const ReputationLabel = __WEBPACK_IMPORTED_MODULE_0_styled_components___default.
 class LeftSideBar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     render() {
         // const { loading } = this.state;
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "card uk-width-1-1" },
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1" },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1", style: { marginBottom: 10, padding: 0 } },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_ConnectBox__["a" /* default */], null)),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1", style: { marginBottom: 10, padding: 0 } },
@@ -10174,7 +10688,6 @@ class LeftSideBar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 
 
 
-// const MyFacebookLoader = () => <Facebook />;
 const MyLoader = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_react_content_loader___default.a, { height: 200, width: 400, speed: 2, primaryColor: '#f3f3f3', secondaryColor: '#ecebeb' },
     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("rect", { x: "70", y: "15", rx: "4", ry: "4", width: "117", height: "6.4" }),
     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("rect", { x: "70", y: "35", rx: "3", ry: "3", width: "85", height: "6.4" }),
@@ -10192,7 +10705,7 @@ const MyLoader = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__W
 /* unused harmony export MyLoader */
 
 const user = __WEBPACK_IMPORTED_MODULE_7_link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_8__constants__["b" /* CURRENT_USER */]);
-const SavedList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["t" /* SAVED */], variables: { myUsername: user.username, limit: 10 }, pollInterval: 5000 }, ({ loading, error, data, fetchMore, networkStatus, refetch }) => {
+const SavedList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["t" /* SAVED */], variables: { myUsername: user.username }, pollInterval: 5000 }, ({ loading, error, data: { saved }, fetchMore, networkStatus, refetch }) => {
     if (loading) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
@@ -10210,24 +10723,30 @@ const SavedList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__
     if (error) {
         return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__["b" /* ErrorComponent */], null);
     }
-    if (data.saved.length < 1) {
+    if (saved.edges.length < 1) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__["a" /* EmptyComponent */], { title: "No saved Articles", subtitle: "Explore the articles section and save articles you like to see them here" }));
     }
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: true, loadMore: () => fetchMore({
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: saved.pageInfo.hasNextPage, loadMore: () => fetchMore({
             variables: {
-                limit: 10,
-                offset: data.saved.length
+                myUsername: user.username,
+                cursor: saved.pageInfo.endCursor
             },
-            updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) {
-                    // this.set;
-                    return prev;
-                }
-                return Object.assign({}, prev, { saved: [...prev.saved, ...fetchMoreResult.saved] });
-            },
+            updateQuery: (previousResult, { fetchMoreResult }) => {
+                const newEdges = fetchMoreResult.saved.edges;
+                const pageInfo = fetchMoreResult.saved.pageInfo;
+                return newEdges.length
+                    ? {
+                        saved: {
+                            __typename: previousResult.saved.__typename,
+                            edges: [...previousResult.saved.edges, ...newEdges],
+                            pageInfo
+                        }
+                    }
+                    : previousResult;
+            }
         }), loader: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)) }, data.saved ? data.saved.map((article) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: article.id },
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_ArticleItem__["a" /* default */], { article: article })))) : null));
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](MyLoader, null)) }, saved.edges.map((article) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: article.node.id },
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_ArticleItem__["a" /* default */], { article: article.node }))))));
 }));
 /* harmony default export */ __webpack_exports__["a"] = (SavedList);
 
@@ -10817,8 +11336,8 @@ const Yours = (props) => {
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Actions, null,
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Link__["a" /* default */], { to: "/login" },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](ThisPrimaryCTA, { icon: "welcome" }, "Join Unizonn")),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Link__["a" /* default */], { to: "/forum" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](ThisSecondaryCTA, { icon: "explore" }, "Conversation")))))));
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Link__["a" /* default */], { to: "/community" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](ThisSecondaryCTA, { icon: "explore" }, "Community")))))));
 };
 /* harmony export (immutable) */ __webpack_exports__["b"] = Yours;
 
@@ -11150,7 +11669,7 @@ const SuggestedArticleList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createE
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__["a" /* EmptyComponent */], { title: "Articles for You", subtitle: "We could not recommend articles for you" }));
     }
     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-card person" },
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Label__["a" /* default */], { text: "Suggested People to Follow" }),
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Label__["a" /* default */], { text: "Suggested Articles for you" }),
         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: true, loadMore: () => fetchMore({
                 variables: {
                     limit: 10,
@@ -12524,9 +13043,11 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Layouts_MainLayout__["a" /* EmptyLayout */], { component: Published, path: "/published", isAuthenticated: isAuthenticated, logout: this._logout, exact: true, me: this.state.me }),
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Layouts_MainLayout__["a" /* EmptyLayout */], { component: Saved, path: "/saved", isAuthenticated: isAuthenticated, logout: this._logout, exact: true, me: this.state.me }),
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Layouts_MainLayout__["a" /* EmptyLayout */], { component: Message, path: "/message", exact: true, isAuthenticated: isAuthenticated, logout: this._logout, me: this.state.me }),
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Layouts_MainLayout__["a" /* EmptyLayout */], { component: Forum, path: "/forum", exact: true, isAuthenticated: isAuthenticated, logout: this._logout, me: this.state.me }),
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Layouts_MainLayout__["a" /* EmptyLayout */], { component: Forum, path: "/community", exact: true, isAuthenticated: isAuthenticated, logout: this._logout, me: this.state.me }),
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Layouts_MainLayout__["a" /* EmptyLayout */], { component: Connections, path: "/connections", exact: true, isAuthenticated: isAuthenticated, logout: this._logout, me: this.state.me }),
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Layouts_MainLayout__["a" /* EmptyLayout */], { component: Forum, exact: true, path: "/forum/:id", isAuthenticated: isAuthenticated, logout: this._logout, me: this.state.me }),
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Layouts_MainLayout__["a" /* EmptyLayout */], { component: Forum, exact: true, path: "/community/:id", isAuthenticated: isAuthenticated, logout: this._logout, me: this.state.me }),
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Layouts_MainLayout__["a" /* EmptyLayout */], { component: Forum, exact: true, path: "/community/:id/:channel", isAuthenticated: isAuthenticated, logout: this._logout, me: this.state.me }),
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Layouts_MainLayout__["a" /* EmptyLayout */], { component: Forum, exact: true, path: "/message/direct", isAuthenticated: isAuthenticated, logout: this._logout, me: this.state.me }),
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Layouts_MainLayout__["b" /* LoungeLayout */], { component: Compose, path: "/write", exact: true, isAuthenticated: isAuthenticated, logout: this._logout, me: this.state.me }),
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Layouts_MainLayout__["b" /* LoungeLayout */], { component: Compose, path: "/write/:id", exact: true, isAuthenticated: isAuthenticated, logout: this._logout, me: this.state.me }),
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Layouts_MainLayout__["a" /* EmptyLayout */], { component: Notification, path: "/notifications", exact: true, isAuthenticated: isAuthenticated, logout: this._logout, me: this.state.me }),
@@ -12690,11 +13211,7 @@ class ArticleDetail extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_19_Components_InterestItemSlim__["a" /* default */], { key: article.category.id, url: article.category.avatar, name: article.category.name })) : null,
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "post-stats clearfix uk-padding-small uk-padding-remove-horizontal", style: { paddingTop: 10, paddingBottom: 1 } },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex pull-left" },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_LikeButton__["a" /* default */], { liked: true, likeCount: 1, text: "Like", frontIcon: "like", backIcon: "like-fill", buttonType: "two" }),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { className: "response-count uk-flex uk-inline" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { "uk-icon": "icon: forward; ratio: 1.2" }),
-                        " ",
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-visible@s" }, "Share"))),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_LikeButton__["a" /* default */], { liked: true, likeCount: 1, text: "Like", frontIcon: "like", backIcon: "like-fill", buttonType: "two" })),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex  response-count pull-right" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "dropdown" },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-text uk-margin-right", type: "button" },
@@ -14421,9 +14938,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__style__ = __webpack_require__("./src/Containers/Connection/style.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_Containers_Connection_components_searchWrapper__ = __webpack_require__("./src/Containers/Connection/components/searchWrapper.tsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_Components_Search__ = __webpack_require__("./src/Components/Search/index.tsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_tiny_virtual_list__ = __webpack_require__("react-tiny-virtual-list");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_tiny_virtual_list___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_tiny_virtual_list__);
-
 
 
 
@@ -14453,8 +14967,10 @@ class Connection extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Titlebar__["a" /* default */], { title: 'Connections', noComposer: true }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5_Containers_Connection_components_searchWrapper__["a" /* default */], { redirectPath: window.location },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Search__["a" /* default */], null)),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex-stretch" },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_react_tiny_virtual_list___default.a, { width: "auto", height: 800, itemCount: 7, scrollDirection: "horizontal", itemSize: 60, renderItem: ({ index, user }) => this.renderItem(index, user) })))));
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: " -center" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_Profile__["a" /* CommunityProfile */], { user: user }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_Profile__["a" /* CommunityProfile */], { user: user }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_Profile__["a" /* CommunityProfile */], { user: user })))));
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["default"] = Connection;
@@ -15101,31 +15617,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_async_component__ = __webpack_require__("react-async-component");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_async_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_async_component__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_Components_EmptyStates__ = __webpack_require__("./src/Components/EmptyStates/index.tsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_anchor_ui_theme_provider__ = __webpack_require__("anchor-ui/theme-provider");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_anchor_ui_theme_provider___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_anchor_ui_theme_provider__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_anchor_ui_search_box__ = __webpack_require__("anchor-ui/search-box");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_anchor_ui_search_box___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_anchor_ui_search_box__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_anchor_ui_list__ = __webpack_require__("anchor-ui/list");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_anchor_ui_list___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_anchor_ui_list__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_anchor_ui_list_item__ = __webpack_require__("anchor-ui/list-item");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_anchor_ui_list_item___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_anchor_ui_list_item__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_anchor_ui_channel_header__ = __webpack_require__("anchor-ui/channel-header");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_anchor_ui_channel_header___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_anchor_ui_channel_header__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_anchor_ui_button__ = __webpack_require__("anchor-ui/button");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_anchor_ui_button___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_anchor_ui_button__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_anchor_ui_icons_icon_people__ = __webpack_require__("anchor-ui/icons/icon-people");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_anchor_ui_icons_icon_people___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_anchor_ui_icons_icon_people__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_anchor_ui_modal__ = __webpack_require__("anchor-ui/modal");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_anchor_ui_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_anchor_ui_modal__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_anchor_ui_icons_icon_add_friend__ = __webpack_require__("anchor-ui/icons/icon-add-friend");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_anchor_ui_icons_icon_add_friend___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_anchor_ui_icons_icon_add_friend__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_react_apollo__ = __webpack_require__("react-apollo");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_react_apollo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_react_apollo__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_Graphql_Mutation__ = __webpack_require__("./src/Graphql/Mutation/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_Graphql_Query__ = __webpack_require__("./src/Graphql/Query/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__style_scss__ = __webpack_require__("./src/Containers/Forum/style.scss");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__style_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__style_scss__);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_Components_Community_CommunitySidebar__ = __webpack_require__("./src/Components/Community/CommunitySidebar/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_Components_Community_ChannelList__ = __webpack_require__("./src/Components/Community/ChannelList/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_anchor_ui_theme_provider__ = __webpack_require__("anchor-ui/theme-provider");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_anchor_ui_theme_provider___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_anchor_ui_theme_provider__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_anchor_ui_channel_header__ = __webpack_require__("anchor-ui/channel-header");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_anchor_ui_channel_header___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_anchor_ui_channel_header__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_anchor_ui_button__ = __webpack_require__("anchor-ui/button");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_anchor_ui_button___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_anchor_ui_button__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_anchor_ui_icons_icon_people__ = __webpack_require__("anchor-ui/icons/icon-people");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_anchor_ui_icons_icon_people___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_anchor_ui_icons_icon_people__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_anchor_ui_modal__ = __webpack_require__("anchor-ui/modal");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_anchor_ui_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_anchor_ui_modal__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_anchor_ui_icons_icon_add_friend__ = __webpack_require__("anchor-ui/icons/icon-add-friend");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_anchor_ui_icons_icon_add_friend___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_anchor_ui_icons_icon_add_friend__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_react_apollo__ = __webpack_require__("react-apollo");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_react_apollo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_react_apollo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_Graphql_Mutation__ = __webpack_require__("./src/Graphql/Mutation/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_Graphql_Query__ = __webpack_require__("./src/Graphql/Query/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__style_scss__ = __webpack_require__("./src/Containers/Forum/style.scss");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__style_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__style_scss__);
 
 
 
@@ -15164,20 +15675,18 @@ class Forum extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
     renderContent() {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { style: { height: '91vh', width: '100vw' }, className: "uk-width-1-1 uk-flex" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { id: "chat-list", className: "uk-width-1-4 un-border-right", style: { backgroundColor: '#ffffff' } },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_anchor_ui_search_box___default.a, { placeholder: "Search for channels and chat" }),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_anchor_ui_list___default.a, { id: "chat-list", header: "Channels", style: { height: '43.1vh' } }, this.props.channels.getAllChat ? this.props.channels.getAllChat.map((item, index) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8_anchor_ui_list_item___default.a, { key: index, primaryText: item.title, avatar: item.avatar }))) : __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small" }, "Empty channel conversation")),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_anchor_ui_list___default.a, { id: "chat-list", header: "Direct Chat", style: { height: '40vh' } }, this.props.channels.getAllChat ? this.props.channels.getAllChat.map((item, index) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8_anchor_ui_list_item___default.a, { key: index, primaryText: item.primaryText, secondaryText: item.secondaryText, avatar: item.image }))) : __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small" }, "Empty Direct Chat"))),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-expand" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_anchor_ui_channel_header___default.a, { name: "Channel", rightButton: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_anchor_ui_button___default.a, { iconButton: true },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_11_anchor_ui_icons_icon_people___default.a, null))), leftButton: 
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5_Components_Community_CommunitySidebar__["a" /* default */], null),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Community_ChannelList__["a" /* default */], null),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-expand uk-visible@s" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8_anchor_ui_channel_header___default.a, { name: "Channel", rightButton: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_anchor_ui_button___default.a, { iconButton: true },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_anchor_ui_icons_icon_people___default.a, null))), leftButton: 
                     // tslint:disable-next-line:jsx-boolean-value
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_anchor_ui_button___default.a, { iconButton: true, onClick: () => this.openModal() },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_anchor_ui_icons_icon_add_friend___default.a, null)), style: { backgroundColor: '#454d5d' } }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_anchor_ui_button___default.a, { iconButton: true, onClick: () => this.openModal() },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12_anchor_ui_icons_icon_add_friend___default.a, null)), style: { backgroundColor: '#454d5d' } }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-flex", style: {} },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](ChatDetail, null))),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12_anchor_ui_modal___default.a, { open: this.state.open, color: "grey", actions: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex uk-flex-between" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_11_anchor_ui_modal___default.a, { open: this.state.open, color: "grey", actions: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-flex uk-flex-between" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-small uk-button-default", onClick: () => this.openModal() }, "Close"),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "uk-button uk-button-small uk-button-primary" }, "Create")) },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
@@ -15188,7 +15697,7 @@ class Forum extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
     render() {
         console.log(this.props.channels);
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5_anchor_ui_theme_provider___default.a, { color: "#f2912c" },
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_anchor_ui_theme_provider___default.a, { color: "#f2912c" },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "App" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_helmet__["Helmet"], null,
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("title", null, "Unizonn | Lounge"),
@@ -15196,9 +15705,9 @@ class Forum extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 this.props.channels.Loading ? this.renderLoading() : this.renderContent())));
     }
 }
-/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_14_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_14_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_14_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_16_Graphql_Query__["h" /* GET_ALL_MY_CHANNEL */], {
+/* harmony default export */ __webpack_exports__["default"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["withRouter"])(Object(__WEBPACK_IMPORTED_MODULE_13_react_apollo__["compose"])(__WEBPACK_IMPORTED_MODULE_13_react_apollo__["withApollo"], Object(__WEBPACK_IMPORTED_MODULE_13_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_15_Graphql_Query__["h" /* GET_ALL_MY_CHANNEL */], {
     name: 'channels',
-}), Object(__WEBPACK_IMPORTED_MODULE_14_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_15_Graphql_Mutation__["f" /* CREATE_MESSAGE */], { name: 'sendMessage' }))(Forum)));
+}), Object(__WEBPACK_IMPORTED_MODULE_13_react_apollo__["graphql"])(__WEBPACK_IMPORTED_MODULE_14_Graphql_Mutation__["f" /* CREATE_MESSAGE */], { name: 'sendMessage' }))(Forum)));
 /*
 Modal.propTypes = {
   actions: _propTypes2.default.node.isRequired,
@@ -15467,7 +15976,7 @@ class Terms extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null, "any activity in which you engage in or through Unizonn.")))),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Pricing_style__["d" /* Section */], null,
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Pricing_style__["f" /* SectionTitle */], null, "Privacy Policy"),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Pricing_style__["e" /* SectionDescription */], null, "When you share information, others can view, copy, and use that information. Unizonn offers several forums such as Unizonn Groups, Answers, and Network Updates, where you can post your comments and comments on the topics assigned. Unizonn also allows the exchange of information by allowing users to post updates, including links to news articles and other information such as job opportunities, product recommendations and other profile contents, parts of the site such as Unizonn Groups and Unizonn company pages. Unizonn members can create Unizonn groups and business pages for free however Unizonn, in its sole discretion, may close or transfer Unizonn Groups or company pages, or delete the content, from them if the content violates this Agreement or the rights Intellectual property rights of others. Please note that the ideas you post and the information you share can be viewed and used by other Members and Unizonn cannot guarantee that other Members will not use the ideas and information they share at Unizonn. Therefore, if you have information or idea that you would like to keep confidential or you do not want others to use, or you are subject to third party rights that may be infringed by your sharing, do not submit it to any Unizonn group, Network or elsewhere in Unizonn. UNIZONN IS NOT RESPONSIBLE FOR THE INCORRECT USE OF ANY OTHER OR THE DISAPPROVEMENT OF ANY CONTENT OR INFORMATION YOU PUBLISH IN UNIZONN.")),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Pricing_style__["e" /* SectionDescription */], null, "When you share information, others can view, copy, and use that information. Unizonn offers several communities such as Unizonn Groups, Answers, and Network Updates, where you can post your comments and comments on the topics assigned. Unizonn also allows the exchange of information by allowing users to post updates, including links to news articles and other information such as job opportunities, product recommendations and other profile contents, parts of the site such as Unizonn Groups and Unizonn company pages. Unizonn members can create Unizonn groups and business pages for free however Unizonn, in its sole discretion, may close or transfer Unizonn Groups or company pages, or delete the content, from them if the content violates this Agreement or the rights Intellectual property rights of others. Please note that the ideas you post and the information you share can be viewed and used by other Members and Unizonn cannot guarantee that other Members will not use the ideas and information they share at Unizonn. Therefore, if you have information or idea that you would like to keep confidential or you do not want others to use, or you are subject to third party rights that may be infringed by your sharing, do not submit it to any Unizonn group, Network or elsewhere in Unizonn. UNIZONN IS NOT RESPONSIBLE FOR THE INCORRECT USE OF ANY OTHER OR THE DISAPPROVEMENT OF ANY CONTENT OR INFORMATION YOU PUBLISH IN UNIZONN.")),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Pricing_style__["d" /* Section */], null,
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Pricing_style__["f" /* SectionTitle */], null, "Third-Party Sites and Developers"),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Pricing_style__["e" /* SectionDescription */], null, "Third party websites may offer their products and services through Unizonn, and we are not responsible for these third party activities. Unizonn may include links to third party websites (\"Third Party Sites\") at www.unizonn.com, developer.unizonn.com, and elsewhere. Unizonn also allows developers of third parties (\"Developer Platform\") to create applications (\"Application Platform\") that provide features and functionality using data and development tools made available by Unizonn through its development platform. We may display third-party ads on the website, such as advertisements, pop-up text and links to third-party sites. We are not responsible for the content of such advertisements or links, or for any products, services or other material related to such advertisements, any associated website or any link contained in a linked website. The demonstration of any advertisement or link does not imply endorsement by us of the ad or associated website or any content. In no event are we liable, directly or indirectly, to ANYONE for any injury or loss resulting from or in connection with any USE, CONTINUED USE or dependence of any ADVERTISEMENT displayed on the web, any product, SERVICES OR MATERIALS implying any such advertisement, ANY WEBSITE OF THIRD PARTIES ASSOCIATED, OR ANY LINK CONTAINED IN A LINKED WEB SITE.")),
@@ -15799,16 +16308,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_Components_Titlebar__ = __webpack_require__("./src/Components/Titlebar/index.tsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_Components_Link__ = __webpack_require__("./src/Components/Link/index.tsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_Components_Profile__ = __webpack_require__("./src/Components/Profile/index.tsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_Components_Upsell__ = __webpack_require__("./src/Components/Upsell/index.tsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_Components_SegmentedControl__ = __webpack_require__("./src/Components/SegmentedControl/index.tsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_Components_Profile_coverPhoto__ = __webpack_require__("./src/Components/Profile/coverPhoto.tsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__style__ = __webpack_require__("./src/Containers/Profile/style.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__style_scss__ = __webpack_require__("./src/Containers/Profile/style.scss");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__style_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__style_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_Components_MoreViews_style__ = __webpack_require__("./src/Components/MoreViews/style.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_link__ = __webpack_require__("./src/link.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__constants__ = __webpack_require__("./src/constants.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_Components_EmptyStates__ = __webpack_require__("./src/Components/EmptyStates/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_Components_Loading__ = __webpack_require__("./src/Components/Loading/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_Components_Upsell__ = __webpack_require__("./src/Components/Upsell/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_Components_SegmentedControl__ = __webpack_require__("./src/Components/SegmentedControl/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_Components_Profile_coverPhoto__ = __webpack_require__("./src/Components/Profile/coverPhoto.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__style__ = __webpack_require__("./src/Containers/Profile/style.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__style_scss__ = __webpack_require__("./src/Containers/Profile/style.scss");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__style_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__style_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_Components_MoreViews_style__ = __webpack_require__("./src/Components/MoreViews/style.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_link__ = __webpack_require__("./src/link.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__constants__ = __webpack_require__("./src/constants.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_Components_EmptyStates__ = __webpack_require__("./src/Components/EmptyStates/index.tsx");
+
 
 
 
@@ -15873,62 +16384,64 @@ class Profile extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 return `Error!: ${error}`;
             }
             console.log(data);
-            const currentUser = __WEBPACK_IMPORTED_MODULE_17_link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_18__constants__["b" /* CURRENT_USER */]);
+            const currentUser = __WEBPACK_IMPORTED_MODULE_18_link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_19__constants__["b" /* CURRENT_USER */]);
             const user = data.getUserByUsername;
             const { username } = user;
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_AppViewWrapper__["a" /* default */], { "data-cy": "user-view" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5_Components_SeoMaker__["a" /* default */], { title: user.firstname + ' ' + user.lastname }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8_Components_Titlebar__["a" /* default */], { title: data.firstname + ' ' + data.lastname, subtitle: 'Posts By', provideBack: true, backRoute: '/', noComposer: true }),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_14__style__["b" /* Grid */], { style: { backgroundColor: '' } },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Components_Profile_coverPhoto__["a" /* CoverPhoto */], { src: user.headerImage ? user.headerImage : '', style: { backgroundColor: '#fff' } }),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_14__style__["c" /* Meta */], { style: { backgroundColor: '#fff' } },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_15__style__["b" /* Grid */], { style: { backgroundColor: '' } },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_14_Components_Profile_coverPhoto__["a" /* CoverPhoto */], { src: user.headerImage ? user.headerImage : '', style: { backgroundColor: '#fff' } }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_15__style__["c" /* Meta */], { style: { backgroundColor: '#fff' } },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_Profile__["b" /* UserProfile */], { user: user, username: username, profileSize: "full" }),
                         currentUser &&
-                            user.id !== currentUser.id && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_16_Components_MoreViews_style__["a" /* LoginButton */], { onClick: () => alert('hi') },
+                            user.id !== currentUser.id && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_17_Components_MoreViews_style__["a" /* LoginButton */], { onClick: () => alert('hi') },
                             "Message ",
                             user.username)),
                         currentUser &&
                             user.id === currentUser.id && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_Components_Link__["a" /* default */], { to: `/n/${username}/settings` },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_16_Components_MoreViews_style__["a" /* LoginButton */], { isMember: true }, "Edit Profile")))),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_14__style__["a" /* Content */], null,
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12_Components_SegmentedControl__["c" /* SegmentedControl */], { style: { margin: '0 0 0 0', paddingTop: 16, backgroundColor: '#fff' } },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12_Components_SegmentedControl__["a" /* DesktopSegment */], { segmentLabel: "search", onClick: () => this.handleSegmentClick('search'), selected: selectedView === 'search' },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_17_Components_MoreViews_style__["a" /* LoginButton */], { isMember: true }, "Edit Profile")))),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_15__style__["a" /* Content */], null,
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Components_SegmentedControl__["c" /* SegmentedControl */], { style: { margin: '0 0 0 0', paddingTop: 16, backgroundColor: '#fff' } },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Components_SegmentedControl__["a" /* DesktopSegment */], { segmentLabel: "search", onClick: () => this.handleSegmentClick('search'), selected: selectedView === 'search' },
                                 user.articles ? user.articles.length : '',
                                 "  Articles"),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12_Components_SegmentedControl__["a" /* DesktopSegment */], { segmentLabel: "participant", onClick: () => this.handleSegmentClick('participant'), selected: selectedView === 'participant' },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Components_SegmentedControl__["a" /* DesktopSegment */], { segmentLabel: "participant", onClick: () => this.handleSegmentClick('participant'), selected: selectedView === 'participant' },
                                 user.connectTo ? user.connectTo.length : '',
                                 " Connections"),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12_Components_SegmentedControl__["a" /* DesktopSegment */], { segmentLabel: "creator", onClick: () => this.handleSegmentClick('creator'), selected: selectedView === 'creator' }, "Media"),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12_Components_SegmentedControl__["b" /* MobileSegment */], { segmentLabel: "search", onClick: () => this.handleSegmentClick('search'), selected: selectedView === 'search' }, "Articles"),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12_Components_SegmentedControl__["b" /* MobileSegment */], { segmentLabel: "participant", onClick: () => this.handleSegmentClick('participant'), selected: selectedView === 'participant' },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Components_SegmentedControl__["a" /* DesktopSegment */], { segmentLabel: "creator", onClick: () => this.handleSegmentClick('creator'), selected: selectedView === 'creator' }, "Media"),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Components_SegmentedControl__["b" /* MobileSegment */], { segmentLabel: "search", onClick: () => this.handleSegmentClick('search'), selected: selectedView === 'search' }, "Articles"),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Components_SegmentedControl__["b" /* MobileSegment */], { segmentLabel: "participant", onClick: () => this.handleSegmentClick('participant'), selected: selectedView === 'participant' },
                                 user.connectTo ? user.connectTo.length : '',
                                 " Connections"),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12_Components_SegmentedControl__["b" /* MobileSegment */], { segmentLabel: "creator", onClick: () => this.handleSegmentClick('creator'), selected: selectedView === 'creator' }, "Media")),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Components_SegmentedControl__["b" /* MobileSegment */], { segmentLabel: "creator", onClick: () => this.handleSegmentClick('creator'), selected: selectedView === 'creator' }, "Media")),
                         hasThreads &&
                             (selectedView === 'creator' ||
                                 selectedView === 'participant') && (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#e1eaf1' } },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_ArticleList__["b" /* default */], null))),
                         selectedView === 'search' &&
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#e1eaf1' } },
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_apollo__["Query"], { pollInterval: 3000, query: __WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["a" /* ACTIVITY */], variables: { username, myUsername: currentUser.id } }, ({ loading, error, data }) => {
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_apollo__["Query"], { pollInterval: 3000, query: __WEBPACK_IMPORTED_MODULE_4_Graphql_Query__["a" /* ACTIVITY */], variables: { myUsername: currentUser.username } }, ({ loading, error, data }) => {
                                     if (loading) {
                                         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
                                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_ArticleList__["a" /* MyLoader */], null),
                                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
                                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
                                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_ArticleList__["a" /* MyLoader */], null),
-                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
-                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
-                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_ArticleList__["a" /* MyLoader */], null)));
+                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null)));
                                     }
                                     if (loading) {
-                                        return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_19_Components_EmptyStates__["b" /* ErrorComponent */], null);
+                                        return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_20_Components_EmptyStates__["b" /* ErrorComponent */], null);
+                                    }
+                                    if (data.activity === null) {
+                                        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
+                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_20_Components_EmptyStates__["a" /* EmptyComponent */], { title: "Empty activity", subtitle: "Try joining a community and writing content" })));
                                     }
                                     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_infinite_scroller___default.a, { pageStart: 0, hasMore: true || false, loader: __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
-                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_ArticleList__["a" /* MyLoader */], null)) }, data.activity ? data.activity.map((article) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: article.id },
+                                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_11_Components_Loading__["a" /* Loading */], null)) }, data.activity ? data.activity.map((article) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: article.id },
                                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_Components_ArticleItem__["a" /* default */], { article: article })))) : null));
                                 })),
-                        !hasThreads && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_11_Components_Upsell__["a" /* NullState */], { bg: "null", heading: nullHeading })))));
+                        !hasThreads && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_12_Components_Upsell__["a" /* NullState */], { bg: "null", heading: 'Write' })))));
         }));
     }
 }
@@ -16469,6 +16982,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_Components_ErrorView_viewError__ = __webpack_require__("./src/Components/ErrorView/viewError.tsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_Components_Titlebar__ = __webpack_require__("./src/Components/Titlebar/index.tsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__ = __webpack_require__("./src/Graphql/Query/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_Containers_Settings_style__ = __webpack_require__("./src/Containers/Settings/style.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_Components_ListItems_style__ = __webpack_require__("./src/Components/ListItems/style.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_Components_FormElements__ = __webpack_require__("./src/Components/FormElements/index.tsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_Graphql_Mutation__ = __webpack_require__("./src/Graphql/Mutation/index.ts");
+
+
+
+
 
 
 
@@ -16483,6 +17004,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 class UserSettings extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
+    constructor() {
+        super(...arguments);
+        this.handleError = () => {
+            // sdfdkfj
+        };
+        this.handleResponse = () => {
+            // sdfdkfj
+        };
+    }
     componentDidMount() {
         // track('user', 'settings viewed', null);
     }
@@ -16505,8 +17035,167 @@ class UserSettings extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7__components_emailSettings__["a" /* default */], { smallOnly: true, currentUser: data.me })),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_Column__["a" /* default */], { type: "primary" },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7__components_emailSettings__["a" /* default */], { largeOnly: true, currentUser: data.me }),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Containers_Settings_style__["b" /* EmailListItem */], { key: 9 },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Mutation"], { mutation: __WEBPACK_IMPORTED_MODULE_16_Graphql_Mutation__["t" /* UPDATE_TOP_ARTICLE_NOT */], update: (cache, { data: { updateTopArticleNot } }) => {
+                                    const { me } = cache.readQuery({ query: __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__["q" /* ME */] });
+                                    cache.writeQuery({
+                                        query: __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__["q" /* ME */],
+                                        data: { me: updateTopArticleNot }
+                                    });
+                                } }, (updateTopArticleNot, { loading, error }) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_15_Components_FormElements__["a" /* Checkbox */], { checked: data.me.topWeeklyArticleNot, id: 2, disbaled: loading, onChange: (e) => {
+                                    updateTopArticleNot({
+                                        variables: {
+                                            value: !data.me.topWeeklyArticleNot
+                                        },
+                                        optimisticResponse: {
+                                            __typename: 'Mutation',
+                                            updateTopArticleNot: {
+                                                id: data.me.id,
+                                                __typename: 'User',
+                                                topWeeklyArticleNot: !data.me.topWeeklyArticleNot
+                                            }
+                                        }
+                                    }).then((res) => {
+                                        // fdfjk
+                                    });
+                                }, align: true },
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Containers_Settings_style__["a" /* CheckboxContent */], null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_14_Components_ListItems_style__["f" /* Notice */], null,
+                                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("strong", null, "Get top weekly articles"),
+                                        ' ',
+                                        "Send me weekly trending topics that matches my interest")))))),
                         'serviceWorker' in navigator &&
-                            'PushManager' in window && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__components_notificationSettings__["a" /* default */], { largeOnly: true })))));
+                            'PushManager' in window && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8__components_notificationSettings__["a" /* default */], { largeOnly: true }),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Containers_Settings_style__["b" /* EmailListItem */], { key: 0 },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Mutation"], { mutation: __WEBPACK_IMPORTED_MODULE_16_Graphql_Mutation__["p" /* UPDATE_NEW_COMMENT_NOT */], update: (cache, { data: { newCommentNot } }) => {
+                                    const { me } = cache.readQuery({ query: __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__["q" /* ME */] });
+                                    cache.writeQuery({
+                                        query: __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__["q" /* ME */],
+                                        data: { me: newCommentNot }
+                                    });
+                                } }, (newCommentNot, { loading, error }) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_15_Components_FormElements__["a" /* Checkbox */], { checked: data.me.newCommentNot, id: 2, disbaled: loading, onChange: (e) => {
+                                    newCommentNot({
+                                        variables: {
+                                            value: !data.me.newCommentNot
+                                        },
+                                        optimisticResponse: {
+                                            __typename: 'Mutation',
+                                            newCommentNot: {
+                                                id: data.me.id,
+                                                __typename: 'User',
+                                                newCommentNot: !data.me.newCommentNot
+                                            }
+                                        }
+                                    }).then((res) => {
+                                        // fdfjk
+                                    });
+                                }, align: true },
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Containers_Settings_style__["a" /* CheckboxContent */], null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_14_Components_ListItems_style__["f" /* Notice */], null, "Do you want to receive notifications for new comments")))))),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Containers_Settings_style__["b" /* EmailListItem */], { key: 1 },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Mutation"], { mutation: __WEBPACK_IMPORTED_MODULE_16_Graphql_Mutation__["q" /* UPDATE_NEW_COMMUNITY_NOT */], update: (cache, { data: { newCommunityNot } }) => {
+                                    const { me } = cache.readQuery({ query: __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__["q" /* ME */] });
+                                    cache.writeQuery({
+                                        query: __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__["q" /* ME */],
+                                        data: { me: newCommunityNot }
+                                    });
+                                } }, (newCommunityNot, { loading, error }) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_15_Components_FormElements__["a" /* Checkbox */], { checked: data.me.newCommunityNot, id: 2, disbaled: loading, onChange: (e) => {
+                                    newCommunityNot({
+                                        variables: {
+                                            value: !data.me.newCommunityNot
+                                        },
+                                        optimisticResponse: {
+                                            __typename: 'Mutation',
+                                            newCommunityNot: {
+                                                id: data.me.id,
+                                                __typename: 'User',
+                                                newCommunityNot: !data.me.newCommunityNot
+                                            }
+                                        }
+                                    }).then((res) => {
+                                        // fdfjk
+                                    });
+                                }, align: true },
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Containers_Settings_style__["a" /* CheckboxContent */], null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_14_Components_ListItems_style__["f" /* Notice */], null, "Do you want to be notified on messages in community you are joined")))))),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Containers_Settings_style__["b" /* EmailListItem */], { key: 2 },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Mutation"], { mutation: __WEBPACK_IMPORTED_MODULE_16_Graphql_Mutation__["r" /* UPDATE_NEW_CONNECTION_NOT */], update: (cache, { data: { newConnectNot } }) => {
+                                    const { me } = cache.readQuery({ query: __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__["q" /* ME */] });
+                                    cache.writeQuery({
+                                        query: __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__["q" /* ME */],
+                                        data: { me: newConnectNot }
+                                    });
+                                } }, (newConnectNot, { loading, error }) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_15_Components_FormElements__["a" /* Checkbox */], { checked: data.me.newConnectNot, id: 2, disbaled: loading, onChange: (e) => {
+                                    newConnectNot({
+                                        variables: {
+                                            value: !data.me.newConnectNot
+                                        },
+                                        optimisticResponse: {
+                                            __typename: 'Mutation',
+                                            newConnectNot: {
+                                                id: data.me.id,
+                                                __typename: 'User',
+                                                newConnectNot: !data.me.newConnectNot
+                                            }
+                                        }
+                                    }).then((res) => {
+                                        // fdfjk
+                                    });
+                                }, align: true },
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Containers_Settings_style__["a" /* CheckboxContent */], null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_14_Components_ListItems_style__["f" /* Notice */], null, "Do you want to be notified when you are being followed")))))),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Containers_Settings_style__["b" /* EmailListItem */], { key: 3 },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Mutation"], { mutation: __WEBPACK_IMPORTED_MODULE_16_Graphql_Mutation__["s" /* UPDATE_NEW_MESSAGE_NOT */], update: (cache, { data: { newMessageNot } }) => {
+                                    const { me } = cache.readQuery({ query: __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__["q" /* ME */] });
+                                    cache.writeQuery({
+                                        query: __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__["q" /* ME */],
+                                        data: { me: newMessageNot }
+                                    });
+                                } }, (newMessageNot, { loading, error }) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_15_Components_FormElements__["a" /* Checkbox */], { checked: data.me.newMessageNot, id: 2, disbaled: loading, onChange: (e) => {
+                                    newMessageNot({
+                                        variables: {
+                                            value: !data.me.newMessageNot
+                                        },
+                                        optimisticResponse: {
+                                            __typename: 'Mutation',
+                                            newMessageNot: {
+                                                id: data.me.id,
+                                                __typename: 'User',
+                                                newMessageNot: !data.me.newMessageNot
+                                            }
+                                        }
+                                    }).then((res) => {
+                                        // fdfjk
+                                    });
+                                }, align: true },
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Containers_Settings_style__["a" /* CheckboxContent */], null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_14_Components_ListItems_style__["f" /* Notice */], null, "Do you want to be notified when you have a direct message")))))),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Containers_Settings_style__["b" /* EmailListItem */], { key: 4 },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Mutation"], { mutation: __WEBPACK_IMPORTED_MODULE_16_Graphql_Mutation__["o" /* UPDATE_MENTION_ME_NOT */], update: (cache, { data: { mentionMeNot } }) => {
+                                    const { me } = cache.readQuery({ query: __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__["q" /* ME */] });
+                                    cache.writeQuery({
+                                        query: __WEBPACK_IMPORTED_MODULE_12_Graphql_Query__["q" /* ME */],
+                                        data: { me: mentionMeNot }
+                                    });
+                                } }, (mentionMeNot, { loading, error }) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_15_Components_FormElements__["a" /* Checkbox */], { checked: data.me.mentionMeNot, id: 2, disbaled: loading, onChange: (e) => {
+                                    mentionMeNot({
+                                        variables: {
+                                            value: !data.me.mentionMeNot
+                                        },
+                                        optimisticResponse: {
+                                            __typename: 'Mutation',
+                                            mentionMeNot: {
+                                                id: data.me.id,
+                                                __typename: 'User',
+                                                mentionMeNot: !data.me.mentionMeNot
+                                            }
+                                        }
+                                    }).then((res) => {
+                                        // fdfjk
+                                    });
+                                }, align: true },
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_13_Containers_Settings_style__["a" /* CheckboxContent */], null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_14_Components_ListItems_style__["f" /* Notice */], null, "Do you want to be when you are mentioned by someone"))))))))));
         }));
     }
 }
@@ -17203,35 +17892,193 @@ const AuthTab = __WEBPACK_IMPORTED_MODULE_0_styled_components___default.a.div `
 const USER_FRAGMENT = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
   fragment userFragment on User {
     id
-    firstname
-    lastname
-    username
+    createdAt
+    updatedAt
     email
-    gender
+    username
     avatar
     headerImage
-    type
-    userType
-    newConnectNot
-    newCommentNot
-    newMessageNot
-    newProfileNot
-    completedProfile
-    country {
-      name
-    }
+    password
+    firstname
+    lastname
+    facebookAuthId
+    twitterAuthId
+    linkedInAuthId
+    bio
     postCount: articles(where: {isPublished: true}){
       id
     }
-    institution {
+    userFiles{
+      id
+      url
+      name
+      size
+      contentType
+    }
+    gender
+    country{
+      id
+      name
+    }
+    institution{
+      id
       title
     }
-    department { 
+    department{
       name
+      id
+      createdAt
+    }
+    interest{
+      id
+      name
+      avatar
+    }
+    messages{
+      text
+      sent
+      seen
+      delivered
+      createdAt
+      channel{
+        id
+      }
+    }
+    connections{
+      username
+      id
+      firstname
+      lastname
+    }
+    following{
+      username
+      id
+      firstname
+      lastname
+    }
+    followers{
+      username
+      id
+      firstname
+      lastname
     }
     type
     userType
+    articles{
+      id
+      title
+      description
+    }
+    favourites{
+      id
+      title
+      description
+    }
+    channels{
+      id
+      description
+      title
+    }
+    myChannels{
+      id
+      description
+      title
+    }
+    pendingChannels{
+      id
+      description
+      title
+    }
+    blockedChannels{
+      id
+      description
+      title
+    }
+    moderatorsChannels{
+      id
+      description
+      title
+    }
+    likedArticles{
+      id
+      title
+      description
+    }
+    comments{
+      id
+      article{
+        id
+      }
+      body
+    }
+    newConnectNot
+    notifications{
+      id
+      createdAt
+      verb
+      type
+      message{
+        text
+        id
+        createdAt
+      }
+      article{
+        title
+        id
+        createdAt
+      }
+      seen
+      sent
+      slug
+      actor{
+        username
+        avatar
+        firstname
+        lastname
+      }
+    }
+    actorNotifications{
+      id
+      createdAt
+      verb
+      type
+      message{
+        text
+        id
+        createdAt
+      }
+      article{
+        title
+        id
+        createdAt
+      }
+      seen
+      sent
+      slug
+      actor{
+        username
+        avatar
+        firstname
+        lastname
+      }
+    }
+    newCommentNot
+    newMessageNot
+    newCommunityNot
+    newProfileNot
+    topWeeklyArticleNot
+    mentionMeNot
+    enableBrowserPushNot
+    enableMobilePushNot
+    enableLocation
+    deviceIds
+    completedProfile
     verified
+    location{
+      id
+      latitude
+      longitude
+    }
   }
 `;
 /* harmony export (immutable) */ __webpack_exports__["c"] = USER_FRAGMENT;
@@ -17309,6 +18156,318 @@ const MESSAGE_FRAGMENT = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
   }
 `;
 /* harmony export (immutable) */ __webpack_exports__["b"] = MESSAGE_FRAGMENT;
+
+
+
+/***/ }),
+
+/***/ "./src/Graphql/Mutation/Community.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_tag__ = __webpack_require__("graphql-tag");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_graphql_tag__);
+
+/**
+ * @description user registration for graphql mutation
+ */
+const CREATE_COMMUNITY = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation createCommunity($title: String!, $description: String!, $category: String, $isPrivate: Boolean!, $photo: String!){
+    createCommunity(title: $title, description: $description, category: $category, isPrivate: $isPrivate, photo: $photo){
+      id
+      createdAt
+      updatedAt
+      title
+      channels{
+        id
+        createdAt
+        title
+        description
+        slug
+        participants{
+          id
+          username
+          firstname
+          lastname
+          avatar
+        }
+      }
+      description
+      author{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      avatar
+      slug
+      isPrivate
+      participants{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      moderators{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      blockedUsers{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+    }
+  }
+`;
+/* harmony export (immutable) */ __webpack_exports__["a"] = CREATE_COMMUNITY;
+
+/**
+ * @description user registration for graphql mutation
+ */
+const JOIN_COMMUNITY = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation joinCommunity($id: ID!){
+    joinCommunity(id: $id){
+      id
+      createdAt
+      updatedAt
+      title
+      channels{
+        id
+        createdAt
+        title
+        description
+        slug
+        participants{
+          id
+          username
+          firstname
+          lastname
+          avatar
+        }
+      }
+      description
+      author{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      avatar
+      slug
+      isPrivate
+      participants{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      moderators{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      blockedUsers{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+    }
+  }
+`;
+/* unused harmony export JOIN_COMMUNITY */
+
+/**
+ * @description user registration for graphql mutation
+ */
+const LEAVE_COMMUNITY = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation leaveCommunity($id: ID!){
+    leaveCommunity(id: $id){
+      id
+      createdAt
+      updatedAt
+      title
+      channels{
+        id
+        createdAt
+        title
+        description
+        slug
+        participants{
+          id
+          username
+          firstname
+          lastname
+          avatar
+        }
+      }
+      description
+      author{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      avatar
+      slug
+      isPrivate
+      participants{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      moderators{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      blockedUsers{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+    }
+  }
+`;
+/* unused harmony export LEAVE_COMMUNITY */
+
+/**
+ * @description user registration for graphql mutation
+ */
+const BLOCK_USER_FROM_COMMUNITY = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation blockUserFromCommunity($id: ID!, $username: String!){
+    blockUserFromCommunity(id: $id, username: $username){
+      id
+      createdAt
+      updatedAt
+      title
+      channels{
+        id
+        createdAt
+        title
+        description
+        slug
+        participants{
+          id
+          username
+          firstname
+          lastname
+          avatar
+        }
+      }
+      description
+      author{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      avatar
+      slug
+      isPrivate
+      participants{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      moderators{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      blockedUsers{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+    }
+  }
+`;
+/* unused harmony export BLOCK_USER_FROM_COMMUNITY */
+
+/**
+ * @description user registration for graphql mutation
+ */
+const SEND_DIRECT_MESSAGE = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation sendDirectMessage($userID: ID!, $text: String!){
+    sendDirectMessage(userId: $userID, text: $text){
+      id
+      createdAt
+      updatedAt
+      text
+      to{
+        username
+        id
+        firstname
+        lastname
+        avatar
+        headerImage
+      }
+      from{
+        username
+        id
+        firstname
+        lastname
+        avatar
+        headerImage
+      }
+    }
+  }
+`;
+/* unused harmony export SEND_DIRECT_MESSAGE */
+
+/**
+ * @description user registration for graphql mutation
+ */
+const SEND_MESSAGE = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation sendMessage($channelId: ID!, $text: String!){
+    sendMessage(channelId: $channelId, text: $text){
+      id
+      createdAt
+      updatedAt
+      text
+      delivered
+      sent
+      seen
+      user{
+        username
+        id
+        firstname
+        lastname
+        avatar
+        headerImage
+      }
+    }
+  }
+`;
+/* unused harmony export SEND_MESSAGE */
 
 
 
@@ -17484,7 +18643,6 @@ const SAVE_ARTICLE = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
     favourite(id: $id){
       id
       title
-      title
     }
   }
 `;
@@ -17500,6 +18658,523 @@ const UNSAVE_ARTICLE = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
   }
 `;
 /* harmony export (immutable) */ __webpack_exports__["n"] = UNSAVE_ARTICLE;
+
+const UPDATE_NEW_COMMUNITY_NOT = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation updateNewCommunityNot($value: Boolean!){
+    updateNewCommunityNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["c" /* USER_FRAGMENT */]}
+`;
+/* harmony export (immutable) */ __webpack_exports__["q"] = UPDATE_NEW_COMMUNITY_NOT;
+
+const UPDATE_TOP_ARTICLE_NOT = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation updateTopArticleNot($value: Boolean!){
+    updateTopArticleNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["c" /* USER_FRAGMENT */]}
+`;
+/* harmony export (immutable) */ __webpack_exports__["t"] = UPDATE_TOP_ARTICLE_NOT;
+
+const UPDATE_NEW_COMMENT_NOT = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation updateNewCommentNot($value: Boolean!){
+    updateNewCommentNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["c" /* USER_FRAGMENT */]}
+`;
+/* harmony export (immutable) */ __webpack_exports__["p"] = UPDATE_NEW_COMMENT_NOT;
+
+const UPDATE_NEW_MESSAGE_NOT = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation updateNewMessageNot($value: Boolean!){
+    updateNewMessageNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["c" /* USER_FRAGMENT */]}
+`;
+/* harmony export (immutable) */ __webpack_exports__["s"] = UPDATE_NEW_MESSAGE_NOT;
+
+const UPDATE_NEW_CONNECTION_NOT = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation updateNewConnectNot($value: Boolean!){
+    updateNewConnectNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["c" /* USER_FRAGMENT */]}
+`;
+/* harmony export (immutable) */ __webpack_exports__["r"] = UPDATE_NEW_CONNECTION_NOT;
+
+const UPDATE_MENTION_ME_NOT = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation updateMentionMeNot($value: Boolean!){
+    updateMentionMeNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["c" /* USER_FRAGMENT */]}
+`;
+/* harmony export (immutable) */ __webpack_exports__["o"] = UPDATE_MENTION_ME_NOT;
+
+const LOCATION_SHARING = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation locationSharing($value: Boolean!){
+    locationSharing(value: $value){
+      ...userFragment
+    }
+  }
+  ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["c" /* USER_FRAGMENT */]}
+`;
+/* unused harmony export LOCATION_SHARING */
+
+const ENABLE_MOBILE_PUSH_NOT = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation enableMobilePushNot($value: Boolean!){
+    enableMobilePushNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["c" /* USER_FRAGMENT */]}
+`;
+/* unused harmony export ENABLE_MOBILE_PUSH_NOT */
+
+const ENABLE_WEB_PUSH_NOT = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation enableMobilePushNot($value: Boolean!){
+    enableBrowserPushNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["c" /* USER_FRAGMENT */]}
+`;
+/* unused harmony export ENABLE_WEB_PUSH_NOT */
+
+const UPDATE_USER_PROFILE = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  mutation updateUserProfile($firstname: String, $lastname: String, $bio: String, $username: String, $role: String){
+    updateUserProfile(firstname: $firstname, lastname: $lastname, bio: $bio, username: $username, role: $role){
+      ...userFragment
+    }
+  }
+  ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["c" /* USER_FRAGMENT */]}
+`;
+/* harmony export (immutable) */ __webpack_exports__["u"] = UPDATE_USER_PROFILE;
+
+
+
+/***/ }),
+
+/***/ "./src/Graphql/Query/Community/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_tag__ = __webpack_require__("graphql-tag");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_graphql_tag__);
+
+/**
+ * @description user registration for graphql mutation
+ */
+const MY_COMMUNITIES = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  query myCommunities($username: String){
+    myCommunities{
+      id
+      createdAt
+      updatedAt
+      title
+      channels{
+        id
+        createdAt
+        title
+        description
+        slug
+        participants{
+          id
+          username
+          firstname
+          lastname
+          avatar
+        }
+      }
+      description
+      author{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      avatar
+      slug
+      isPrivate
+      participants{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      moderators{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      blockedUsers{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      joined: participants(where: {username: $username}){
+        id
+      }
+      isAdmin: moderators(where: {username: $username}){
+        id
+      }
+      isBarned: blockedUsers(where: {username: $username}){
+        id
+      }
+    }
+  }
+`;
+/* harmony export (immutable) */ __webpack_exports__["b"] = MY_COMMUNITIES;
+
+/**
+ * @description user registration for graphql mutation
+ */
+const GET_COMMUNITY = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  query getCommunity($id: ID!, $username: String){
+    getCommunity(id: $id){
+      id
+      createdAt
+      updatedAt
+      title
+      channels{
+        id
+        createdAt
+        title
+        description
+        slug
+        participants{
+          id
+          username
+          firstname
+          lastname
+          avatar
+        }
+      }
+      description
+      author{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      avatar
+      slug
+      isPrivate
+      participants{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      moderators{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      blockedUsers{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      joined: participants(where: {username: $username}){
+        id
+      }
+      isAdmin: moderators(where: {username: $username}){
+        id
+      }
+      isBarned: blockedUsers(where: {username: $username}){
+        id
+      }
+    }
+  }
+`;
+/* unused harmony export GET_COMMUNITY */
+
+/**
+ * @description user registration for graphql mutation
+ */
+const GET_COMMUNITY_BY_SLUG = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  query getCommunityBySlug($slug: String!, $username: String){
+    getCommunityBySlug(slug: $slug){
+      id
+      createdAt
+      updatedAt
+      title
+      channels{
+        id
+        createdAt
+        title
+        description
+        slug
+        participants{
+          id
+          username
+          firstname
+          lastname
+          avatar
+        }
+      }
+      description
+      author{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      avatar
+      slug
+      isPrivate
+      participants{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      moderators{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      blockedUsers{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      joined: participants(where: {username: $username}){
+        id
+      }
+      isAdmin: moderators(where: {username: $username}){
+        id
+      }
+      isBarned: blockedUsers(where: {username: $username}){
+        id
+      }
+    }
+  }
+`;
+/* unused harmony export GET_COMMUNITY_BY_SLUG */
+
+/**
+ * @description user registration for graphql mutation
+ */
+const SEARCH_COMMUNITY = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  query searchCommunities($text: String!, $username: String){
+    searchCommunities(text: $text){
+      id
+      createdAt
+      updatedAt
+      title
+      channels{
+        id
+        createdAt
+        title
+        description
+        slug
+        participants{
+          id
+          username
+          firstname
+          lastname
+          avatar
+        }
+      }
+      description
+      author{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      avatar
+      slug
+      isPrivate
+      participants{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      moderators{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      blockedUsers{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      joined: participants(where: {username: $username}){
+        id
+      }
+      isAdmin: moderators(where: {username: $username}){
+        id
+      }
+      isBarned: blockedUsers(where: {username: $username}){
+        id
+      }
+    }
+  }
+`;
+/* unused harmony export SEARCH_COMMUNITY */
+
+/**
+ * @description user registration for graphql mutation
+ */
+const GET_COMMUNITY_CHANNELS = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  query getCommunityChannels($id: ID!, $username: String){
+    getCommunityChannels(id: $id){
+      id
+      createdAt
+      title
+      description
+      slug
+      participants{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      joined: participants(where: {username: $username}){
+        id
+      }
+      isAdmin: moderators(where: {username: $username}){
+        id
+      }
+      isBarned: blockedUsers(where: {username: $username}){
+        id
+      }
+    }
+  }
+`;
+/* unused harmony export GET_COMMUNITY_CHANNELS */
+
+/**
+ * @description user registration for graphql mutation
+ */
+const GET_COMMUNITY_CHANNELS_BY_SLUG = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  query getCommunityChannelsBySlug($slug: String!, $username: String){
+    getCommunityChannelsBySlug(slug: $slug){
+      id
+      createdAt
+      title
+      description
+      slug
+      participants{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      joined: participants(where: {username: $username}){
+        id
+      }
+      isAdmin: moderators(where: {username: $username}){
+        id
+      }
+      isBarned: blockedUsers(where: {username: $username}){
+        id
+      }
+    }
+  }
+`;
+/* unused harmony export GET_COMMUNITY_CHANNELS_BY_SLUG */
+
+/**
+ * @description user registration for graphql mutation
+ */
+const GET_DIRECT_USERS = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  query getDirectUsers{
+    getDirectUsers{
+      username
+      id
+      firstname
+      lastname
+      avatar
+      headerImage
+    }
+  }
+`;
+/* unused harmony export GET_DIRECT_USERS */
+
+/**
+ * @description user registration for graphql mutation
+ */
+const GET_DIRECT_MESSAGES_BY_SENDER = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  query getDirectMessagesBySender($senderId: ID!){
+    getDirectMessagesBySender(senderId: $senderId){
+      id
+      createdAt
+      text
+      to{
+        username
+        id
+        firstname
+        lastname
+        avatar
+        headerImage
+      }
+      from{
+        username
+        id
+        firstname
+        lastname
+        avatar
+        headerImage
+      }
+      seen
+      delivered
+      sent
+    }
+  }
+`;
+/* unused harmony export GET_DIRECT_MESSAGES_BY_SENDER */
+
+/**
+ * @description user registration for graphql mutation
+ */
+const COMMUNITY_EXIST = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
+  query communityExist($text: String!){
+    communityExist(text: $text){
+      exist
+    }
+  }
+`;
+/* harmony export (immutable) */ __webpack_exports__["a"] = COMMUNITY_EXIST;
 
 
 
@@ -17561,14 +19236,27 @@ const USER_EXIST = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
  * @description check if current user article
  */
 const ARTICLES = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
-  query articles($myUsername: String, $offset: Int, $limit: Int) {
-    articles (offset: $offset, limit: $limit){
-      ...articleFragment
-      saved: userFavourited(where: {username: $myUsername }) {
-        username
+  query articles($username: String, $cursor: String) {
+    articles(cursor: $cursor){
+      aggregate {
+        count
       }
-      liked: likes(where: {username: $myUsername }) {
-        username
+      edges {
+        node {
+          saved: userFavourited(where: {username: $username }) {
+            username
+          }
+          liked: likes(where: {username: $username }) {
+            username
+          }
+          ...articleFragment
+        }
+      }
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
       }
     }
   }
@@ -17580,9 +19268,22 @@ const ARTICLES = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
  * @description check if current user article
  */
 const DRAFTS = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
-  query drafts($offset: Int, $limit: Int) {
-    drafts (offset: $offset, limit: $limit){
-      ...articleFragment
+  query drafts($cursor: ID) {
+    drafts(cursor: $cursor){
+      aggregate {
+        count
+      }
+      edges {
+        node {
+          ...articleFragment
+        }
+      }
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
     }
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["a" /* ARTICLE_FRAGMENT */]}
@@ -17593,15 +19294,28 @@ const DRAFTS = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
  * @description check if current user article
  */
 const PUBLISHED = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
-  query published($myUsername: String, $offset: Int, $limit: Int) {
-    published (offset: $offset, limit: $limit){
-      saved: userFavourited(where: {username: $myUsername }) {
-        username
+  query published($username: String, $cursor: ID) {
+    published(cursor: $cursor){
+      aggregate {
+        count
       }
-      liked: likes(where: {username: $myUsername }) {
-        username
+      edges {
+        node {
+          saved: userFavourited(where: {username: $username }) {
+            username
+          }
+          liked: likes(where: {username: $username }) {
+            username
+          }
+          ...articleFragment
+        }
       }
-      ...articleFragment
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
     }
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["a" /* ARTICLE_FRAGMENT */]}
@@ -17612,15 +19326,28 @@ const PUBLISHED = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
  * @description check if current user article
  */
 const SAVED = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
-  query saved($myUsername: String, $offset: Int, $limit: Int) {
-    saved (offset: $offset, limit: $limit){
-      saved: userFavourited(where: {username: $myUsername }) {
-        username
+  query saved($myUsername: String, $cursor: ID) {
+    saved(cursor: $cursor){
+      aggregate {
+        count
       }
-      liked: likes(where: {username: $myUsername }) {
-        username
+      edges {
+        node {
+          saved: userFavourited(where: {username: $myUsername }) {
+            username
+          }
+          liked: likes(where: {username: $myUsername }) {
+            username
+          }
+          ...articleFragment
+        }
       }
-      ...articleFragment
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
     }
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["a" /* ARTICLE_FRAGMENT */]}
@@ -17865,15 +19592,28 @@ const GET_COMMENTS = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
 /* harmony export (immutable) */ __webpack_exports__["j"] = GET_COMMENTS;
 
 const ACTIVITY = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a `
-  query activity($username: String!, $myUsername: String) {
-    activity(username: $username){
-      ...articleFragment
-      saved: userFavourited(where: {username: $myUsername }) {
-        username
+  query activity($username: String!, $cursor: String) {
+    activity(username: $username, cursor: $cursor){
+      aggregate {
+        count
       }
-      liked: likes(where: {username: $myUsername }) {
-        username
+      edges {
+        node {
+          saved: userFavourited(where: {username: $username }) {
+            username
+          }
+          liked: likes(where: {username: $username }) {
+            username
+          }
+          ...articleFragment
+        }
       }
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      } 
     }
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["a" /* ARTICLE_FRAGMENT */]}
@@ -17955,12 +19695,6 @@ const GET_SIMILAR_ARTICLES = __WEBPACK_IMPORTED_MODULE_0_graphql_tag___default.a
   query getSimilarArticles($id: ID!){
     getSimilarArticles(id :$id){
       ...articleFragment
-      saved: userFavourited(where: {username: $myUsername }) {
-        username
-      }
-      liked: likes(where: {username: $myUsername }) {
-        username
-      }
     }
   }
   ${__WEBPACK_IMPORTED_MODULE_1_Graphql_Fragment__["a" /* ARTICLE_FRAGMENT */]}
@@ -18224,19 +19958,19 @@ const optimize = (src, params = {}) => {
     }, '');
     return `${src}?auto=compress${queryparams}`;
 };
-/* harmony export (immutable) */ __webpack_exports__["e"] = optimize;
+/* harmony export (immutable) */ __webpack_exports__["c"] = optimize;
 
 const FREE_USER_MAX_IMAGE_SIZE_BYTES = 3000000;
-/* harmony export (immutable) */ __webpack_exports__["a"] = FREE_USER_MAX_IMAGE_SIZE_BYTES;
+/* unused harmony export FREE_USER_MAX_IMAGE_SIZE_BYTES */
 
 const PRO_USER_MAX_IMAGE_SIZE_BYTES = 25000000;
-/* harmony export (immutable) */ __webpack_exports__["c"] = PRO_USER_MAX_IMAGE_SIZE_BYTES;
+/* harmony export (immutable) */ __webpack_exports__["a"] = PRO_USER_MAX_IMAGE_SIZE_BYTES;
 
 const FREE_USER_MAX_IMAGE_SIZE_STRING = `${Math.floor(FREE_USER_MAX_IMAGE_SIZE_BYTES / 1000000)}mb`;
-/* harmony export (immutable) */ __webpack_exports__["b"] = FREE_USER_MAX_IMAGE_SIZE_STRING;
+/* unused harmony export FREE_USER_MAX_IMAGE_SIZE_STRING */
 
 const PRO_USER_MAX_IMAGE_SIZE_STRING = `${Math.floor(PRO_USER_MAX_IMAGE_SIZE_BYTES / 1000000)}mb`;
-/* harmony export (immutable) */ __webpack_exports__["d"] = PRO_USER_MAX_IMAGE_SIZE_STRING;
+/* harmony export (immutable) */ __webpack_exports__["b"] = PRO_USER_MAX_IMAGE_SIZE_STRING;
 
 
 
@@ -18855,7 +20589,7 @@ const errorLink = Object(__WEBPACK_IMPORTED_MODULE_2_apollo_link_error__["onErro
 });
 /* harmony export (immutable) */ __webpack_exports__["b"] = errorLink;
 
-const httpLink = new __WEBPACK_IMPORTED_MODULE_10_apollo_link_batch_http__["BatchHttpLink"]({ uri: 'https://uniserver.herokuapp.com', fetch: __WEBPACK_IMPORTED_MODULE_9_node_fetch___default.a });
+const httpLink = new __WEBPACK_IMPORTED_MODULE_10_apollo_link_batch_http__["BatchHttpLink"]({ uri: 'http://localhost:4000', fetch: __WEBPACK_IMPORTED_MODULE_9_node_fetch___default.a });
 /* unused harmony export httpLink */
 
 const middlewareLink = new __WEBPACK_IMPORTED_MODULE_0_apollo_link__["ApolloLink"]((operation, forward) => {
@@ -19143,13 +20877,6 @@ module.exports = require("anchor-ui/icons/icon-people");
 /***/ (function(module, exports) {
 
 module.exports = require("anchor-ui/list");
-
-/***/ }),
-
-/***/ "anchor-ui/list-item":
-/***/ (function(module, exports) {
-
-module.exports = require("anchor-ui/list-item");
 
 /***/ }),
 
@@ -19556,13 +21283,6 @@ module.exports = require("react-textarea-autosize");
 /***/ (function(module, exports) {
 
 module.exports = require("react-timeago");
-
-/***/ }),
-
-/***/ "react-tiny-virtual-list":
-/***/ (function(module, exports) {
-
-module.exports = require("react-tiny-virtual-list");
 
 /***/ }),
 

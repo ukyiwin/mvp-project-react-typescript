@@ -39,15 +39,10 @@ export default class Connection extends React.Component {
           >
             <Search />
           </CommunitySearchWrapper>
-          <div className="uk-flex-stretch">
-            <VirtualList
-              width="auto"
-              height={800}
-              itemCount={7}
-              scrollDirection="horizontal"
-              itemSize={60}
-              renderItem={({index, user}) => this.renderItem(index, user)}
-            />
+          <div className=" -center">
+          <CommunityProfile user={user} />
+          <CommunityProfile user={user} />
+          <CommunityProfile user={user} />
           </div>
         </Wrapper>
       </AppViewWrapper>

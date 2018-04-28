@@ -499,7 +499,7 @@ class App extends React.Component<Props & ChildProps<Response & Props>, State> {
                           />
                           <EmptyLayout 
                             component={Forum} 
-                            path="/forum" 
+                            path="/community" 
                             exact={true} 
                             isAuthenticated={isAuthenticated}
                             logout={this._logout}
@@ -516,7 +516,23 @@ class App extends React.Component<Props & ChildProps<Response & Props>, State> {
                           <EmptyLayout 
                             component={Forum} 
                             exact={true} 
-                            path="/forum/:id" 
+                            path="/community/:id" 
+                            isAuthenticated={isAuthenticated}
+                            logout={this._logout}
+                            me={this.state.me}
+                          />
+                          <EmptyLayout 
+                            component={Forum} 
+                            exact={true} 
+                            path="/community/:id/:channel" 
+                            isAuthenticated={isAuthenticated}
+                            logout={this._logout}
+                            me={this.state.me}
+                          />
+                          <EmptyLayout 
+                            component={Forum} 
+                            exact={true} 
+                            path="/message/direct"
                             isAuthenticated={isAuthenticated}
                             logout={this._logout}
                             me={this.state.me}

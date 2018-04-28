@@ -8,9 +8,6 @@ import { Article, User } from 'CustomTypings/schema';
 import ContentLoader from 'react-content-loader';
 import { cookies } from 'link';
 import { CURRENT_USER } from '../../constants';
-import { PUBLISH_ARTICLE } from 'Graphql/Mutation';
-
-// const MyFacebookLoader = () => <Facebook />;
 
 export const MyLoader = () => (
     <ContentLoader height={200} width={400} speed={2} primaryColor={'#f3f3f3'} secondaryColor={'#ecebeb'}>
@@ -33,8 +30,12 @@ export const MyLoader = () => (
 const user = cookies.get(CURRENT_USER) as User;
 
 const SavedList = () => (
-  <Query query={SAVED} variables={{ myUsername: user.username, limit: 10 }} pollInterval={5000} >
-  {({ loading, error, data, fetchMore, networkStatus, refetch }) => {
+  <Query
+    query={SAVED}
+    variables={{myUsername: user.username }}
+    pollInterval={5000}
+  >
+  {({ loading, error, data: { saved }, fetchMore, networkStatus, refetch }) => {
     if (loading) {
       return (
         <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
@@ -51,7 +52,7 @@ const SavedList = () => (
     if (error) {
         return <ErrorComponent />;
     }
-    if (data.saved.length < 1) {
+    if (saved.edges.length < 1) {
       return (
         <EmptyComponent 
           title="No saved Articles" 
@@ -61,20 +62,27 @@ const SavedList = () => (
     return (
         <InfiniteScroll
           pageStart={0}
-          hasMore={true}
+          hasMore={saved.pageInfo.hasNextPage}
           loadMore={() =>
             fetchMore({
               variables: {
-                limit: 10,
-                offset: data.saved.length
+                myUsername: user.username,
+                cursor: saved.pageInfo.endCursor
               },
-              updateQuery: (prev, { fetchMoreResult }) =>  {
-                if (!fetchMoreResult) {
-                  // this.set;
-                  return prev;
-                }
-                return {...prev, saved: [...prev.saved, ...fetchMoreResult.saved]};
-              },
+              updateQuery: (previousResult, { fetchMoreResult }) => {
+                const newEdges = fetchMoreResult.saved.edges;
+                const pageInfo = fetchMoreResult.saved.pageInfo;
+  
+                return newEdges.length
+                  ? {
+                      saved: {
+                        __typename: previousResult.saved.__typename,
+                        edges: [...previousResult.saved.edges, ...newEdges],
+                        pageInfo
+                      }
+                    }
+                  : previousResult;
+              }
             })}
           loader={
             <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
@@ -83,11 +91,11 @@ const SavedList = () => (
           // tslint:disable-next-line:jsx-curly-spacing
           }
         >
-            {data.saved ? data.saved.map((article) => (
-                <div key={article.id}>
-                    <ArticleItem article={article} />
-                </div>
-            )) : null}
+          {saved.edges.map((article) => (
+            <div key={article.node.id}>
+              <ArticleItem article={article.node} />
+            </div>
+          ))}
         </InfiniteScroll>
     );
     }}

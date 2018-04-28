@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withRouter } from 'react-router';
 import slugg from 'slugg';
-import { withApollo } from 'react-apollo';
+import { withApollo, Mutation } from 'react-apollo';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import Link from 'Components/Link';
@@ -40,18 +40,19 @@ import { Notice } from 'Components/ListItems/style';
 import User from 'Components/Profile/user';
 import { User as UserType } from 'CustomTypings/schema';
 import { ME } from 'Graphql/Query';
+import { UPDATE_USER_PROFILE } from 'Graphql/Mutation';
 
 interface State {
   website?: string;
   firstname: string;
   lastname: string;
   username: string;
-  description?: string;
+  bio?: string;
   image: string;
   coverPhoto: string;
   file?: object;
   coverFile?: object;
-  descriptionError: boolean;
+  bioError: boolean;
   nameError: boolean;
   createError: boolean;
   isLoading: boolean;
@@ -65,6 +66,7 @@ interface Props {
   user: UserType;
   client: any;
   editUser: any;
+  history: any;
 }
 
 class UserWithData extends React.Component<Props, any> {
@@ -83,13 +85,14 @@ class UserWithData extends React.Component<Props, any> {
       email: user.email ? user.email : '',
       lastname: user.lastname ? user.lastname : '',
       username: user.username ? user.username : '',
-      description: user.bio ? user.bio : '',
+      bio: user.bio ? user.bio : '',
       image: user.avatar,
       coverPhoto: user.headerImage,
       file: null,
       coverFile: null,
-      descriptionError: false,
-      nameError: false,
+      bioError: false,
+      firstnameError: false,
+      lastnameError: false,
       createError: false,
       isLoading: false,
       photoSizeError: '',
@@ -102,33 +105,49 @@ class UserWithData extends React.Component<Props, any> {
   }
 
   changeName = (e) => {
-    const name = e.target.value;
-    if (name.length > 50) {
+    const firstname = e.target.value;
+    if (firstname.length > 50) {
       this.setState({
-        name,
-        nameError: true,
+        firstname,
+        firstnameError: true,
       });
 
       return;
     }
     this.setState({
-      name,
-      nameError: false,
+      firstname,
+      firstnameError: false,
+    });
+  }
+
+  changeLastName = (e) => {
+    const lastname = e.target.value;
+    if (lastname.length > 50) {
+      this.setState({
+        lastname,
+        lastnameError: true,
+      });
+
+      return;
+    }
+    this.setState({
+      lastname,
+      lastnameError: false,
     });
   }
 
   changeDescription = (e) => {
-    const description = e.target.value;
-    if (description.length >= 140) {
+    const bio = e.target.value;
+    if (bio.length >= 140) {
       this.setState({
-        descriptionError: true,
+        bioError: true,
       });
       return;
     }
 
     this.setState({
-      description,
-      descriptionError: false,
+      bio,
+      bioError: false,
     });
   }
 
@@ -136,6 +155,13 @@ class UserWithData extends React.Component<Props, any> {
     const website = e.target.value;
     this.setState({
       website,
+    });
+  }
+
+  changeUserType = (e) => {
+    const type = e.target.value;
+    this.setState({
+      type,
     });
   }
 
@@ -151,19 +177,7 @@ class UserWithData extends React.Component<Props, any> {
 
     if (
       file &&
-      file.size > FREE_USER_MAX_IMAGE_SIZE_BYTES
-    ) {
-      return this.setState({
-        photoSizeError: `Upgrade to Pro to upload files up to ${PRO_USER_MAX_IMAGE_SIZE_STRING}. Otherwise, 
-        try uploading a photo less than ${FREE_USER_MAX_IMAGE_SIZE_STRING}.`,
-        isLoading: false,
-      });
-    }
-
-    if (
-      file &&
-      file.size > PRO_USER_MAX_IMAGE_SIZE_BYTES &&
-      this.props.currentUser.isPro
+      file.size > PRO_USER_MAX_IMAGE_SIZE_BYTES
     ) {
       return this.setState({
         photoSizeError: `Try uploading a file less than ${PRO_USER_MAX_IMAGE_SIZE_STRING}.`,
@@ -179,11 +193,10 @@ class UserWithData extends React.Component<Props, any> {
     }
 
     reader.onloadend = () => {
-      track('user', 'profile photo uploaded', null);
+      // track('user', 'profile photo uploaded', null);
 
       this.setState({
         file,
-        // $FlowFixMe
         image: reader.result,
         photoSizeError: '',
         proGifError: false,
@@ -203,17 +216,6 @@ class UserWithData extends React.Component<Props, any> {
     this.setState({
       isLoading: true,
     });
-
-    if (
-      file &&
-      file.size > FREE_USER_MAX_IMAGE_SIZE_BYTES
-    ) {
-      return this.setState({
-        photoSizeError: `Upgrade to Pro to upload files up to ${PRO_USER_MAX_IMAGE_SIZE_STRING}. Otherwise,
-         try uploading a photo less than ${FREE_USER_MAX_IMAGE_SIZE_STRING}.`,
-        isLoading: false,
-      });
-    }
 
     if (
       file &&
@@ -252,7 +254,7 @@ class UserWithData extends React.Component<Props, any> {
     const {
       firstname,
       lastname,
-      description,
+      bio,
       website,
       file,
       coverFile,
@@ -264,7 +266,7 @@ class UserWithData extends React.Component<Props, any> {
     const input = {
       firstname,
       lastname,
-      description,
+      bio,
       website,
       file,
       coverFile,
@@ -331,7 +333,7 @@ class UserWithData extends React.Component<Props, any> {
       });
     }
 
-    this.search(username);
+    // this.search(username);
   }
 
   search = (username: string) => {
@@ -387,19 +389,21 @@ class UserWithData extends React.Component<Props, any> {
       firstname,
       lastname,
       username,
+      firstnameError,
       type,
       email,
-      description,
+      bio,
       website,
       image,
       coverPhoto,
-      descriptionError,
+      bioError,
       createError,
       nameError,
       isLoading,
       photoSizeError,
       proGifError,
       usernameError,
+      lastnameError,
       isUsernameSearching,
     } = this.state;
 
@@ -410,100 +414,135 @@ class UserWithData extends React.Component<Props, any> {
           <Link to={`/n/${username}`}>Return to Profile</Link>
         </Location>
         <FormTitle>Profile Settings</FormTitle>
-        <Form onSubmit={this.save}>
-          <ImageInputWrapper>
-            <CoverInput
-              onChange={this.setCoverPhoto}
-              defaultValue={coverPhoto}
-              preview={true}
-              allowGif
-            />
-            <PhotoInput
-              onChange={this.setProfilePhoto}
-              defaultValue={image}
-              user
-              allowGif
-            />
-          </ImageInputWrapper>
+        <Mutation mutation={UPDATE_USER_PROFILE}>
+        {(updateUserProfile, {loading, error}) => (
+          <Form>
+            <ImageInputWrapper>
+              <CoverInput
+                onChange={this.setCoverPhoto}
+                defaultValue={coverPhoto}
+                preview={true}
+                allowGif
+              />
+              <PhotoInput
+                onChange={this.setProfilePhoto}
+                defaultValue={image}
+                user
+                allowGif
+              />
+            </ImageInputWrapper>
 
-          {photoSizeError && (
-            <Notice style={{ marginTop: '32px' }}>{photoSizeError}</Notice>
-          )}
-
-          <Input
-            type="text"
-            defaultValue={firstname}
-            onChange={this.changeName}
-            placeholder={'What\'s your firstname?'}
-          >
-            Firstname
-          </Input>
-
-          <Input
-            type="text"
-            defaultValue={lastname}
-            onChange={this.changeName}
-            placeholder={'What\'s your lastname?'}
-          >
-            Lastname
-          </Input>
-
-          {nameError && <Error>Names can be up to 50 characters.</Error>}
-
-          <Input
-            type={'text'}
-            defaultValue={username}
-            onChange={this.changeUsername}
-          >
-            Username
-            {isUsernameSearching && (
-              <Loading>
-                <Spinner size={16} color={'brand.default'} />
-              </Loading>
+            {photoSizeError && (
+              <Notice style={{ marginTop: '32px' }}>{photoSizeError}</Notice>
             )}
-          </Input>
 
-          {usernameError && (
-            <Notice style={{ marginTop: '16px' }}>{usernameError}</Notice>
-          )}
-
-          <TextArea
-            defaultValue={description}
-            onChange={this.changeDescription}
-            placeholder={'Introduce yourself to the unizonners...'}
-          >
-            Bio
-          </TextArea>
-
-          {descriptionError && <Error>Bios can be up to 140 characters.</Error>}
-
-          <Select defaultValue={type} onChange={this.changeWebsite} type="select">
-            <option key={''}>Who are you?</option>
-            <option key={'Student'}>Student</option>
-            <option key={'Lecturer'}>Lecturer</option>
-          </Select>
-          <Input
-            type="text"
-            defaultValue={email}
-            disabled={true}
-            placeholder={'Your primary email address?'}
-          >
-            Primary email
-          </Input>
-          <Actions>
-            <Button
-              disabled={!firstname || nameError || !username || usernameError}
-              loading={isLoading}
-              onClick={this.save}
+            <Input
+              type="text"
+              defaultValue={firstname}
+              onChange={this.changeName}
+              placeholder={'What\'s your firstname?'}
             >
-              Save
-            </Button>
-          </Actions>
+              Firstname
+            </Input>
 
-          {createError && (
-            <Error>Please fix any errors above to save your profile.</Error>
-          )}
-        </Form>
+            <Input
+              type="text"
+              defaultValue={lastname}
+              onChange={this.changeLastName}
+              placeholder={'What\'s your lastname?'}
+            >
+              Lastname
+            </Input>
+
+            {nameError && <Error>Names can be up to 50 characters.</Error>}
+
+            <Input
+              type={'text'}
+              defaultValue={username}
+              onChange={this.changeUsername}
+            >
+              Username
+              {isUsernameSearching && (
+                <Loading>
+                  <Spinner size={16} color={'brand.default'} />
+                </Loading>
+              )}
+            </Input>
+
+            {usernameError && (
+              <Notice style={{ marginTop: '16px' }}>{usernameError}</Notice>
+            )}
+
+            <TextArea
+              defaultValue={bio}
+              onChange={this.changeDescription}
+              placeholder={'Introduce yourself to the unizonners...'}
+            >
+              Bio
+            </TextArea>
+
+            {bioError && <Error>Bios can be up to 140 characters.</Error>}
+
+            <Select defaultValue={type} onChange={this.changeWebsite} type="select">
+              <option key={''}>Who are you?</option>
+              <option key={'Student'}>Student</option>
+              <option key={'Lecturer'}>Lecturer</option>
+            </Select>
+            <Input
+              type="text"
+              defaultValue={email}
+              disabled={true}
+              placeholder={'Your primary email address?'}
+            >
+              Primary email
+            </Input>
+            <Actions>
+              <Button
+                disabled={
+                  !firstname || firstnameError ||
+                  !username || usernameError ||
+                  !lastname || lastnameError ||
+                  bioError
+                }
+                loading={isLoading}
+                onClick={(e) => {
+                  e.preventDefault();
+                  const {
+                    firstname,
+                    lastname,
+                    bio,
+                    file,
+                    coverFile,
+                    type,
+                    username,
+                  } = this.state;
+                  this.setState({ isLoading: true });
+                  updateUserProfile({
+                    variables: {
+                      firstname,
+                      lastname,
+                      bio,
+                      username,
+                      role: type
+                    }
+                  }).then((res) => {
+                    this.setState({ isLoading: false });
+                    this.props.history.redirect(`/n/${user.username}`);
+                  }).catch((err) => {
+                    this.setState({ isLoading: false });
+                  });
+                }}
+              >
+                Save
+              </Button>
+            </Actions>
+
+            {createError && (
+              <Error>Please fix any errors above to save your profile.</Error>
+            )}
+          </Form>
+        )}
+        </Mutation>
       </StyledCard>
     );
   }

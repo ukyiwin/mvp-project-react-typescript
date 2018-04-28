@@ -213,9 +213,9 @@ export const Yours = (props: Props) => {
             <Link to="/login">
               <ThisPrimaryCTA icon="welcome">Join Unizonn</ThisPrimaryCTA>
             </Link>
-            <Link to="/forum">
+            <Link to="/community">
               <ThisSecondaryCTA icon="explore">
-                Conversation
+                Community
               </ThisSecondaryCTA>
             </Link>
           </Actions>

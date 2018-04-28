@@ -6,35 +6,193 @@ import gql from 'graphql-tag';
 export const USER_FRAGMENT = gql`
   fragment userFragment on User {
     id
-    firstname
-    lastname
-    username
+    createdAt
+    updatedAt
     email
-    gender
+    username
     avatar
     headerImage
-    type
-    userType
-    newConnectNot
-    newCommentNot
-    newMessageNot
-    newProfileNot
-    completedProfile
-    country {
-      name
-    }
+    password
+    firstname
+    lastname
+    facebookAuthId
+    twitterAuthId
+    linkedInAuthId
+    bio
     postCount: articles(where: {isPublished: true}){
       id
     }
-    institution {
+    userFiles{
+      id
+      url
+      name
+      size
+      contentType
+    }
+    gender
+    country{
+      id
+      name
+    }
+    institution{
+      id
       title
     }
-    department { 
+    department{
       name
+      id
+      createdAt
+    }
+    interest{
+      id
+      name
+      avatar
+    }
+    messages{
+      text
+      sent
+      seen
+      delivered
+      createdAt
+      channel{
+        id
+      }
+    }
+    connections{
+      username
+      id
+      firstname
+      lastname
+    }
+    following{
+      username
+      id
+      firstname
+      lastname
+    }
+    followers{
+      username
+      id
+      firstname
+      lastname
     }
     type
     userType
+    articles{
+      id
+      title
+      description
+    }
+    favourites{
+      id
+      title
+      description
+    }
+    channels{
+      id
+      description
+      title
+    }
+    myChannels{
+      id
+      description
+      title
+    }
+    pendingChannels{
+      id
+      description
+      title
+    }
+    blockedChannels{
+      id
+      description
+      title
+    }
+    moderatorsChannels{
+      id
+      description
+      title
+    }
+    likedArticles{
+      id
+      title
+      description
+    }
+    comments{
+      id
+      article{
+        id
+      }
+      body
+    }
+    newConnectNot
+    notifications{
+      id
+      createdAt
+      verb
+      type
+      message{
+        text
+        id
+        createdAt
+      }
+      article{
+        title
+        id
+        createdAt
+      }
+      seen
+      sent
+      slug
+      actor{
+        username
+        avatar
+        firstname
+        lastname
+      }
+    }
+    actorNotifications{
+      id
+      createdAt
+      verb
+      type
+      message{
+        text
+        id
+        createdAt
+      }
+      article{
+        title
+        id
+        createdAt
+      }
+      seen
+      sent
+      slug
+      actor{
+        username
+        avatar
+        firstname
+        lastname
+      }
+    }
+    newCommentNot
+    newMessageNot
+    newCommunityNot
+    newProfileNot
+    topWeeklyArticleNot
+    mentionMeNot
+    enableBrowserPushNot
+    enableMobilePushNot
+    enableLocation
+    deviceIds
+    completedProfile
     verified
+    location{
+      id
+      latitude
+      longitude
+    }
   }
 `;
 

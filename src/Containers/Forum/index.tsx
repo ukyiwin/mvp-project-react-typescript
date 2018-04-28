@@ -3,10 +3,9 @@ import { Route, withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { asyncComponent } from 'react-async-component';
 import { LoadingComponent } from 'Components/EmptyStates';
+import CommunitySidebar from 'Components/Community/CommunitySidebar';
+import ChannelList from 'Components/Community/ChannelList';
 import ThemeProvider from 'anchor-ui/theme-provider';
-import SearchBox from 'anchor-ui/search-box';
-import List from 'anchor-ui/list';
-import ListItem from 'anchor-ui/list-item';
 import ChannelHeader from 'anchor-ui/channel-header';
 import Button from 'anchor-ui/button';
 import IconChannels from 'anchor-ui/icons/icon-channels';
@@ -60,37 +59,9 @@ class Forum extends React.Component<Props> {
         style={{height: '91vh', width: '100vw'}}
         className="uk-width-1-1 uk-flex"
       >
-        <div id="chat-list" className="uk-width-1-4 un-border-right" style={{backgroundColor: '#ffffff'}}>
-            <SearchBox placeholder="Search for channels and chat" />
-            <List
-                id="chat-list"
-                header="Channels"
-                style={{height: '43.1vh'}}
-            >
-              {this.props.channels.getAllChat ? this.props.channels.getAllChat.map((item: Channels, index) => (
-                <ListItem
-                  key={index}
-                  primaryText={item.title}
-                  avatar={item.avatar}
-                />
-              )) : <div className="uk-padding-small">Empty channel conversation</div>}
-            </List>
-            <List
-              id="chat-list"
-              header="Direct Chat"
-              style={{height: '40vh'}}
-            >
-              {this.props.channels.getAllChat ? this.props.channels.getAllChat.map((item, index) => (
-                <ListItem
-                  key={index}
-                  primaryText={item.primaryText}
-                  secondaryText={item.secondaryText}
-                  avatar={item.image}
-                />
-              )) : <div className="uk-padding-small">Empty Direct Chat</div>}
-            </List>
-        </div>
-        <div className="uk-width-expand">
+        <CommunitySidebar />
+        <ChannelList />
+        <div className="uk-width-expand uk-visible@s">
           <ChannelHeader
             name="Channel"
             rightButton={

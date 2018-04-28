@@ -26,8 +26,8 @@ class SideBar extends React.Component<RouteComponentProps<any> & Props> {
                             </Link>
                         </li>
                         <li>
-                            <Link to="/forum">
-                                <span className="uk-margin-small-right" uk-icon="icon: thumbnails" /> Forums
+                            <Link to="/community">
+                                <span className="uk-margin-small-right" uk-icon="icon: thumbnails" /> Community
                             </Link>
                         </li>
                         <li>

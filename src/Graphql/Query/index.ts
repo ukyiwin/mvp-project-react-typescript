@@ -45,14 +45,27 @@ export const USER_EXIST = gql`
  * @description check if current user article
  */
 export const ARTICLES = gql`
-  query articles($myUsername: String, $offset: Int, $limit: Int) {
-    articles (offset: $offset, limit: $limit){
-      ...articleFragment
-      saved: userFavourited(where: {username: $myUsername }) {
-        username
+  query articles($username: String, $cursor: String) {
+    articles(cursor: $cursor){
+      aggregate {
+        count
       }
-      liked: likes(where: {username: $myUsername }) {
-        username
+      edges {
+        node {
+          saved: userFavourited(where: {username: $username }) {
+            username
+          }
+          liked: likes(where: {username: $username }) {
+            username
+          }
+          ...articleFragment
+        }
+      }
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
       }
     }
   }
@@ -63,9 +76,22 @@ export const ARTICLES = gql`
  * @description check if current user article
  */
 export const DRAFTS = gql`
-  query drafts($offset: Int, $limit: Int) {
-    drafts (offset: $offset, limit: $limit){
-      ...articleFragment
+  query drafts($cursor: ID) {
+    drafts(cursor: $cursor){
+      aggregate {
+        count
+      }
+      edges {
+        node {
+          ...articleFragment
+        }
+      }
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
     }
   }
   ${ARTICLE_FRAGMENT}
@@ -75,15 +101,28 @@ export const DRAFTS = gql`
  * @description check if current user article
  */
 export const PUBLISHED = gql`
-  query published($myUsername: String, $offset: Int, $limit: Int) {
-    published (offset: $offset, limit: $limit){
-      saved: userFavourited(where: {username: $myUsername }) {
-        username
+  query published($username: String, $cursor: ID) {
+    published(cursor: $cursor){
+      aggregate {
+        count
       }
-      liked: likes(where: {username: $myUsername }) {
-        username
+      edges {
+        node {
+          saved: userFavourited(where: {username: $username }) {
+            username
+          }
+          liked: likes(where: {username: $username }) {
+            username
+          }
+          ...articleFragment
+        }
       }
-      ...articleFragment
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
     }
   }
   ${ARTICLE_FRAGMENT}
@@ -93,15 +132,28 @@ export const PUBLISHED = gql`
  * @description check if current user article
  */
 export const SAVED = gql`
-  query saved($myUsername: String, $offset: Int, $limit: Int) {
-    saved (offset: $offset, limit: $limit){
-      saved: userFavourited(where: {username: $myUsername }) {
-        username
+  query saved($myUsername: String, $cursor: ID) {
+    saved(cursor: $cursor){
+      aggregate {
+        count
       }
-      liked: likes(where: {username: $myUsername }) {
-        username
+      edges {
+        node {
+          saved: userFavourited(where: {username: $myUsername }) {
+            username
+          }
+          liked: likes(where: {username: $myUsername }) {
+            username
+          }
+          ...articleFragment
+        }
       }
-      ...articleFragment
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
     }
   }
   ${ARTICLE_FRAGMENT}
@@ -330,15 +382,28 @@ export const GET_COMMENTS = gql`
 `;
 
 export const ACTIVITY = gql`
-  query activity($username: String!, $myUsername: String) {
-    activity(username: $username){
-      ...articleFragment
-      saved: userFavourited(where: {username: $myUsername }) {
-        username
+  query activity($username: String!, $cursor: String) {
+    activity(username: $username, cursor: $cursor){
+      aggregate {
+        count
       }
-      liked: likes(where: {username: $myUsername }) {
-        username
+      edges {
+        node {
+          saved: userFavourited(where: {username: $username }) {
+            username
+          }
+          liked: likes(where: {username: $username }) {
+            username
+          }
+          ...articleFragment
+        }
       }
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      } 
     }
   }
   ${ARTICLE_FRAGMENT}
@@ -416,12 +481,6 @@ export const GET_SIMILAR_ARTICLES = gql`
   query getSimilarArticles($id: ID!){
     getSimilarArticles(id :$id){
       ...articleFragment
-      saved: userFavourited(where: {username: $myUsername }) {
-        username
-      }
-      liked: likes(where: {username: $myUsername }) {
-        username
-      }
     }
   }
   ${ARTICLE_FRAGMENT}

@@ -1,15 +1,14 @@
 import * as React from 'react';
-import DraftsItem from 'Components/DraftsItem';
+import ArticleItem from 'Components/ArticleItem';
 import { graphql, QueryProps, Query } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
+import DraftsItem from 'Components/DraftsItem';
 import { ErrorComponent, LoadingComponent, EmptyComponent } from 'Components/EmptyStates';
-import { DRAFTS } from 'Graphql/Query';
 import { Article, User } from 'CustomTypings/schema';
 import ContentLoader from 'react-content-loader';
+import { DRAFTS } from 'Graphql/Query';
 import { cookies } from 'link';
 import { CURRENT_USER } from '../../constants';
-
-// const MyFacebookLoader = () => <Facebook />;
 
 export const MyLoader = () => (
     <ContentLoader height={200} width={400} speed={2} primaryColor={'#f3f3f3'} secondaryColor={'#ecebeb'}>
@@ -32,8 +31,11 @@ export const MyLoader = () => (
 const user = cookies.get(CURRENT_USER) as User;
 
 const DraftsList = () => (
-  <Query query={DRAFTS} variables={{ limit: 10 }} pollInterval={5000} >
-  {({ loading, error, data, fetchMore, networkStatus, refetch }) => {
+  <Query
+    query={DRAFTS}
+    pollInterval={5000}
+  >
+  {({ loading, error, data: {drafts}, fetchMore, networkStatus, refetch }) => {
     if (loading) {
       return (
         <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
@@ -50,30 +52,37 @@ const DraftsList = () => (
     if (error) {
         return <ErrorComponent />;
     }
-    if (data.drafts.length < 1) {
+    if (drafts.edges.length < 1) {
       return (
         <EmptyComponent 
-          title="You have no Draft" 
-          subtitle="Please write an article to see your drafts"
+          title="No saved Articles" 
+          subtitle="Explore the articles section and save articles you like to see them here"
         />);
     }
     return (
         <InfiniteScroll
           pageStart={0}
-          hasMore={true}
+          hasMore={drafts.pageInfo.hasNextPage}
           loadMore={() =>
             fetchMore({
               variables: {
-                limit: 10,
-                offset: data.drafts.length
+                myUsername: user.username,
+                cursor: drafts.pageInfo.endCursor
               },
-              updateQuery: (prev, { fetchMoreResult }) =>  {
-                if (!fetchMoreResult) {
-                  // this.set;
-                  return prev;
-                }
-                return {...prev, drafts: [...prev.drafts, ...fetchMoreResult.drafts]};
-              },
+              updateQuery: (previousResult, { fetchMoreResult }) => {
+                const newEdges = fetchMoreResult.drafts.edges;
+                const pageInfo = fetchMoreResult.drafts.pageInfo;
+  
+                return newEdges.length
+                  ? {
+                      drafts: {
+                        __typename: previousResult.drafts.__typename,
+                        edges: [...previousResult.drafts.edges, ...newEdges],
+                        pageInfo
+                      }
+                    }
+                  : previousResult;
+              }
             })}
           loader={
             <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
@@ -82,11 +91,11 @@ const DraftsList = () => (
           // tslint:disable-next-line:jsx-curly-spacing
           }
         >
-            {data.drafts ? data.drafts.map((article) => (
-                <div key={article.id}>
-                    <DraftsItem article={article} />
-                </div>
-            )) : null}
+          {drafts.edges.map((article) => (
+            <div key={article.node.id}>
+              <DraftsItem article={article.node} />
+            </div>
+          ))}
         </InfiniteScroll>
     );
     }}
