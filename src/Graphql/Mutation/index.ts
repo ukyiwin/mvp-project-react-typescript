@@ -69,8 +69,8 @@ export const CREATE_ARTICLE = gql`
 `;
 
 export const PUBLISH_ARTICLE = gql`
-  mutation publishArticle($id: ID!){
-    publishArticle(id: $id){
+  mutation publishArticle($id: ID!, $category: ID!, $tags: [String!]!){
+    publishArticle(id: $id, category: $category, tags: $tags){
       ...articleFragment
     }
   }
@@ -80,10 +80,9 @@ export const PUBLISH_ARTICLE = gql`
 export const DELETE_ARTICLE = gql`
   mutation deleteArticle($id: ID!){
     deleteArticle(id: $id){
-      ...articleFragment
+      success
     }
   }
-  ${ARTICLE_FRAGMENT}
 `;
 
 export const SEND_MESSAGE_BY_SLUG = gql`

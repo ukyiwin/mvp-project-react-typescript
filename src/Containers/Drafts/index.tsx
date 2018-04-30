@@ -18,7 +18,7 @@ import { TextButton } from 'Components/Buttons';
 import Icon from 'Components/Icons';
 import DraftsList from 'Components/DraftList';
 
-export default class Drafts extends React.Component {
+export default class Search extends React.Component {
 
   render() {
     return (
@@ -27,7 +27,6 @@ export default class Drafts extends React.Component {
         <AppViewWrapper>
           <Column type="only">
             <h1 style={{ padding: 10, marginBottom: 20 }}>My Drafts</h1>
-            <DraftsList />
           </Column>
         </AppViewWrapper>
       </FlexCol>

@@ -98,16 +98,18 @@ class PrivateHeader extends React.Component<Props> {
               </ul>
               <div className="uk-navbar-right uk-visible@s">
                 <ul className="uk-iconnav">
-                  <div className="uk-flex">
-                    <SearchContainer />
+                  <div className="uk-navbar-nav uk-padding-small">
+                    <Link to="/search" className="" style={{color: '#fff'}}><Icon glyph="search" size={34} /></Link>
                   </div>
-                  <NotificationsTab
-                    location={props.history.location}
-                    currentUser={props.me}
-                    data-badge="8"
-                    hideText={true}
-                    active={props.history.location.pathname.includes('/notifications')}
-                  />
+                  <div className="uk-navbar-nav uk-padding-small">
+                    <NotificationsTab
+                      location={props.history.location}
+                      currentUser={props.me}
+                      data-badge="8"
+                      hideText={true}
+                      active={props.history.location.pathname.includes('/notifications')}
+                    />
+                  </div>
                 </ul>
                 <ul className="uk-navbar-nav">
                   <li>

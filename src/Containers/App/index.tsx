@@ -96,7 +96,7 @@ const Connections = asyncComponent({
 });
 
 const Search = asyncComponent({
-  resolve: () => import('Containers/Connection'),
+  resolve: () => import('Containers/Search'),
   LoadingComponent: () => <LoadingComponent />,
 });
 
