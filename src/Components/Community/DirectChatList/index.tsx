@@ -67,7 +67,7 @@ class DirectChatList extends React.Component<Props> {
                     <ListItem
                       key={user.id}
                       primaryText={user.firstname + ' ' + user.lastname}
-                      secondaryText={user.username ?  user.username : '' }
+                      secondaryText={user.username ? user.username : ''}
                       avatar={user.avatar ? user.avatar : maleP}
                     />
                   </Link>
