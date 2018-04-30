@@ -9,9 +9,12 @@ const FooterPublic = () => {
   return (
     <Footer>
       <FlexRow>
-        <Link to="/">
-          <Icon glyph="logo" size={32} />
-        </Link>
+        <img 
+          src={require('../../../Assets/unizonn/uni_green_s.svg')} 
+          style={{height: 70}}
+          // tslint:disable-next-line:jsx-boolean-value
+          uk-svg
+        />
       </FlexRow>
       <Flexer>
         <LinkBlock to="/about">

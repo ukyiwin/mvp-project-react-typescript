@@ -6,6 +6,7 @@ import * as Jquery from 'jquery';
 import { CommunitySearch, Yours } from 'Components/SearchBoxHome';
 import './style.scss';
 import { FooterPublic } from 'Components/Layouts/FooterPublic';
+import { Icon } from 'semantic-ui-react';
 
 interface Props {
     classes?: object;
@@ -56,19 +57,28 @@ class HomePublic extends React.Component<Props> {
                     className="uk-section backgroundTwo uk-width-1-1 uk-height-1-1 uk-light uk-background-cover"
                     style={{ minHeight: '100vh' }}
                 >
-                    <div className="uk-container">
-                      <div className="uk-grid-match uk-flex uk-width-1-1" uk-grid>
-                        <div className="uk-padding uk-width-1-2@m uk-width-1-1@s">
-                          <InputBoxLogin />
-                        </div>
-                        <div className="uk-width-1-2@m uk-visible@s">
-                          <div className="uk-visible@s phoneImg" />
+                  <div className="uk-container">
+                    <div className="uk-grid-match uk-flex uk-width-1-1" uk-grid>
+                      <div className="uk-padding uk-width-1-2@m uk-width-1-1@s">
+                        <InputBoxLogin />
+                      </div>
+                      <div className="uk-width-1-2@m uk-flex-middle uk-visible@s">
+                        <div data-uk-lightbox  className="uk-text-center">
+                          <a
+                            className="mdc-elevation--z5"
+                            style={{ height: 150, width: 150, borderRadius: 10 }}
+                            href="//vimeo.com/267226915" data-caption="Vimeo"
+                          >
+                            <span uk-icon="icon: play-circle; ratio: 9" />
+                          </a>
+                          <h5>Click to learn about Unizonn</h5>
                         </div>
                       </div>
                     </div>
+                  </div>
                 </div>
                 <div
-                  className="uk-section uk-width-1-1 uk-height-1-1 uk-light uk-background-cover"
+                  className="uk-section uk-width-1-1 uk-height-1-1 uk-background-default uk-light uk-background-cover"
                 >
                   <div className="uk-container">
                     <div className="uk-child-width-1-3@s uk-grid-match" data-uk-grid>
@@ -102,25 +112,6 @@ class HomePublic extends React.Component<Props> {
                   </div>
                   
                 </div>
-                <CommunitySearch/>
-                <div
-                  className="uk-section uk-width-1-1 uk-light uk-background-cover"
-                >
-                  <div className="uk-container">
-                    <div>
-                      <div className="uk-card uk-card-small uk-text-center">
-                        <iframe 
-                          width="595" 
-                          height="350"
-                          className="video"
-                          src="https://www.youtube.com/embed/a_ONcLi8tfY" 
-                          frameborder="0" allow="autoplay; encrypted-media" 
-                          allowfullscreen 
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <Yours />
                 <FooterPublic />
             </div>
@@ -129,13 +120,3 @@ class HomePublic extends React.Component<Props> {
 }
 
 export default HomePublic;
-/*
-
-                        <iframe
-                            src="//www.youtube.com/embed/a_ONcLi8tfY?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1"
-                            width="560"
-                            height="415"
-                            frameBorder="1"
-                            data-uk-responsive={true}
-                            uk-video="automute: true; autoplay: false"
-                        />*/

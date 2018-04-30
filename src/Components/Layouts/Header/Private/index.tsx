@@ -56,7 +56,7 @@ class PrivateHeader extends React.Component<Props> {
             <div className="nav-overlay uk-navbar-left">
               <Link to="/" className="uk-navbar-item uk-logo uk-visible@m" href="#">
                 <img 
-                  src={require('../../../../Assets/unizonn/unizz_small.svg')} 
+                  src={require('../../../../Assets/unizonn/uni_green.svg')} 
                   style={{height: 40}}
                   // tslint:disable-next-line:jsx-boolean-value
                   uk-svg
@@ -64,7 +64,7 @@ class PrivateHeader extends React.Component<Props> {
               </Link>
               <Link to="/" className="uk-navbar-item uk-logo uk-hidden@m" href="#">
                 <img 
-                  src={require('../../../../Assets/unizonn/unizz_small.svg')} 
+                  src={require('../../../../Assets/unizonn/uni_green_s.svg')} 
                   style={{height: 40}}
                   // tslint:disable-next-line:jsx-boolean-value
                   uk-svg
@@ -296,7 +296,7 @@ class PrivateHeader extends React.Component<Props> {
               />
               <Link to="/" className="uk-navbar-item uk-logo uk-visible@m" href="#">
                 <img 
-                  src={require('../../../../Assets/unizonn/unizz_small.svg')} 
+                  src={require('../../../../Assets/unizonn/uni_green.svg')} 
                   style={{height: 40}}
                   // tslint:disable-next-line:jsx-boolean-value
                   uk-svg
@@ -304,7 +304,7 @@ class PrivateHeader extends React.Component<Props> {
               </Link>
               <Link to="/" className="uk-navbar-item uk-logo uk-hidden@m" href="#">
                 <img 
-                  src={require('../../../../Assets/unizonn/unizz_small.svg')} 
+                  src={require('../../../../Assets/unizonn/uni_green_s.svg')} 
                   style={{height: 40}}
                   // tslint:disable-next-line:jsx-boolean-value
                   uk-svg

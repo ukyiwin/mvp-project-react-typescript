@@ -20,20 +20,20 @@
 
 .backgroundTwo {
   background: 
-    url('../../Assets/img/bg-custom.png');
+    url('../../Assets/unizonn/bgMain.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover, cover, cover;
-
   background-blend-mode: screen, difference, lighten;
 }
 
-.backgroundThree {
-  background:
-    url('../../Assets/img/bg-servise.png');
+.backgroundSmall {
+  background: 
+    url('../../Assets/unizonn/bg_3.gif');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: cover, cover, cover;
+  background-blend-mode: screen, difference, lighten;
 }
 
 .phoneImg {
@@ -42,6 +42,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: 80%;
+  color: mediumblue;
 }
 
 .backgroundFour {

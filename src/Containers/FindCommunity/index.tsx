@@ -18,7 +18,7 @@ import Icon from 'Components/Icons';
 import PublishList from 'Components/PublishList';
 import SearchArticle from 'Components/SearchArticle';
 
-export default class Search extends React.Component {
+export default class FindCommunity extends React.Component {
 
   state = {
     value: ''
@@ -32,14 +32,9 @@ export default class Search extends React.Component {
     const { value } = this.state;
     return (
       <FlexCol style={{ flex: '1 1 auto', maxHeight: 'calc(100% - 48px)', backgroundColor: '#fff' }}>
-        <Titlebar title={'Search'} provideBack={false} noComposer />
+        <Titlebar title={'Find Community'} provideBack={false} noComposer />
         <AppViewWrapper>
           <Column type="only">
-            <img 
-              src={require('../../Assets/unizonn/uniz_.svg')} 
-              style={{height: 80, marginBottom: 20}}
-              uk-svg
-            />
             <form className="uk-search uk-width-1-1 uk-search-large uk-search-default uk-margin-bottom">
               <span data-uk-search-icon />
               <input
@@ -51,23 +46,6 @@ export default class Search extends React.Component {
                 placeholder="Search articles and topics on unizonn"
               />
             </form>
-            <div className="uk-child-width-1-2@s uk-child-width-1-3@m uk-text-center uk-margin-bottom" data-uk-grid>
-              <Link to="/connections">
-                <div>
-                  <div className="uk-card uk-card-default uk-card-body">Find students</div>
-                </div>
-              </Link>
-              <Link to="/find/community">
-                <div>
-                  <div className="uk-card uk-card-default uk-card-body">Find communities</div>
-                </div>
-              </Link>
-              <Link to="/library">
-                <div>
-                  <div className="uk-card uk-card-default uk-card-body">Find Library</div>
-                </div>
-              </Link>
-            </div>
             <h5>Top trending communities</h5>
             <div className="uk-child-width-1-2@s uk-child-width-1-3@m uk-text-center uk-margin-bottom" data-uk-grid>
               <Link to="/connections">

@@ -33,6 +33,11 @@ const NotFound = asyncComponent({
   LoadingComponent: () => <LoadingComponent />,
 });
 
+const FindCommunity = asyncComponent({
+  resolve: () => import('Containers/FindCommunity'),
+  LoadingComponent: () => <LoadingComponent />,
+});
+
 const Profile = asyncComponent({
   resolve: () => import('Containers/Profile'),
   LoadingComponent: () => <LoadingComponent />,
@@ -543,6 +548,14 @@ class App extends React.Component<Props & ChildProps<Response & Props>, State> {
                             me={this.state.me}
                           />
                           <EmptyLayout 
+                            component={FindCommunity} 
+                            exact={true} 
+                            path="/find/community"
+                            isAuthenticated={isAuthenticated}
+                            logout={this._logout}
+                            me={this.state.me}
+                          />
+                          <EmptyLayout 
                             component={DirectChat} 
                             exact={true} 
                             path="/conversation/:username"
@@ -574,7 +587,7 @@ class App extends React.Component<Props & ChildProps<Response & Props>, State> {
                             logout={this._logout}
                             me={this.state.me}
                           />
-                          <EmptyLayout 
+                          <LoungeLayout 
                             component={Search} 
                             path="/search/:school" 
                             exact={true} 
@@ -590,13 +603,10 @@ class App extends React.Component<Props & ChildProps<Response & Props>, State> {
                             logout={this._logout}
                             me={this.state.me}
                           />
-                          <EmptyLayout 
+                          <Route 
                             component={Search} 
                             path="/search"
-                            exact={true} 
-                            isAuthenticated={isAuthenticated}
-                            logout={this._logout}
-                            me={this.state.me}
+                            exact={true}
                           />
                           <EmptyLayout 
                             component={Search} 
