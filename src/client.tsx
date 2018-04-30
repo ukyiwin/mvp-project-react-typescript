@@ -126,11 +126,13 @@ const container = document.getElementById('root') as HTMLElement;
 /// registerServiceWorker();
 // import App from './App';
 
+const mode = process.env.MAINTENANCE_MODE === 'enabled';
+
 const app = (
   <AsyncComponentProvider rehydrateState={asyncComponentsRehydrateState}>
     <ApolloProvider client={client}>
         <BrowserRouter>
-          <App maintenanceMode={process.env.MAINTANANCE} />
+          <App maintenanceMode={mode} />
         </BrowserRouter>
     </ApolloProvider>
   </AsyncComponentProvider>

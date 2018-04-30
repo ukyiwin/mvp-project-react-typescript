@@ -11,6 +11,8 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state';
 import fetch from 'node-fetch';
 import { BatchHttpLink } from 'apollo-link-batch-http';
+// import ws from 'ws';
+// import { SubscriptionClient } from 'subscriptions-transport-ws';
 
 // const link = new BatchHttpLink({ uri: "/graphql" });
 const AUTH_TOKEN = 'token';
@@ -34,7 +36,7 @@ export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
-export const httpLink = new HttpLink({ uri: 'https://uniserver.herokuapp.com', fetch });
+export const httpLink = new BatchHttpLink({ uri: 'https://uniserver.herokuapp.com', fetch });
 
 export const middlewareLink = new ApolloLink((operation: any, forward: any) => {
   // get the authentication token from local storage if it exists
@@ -83,20 +85,19 @@ export const requestLink = ({ queryOrMutationLink, subscriptionLink }) =>
     subscriptionLink,
     queryOrMutationLink
 );
-/*
-export const wsLink = new WebSocketLink({
-  uri: `ws://uniserver.herokuapp.com`,
-  options: {
-    reconnect: true,
-    connectionParams: {
-      Authorization: cookies.get(AUTH_TOKEN) ? `Bearer ${cookies.get(AUTH_TOKEN)}` : '',
-    },
-  }
-});
-*/
+
+/*const clientS = new SubscriptionClient(`ws://localhost:4000`, {
+  reconnect: true,
+  connectionParams: {
+    Authorization: cookies.get(AUTH_TOKEN) ? `Bearer ${cookies.get(AUTH_TOKEN)}` : '',
+  },
+},                                     ws);
+
+export const wsLink = process.browser ? new WebSocketLink(clientS) : null;*/
+
 // using the ability to split links, you can send data to each link
 // depending on what kind of operation is being sent
-/* export const netLink = split(
+/* export const netLink = process.browser ? split(
   // split based on operation type
   ({ query }) => {
     const { kind, operation } = getMainDefinition(query);
@@ -104,7 +105,7 @@ export const wsLink = new WebSocketLink({
   },
   wsLink,
   httpLink,
-);*/
+) : httpLink; */
 
 const defaults = { appState: 'INITIAL' };
 

@@ -6,6 +6,18 @@ import ViewSegment from 'Components/ThemedSection';
 import { Button } from 'Components/Buttons';
 import { Content, Tagline, Copy } from 'Containers/style';
 
+const share = (title, text, url) => {
+  if (navigator.share) {
+    navigator.share({
+        title: 'Web Fundamentals',
+        text: 'Check out Web Fundamentals — it rocks!',
+        url: 'https://developers.google.com/web',
+    })
+      .then(() => console.log('Successful share'))
+      .catch((error) => console.log('Error sharing', error));
+  }
+};
+
 const CommunitySearchWrapper = (props: any) => {
   const ThisContent = styled(Content)`
     flex-direction: column;
@@ -85,9 +97,9 @@ const CommunitySearchWrapper = (props: any) => {
         <SecondaryContent>
           <SecondaryTagline>Got a friend thats a student and is not on unizonn</SecondaryTagline>
         </SecondaryContent>
-        <Link to={`/invite`}>
+        <a onClick={() => share('dd', 'dsd', 'dsd')}>
           <PrimaryCTA>Invite Friend</PrimaryCTA>
-        </Link>
+        </a>
       </ThisContent>
     </ViewSegment>
   );

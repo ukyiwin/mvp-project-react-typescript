@@ -3,12 +3,11 @@ import { Route, withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { asyncComponent } from 'react-async-component';
 import { LoadingComponent } from 'Components/EmptyStates';
+import CommunitySidebar from 'Components/Community/CommunitySidebar';
+import ChannelList from 'Components/Community/ChannelList';
+import ParticipantList from 'Components/Community/ParticipantList';
 import ThemeProvider from 'anchor-ui/theme-provider';
-import SearchBox from 'anchor-ui/search-box';
-import List from 'anchor-ui/list';
-import ListItem from 'anchor-ui/list-item';
 import ChannelHeader from 'anchor-ui/channel-header';
-import Button from 'anchor-ui/button';
 import IconChannels from 'anchor-ui/icons/icon-channels';
 import IconPeople from 'anchor-ui/icons/icon-people';
 import IconEdit from 'anchor-ui/icons/icon-edit';
@@ -20,10 +19,11 @@ import Modal from 'anchor-ui/modal';
 import IconAddFriend from 'anchor-ui/icons/icon-add-friend';
 import IconConversation from 'anchor-ui/icons/icon-conversation';
 import { compose, withApollo, graphql, Query } from 'react-apollo';
-import { CREATE_MESSAGE } from 'Graphql/Mutation';
-import { GET_ALL_MY_CHANNEL } from 'Graphql/Query';
 import { Channels } from 'CustomTypings/schema';
+// import * as UIkit from 'uikit';
 import './style.scss';
+import { Button } from 'semantic-ui-react';
+import Icon from 'Components/Icons';
 
 const ChatDetail = asyncComponent({
   resolve: () => import('../ChatDetail'),
@@ -34,6 +34,8 @@ const ChatDetail = asyncComponent({
 // tslint:disable-next-line:no-empty-interface
 interface Props {
   channels: any;
+  match: any;
+  history: any;
 }
 
 interface Response {
@@ -43,15 +45,52 @@ interface Response {
 class Forum extends React.Component<Props> {
   
   state = {
-    channelId: '',
+    channelCommunity: '',
     text: '',
     currentChannel: {} as any,
-    open: false
+    open: false,
+    openParticipantSide: false,
+    channelId: ''
   };
 
   openModal() {
     const value = !this.state.open;
     this.setState({open: value});
+  }
+
+  componentWillMount() {
+
+    const { match: { params } } = this.props;
+
+    if (params.id) {
+        this.setState({ channelCommunity: params.id });
+    } else {
+        // this.props.history.goBack();
+    }
+    
+    if (params.channel) {
+      this.setState({ channelId: params.channel });
+    }
+
+  }
+    // tslint:disable-next-line:typedef
+  componentDidUpdate(prevProps) {
+    const oldId = prevProps.match.params.id;
+    const newId = this.props.match.params.id;
+    const oldChannel = prevProps.match.params.channel;
+    const newChannel = this.props.match.params.channel;
+    
+    if (newId !== oldId) {
+      this.setState({ channelCommunity: newId });
+    }
+
+    if (newChannel !== oldChannel) {
+      this.setState({ channelId: newChannel });
+    }
+  }
+
+  selectCommunity = (value) => {
+    this.setState({ channelCommunity: value });
   }
 
   renderContent() {
@@ -60,88 +99,53 @@ class Forum extends React.Component<Props> {
         style={{height: '91vh', width: '100vw'}}
         className="uk-width-1-1 uk-flex"
       >
-        <div id="chat-list" className="uk-width-1-4 un-border-right" style={{backgroundColor: '#ffffff'}}>
-            <SearchBox placeholder="Search for channels and chat" />
-            <List
-                id="chat-list"
-                header="Channels"
-                style={{height: '43.1vh'}}
+        <CommunitySidebar itemClick={this.selectCommunity} />
+        <ChannelList communityId={this.state.channelCommunity} />
+        <div className="uk-width-expand uk-visible@s">
+          <div 
+            className="uk-flex uk-flex-between uk-align-center uk-text-center mdc-elevation--z2"
+            style={{ height: 50, padding: 2, backgroundColor: '#fff'}}
+          >
+            <Button.Content
+              circular
+              style={{ marginRight: 10 }}
+              compact
             >
-              {this.props.channels.getAllChat ? this.props.channels.getAllChat.map((item: Channels, index) => (
-                <ListItem
-                  key={index}
-                  primaryText={item.title}
-                  avatar={item.avatar}
-                />
-              )) : <div className="uk-padding-small">Empty channel conversation</div>}
-            </List>
-            <List
-              id="chat-list"
-              header="Direct Chat"
-              style={{height: '40vh'}}
-            >
-              {this.props.channels.getAllChat ? this.props.channels.getAllChat.map((item, index) => (
-                <ListItem
-                  key={index}
-                  primaryText={item.primaryText}
-                  secondaryText={item.secondaryText}
-                  avatar={item.image}
-                />
-              )) : <div className="uk-padding-small">Empty Direct Chat</div>}
-            </List>
-        </div>
-        <div className="uk-width-expand">
-          <ChannelHeader
-            name="Channel"
-            rightButton={
-                  <div className="uk-flex">
-                    <Button iconButton>
-                      <IconPeople />
-                    </Button>
-                  </div>
-            }
-            leftButton={
-                // tslint:disable-next-line:jsx-boolean-value
-                <Button iconButton onClick={() => this.openModal()}>
-                  <IconAddFriend />
-                </Button>}
-            style={{backgroundColor: '#454d5d'}}
-          />
-          <div className="uk-width-1-1 uk-flex" style={{}}>
-            <ChatDetail />
-          </div>
-        </div>
-        <Modal 
-          open={this.state.open} 
-          color="grey"
-          actions={
-            <div className="uk-flex uk-flex-between">
-              <button className="uk-button uk-button-small uk-button-default" onClick={() => this.openModal()}>Close</button>
-              <button className="uk-button uk-button-small uk-button-primary">Create</button>
+              <Icon glyph="plus" />
+            </Button.Content>
+            <div 
+              className="uk-text-capitalize uk-text-medium uk-text-bold uk-text-truncate"
+              style={{ marginLeft: 5 }}
+            >{this.state.channelId}
             </div>
-          }
-        >
-          <div>
-            <input placeholder="Channel name" className="uk-input"/>
+            <Button.Content
+              circular
+              style={{ marginRight: 10 }}
+              compact
+              onClick={() => {
+                const value = !this.state.openParticipantSide;
+                this.setState({ openParticipantSide: value });
+              }}
+            >
+              <Icon glyph="plus" />
+            </Button.Content>
           </div>
-        </Modal>
+          <ChatDetail channelId={this.state.channelId} />
+        </div>
+        {this.state.openParticipantSide ? <ParticipantList communityId={this.state.channelCommunity} /> : null}
       </div>
     );
   }
 
-  renderLoading() {
-    return <div>Loading</div>;
-  }
   render() {
-    console.log(this.props.channels);
     return (
       <ThemeProvider color="#f2912c">
         <div className="App">
           <Helmet>
-            <title>Unizonn | Lounge</title>
+            <title>Unizonn | Community</title>
             <meta name="an inclusive community" content="Unizonn community" />
           </Helmet>
-          {this.props.channels.Loading ? this.renderLoading() : this.renderContent()}
+          {this.renderContent()}
         </div>
       </ThemeProvider>
     );
@@ -149,11 +153,7 @@ class Forum extends React.Component<Props> {
 }
 
 export default withRouter(compose(
-  withApollo,
-  graphql<Response, Props>(GET_ALL_MY_CHANNEL, {
-      name: 'channels',
-  }),
-  graphql(CREATE_MESSAGE, {name: 'sendMessage'})
+  withApollo
 )(Forum));
 
 /*

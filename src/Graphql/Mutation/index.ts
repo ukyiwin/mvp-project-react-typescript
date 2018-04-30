@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { USER_FRAGMENT, ARTICLE_FRAGMENT, MESSAGE_FRAGMENT } from 'Graphql/Fragment';
+import { USER_FRAGMENT, ARTICLE_FRAGMENT } from 'Graphql/Fragment';
 /**
  * @description user registration for graphql mutation
  */
@@ -60,8 +60,8 @@ export const COMPLETE_SIGNUP = gql`
 `;
 
 export const CREATE_ARTICLE = gql`
-  mutation createArticle($id: ID, $title: String, $body: String, $tags: [String!]!, $category: [String!]!, $photoId: ID){
-    createArticle(id: $id, title: $title, body: $body, tags: $tags, category: $category, photoId: $photoId ){
+  mutation createArticle($id: ID, $title: String, $body: String, $category: [String!]!, $photoId: ID){
+    createArticle(id: $id, title: $title, body: $body, category: $category, photoId: $photoId ){
       ...articleFragment
     }
   }
@@ -77,19 +77,68 @@ export const PUBLISH_ARTICLE = gql`
   ${ARTICLE_FRAGMENT}
 `;
 
-export const CREATE_MESSAGE = gql`
-  mutation createMessage($channelId: ID!, $text: String!){
-    createMessage(channelId: $id, text: $text){
+export const DELETE_ARTICLE = gql`
+  mutation deleteArticle($id: ID!){
+    deleteArticle(id: $id){
+      ...articleFragment
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+export const SEND_MESSAGE_BY_SLUG = gql`
+  mutation sendMessageBySlug($slug: String!, $text: String! ) {
+    sendMessageBySlug(slug: $slug, text: $text){
+      id
+      createdAt
+      updatedAt
       text
-      user {
+      user{
         id
+        avatar
+        username
+        firstname
+        lastname
+        email
       }
-      cahnnel {
+      seen
+      delivered
+      sent
+      channel{
         id
+        slug
+        title
       }
     }
   }
-  ${MESSAGE_FRAGMENT}
+`;
+
+export const SEND_DIRECT_MESSAGE = gql`
+  mutation sendDirectMessage($username: String!, $text: String! ) {
+    sendDirectMessage(username: $username, text: $text){
+      id
+      createdAt
+      updatedAt
+      text
+      seen
+      delivered
+      sent
+      to{
+        id
+        username
+        firstname
+        lastname
+        email
+      }
+      from{
+        id
+        username
+        firstname
+        lastname
+        email
+      }
+    }
+  }
 `;
 
 export const CREATE_COMMENT = gql`
@@ -140,7 +189,6 @@ export const SAVE_ARTICLE = gql`
     favourite(id: $id){
       id
       title
-      title
     }
   }
 `;
@@ -153,4 +201,94 @@ export const UNSAVE_ARTICLE = gql`
       title
     }
   }
+`;
+
+export const UPDATE_NEW_COMMUNITY_NOT = gql`
+  mutation updateNewCommunityNot($value: Boolean!){
+    updateNewCommunityNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const UPDATE_TOP_ARTICLE_NOT = gql`
+  mutation updateTopArticleNot($value: Boolean!){
+    updateTopArticleNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const UPDATE_NEW_COMMENT_NOT = gql`
+  mutation updateNewCommentNot($value: Boolean!){
+    updateNewCommentNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const UPDATE_NEW_MESSAGE_NOT = gql`
+  mutation updateNewMessageNot($value: Boolean!){
+    updateNewMessageNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const UPDATE_NEW_CONNECTION_NOT = gql`
+  mutation updateNewConnectNot($value: Boolean!){
+    updateNewConnectNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const UPDATE_MENTION_ME_NOT = gql`
+  mutation updateMentionMeNot($value: Boolean!){
+    updateMentionMeNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const LOCATION_SHARING = gql`
+  mutation locationSharing($value: Boolean!){
+    locationSharing(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const ENABLE_MOBILE_PUSH_NOT = gql`
+  mutation enableMobilePushNot($value: Boolean!){
+    enableMobilePushNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const ENABLE_WEB_PUSH_NOT = gql`
+  mutation enableMobilePushNot($value: Boolean!){
+    enableBrowserPushNot(value: $value){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+export const UPDATE_USER_PROFILE = gql`
+  mutation updateUserProfile($firstname: String, $lastname: String, $bio: String, $username: String, $role: String){
+    updateUserProfile(firstname: $firstname, lastname: $lastname, bio: $bio, username: $username, role: $role){
+      ...userFragment
+    }
+  }
+  ${USER_FRAGMENT}
 `;

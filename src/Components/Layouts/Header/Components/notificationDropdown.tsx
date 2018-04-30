@@ -1,6 +1,7 @@
 import React from 'react';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
+import InfiniteScroll from 'react-infinite-scroller';
 import Link from 'Components/Link';
 import Icon from 'Components/Icons';
 import Dropdown from 'Components/Dropdown';
@@ -8,6 +9,9 @@ import { Loading } from 'Components/Loading';
 import { NullState } from 'Components/Upsell';
 import { TextButton } from 'Components/Buttons';
 import { DropdownHeader, DropdownFooter } from '../style';
+import { Query } from 'react-apollo';
+import { NotificationItem } from 'Components/Notifications';
+import { NOTIFICATION } from 'Graphql/Query';
 // import { NotificationDropdownList } from 'Component/Notifications/components/notificationDropdownList';
 
 const NullNotifications = () => (
@@ -27,30 +31,57 @@ const NotificationContainer = (props) => {
     markSingleNotificationAsSeenInState,
   } = props;
 
-  if (rawNotifications && rawNotifications.length > 0) {
-    return (
-      <div>{/*<NotificationDropdownList
-        rawNotifications={rawNotifications}
-        currentUser={currentUser}
-        history={history}
-        markSingleNotificationAsSeenInState={
-          markSingleNotificationAsSeenInState
-        }
-      />*/}
-      ghgh
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div style={{ margin: '32px 0' }}>
-        <Loading />
-      </div>
-    );
-  }
-
-  return <NullNotifications />;
+  return(
+    <Query query={NOTIFICATION} pollInterval={5000} >
+    {({ loading, error, data, fetchMore, networkStatus, refetch }) => {
+      if (loading) {
+        return (
+          <div style={{ margin: '32px 0' }}>
+            <Loading />
+          </div>
+        );
+      }
+      if (error) {
+        return <NullNotifications />;
+      }
+      if (data.articles === null) {
+        return <NullNotifications />;
+      }
+      return (
+          <InfiniteScroll
+            pageStart={0}
+            hasMore={true}
+            loadMore={() =>
+              fetchMore({
+                variables: {
+                  limit: 10,
+                  offset: data.notifications.length
+                },
+                updateQuery: (prev, { fetchMoreResult }) =>  {
+                  if (!fetchMoreResult) {
+                    // this.set;
+                    return prev;
+                  }
+                  return {...prev, notifications: [...prev.notifications, ...fetchMoreResult.notifications]};
+                },
+              })}
+            loader={
+              <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
+                <Loading />
+              </div>
+            // tslint:disable-next-line:jsx-curly-spacing
+            }
+          >
+              {data.notifications ? data.notifications.map((notif) => (
+                  <div key={notif.id}>
+                      <NotificationItem notification={notif} />
+                  </div>
+              )) : null}
+          </InfiniteScroll>
+      );
+      }}
+  </Query>
+  );
 };
 
 const NotificationDropdownPure = (props) => {

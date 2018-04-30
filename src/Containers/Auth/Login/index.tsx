@@ -85,10 +85,19 @@ class Login extends React.Component<RouteComponentProps<any> & Props & ChildProp
             })
             .catch((err) => {
                 this.setState({ loading: false });
-                UIkit.notification(`Error: ${err.message}`, { status: 'danger', pos: 'top-right' });
+                UIkit.notification(`${this.getErrors(err)}`, { status: 'danger', pos: 'top-right' });
             });
     }
 
+    getErrors = ({ graphQLErrors, networkError }) => {
+      if (graphQLErrors) {
+        graphQLErrors.map(({ message, location, path }) => {
+          return message;
+        });
+      }
+      // tslint:disable-next-line:curly
+      if (networkError) return networkError;
+    }
     canBeSubmitted() {
         const errors = validateLogin(this.state.email, this.state.password);
         const isDisabled = Object.keys(errors).some((x) => errors[x]);

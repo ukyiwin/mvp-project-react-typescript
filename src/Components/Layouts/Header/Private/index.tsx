@@ -78,7 +78,7 @@ class PrivateHeader extends React.Component<Props> {
                     </HomeTab>
                   </li>
                   <li>
-                    <LibraryTab data-active={props.match.url === '/forum' && props.match.isExact} to="/forum">
+                    <LibraryTab data-active={props.match.url === '/community' && props.match.isExact} to="/community">
                       <Icon glyph="message" />
                       <Label>Community</Label>
                     </LibraryTab>
@@ -136,27 +136,22 @@ class PrivateHeader extends React.Component<Props> {
                           </div>
                           <div className="card-body" style={{padding: 0}}>
                             <li className="mdc-list-item " role="menuitem">
-                              <Link to="/favourites" className="uk-text-bold simple-link-light">
-                                <span uk-icon="icon: bookmark; ratio: 1" /> Favourites
-                              </Link>
-                            </li>
-                            <li className="mdc-list-item" role="menuitem">
-                              <Link to="/score" className="uk-text-bold simple-link-light">
-                                <span uk-icon="icon: thumbnails; ratio: 1" /> Reading Score
+                              <Link to="/saved" className="uk-text-bold simple-link-light">
+                                <span uk-icon="icon: bookmark; ratio: 1" /> Saved
                               </Link>
                             </li>
                             <li className="mdc-list-item " role="menuitem">
-                              <Link to="/favourites" className="uk-text-bold simple-link-light">
+                              <Link to="/drafts" className="uk-text-bold simple-link-light">
                                 <span uk-icon="icon: pencil; ratio: 1" /> Drafts
                               </Link>
                             </li>
                             <li className="mdc-list-item " role="menuitem">
-                              <Link to="/favourites" className="uk-text-bold simple-link-light">
+                              <Link to="/published" className="uk-text-bold simple-link-light">
                                 <span uk-icon="icon: check; ratio: 1" /> Published
                               </Link>
                             </li>
                             <li className="mdc-list-item " role="menuitem">
-                              <Link to="/favourites" className="uk-text-bold simple-link-light">
+                              <Link to={`/n/${props.me.username}/settings`} className="uk-text-bold simple-link-light">
                                 <span uk-icon="icon: cog; ratio: 1" /> Settings
                               </Link>
                             </li>
@@ -321,7 +316,7 @@ class PrivateHeader extends React.Component<Props> {
                     </HomeTab>
                   </li>
                   <li>
-                    <LibraryTab data-active={props.match.url === '/forum' && props.match.isExact} to="/forum">
+                    <LibraryTab data-active={props.match.url === '/community' && props.match.isExact} to="/community">
                       <Icon glyph="message" />
                       <Label>Community</Label>
                     </LibraryTab>

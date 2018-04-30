@@ -92,7 +92,7 @@ class Terms extends React.Component<{}> {
 
             <SectionDescription>
             When you share information, others can view, copy, and use that information. 
-            Unizonn offers several forums such as Unizonn Groups, Answers, and Network Updates, 
+            Unizonn offers several communities such as Unizonn Groups, Answers, and Network Updates, 
             where you can post your comments and comments on the topics assigned. Unizonn also allows 
             the exchange of information by allowing users to post updates, including links to news articles
              and other information such as job opportunities, product recommendations and other profile 

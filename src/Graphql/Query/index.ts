@@ -45,14 +45,114 @@ export const USER_EXIST = gql`
  * @description check if current user article
  */
 export const ARTICLES = gql`
-  query articles($myUsername: String, $offset: Int, $limit: Int) {
-    articles (offset: $offset, limit: $limit){
-      ...articleFragment
-      saved: userFavourited(where: {username: $myUsername }) {
-        username
+  query articles($username: String, $cursor: String) {
+    articles(cursor: $cursor){
+      aggregate {
+        count
       }
-      liked: likes(where: {username: $myUsername }) {
-        username
+      edges {
+        node {
+          saved: userFavourited(where: {username: $username }) {
+            username
+          }
+          liked: likes(where: {username: $username }) {
+            username
+          }
+          ...articleFragment
+        }
+      }
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+/**
+ * @description check if current user article
+ */
+export const DRAFTS = gql`
+  query drafts($cursor: ID) {
+    drafts(cursor: $cursor){
+      aggregate {
+        count
+      }
+      edges {
+        node {
+          ...articleFragment
+        }
+      }
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+/**
+ * @description check if current user article
+ */
+export const PUBLISHED = gql`
+  query published($username: String, $cursor: ID) {
+    published(cursor: $cursor){
+      aggregate {
+        count
+      }
+      edges {
+        node {
+          saved: userFavourited(where: {username: $username }) {
+            username
+          }
+          liked: likes(where: {username: $username }) {
+            username
+          }
+          ...articleFragment
+        }
+      }
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+/**
+ * @description check if current user article
+ */
+export const SAVED = gql`
+  query saved($myUsername: String, $cursor: ID) {
+    saved(cursor: $cursor){
+      aggregate {
+        count
+      }
+      edges {
+        node {
+          saved: userFavourited(where: {username: $myUsername }) {
+            username
+          }
+          liked: likes(where: {username: $myUsername }) {
+            username
+          }
+          ...articleFragment
+        }
+      }
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
       }
     }
   }
@@ -102,10 +202,8 @@ export const ME = gql`
   query me {
     me{
       ...userFragment
-      connectTo{
-        id
-      }
-      connectFrom{
+      connections{
+        username
         id
       }
       avatar
@@ -127,10 +225,8 @@ export const GET_USER_BY_USERNAME = gql`
   query getUserByUsername($username: String!) {
     getUserByUsername(username: $username) {
       ...userFragment
-      connectTo{
-        id
-      }
-      connectFrom{
+      connections{
+        username
         id
       }
       avatar
@@ -139,6 +235,53 @@ export const GET_USER_BY_USERNAME = gql`
         id
         title
         body
+      }
+      isFollowing: followers(where: {username: $username}){
+        id
+        username
+      }
+      isFollower: following(where: {username: $username}){
+        id
+        username
+      }
+      isConnected: connections(where: {username: $username}){
+        id
+        username
+      }
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+/**
+ * @description check if current user article
+ */
+export const SEARCH_USER = gql`
+  query searchUser($text: String!, $username: String){
+    searchUser(text: $text){
+      ...userFragment
+      connections{
+        username
+        id
+      }
+      avatar
+      headerImage
+      articles{
+        id
+        title
+        body
+      }
+      isFollowing: followers(where: {username: $username}){
+        id
+        username
+      }
+      isFollower: following(where: {username: $username}){
+        id
+        username
+      }
+      isConnected: connections(where: {username: $username}){
+        id
+        username
       }
     }
   }
@@ -286,15 +429,30 @@ export const GET_COMMENTS = gql`
 `;
 
 export const ACTIVITY = gql`
-  query activity($username: String!, $myUsername: String) {
-    activity(username: $username){
-      ...articleFragment
-      saved: userFavourited(where: {username: $myUsername }) {
-        username
+  query activity($username: String!, $cursor: String) {
+    activity(username: $username, cursor: $cursor){
+      aggregate {
+        count
       }
-      liked: likes(where: {username: $myUsername }) {
-        username
+      edges {
+        node {
+          saved: userFavourited(where: {username: $username }) {
+            username
+            id
+          }
+          liked: likes(where: {username: $username }) {
+            username
+            id
+          }
+          ...articleFragment
+        }
       }
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      } 
     }
   }
   ${ARTICLE_FRAGMENT}
@@ -313,4 +471,124 @@ export const GET_ARTICLES_BY_USERNAME = gql`
     }
   }
   ${ARTICLE_FRAGMENT}
+`;
+
+export const GET_RECOMMENDED_CON_BY_INT = gql`
+  query getRecommendedConnectionsByInterest{
+    getRecommendedConnectionsByInterest{
+      id
+      username
+      type
+      firstname
+      lastname
+      institution{
+        id
+        title
+      }
+      verified
+      connections{
+        username
+        id
+      }
+      interest{
+        name
+        id
+      }
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+export const GET_SUGGESTED_CONNECTIONS = gql`
+  query getSuggestedConnections{
+    getSuggestedConnections{
+      id
+      username
+      type
+      firstname
+      lastname
+      institution{
+        id
+        title
+      }
+      verified
+      connections{
+        username
+        id
+        firstname
+        lastname
+      }
+      interest{
+        name
+        id
+      }
+    }
+  }
+`;
+
+export const GET_SIMILAR_ARTICLES = gql`
+  query getSimilarArticles($id: ID!){
+    getSimilarArticles(id :$id){
+      ...articleFragment
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+export const GET_SUGGESTED_ARTICLES = gql`
+  query getSuggestedArticles{
+    getSuggestedArticles{
+      ...articleFragment
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
+export const NOTIFICATION = gql`
+  query notifications{
+    notifications{
+      id
+    }
+  }
+`;
+
+export const GET_DIRECT_USERS = gql`
+  query getDirectUsers{
+    getDirectUsers{
+      username
+      id
+      firstname
+      lastname
+      email
+      avatar
+      headerImage
+    }
+  }
+`;
+
+export const GET_MESSAGES_BY_SLUG = gql`
+  query getMessagesBySlug($slug: String!) {
+    getMessagesBySlug(slug: $slug){
+      id
+      createdAt
+      updatedAt
+      text
+      seen
+      user{
+        id
+        username
+        firstname
+        lastname
+        avatar
+        email
+      }
+      delivered
+      sent
+      channel{
+        id
+        slug
+        title
+      }
+    }
+  }
 `;

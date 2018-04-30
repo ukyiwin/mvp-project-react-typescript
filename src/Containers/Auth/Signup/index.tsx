@@ -106,10 +106,20 @@ class Signup extends React.Component<RouteComponentProps<any> & Props & ChildPro
             .catch((err) => {
                 console.log(err);
                 this.setState({ loading: false });
-                UIkit.notification(`${err.message}`, { status: 'danger', pos: 'top-right' });
+                UIkit.notification(`${this.getErrors(err)}`, { status: 'danger', pos: 'top-right' });
             });
     }
 
+    getErrors = ({ graphQLErrors, networkError }) => {
+      if (graphQLErrors) {
+        graphQLErrors.map(({ message, location, path }) => {
+          return message;
+        });
+      }
+      // tslint:disable-next-line:curly
+      if (networkError) return networkError;
+    }
+    
     canBeSubmitted() {
         const errors = validateSignup(
             this.state.email,

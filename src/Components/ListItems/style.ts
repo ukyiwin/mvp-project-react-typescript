@@ -99,6 +99,14 @@ export const StyledCard = styled.div`
   }
 `;
 
+export const ThreadsListScrollContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 100%;
+`;
+
 export const ListHeading = styled(H3)`
   font-weight: 500;
   font-size: 18px;

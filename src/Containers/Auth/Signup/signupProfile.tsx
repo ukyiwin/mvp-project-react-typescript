@@ -241,7 +241,7 @@ class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
       data.append('data', file);
       axios({
         method: 'post',
-        url: 'http://localhost:4000/upload',
+        url: 'https://uniserver.herokuapp.com/upload',
         data,
         headers: {
           'content-type': 'multipart/form-data'
