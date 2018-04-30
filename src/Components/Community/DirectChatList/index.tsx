@@ -63,11 +63,11 @@ class DirectChatList extends React.Component<Props> {
               >
               {
                 data.getDirectUsers.map((user) => (
-                  <Link to={`/conversation/${user.username}`}>
+                  <Link to={`/conversation/${user.username ?  user.username : '' }`}>
                     <ListItem
                       key={user.id}
                       primaryText={user.firstname + ' ' + user.lastname}
-                      secondaryText={user.username}
+                      secondaryText={user.username ? user.username : ''}
                       avatar={user.avatar ? user.avatar : maleP}
                     />
                   </Link>

@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "6b9ca0751d80769521f5"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "f75785a27201b274748c"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1351,7 +1351,7 @@ const MyLoader = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__W
 /* harmony export (immutable) */ __webpack_exports__["a"] = MyLoader;
 
 const user = __WEBPACK_IMPORTED_MODULE_7_link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_8__constants__["b" /* CURRENT_USER */]);
-const ArticleList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["f" /* ARTICLES */], variables: { myUsername: user.username }, pollInterval: 5000 }, ({ loading, error, data: { articles }, fetchMore, networkStatus, refetch }) => {
+const ArticleList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["f" /* ARTICLES */], variables: { myUsername: user.username ? user.username : '' }, pollInterval: 5000 }, ({ loading, error, data: { articles }, fetchMore, networkStatus, refetch }) => {
     if (loading) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
@@ -1374,7 +1374,7 @@ const ArticleList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
     }
     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: articles.pageInfo.hasNextPage, loadMore: () => fetchMore({
             variables: {
-                myUsername: user.username,
+                myUsername: user.username ? user.username : '',
                 cursor: articles.pageInfo.endCursor
             },
             updateQuery: (previousResult, { fetchMoreResult }) => {
@@ -2424,7 +2424,7 @@ class CommunitySidebar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] 
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_semantic_ui_react__["Button"].Content, { circular: true, style: { marginRight: 10 }, compact: true, onClick: () => __WEBPACK_IMPORTED_MODULE_4_uikit__["modal"]('#modal-add-channel').show() },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_Components_Icons__["a" /* default */], { glyph: "plus" }))),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_anchor_ui_search_box___default.a, { placeholder: "Search for channels and chat" }),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_6_Graphql_Query_Community__["b" /* GET_COMMUNITY_CHANNELS_BY_SLUG */], variables: { slug: this.props.communityId, username: user.username } }, ({ data, loading, error, networkStatus }) => {
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_6_Graphql_Query_Community__["b" /* GET_COMMUNITY_CHANNELS_BY_SLUG */], variables: { slug: this.props.communityId, username: user.username ? user.username : '' } }, ({ data, loading, error, networkStatus }) => {
                 if (loading || networkStatus === 2 || networkStatus === 4) {
                     return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null, "loading");
                 }
@@ -2495,7 +2495,7 @@ const user = __WEBPACK_IMPORTED_MODULE_3_link__["a" /* cookies */].get(__WEBPACK
 class CommunityList extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     render() {
         return (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null,
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_2_Graphql_Query_Community__["e" /* MY_COMMUNITIES */], variables: { username: user.username } }, ({ data, loading, error }) => {
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_2_Graphql_Query_Community__["e" /* MY_COMMUNITIES */], variables: { username: user.username ? user.username : '' } }, ({ data, loading, error }) => {
                 if (loading) {
                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, "loading");
                 }
@@ -2948,8 +2948,8 @@ class DirectChatList extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 if (data.getDirectUsers.length < 1) {
                     return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small" }, "No conversation");
                 }
-                return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_anchor_ui_list___default.a, { id: "chat-list", style: { flex: 1 } }, data.getDirectUsers.map((user) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/conversation/${user.username}` },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_anchor_ui_list_item___default.a, { key: user.id, primaryText: user.firstname + ' ' + user.lastname, secondaryText: user.username, avatar: user.avatar ? user.avatar : maleP }))))));
+                return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_anchor_ui_list___default.a, { id: "chat-list", style: { flex: 1 } }, data.getDirectUsers.map((user) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/conversation/${user.username ? user.username : ''}` },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_anchor_ui_list_item___default.a, { key: user.id, primaryText: user.firstname + ' ' + user.lastname, secondaryText: user.username ? user.username : '', avatar: user.avatar ? user.avatar : maleP }))))));
             })));
     }
 }
@@ -3015,8 +3015,8 @@ class ParticipantList extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 if (data.getParticipants.length < 1) {
                     return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-padding-small" }, "Empty channel list");
                 }
-                return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_anchor_ui_list___default.a, { id: "chat-list", style: { flex: 1 } }, data.getParticipants.map((user) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/n/${user.username}` },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_anchor_ui_list_item___default.a, { key: user.id, primaryText: user.firstname + ' ' + user.lastname, secondaryText: user.username, avatar: user.avatar }))))));
+                return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_anchor_ui_list___default.a, { id: "chat-list", style: { flex: 1 } }, data.getParticipants.map((user) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/n/${user.username ? user.username : ''}` },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_anchor_ui_list_item___default.a, { key: user.id, primaryText: user.firstname + ' ' + user.lastname, secondaryText: user.username ? user.username : '', avatar: user.avatar }))))));
             })));
     }
 }
@@ -4146,7 +4146,7 @@ const DraftsList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](_
     }
     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_infinite_scroller___default.a, { pageStart: 0, hasMore: drafts.pageInfo.hasNextPage, loadMore: () => fetchMore({
             variables: {
-                myUsername: user.username,
+                myUsername: user.username ? user.username : '',
                 cursor: drafts.pageInfo.endCursor
             },
             updateQuery: (previousResult, { fetchMoreResult }) => {
@@ -10965,7 +10965,7 @@ const MyLoader = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__W
 /* unused harmony export MyLoader */
 
 const user = __WEBPACK_IMPORTED_MODULE_7_link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_8__constants__["b" /* CURRENT_USER */]);
-const PublishList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["s" /* PUBLISHED */], variables: { username: user.username }, pollInterval: 5000 }, ({ loading, error, data: { published }, fetchMore, networkStatus, refetch }) => {
+const PublishList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["s" /* PUBLISHED */], variables: { username: user.username ? user.username : '' }, pollInterval: 5000 }, ({ loading, error, data: { published }, fetchMore, networkStatus, refetch }) => {
     if (loading) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
@@ -10988,7 +10988,7 @@ const PublishList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
     }
     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: published.pageInfo.hasNextPage, loadMore: () => fetchMore({
             variables: {
-                username: user.username,
+                username: user.username ? user.username : '',
                 cursor: published.pageInfo.endCursor
             },
             updateQuery: (previousResult, { fetchMoreResult }) => {
@@ -11162,7 +11162,7 @@ const MyLoader = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__W
 /* unused harmony export MyLoader */
 
 const user = __WEBPACK_IMPORTED_MODULE_7_link__["a" /* cookies */].get(__WEBPACK_IMPORTED_MODULE_8__constants__["b" /* CURRENT_USER */]);
-const SavedList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["t" /* SAVED */], variables: { myUsername: user.username }, pollInterval: 5000 }, ({ loading, error, data: { saved }, fetchMore, networkStatus, refetch }) => {
+const SavedList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { query: __WEBPACK_IMPORTED_MODULE_5_Graphql_Query__["t" /* SAVED */], variables: { myUsername: user.username ? user.username : '' }, pollInterval: 5000 }, ({ loading, error, data: { saved }, fetchMore, networkStatus, refetch }) => {
     if (loading) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
@@ -11185,7 +11185,7 @@ const SavedList = () => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__
     }
     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_react_infinite_scroller___default.a, { pageStart: 0, hasMore: saved.pageInfo.hasNextPage, loadMore: () => fetchMore({
             variables: {
-                myUsername: user.username,
+                myUsername: user.username ? user.username : '',
                 cursor: saved.pageInfo.endCursor
             },
             updateQuery: (previousResult, { fetchMoreResult }) => {
@@ -11453,7 +11453,7 @@ class Search extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         const searchFilter = { everythingFeed: true };
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__style__["e" /* View */], null,
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__searchInput__["a" /* default */], { handleSubmit: this.handleSubmit }),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { pollInterval: 100000, query: __WEBPACK_IMPORTED_MODULE_9_Graphql_Query__["v" /* SEARCH_USER */], variables: { text: searchQueryString, username: user.username } }, ({ loading, error, data }) => {
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_react_apollo__["Query"], { pollInterval: 100000, query: __WEBPACK_IMPORTED_MODULE_9_Graphql_Query__["v" /* SEARCH_USER */], variables: { text: searchQueryString, username: user.username ? user.username : '' } }, ({ loading, error, data }) => {
                 if (loading) {
                     return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Loading__["a" /* Loading */], null);
                 }
@@ -11463,8 +11463,8 @@ class Search extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4_Components_Dashboard_style__["a" /* InboxScroller */], { id: "scroller-for-inbox", style: { zIndex: 5 } }, searchQueryString &&
                     data.searchUser.length > 0
                     &&
-                        data.searchUser.map((user) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/n/${user.username}` },
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_anchor_ui_list_item___default.a, { key: user.id, primaryText: user.firstname + ' ' + user.lastname, secondaryText: user.username, avatar: user.avatar }))))));
+                        data.searchUser.map((user) => (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/n/${user.username ? user.username : ''}` },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_10_anchor_ui_list_item___default.a, { key: user.id, primaryText: user.firstname + ' ' + user.lastname, secondaryText: user.username ? user.username : '', avatar: user.avatar }))))));
             })));
     }
 }
@@ -13640,7 +13640,7 @@ class ArticleDetail extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             .query({
             query: __WEBPACK_IMPORTED_MODULE_9_Graphql_Query__["h" /* GET_ARTICLE_BY_ID */],
             variables: {
-                id: slugOrId, myUsername: user.username
+                id: slugOrId, myUsername: user.username ? user.username : ''
             },
         })
             .then((result) => {
@@ -17072,7 +17072,7 @@ class Notification extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_AppViewWrapper__["a" /* default */], null,
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Column__["a" /* Column */], { type: "secondary", style: { backgroundColor: '#ffffff' } },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7_Components_Layouts_Header_style__["c" /* DropdownHeader */], null,
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/n/${currentUser.username}/settings` },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Link"], { to: `/n/${currentUser.username ? user.username : ''}/settings` },
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_Components_Icons__["a" /* default */], { glyph: "settings" })),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8_Components_Buttons__["e" /* TextButton */], { color: currentUser.notifications && currentUser.notifications.length > 0 ? 'brand.alt' : 'text.alt', onClick: this.markAllAsSeen }, "Mark all as seen"))))));
     }

@@ -34,7 +34,7 @@ const user = cookies.get(CURRENT_USER) as User;
 const ArticleList = () => (
   <Query
     query={ARTICLES}
-    variables={{myUsername: user.username }}
+    variables={{myUsername: user.username ?  user.username : ''  }}
     pollInterval={5000}
   >
   {({ loading, error, data: { articles }, fetchMore, networkStatus, refetch }) => {
@@ -68,7 +68,7 @@ const ArticleList = () => (
           loadMore={() =>
             fetchMore({
               variables: {
-                myUsername: user.username,
+                myUsername: user.username ?  user.username : '' ,
                 cursor: articles.pageInfo.endCursor
               },
               updateQuery: (previousResult, { fetchMoreResult }) => {

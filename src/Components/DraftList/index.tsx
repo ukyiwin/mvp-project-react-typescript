@@ -66,7 +66,7 @@ const DraftsList = () => (
           loadMore={() =>
             fetchMore({
               variables: {
-                myUsername: user.username,
+                myUsername: user.username ?  user.username : '' ,
                 cursor: drafts.pageInfo.endCursor
               },
               updateQuery: (previousResult, { fetchMoreResult }) => {

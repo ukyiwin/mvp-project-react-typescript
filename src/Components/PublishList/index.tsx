@@ -32,7 +32,7 @@ const user = cookies.get(CURRENT_USER) as User;
 const PublishList = () => (
   <Query
     query={PUBLISHED}
-    variables={{username: user.username }}
+    variables={{username: user.username ? user.username : ''  }}
     pollInterval={5000}
   >
   {({ loading, error, data: { published }, fetchMore, networkStatus, refetch }) => {
@@ -66,7 +66,7 @@ const PublishList = () => (
           loadMore={() =>
             fetchMore({
               variables: {
-                username: user.username,
+                username: user.username ? user.username : '' ,
                 cursor: published.pageInfo.endCursor
               },
               updateQuery: (previousResult, { fetchMoreResult }) => {

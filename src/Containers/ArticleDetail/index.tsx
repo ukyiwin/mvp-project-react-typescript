@@ -73,7 +73,7 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
         .query({
             query: GET_ARTICLE_BY_ID,
             variables: {
-                id: slugOrId, myUsername: user.username
+                id: slugOrId, myUsername: user.username ? user.username : ''
             },
         })
         .then((result) => {
