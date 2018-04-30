@@ -55,7 +55,7 @@ export default class Notification extends React.Component {
         <AppViewWrapper>
           <Column type="secondary" style={{backgroundColor: '#ffffff'}}>
             <DropdownHeader>
-              <Link to={`/n/${currentUser.username}/settings`}>
+              <Link to={`/n/${currentUser.username ? user.username : ''}/settings`}>
                 <Icon glyph="settings" />
               </Link>
               <TextButton

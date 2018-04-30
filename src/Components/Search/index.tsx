@@ -38,7 +38,7 @@ class Search extends React.Component<Props, State> {
     return (
       <View>
         <SearchInput handleSubmit={this.handleSubmit} />
-        <Query pollInterval={100000} query={SEARCH_USER} variables={{ text: searchQueryString, username: user.username}} >
+        <Query pollInterval={100000} query={SEARCH_USER} variables={{ text: searchQueryString, username: user.username ? user.username : ''}} >
         {({loading, error, data}) => {
           if (loading) { return <Loading />; }
           if (error) { return <div>Error loading</div>; }
@@ -49,11 +49,11 @@ class Search extends React.Component<Props, State> {
                 data.searchUser.length > 0 
                 && 
                 data.searchUser.map((user) => (
-                  <Link to={`/n/${user.username}`}>
+                  <Link to={`/n/${user.username ? user.username : ''}`}>
                     <ListItem
                       key={user.id}
                       primaryText={user.firstname + ' ' + user.lastname}
-                      secondaryText={user.username}
+                      secondaryText={user.username ? user.username : ''}
                       avatar={user.avatar}
                     />
                   </Link>

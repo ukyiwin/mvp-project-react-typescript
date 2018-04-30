@@ -68,11 +68,11 @@ class ParticipantList extends React.Component<Props> {
               >
               {
                 data.getParticipants.map((user) => (
-                  <Link to={`/n/${user.username}`}>
+                  <Link to={`/n/${user.username ?  user.username : '' }`}>
                     <ListItem
                       key={user.id}
                       primaryText={user.firstname + ' ' + user.lastname}
-                      secondaryText={user.username}
+                      secondaryText={user.username ?  user.username : '' }
                       avatar={user.avatar}
                     />
                   </Link>

@@ -14,7 +14,7 @@ class CommunityList extends React.Component<any> {
   render() {
     return (
       <div>
-        <Query query={MY_COMMUNITIES} variables={{ username: user.username}}>
+        <Query query={MY_COMMUNITIES} variables={{ username: user.username ?  user.username : '' }}>
           {({ data, loading, error }) => {
 
             if (loading) {

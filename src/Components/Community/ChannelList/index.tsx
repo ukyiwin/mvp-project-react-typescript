@@ -52,7 +52,7 @@ class CommunitySidebar extends React.Component<Props> {
           </Button.Content>
         </div>
         <SearchBox placeholder="Search for channels and chat" />
-        <Query query={GET_COMMUNITY_CHANNELS_BY_SLUG} variables={{ slug: this.props.communityId, username: user.username}}>
+        <Query query={GET_COMMUNITY_CHANNELS_BY_SLUG} variables={{ slug: this.props.communityId, username: user.username ?  user.username : '' }}>
           {({ data, loading, error, networkStatus }) => {
 
             if (loading || networkStatus === 2 || networkStatus === 4) {
