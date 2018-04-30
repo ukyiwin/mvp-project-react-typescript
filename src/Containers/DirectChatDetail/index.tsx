@@ -7,9 +7,9 @@ import Message from 'anchor-ui/message';
 import Button from 'anchor-ui/button';
 import IconEmoji from 'anchor-ui/icons/icon-emoji';
 import EmojiMenu from 'anchor-ui/emoji-menu';
-import { Channels, User, Message as AMessage } from 'CustomTypings/schema';
+import { Channels, User, Message as AMessage, DirectMessage } from 'CustomTypings/schema';
 import { withApollo, compose, graphql, Query, Mutation } from 'react-apollo';
-import { SEND_MESSAGE_BY_SLUG } from 'Graphql/Mutation';
+import { SEND_MESSAGE_BY_SLUG, SEND_DIRECT_MESSAGE } from 'Graphql/Mutation';
 import { GET_MESSAGES, GET_MESSAGES_BY_SLUG } from 'Graphql/Query';
 import { NullState } from 'Components/Upsell';
 import { Loading } from 'Components/EditForm/style';
@@ -17,6 +17,7 @@ import SeoMaker from 'Components/SeoMaker';
 // import emojione from 'emojione';
 import { cookies } from 'link';
 import { CURRENT_USER } from '../../constants';
+import { GET_DIRECT_MESSAGES_BY_SENDER } from 'Graphql/Query/Community';
 
 const currentUser = cookies.get(CURRENT_USER) as User;
 
@@ -26,7 +27,7 @@ interface Props {
   sendMessage?: any;
   client?: any;
 }
-class ChatDetail extends React.Component<Props> {
+class DirectChatDetail extends React.Component<Props> {
 
   state = {
       channelId: '',
@@ -70,10 +71,10 @@ class ChatDetail extends React.Component<Props> {
     const { channelId } = this.props;
 
     return (
-      <Query pollInterval={100000} query={GET_MESSAGES_BY_SLUG} variables={{ slug: channelId }} >
+      <Query pollInterval={100000} query={GET_DIRECT_MESSAGES_BY_SENDER} variables={{ username: channelId }} >
       {({loading, error, data}) => {
         if (loading) { return <Loading />; }
-        if (error) { return <NullState heading="Select a channel to start chatting" />; }
+        if (error) { return <NullState heading="Select a user to start chatting" />; }
 
         return(
           <>
@@ -83,22 +84,23 @@ class ChatDetail extends React.Component<Props> {
                 autoScroll 
                 className="fill-height-or-more" style={{ height: '71vh', flex: 1, backgroundColor: 'aliceblue' }}
               >
-              {data.getMessagesBySlug.map((message: AMessage) => (
+              {data.getDirectMessagesBySender.map((message: DirectMessage) => (
                   <Message
                     body={message.text}
                     type="text"
                     enableMultiline={true}
                     emoji={true}
-                    username={message.user.username}
+                    myMessage={message.from.username === currentUser.username ? true : false}
+                    username={message.from.username}
                     createdAt={message.createdAt}
                     enableLightbox={true}
                     enableLinks={true}
-                    avatar={message.user.avatar}
+                    avatar={message.from.avatar}
                   />
                 ))}
               </MessageList>
-              <Mutation mutation={SEND_MESSAGE_BY_SLUG}>
-              {(sendMessageBySlug, { data }) => (
+              <Mutation mutation={SEND_DIRECT_MESSAGE}>
+              {(sendDirectMessage, { data }) => (
                 <div className="input-box uk-width-auto">
                   <MessageInput
                     placeholder="Enter message"
@@ -106,34 +108,30 @@ class ChatDetail extends React.Component<Props> {
                     style={{ margin: 0 }}
                     value={emoji}
                     sendMessage={() => {
-                      sendMessageBySlug({ 
-                        variables: { slug: channelId, text: emoji},
+                      sendDirectMessage({ 
+                        variables: { username: channelId, text: emoji},
                         optimisticResponse: {
                           __typename: 'Mutation',
-                          sendMessageBySlug: {
-                            if: 1,
-                            __typename: 'Message',
+                          sendDirectMessage: {
+                            id: 1,
+                            __typename: 'DirectMessage',
                             createdAt: new Date(),
                             text: emoji,
                             seen: false,
-                            user: currentUser,
+                            from: currentUser,
                             delivered: false,
-                            sent: true,
-                            channel: {
-                              slug: channelId
-                            }
+                            sent: true
                           }
                         },
-                        update: (proxy, { data: { sendMessageBySlug } }) => {
+                        update: (proxy, { data: { sendDirectMessage } }) => {
                           // Read the data from our cache for this query.
                           const data = proxy.readQuery({ 
-                            query: sendMessageBySlug, 
-                            variables: {slug: channelId}
+                            query: GET_DIRECT_MESSAGES_BY_SENDER
                            });
                            
-                          data.getMessagesBySlug.push(sendMessageBySlug);
+                          data.getDirectMessagesBySender.push(sendDirectMessage);
                           // Write our data back to the cache.
-                          proxy.writeQuery({ query: sendMessageBySlug, data });
+                          proxy.writeQuery({ query: sendDirectMessage, data });
                         }
                       });
                       this.setState({ emoji: '' });
@@ -170,77 +168,4 @@ class ChatDetail extends React.Component<Props> {
 
 export default withRouter(compose(
   withApollo
-)(ChatDetail));
-
-/*
-/** Path to the user's profile image will only be rendered if provided *
-avatar: _propTypes2.default.string,
-/** The message's body text *
-body: _propTypes2.default.node.isRequired,
-/** Time when the message was created *
-createdAt: _propTypes2.default.node.isRequired,
-/** The sender's username *
-username: _propTypes2.default.node.isRequired,
-/** The message's type *
-type: _propTypes2.default.oneOf(['text', 'image', 'sticker', 'giphy']),
-/** Override the styles of the root element *
-style: _propTypes2.default.object, // eslint-disable-line react/forbid-prop-types
-/** Override the styles of the header element *
-messageHeaderStyle: _propTypes2.default.object, // eslint-disable-line react/forbid-prop-types
-/** Override the styles of the body element *
-messageBodyStyle: _propTypes2.default.object, // eslint-disable-line react/forbid-prop-types
-/** Override the styles of the time element *
-messageTimeStyle: _propTypes2.default.object, // eslint-disable-line react/forbid-prop-types
-/** The message size. One of the following: ["small", "medium", "large"] *
-fontSize: _propTypes2.default.oneOf(['small', 'medium', 'large']),
-/** Flag used to change message styles. True if the message was sent by the current user *
-myMessage: _propTypes2.default.bool,
-/** Enable emojione for messages *
-emoji: _propTypes2.default.bool,
-/** Enables links in messages *
-enableLinks: _propTypes2.default.bool,
-/** Enables compact messages *
-compact: _propTypes2.default.bool,
-/** Enables Lighbox for image messages *
-enableLightbox: _propTypes2.default.bool,
-/** Collapse an image message *
-collapsed: _propTypes2.default.bool,
-/** Text to display for collapsed messages *
-collapsedText: _propTypes2.default.node,
-/** Text to display above giphy messages *
-giphyDescription: _propTypes2.default.node,
-/** Text to display for edited banner *
-edited: _propTypes2.default.node,
-/** Show a separator above the message *
-separator: _propTypes2.default.node,
-/**
- * Highlight text, must be an array of objects containing id, value, and prefix.
- *
- * Text matching '[prefix][value]' will be highlighted
- *
-highlights: _propTypes2.default.arrayOf(String),
-**
- * Callback fired when highlighted text is clicked
- *
- * function(event: object, highlight: object) => void
- *
-onHighlightClick: _propTypes2.default.func,
-** Badge to display next to username *
-badge: _propTypes2.default.node,
-/** Render an IconMenu in Message *
-iconMenu: _propTypes2.default.node,
-/** Enables multiline messages *
-enableMultiline: _propTypes2.default.bool,
-/** Image placeholder url *
-imagePlaceholder: _propTypes2.default.string,
-/** Image error url *
-imageError: _propTypes2.default.string,
-onImageLoad: _propTypes2.default.func,
-**
- * Callback fired when an image or giphy throws an error while loading
- *
- * function(event: object) => void
- *
-onImageError: _propTypes2.default.func,
-color: _propTypes2.default.string.isRequired
-*/
+)(DirectChatDetail));

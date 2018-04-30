@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 // import InfiniteList from 'react-infinite-scroller-with-scroll-element';
 // import { withInfiniteScroll } from 'Components/infiniteScroll';
-import { Column } from 'Components/column';
+import { Column } from 'Components/Column';
 import AppViewWrapper from 'Components/AppViewWrapper';
 import Titlebar from 'Components/Titlebar';
 import { FlexCol } from 'Components/Globals';
@@ -18,6 +19,12 @@ import { ErrorComponent } from 'Components/EmptyStates';
 import { DropdownHeader } from 'Components/Layouts/Header/style';
 import { TextButton } from 'Components/Buttons';
 import Icon from 'Components/Icons';
+import { User } from 'CustomTypings/schema';
+import { CURRENT_USER } from '../../constants';
+import { cookies } from 'link';
+import { SEARCH_USER } from 'Graphql/Query';
+
+const currentUser = cookies.get(CURRENT_USER) as User;
 
 export const NotLoader = () => (
   <ContentLoader height={200} width={400} speed={2} primaryColor={'#f3f3f3'} secondaryColor={'#ecebeb'}>
@@ -52,22 +59,24 @@ export default class Notification extends React.Component {
                 <Icon glyph="settings" />
               </Link>
               <TextButton
-                color={count > 0 ? 'brand.alt' : 'text.alt'}
+                color={currentUser.notifications && currentUser.notifications.length > 0 ? 'brand.alt' : 'text.alt'}
                 onClick={this.markAllAsSeen}
               >
                 Mark all as seen
               </TextButton>
             </DropdownHeader>
-            <NotificationContainer
-              {...this.props}
-              loading={loading}
-              markSingleNotificationAsSeenInState={
-                markSingleNotificationAsSeenInState
-              }
-            />
           </Column>
         </AppViewWrapper>
       </FlexCol>
     );
   }
 }
+
+/*
+            <NotificationContainer
+              {...this.props}
+              loading={loading}
+              markSingleNotificationAsSeenInState={
+                markSingleNotificationAsSeenInState
+              }
+            />*/

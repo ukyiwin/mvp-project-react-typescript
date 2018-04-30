@@ -64,6 +64,61 @@ export const CREATE_COMMUNITY = gql`
 /**
  * @description user registration for graphql mutation
  */
+export const CREATE_CHANNEL = gql`
+  mutation createChannel($id: ID!, $name: String!, $desc: String, $users: [String!]){
+    createChannel(id: $id, name: $name, desc: $desc, users: $users){
+      id
+      isArchived
+      createdAt
+      updatedAt
+      participants{
+        username
+        id
+        firstname
+        lastname
+      }
+      community{
+        id
+        title
+        slug
+      }
+      title
+      slug
+      description
+    }
+  }
+`;
+/**
+ * @description user registration for graphql mutation
+ */
+export const CREATE_CHANNEL_BY_SLUG = gql`
+  mutation createChannel($slug: String!, $name: String!, $desc: String, $users: [String!]){
+    createChannelBySlug(slug: $slug, name: $name, desc: $desc, users: $users){
+      id
+      isArchived
+      createdAt
+      updatedAt
+      participants{
+        username
+        id
+        firstname
+        lastname
+      }
+      community{
+        id
+        title
+        slug
+      }
+      title
+      slug
+      description
+    }
+  }
+`;
+
+/**
+ * @description user registration for graphql mutation
+ */
 export const JOIN_COMMUNITY = gql`
   mutation joinCommunity($id: ID!){
     joinCommunity(id: $id){

@@ -63,7 +63,7 @@ const SuggestedArticleList = () => (
         <Label text="Suggested Articles for you" />
         <InfiniteScroll
           pageStart={0}
-          hasMore={true}
+          hasMore={false}
           loadMore={() =>
             fetchMore({
               variables: {

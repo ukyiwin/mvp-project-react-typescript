@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { USER_FRAGMENT, ARTICLE_FRAGMENT, MESSAGE_FRAGMENT } from 'Graphql/Fragment';
+import { USER_FRAGMENT, ARTICLE_FRAGMENT } from 'Graphql/Fragment';
 /**
  * @description user registration for graphql mutation
  */
@@ -86,19 +86,59 @@ export const DELETE_ARTICLE = gql`
   ${ARTICLE_FRAGMENT}
 `;
 
-export const CREATE_MESSAGE = gql`
-  mutation createMessage($channelId: ID!, $text: String!){
-    createMessage(channelId: $id, text: $text){
+export const SEND_MESSAGE_BY_SLUG = gql`
+  mutation sendMessageBySlug($slug: String!, $text: String! ) {
+    sendMessageBySlug(slug: $slug, text: $text){
+      id
+      createdAt
+      updatedAt
       text
-      user {
+      user{
         id
+        avatar
+        username
+        firstname
+        lastname
+        email
       }
-      cahnnel {
+      seen
+      delivered
+      sent
+      channel{
         id
+        slug
+        title
       }
     }
   }
-  ${MESSAGE_FRAGMENT}
+`;
+
+export const SEND_DIRECT_MESSAGE = gql`
+  mutation sendDirectMessage($username: String!, $text: String! ) {
+    sendDirectMessage(username: $username, text: $text){
+      id
+      createdAt
+      updatedAt
+      text
+      seen
+      delivered
+      sent
+      to{
+        id
+        username
+        firstname
+        lastname
+        email
+      }
+      from{
+        id
+        username
+        firstname
+        lastname
+        email
+      }
+    }
+  }
 `;
 
 export const CREATE_COMMENT = gql`

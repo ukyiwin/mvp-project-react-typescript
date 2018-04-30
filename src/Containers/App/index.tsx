@@ -85,6 +85,11 @@ const Forum = asyncComponent({
   LoadingComponent: () => <LoadingComponent />,
 });
 
+const DirectChat = asyncComponent({
+  resolve: () => import('Containers/DirectChat'),
+  LoadingComponent: () => <LoadingComponent />,
+});
+
 const Connections = asyncComponent({
   resolve: () => import('Containers/Connection'),
   LoadingComponent: () => <LoadingComponent />,
@@ -530,9 +535,17 @@ class App extends React.Component<Props & ChildProps<Response & Props>, State> {
                             me={this.state.me}
                           />
                           <EmptyLayout 
-                            component={Forum} 
+                            component={DirectChat} 
                             exact={true} 
-                            path="/message/direct"
+                            path="/conversation"
+                            isAuthenticated={isAuthenticated}
+                            logout={this._logout}
+                            me={this.state.me}
+                          />
+                          <EmptyLayout 
+                            component={DirectChat} 
+                            exact={true} 
+                            path="/conversation/:username"
                             isAuthenticated={isAuthenticated}
                             logout={this._logout}
                             me={this.state.me}

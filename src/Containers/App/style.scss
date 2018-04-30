@@ -629,3 +629,23 @@ bg: {
   border: '#DFE7EF',
   inactive: '#DFE7EF',
 }*/
+
+.emojione {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  margin-top: -4px;
+}
+
+/* scaling */
+.small .emojione {
+  font-size: 22px;
+}
+
+.medium .emojione {
+  font-size: 26px;
+}
+
+.large .emojione {
+  font-size: 30px;
+}

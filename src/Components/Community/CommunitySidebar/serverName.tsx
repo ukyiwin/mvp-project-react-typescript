@@ -26,7 +26,7 @@ class ServerIndexItem extends React.Component<Props> {
     return (
       <div className="server-index-item-wrapper">
         <div className={`server-name-highlight`} />
-        <Link to={`/community/${this.props.community.slug}/`}>
+        <Link to={`/community/${this.props.community.slug}`}>
           <img className="server-avatar" src={this.props.community.avatar}
           onMouseEnter={this.show} onMouseLeave={this.hide} />
         </Link>

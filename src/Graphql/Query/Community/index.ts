@@ -142,6 +142,30 @@ export const GET_COMMUNITY = gql`
 /**
  * @description user registration for graphql mutation
  */
+export const GET_PARTICIPANTS = gql`
+  query getParticipants($slug: String!){
+    getParticipants(slug: $slug){
+      id
+      username
+      firstname
+      lastname
+      avatar
+      headerImage
+      department{
+        id
+        name
+      }
+      institution{
+        id
+        title
+      }
+    }
+  }
+`;
+
+/**
+ * @description user registration for graphql mutation
+ */
 export const GET_COMMUNITY_BY_SLUG = gql`
   query getCommunityBySlug($slug: String!, $username: String){
     getCommunityBySlug(slug: $slug){
@@ -342,25 +366,9 @@ export const GET_COMMUNITY_CHANNELS_BY_SLUG = gql`
 /**
  * @description user registration for graphql mutation
  */
-export const GET_DIRECT_USERS = gql`
-  query getDirectUsers{
-    getDirectUsers{
-      username
-      id
-      firstname
-      lastname
-      avatar
-      headerImage
-    }
-  }
-`;
-
-/**
- * @description user registration for graphql mutation
- */
 export const GET_DIRECT_MESSAGES_BY_SENDER = gql`
-  query getDirectMessagesBySender($senderId: ID!){
-    getDirectMessagesBySender(senderId: $senderId){
+  query getDirectMessagesBySender($username: String!){
+    getDirectMessagesBySender(username: $username){
       id
       createdAt
       text

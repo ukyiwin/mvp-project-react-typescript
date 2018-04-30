@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import ArticleItem from 'Components/ArticleItem';
 import InfiniteScroll from 'react-infinite-scroller';
 import Avatar from 'Components/Avatar';
-import { compose, graphql, withApollo, QueryProps, Query } from 'react-apollo';
+import { compose, graphql, withApollo, QueryProps, Query, Mutation } from 'react-apollo';
 import { ME, GET_USER_BY_USERNAME, ACTIVITY } from 'Graphql/Query';
 import { User } from 'CustomTypings/schema';
 import SeoMaker from 'Components/SeoMaker';
@@ -30,6 +30,7 @@ import { LoginButton } from 'Components/MoreViews/style';
 import { cookies } from 'link';
 import { CURRENT_USER } from '../../constants';
 import { ErrorComponent, EmptyComponent } from 'Components/EmptyStates';
+import { UN_FOLLOW_USER, FOLLOW_USER } from 'Graphql/Mutation/user';
 
 interface Response {
   me: User;
@@ -48,7 +49,7 @@ export default class Profile extends React.Component<Props> {
     is_typing: false,
     username: '',
     hasNoThreads: false,
-    selectedView: 'search',
+    selectedView: 'article',
     hasThreads: true,
   };
 
@@ -61,23 +62,110 @@ export default class Profile extends React.Component<Props> {
     } else {
         this.props.history.goBack('*');
     }
-}
-// tslint:disable-next-line:typedef
-componentDidUpdate(prevProps) {
-    // tslint:disable-next-line:no-console
-    console.log(prevProps);
-    const oldId = prevProps.match.params.username;
-    const newId = this.props.match.params.username;
-    if (newId !== oldId) {
-      this.setState({username: newId});
+  }
+  // tslint:disable-next-line:typedef
+  componentDidUpdate(prevProps) {
+      // tslint:disable-next-line:no-console
+      console.log(prevProps);
+      const oldId = prevProps.match.params.username;
+      const newId = this.props.match.params.username;
+      if (newId !== oldId) {
+        this.setState({username: newId});
+      }
+  }
+
+  handleSegmentClick(value) {
+    this.setState({selectedView: value});
+  }
+
+  renderButtons(currentUser, user, isFollowing, isConnected) {
+    if (currentUser && user.id !== currentUser.id) {
+      if (isConnected.length < 1) {
+        if (isFollowing.length < 1) {
+          return (
+            <Mutation 
+              mutation={FOLLOW_USER}
+              update={(cache, { data: { followUser } }) => {
+                const { getUserByUsername } = cache.readQuery({ query: GET_USER_BY_USERNAME });
+                cache.writeQuery({
+                  query: GET_USER_BY_USERNAME,
+                  data: { getUserByUsername: followUser }
+                });
+              }}
+            >
+            {(followUser, {loading, error}) => (
+              <LoginButton onClick={() => {
+                followUser({
+                  variables: {
+                    username: user.username
+                  },
+                  optimisticResponse: {
+                    __typename: 'Mutation',
+                    updateComment: {
+                      id: user.id,
+                      __typename: 'User',
+                      isFollowing: [].push(currentUser.id)
+                    }
+                  }
+                });
+              }}>
+                Follow
+              </LoginButton>
+            )}
+            </Mutation>
+          );
+        } else {
+          return(
+            <Mutation 
+              mutation={UN_FOLLOW_USER}
+              update={(cache, { data: { unFollowUser } }) => {
+                const { getUserByUsername } = cache.readQuery({ query: GET_USER_BY_USERNAME });
+                cache.writeQuery({
+                  query: GET_USER_BY_USERNAME,
+                  data: { getUserByUsername: unFollowUser }
+                });
+              }}
+            >
+            {(unFollowUser, {loading, error}) => (
+              <LoginButton isMember onClick={() => {
+                unFollowUser({
+                  variables: {
+                    username: user.username
+                  },
+                  optimisticResponse: {
+                    __typename: 'Mutation',
+                    updateComment: {
+                      id: user.id,
+                      __typename: 'User',
+                      isFollowing: []
+                    }
+                  }
+                });
+              }}>
+                Unfollow
+              </LoginButton>
+            )}
+            </Mutation>
+          );
+        }
+      } else {
+        return(
+          <Link to={`/conversation/${user.username}`}>
+            <LoginButton>
+                Message {user.username}
+            </LoginButton>
+          </Link>
+        );
+      }
+      
     }
-}
+  }
 
   render() {
     const { username, hasNoThreads, selectedView, hasThreads } = this.state;
   
     return (
-      <Query pollInterval={3000} query={GET_USER_BY_USERNAME} variables={{ username }} >
+      <Query pollInterval={20000} query={GET_USER_BY_USERNAME} variables={{ username }} >
         {({loading, error, data}) => {
           if (loading) { return null; }
           if (error) { return `Error!: ${error}`; }
@@ -103,12 +191,13 @@ componentDidUpdate(prevProps) {
                   username={username}
                   profileSize="full"
                 />
-  
-                {currentUser &&
-                  user.id !== currentUser.id && (
-                    <LoginButton onClick={() => alert('hi')}>
-                      Message {user.username}
-                    </LoginButton>
+                {this.renderButtons(currentUser, user, user.isFollowing, user.isConnected)}
+                {currentUser && user.id !== currentUser.id && (
+                    <Link to={`/conversation/${user.username}`}>
+                      <LoginButton>
+                          Message {user.username}
+                      </LoginButton>
+                    </Link>
                   )}
                 {currentUser &&
                   user.id === currentUser.id && (
@@ -120,110 +209,131 @@ componentDidUpdate(prevProps) {
               <Content>
                 <SegmentedControl style={{ margin: '0 0 0 0', paddingTop: 16, backgroundColor: '#fff' }}>
                   <DesktopSegment
-                    segmentLabel="search"
-                    onClick={() => this.handleSegmentClick('search')}
-                    selected={selectedView === 'search'}
+                    segmentLabel="article"
+                    onClick={() => this.handleSegmentClick('article')}
+                    selected={selectedView === 'article'}
                   >
                   {user.articles ? user.articles.length : ''}  Articles
                   </DesktopSegment>
   
                   <DesktopSegment
-                    segmentLabel="participant"
-                    onClick={() => this.handleSegmentClick('participant')}
-                    selected={selectedView === 'participant'}
+                    segmentLabel="connections"
+                    onClick={() => this.handleSegmentClick('connections')}
+                    selected={selectedView === 'connections'}
                   >
                    {user.connectTo ? user.connectTo.length : ''} Connections
                   </DesktopSegment>
   
                   <DesktopSegment
-                    segmentLabel="creator"
-                    onClick={() => this.handleSegmentClick('creator')}
-                    selected={selectedView === 'creator'}
+                    segmentLabel="community"
+                    onClick={() => this.handleSegmentClick('community')}
+                    selected={selectedView === 'community'}
                   >
-                    Media
+                    Community
                   </DesktopSegment>
                   <MobileSegment
-                    segmentLabel="search"
-                    onClick={() => this.handleSegmentClick('search')}
-                    selected={selectedView === 'search'}
+                    segmentLabel="article"
+                    onClick={() => this.handleSegmentClick('article')}
+                    selected={selectedView === 'article'}
                   >
                     Articles
                   </MobileSegment>
                   <MobileSegment
-                    segmentLabel="participant"
-                    onClick={() => this.handleSegmentClick('participant')}
-                    selected={selectedView === 'participant'}
+                    segmentLabel="connections"
+                    onClick={() => this.handleSegmentClick('connections')}
+                    selected={selectedView === 'connections'}
                   >
                    {user.connectTo ? user.connectTo.length : ''} Connections
                   </MobileSegment>
                   <MobileSegment
-                    segmentLabel="creator"
-                    onClick={() => this.handleSegmentClick('creator')}
-                    selected={selectedView === 'creator'}
+                    segmentLabel="community"
+                    onClick={() => this.handleSegmentClick('community')}
+                    selected={selectedView === 'community'}
                   >
-                    Media
+                    Community
                   </MobileSegment>
                 </SegmentedControl>
   
-                {hasThreads &&
-                  (selectedView === 'creator' ||
-                    selectedView === 'participant') && (
+                {selectedView === 'article' && (
                     <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
-                      <ArticleList />
-                    </div>
-                  )}
-  
-                {selectedView === 'search' && 
-                  <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
-                      <Query pollInterval={3000} query={ACTIVITY} variables={{ myUsername: currentUser.username }} >
-                        {({loading, error, data}) => {
-                          if (loading) {
-                            return (
-                              <div>
-                                <MyLoader />
-                                <br/>
-                                <br/>
-                                <MyLoader />
-                                <br/>
-                              </div>
-                              );
-                          }
-                          if (loading) {
-                            return <ErrorComponent />;
-                          }
-
-                          if (data.activity === null) {
-                            return(
-                              <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
-                                <EmptyComponent title="Empty activity" subtitle="Try joining a community and writing content" />
-                              </div>
-                            );
-                          }
-
+                      <Query query={ACTIVITY} variables={{ username: currentUser.username }} >
+                      {({ loading, error, data: { activity }, fetchMore, networkStatus, refetch }) => {
+                        if (loading) {
                           return (
+                            <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
+                              <div><MyLoader /></div>
+                              <br />
+                              <div><MyLoader /></div>
+                              <br />
+                              <div><MyLoader /></div>
+                            </div>
+                          );
+                        }
+                        if (error) {
+                          return <ErrorComponent />;
+                        }
+                        if (activity.edges.length < 1) {
+                          return (
+                            <NullState bg="null" heading={'Write an article'} />
+                          );
+                        }
+                        return (
                             <InfiniteScroll
                               pageStart={0}
-                              hasMore={true || false}
+                              hasMore={activity.pageInfo.hasNextPage}
+                              loadMore={() =>
+                                fetchMore({
+                                  variables: {
+                                    username: user.username,
+                                    cursor: activity.pageInfo.endCursor
+                                  },
+                                  updateQuery: (previousResult, { fetchMoreResult }) => {
+                                    const newEdges = fetchMoreResult.activity.edges;
+                                    const pageInfo = fetchMoreResult.activity.pageInfo;
+                      
+                                    return newEdges.length
+                                      ? {
+                                        activity: {
+                                            __typename: previousResult.activity.__typename,
+                                            edges: [...previousResult.activity.edges, ...newEdges],
+                                            pageInfo
+                                          }
+                                        }
+                                      : previousResult;
+                                  }
+                                })}
                               loader={
-                                  <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
-                                    <Loading />
-                                  </div>
+                                <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
+                                  <MyLoader />
+                                </div>
                               // tslint:disable-next-line:jsx-curly-spacing
                               }
                             >
-                              {data.activity ? data.activity.map((article) => (
-                                  <div key={article.id}>
-                                    <ArticleItem article={article} />
-                                  </div>
-                              )) : null}
+                              {activity.edges.map((article) => (
+                                <div key={article.node.id}>
+                                    <ArticleItem article={article.node} />
+                                </div>
+                              ))}
                             </InfiniteScroll>
-                          );
+                        );
                         }}
                       </Query>
-                  </div>
+                    </div>
+                  )
                 }
   
-                {!hasThreads && <NullState bg="null" heading={'Write'} />}
+                {selectedView === 'connections' && 
+                  <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
+                    jjkjk
+                  </div>
+                }
+
+                {selectedView === 'community' && (
+                    <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
+                      <NullState bg="null" heading={'Write'} />
+                    </div>
+                  )
+                }
               </Content>
             </Grid>
           </AppViewWrapper>); }}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 // import InfiniteList from 'react-infinite-scroller-with-scroll-element';
 // import { withInfiniteScroll } from 'Components/infiniteScroll';
-import { Column } from 'Components/column';
+import { Column } from 'Components/Column';
 import AppViewWrapper from 'Components/AppViewWrapper';
 import Titlebar from 'Components/Titlebar';
 import { FlexCol } from 'Components/Globals';

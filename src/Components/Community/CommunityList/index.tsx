@@ -34,7 +34,7 @@ class CommunityList extends React.Component<any> {
               {
                 data.myCommunities.map((community) => (
                   <div key={community.id}>
-                      <ServerIndexItem community={community} />
+                    <ServerIndexItem community={community} />
                   </div>
                 ))
               }

@@ -5,7 +5,7 @@ import { asyncComponent } from 'react-async-component';
 import { LoadingComponent } from 'Components/EmptyStates';
 import CommunitySidebar from 'Components/Community/CommunitySidebar';
 import ChannelList from 'Components/Community/ChannelList';
-import ParticipantList from 'Components/Community/ParticipantList';
+import DirectChatList from 'Components/Community/DirectChatList';
 import ThemeProvider from 'anchor-ui/theme-provider';
 import ChannelHeader from 'anchor-ui/channel-header';
 import IconChannels from 'anchor-ui/icons/icon-channels';
@@ -25,8 +25,8 @@ import './style.scss';
 import { Button } from 'semantic-ui-react';
 import Icon from 'Components/Icons';
 
-const ChatDetail = asyncComponent({
-  resolve: () => import('../ChatDetail'),
+const DirectChatDetail = asyncComponent({
+  resolve: () => import('../DirectChatDetail'),
   LoadingComponent: () => <LoadingComponent />, // Optional
   ErrorComponent: ({ error }) => <div>{error.message}</div> // Optional
 });
@@ -42,7 +42,7 @@ interface Response {
   getAllChat: Channels[];
 }
 
-class Forum extends React.Component<Props> {
+class DirectChat extends React.Component<Props> {
   
   state = {
     channelCommunity: '',
@@ -62,31 +62,22 @@ class Forum extends React.Component<Props> {
 
     const { match: { params } } = this.props;
 
-    if (params.id) {
-        this.setState({ channelCommunity: params.id });
+    if (params.username) {
+        this.setState({ channelId: params.username });
     } else {
         // this.props.history.goBack();
-    }
-    
-    if (params.channel) {
-      this.setState({ channelId: params.channel });
     }
 
   }
     // tslint:disable-next-line:typedef
   componentDidUpdate(prevProps) {
-    const oldId = prevProps.match.params.id;
-    const newId = this.props.match.params.id;
-    const oldChannel = prevProps.match.params.channel;
-    const newChannel = this.props.match.params.channel;
+    const oldId = prevProps.match.params.username;
+    const newId = this.props.match.params.username;
     
     if (newId !== oldId) {
-      this.setState({ channelCommunity: newId });
+      this.setState({ channelId: newId });
     }
 
-    if (newChannel !== oldChannel) {
-      this.setState({ channelId: newChannel });
-    }
   }
 
   selectCommunity = (value) => {
@@ -100,7 +91,7 @@ class Forum extends React.Component<Props> {
         className="uk-width-1-1 uk-flex"
       >
         <CommunitySidebar itemClick={this.selectCommunity} />
-        <ChannelList communityId={this.state.channelCommunity} />
+        <DirectChatList />
         <div className="uk-width-expand uk-visible@s">
           <div 
             className="uk-flex uk-flex-between uk-align-center uk-text-center mdc-elevation--z2"
@@ -111,7 +102,7 @@ class Forum extends React.Component<Props> {
               style={{ marginRight: 10 }}
               compact
             >
-              <Icon glyph="plus" />
+              .
             </Button.Content>
             <div 
               className="uk-text-capitalize uk-text-medium uk-text-bold uk-text-truncate"
@@ -130,9 +121,8 @@ class Forum extends React.Component<Props> {
               <Icon glyph="plus" />
             </Button.Content>
           </div>
-          <ChatDetail channelId={this.state.channelId} />
+          <DirectChatDetail channelId={this.state.channelId} />
         </div>
-        {this.state.openParticipantSide ? <ParticipantList communityId={this.state.channelCommunity} /> : null}
       </div>
     );
   }
@@ -154,19 +144,4 @@ class Forum extends React.Component<Props> {
 
 export default withRouter(compose(
   withApollo
-)(Forum));
-
-/*
-Modal.propTypes = {
-  actions: _propTypes2.default.node.isRequired,
-  /** Override the style of the root element *
-  style: _propTypes2.default.object, // eslint-disable-line react/forbid-prop-types
-  /** Override the style of the content element *
-  contentStyle: _propTypes2.default.object, // eslint-disable-line react/forbid-prop-types
-  /** Override the style of the footer element *
-  footerStyle: _propTypes2.default.object, // eslint-disable-line react/forbid-prop-types
-  /** Override the styles of the overlay element *
-  overlayStyle: _propTypes2.default.object, // eslint-disable-line react/forbid-prop-types
-  color: _propTypes2.default.string.isRequired
-};
-*/
+)(DirectChat));

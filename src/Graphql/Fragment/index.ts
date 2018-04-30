@@ -50,6 +50,7 @@ export const USER_FRAGMENT = gql`
     }
     messages{
       text
+      id
       sent
       seen
       delivered
@@ -147,6 +148,7 @@ export const USER_FRAGMENT = gql`
       actor{
         username
         avatar
+        id
         firstname
         lastname
       }
@@ -170,6 +172,7 @@ export const USER_FRAGMENT = gql`
       sent
       slug
       actor{
+        id
         username
         avatar
         firstname
@@ -212,9 +215,11 @@ export const ARTICLE_FRAGMENT = gql`
       id
     }
     userFavourited{
+      id
       username
     }
     likes{
+      id
       username
       avatar
     }
@@ -232,9 +237,11 @@ export const ARTICLE_FRAGMENT = gql`
       lastname
       type
       department {
+        id
         name
       }
       institution{
+        id
         title
       }
     }

@@ -236,6 +236,53 @@ export const GET_USER_BY_USERNAME = gql`
         title
         body
       }
+      isFollowing: followers(where: {username: $username}){
+        id
+        username
+      }
+      isFollower: following(where: {username: $username}){
+        id
+        username
+      }
+      isConnected: connections(where: {username: $username}){
+        id
+        username
+      }
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+/**
+ * @description check if current user article
+ */
+export const SEARCH_USER = gql`
+  query searchUser($text: String!, $username: String){
+    searchUser(text: $text){
+      ...userFragment
+      connections{
+        username
+        id
+      }
+      avatar
+      headerImage
+      articles{
+        id
+        title
+        body
+      }
+      isFollowing: followers(where: {username: $username}){
+        id
+        username
+      }
+      isFollower: following(where: {username: $username}){
+        id
+        username
+      }
+      isConnected: connections(where: {username: $username}){
+        id
+        username
+      }
     }
   }
   ${USER_FRAGMENT}
@@ -391,9 +438,11 @@ export const ACTIVITY = gql`
         node {
           saved: userFavourited(where: {username: $username }) {
             username
+            id
           }
           liked: likes(where: {username: $username }) {
             username
+            id
           }
           ...articleFragment
         }
@@ -499,6 +548,47 @@ export const NOTIFICATION = gql`
   query notifications{
     notifications{
       id
+    }
+  }
+`;
+
+export const GET_DIRECT_USERS = gql`
+  query getDirectUsers{
+    getDirectUsers{
+      username
+      id
+      firstname
+      lastname
+      email
+      avatar
+      headerImage
+    }
+  }
+`;
+
+export const GET_MESSAGES_BY_SLUG = gql`
+  query getMessagesBySlug($slug: String!) {
+    getMessagesBySlug(slug: $slug){
+      id
+      createdAt
+      updatedAt
+      text
+      seen
+      user{
+        id
+        username
+        firstname
+        lastname
+        avatar
+        email
+      }
+      delivered
+      sent
+      channel{
+        id
+        slug
+        title
+      }
     }
   }
 `;

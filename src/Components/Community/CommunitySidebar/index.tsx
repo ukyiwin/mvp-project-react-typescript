@@ -3,8 +3,8 @@ import { Link, withRouter } from 'react-router-dom';
 import * as UIkit from 'uikit';
 import ServerIndexItem from './serverName';
 import CreateCommunityForm from 'Components/Community/CreateCommunityForm';
-import './style.scss';
 import CommunityList from 'Components/Community/CommunityList';
+import './style.scss';
 
 class CommunitySidebar extends React.Component<any> {
   constructor(props) {
@@ -28,7 +28,7 @@ class CommunitySidebar extends React.Component<any> {
     // const serverId = this.props.location.pathname.includes('channels') ? this.getServerId() : '';
     return (
       <div className="sidebar-wrapper">
-        <Link to="/community/directs" className="direct-message-link circle-base">
+        <Link to="/conversation" className="direct-message-link circle-base">
         <div className="direct-message-button">
           <i className="fa fa-user-o fa-2x" aria-hidden="true" />
           </div>
@@ -37,7 +37,7 @@ class CommunitySidebar extends React.Component<any> {
         <span className="sidebar-text">Direct Messages</span>
         <div className="sidebar-control" />
         <span className="sidebar-text">Communities</span>
-        <CommunityList />
+        <CommunityList itemClick={this.props.itemClick}/>
         <div className="add-server-button circle-base" onClick={() => UIkit.modal('#modal-comm').show()}>
           <div id="add-server-plus">+</div>
         </div>

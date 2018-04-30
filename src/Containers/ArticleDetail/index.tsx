@@ -231,7 +231,7 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
       );
   }
 
-    renderCommentList() {
+  renderCommentList() {
         const articleId = this.state.currentArticle.id;
         return (
           <Query query={GET_COMMENTS} variables={{articleId}} >
@@ -263,9 +263,9 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
           }}
         </Query>
         );
-    }
+  }
 
-    render() {
+  render() {
         if (this.state.loading) {
             // tslint:disable-next-line:jsx-wrap-multiline
             return (
@@ -293,7 +293,7 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
                 </div>
             </div>
         );
-    }
+  }
 }
 
 export default withRouter(compose(withApollo)(ArticleDetail));

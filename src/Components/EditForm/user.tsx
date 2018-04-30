@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import Link from 'Components/Link';
 import { throttle } from 'Utils/utils';
 import { Button } from '../Buttons';
+import * as axios from 'axios';
+import { b64toBlob, urltoFile } from 'Utils/helper';
 import Icon from 'Components/Icons';
 // import GithubProfile from '../../components/githubProfile';
 // import { GithubSigninButton } from '../../components/loginButtonSet/github';
@@ -41,6 +43,7 @@ import User from 'Components/Profile/user';
 import { User as UserType } from 'CustomTypings/schema';
 import { ME } from 'Graphql/Query';
 import { UPDATE_USER_PROFILE } from 'Graphql/Mutation';
+import { UPLOAD_COVER, UPLOAD_PHOTO } from 'Graphql/Mutation/user';
 
 interface State {
   website?: string;
@@ -175,16 +178,6 @@ class UserWithData extends React.Component<Props, any> {
 
     if (!file) { return; }
 
-    if (
-      file &&
-      file.size > PRO_USER_MAX_IMAGE_SIZE_BYTES
-    ) {
-      return this.setState({
-        photoSizeError: `Try uploading a file less than ${PRO_USER_MAX_IMAGE_SIZE_STRING}.`,
-        isLoading: false,
-      });
-    }
-
     if (file && file.type === 'image/gif' && !this.props.currentUser.isPro) {
       return this.setState({
         isLoading: false,
@@ -205,8 +198,17 @@ class UserWithData extends React.Component<Props, any> {
     };
 
     reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      this.uploadProfile(file, reader.result);
+    };
+
+    reader.onerror = (error) => {
+      // console.log('Error: ', error);
+    };
   }
 
+  /*
   setCoverPhoto = (e) => {
     const reader = new FileReader();
     const file = e.target.files[0];
@@ -247,7 +249,118 @@ class UserWithData extends React.Component<Props, any> {
 
     reader.readAsDataURL(file);
   }
+  */
 
+  uploadFile = (file: File, dataBlob) => {
+    
+    const block = dataBlob.split(';');
+    const contentType = block[0].split(':')[1];
+    const realData = block[1].split(',')[1];
+
+    // Convert it to a blob to upload
+    const blob = b64toBlob(realData, contentType);
+    const data = new FormData();
+    
+    urltoFile(dataBlob, file.name, contentType)
+    .then((file) => {
+      data.append('data', file);
+      axios({
+        method: 'post',
+        url: 'https://uniserver.herokuapp.com/upload',
+        data,
+        headers: {
+          'content-type': 'multipart/form-data'
+      }
+      }).then((response) => {
+        this.setState({ coverPhoto: response.data.url, isLoading: false, });
+        this.props.client({
+          mutation: UPLOAD_COVER,
+          variables: {
+            headerImage: this.state.coverPhoto
+          }
+        }).then((res) => {
+          // fdf
+        }).catch((err) => {
+          // dsdfd
+        });
+      });
+    });
+  }
+
+  uploadProfile = (file: File, dataBlob) => {
+    
+    const block = dataBlob.split(';');
+    const contentType = block[0].split(':')[1];
+    const realData = block[1].split(',')[1];
+
+    // Convert it to a blob to upload
+    const blob = b64toBlob(realData, contentType);
+    const data = new FormData();
+    
+    urltoFile(dataBlob, file.name, contentType)
+    .then((file) => {
+      data.append('data', file);
+      axios({
+        method: 'post',
+        url: 'https://uniserver.herokuapp.com/upload',
+        data,
+        headers: {
+          'content-type': 'multipart/form-data'
+      }
+      }).then((response) => {
+        this.setState({ image: response.data.url, isLoading: false, });
+        this.props.client({
+          mutation: UPLOAD_PHOTO,
+          variables: {
+            avatar: this.state.image
+          }
+        }).then((res) => {
+          // fdf
+        }).catch((err) => {
+          // dsdfd
+        });
+      });
+    });
+  }
+
+  setCoverPhoto = (e) => {
+    
+    const reader = new FileReader();
+    const file = e.target.files[0];
+
+    if (!file) { return; }
+
+    this.setState({
+      isLoading: true,
+    });
+
+    if (file && file.type === 'image/gif') {
+      return this.setState({
+        isLoading: false,
+        proGifError: true,
+      });
+    }
+
+    reader.onloadend = () => {
+      this.setState({
+        coverFile: file,
+        coverPhoto: reader.result,
+        photoSizeError: '',
+        proGifError: false
+      });
+    };
+
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      this.uploadFile(file, reader.result);
+    };
+
+    reader.onerror = (error) => {
+      // console.log('Error: ', error);
+    };
+  }
+  
   save = (e) => {
     e.preventDefault();
 
