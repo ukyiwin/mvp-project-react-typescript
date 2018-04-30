@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ba1a9577751dd27e7c75"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "6b9ca0751d80769521f5"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -21912,7 +21912,7 @@ const errorLink = Object(__WEBPACK_IMPORTED_MODULE_2_apollo_link_error__["onErro
 });
 /* harmony export (immutable) */ __webpack_exports__["b"] = errorLink;
 
-const httpLink = new __WEBPACK_IMPORTED_MODULE_10_apollo_link_batch_http__["BatchHttpLink"]({ uri: 'http://localhost:4000', fetch: __WEBPACK_IMPORTED_MODULE_9_node_fetch___default.a });
+const httpLink = new __WEBPACK_IMPORTED_MODULE_10_apollo_link_batch_http__["BatchHttpLink"]({ uri: 'https://uniserver.herokuapp.com', fetch: __WEBPACK_IMPORTED_MODULE_9_node_fetch___default.a });
 /* unused harmony export httpLink */
 
 const middlewareLink = new __WEBPACK_IMPORTED_MODULE_0_apollo_link__["ApolloLink"]((operation, forward) => {
