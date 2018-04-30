@@ -1,9 +1,10 @@
 import * as React from 'react';
 import * as ReactTags from 'react-tag-autocomplete';
-import { Article, User } from '../../CustomTypings/schema';
+import Select from 'react-select-plus';
+import { Article, User, Interest } from '../../CustomTypings/schema';
 import Avatar from '../Avatar/avatar';
-import { Link } from 'react-router-dom';
-import { withApollo, compose } from 'react-apollo';
+import { Link, withRouter } from 'react-router-dom';
+import { withApollo, compose, graphql } from 'react-apollo';
 import Likebutton from '../LikeButton';
 import PopoverLink from '../PopoverLink';
 import TimeAgo from 'react-timeago';
@@ -12,17 +13,25 @@ import Icon from 'semantic-ui-react';
 import ArticleItem from 'Components/ArticleItem';
 import * as UIkit from 'uikit';
 import { PUBLISH_ARTICLE, LIKE_ARTICLE, DELETE_ARTICLE } from 'Graphql/Mutation';
-import { ALL_INTEREST } from 'Graphql/Query';
+import { ALL_INTEREST, DRAFTS } from 'Graphql/Query';
 import { cookies } from '../../link';
 import { CURRENT_USER } from '../../constants';
 import { StyledOutlineButton } from 'Components/Buttons/style';
-// import UIkit from 'uikit/src/js/uikit';
+import './style.scss';
+import 'react-select-plus/dist/react-select-plus.css';
+import { Dropdowns, RequiredSelector } from 'Containers/ComposeArticle/style';
+import { FlexRow } from 'Components/Globals';
+import _ from 'lodash';
 // import { Link } from 'react-router-dom';
 
 interface Props {
-    article: Article;
-    small?: boolean;
-    client?: any;
+  article: Article;
+  small?: boolean;
+  client?: any;
+}
+
+interface Response {
+  allInterest: Interest[];
 }
 
 // tslint:disable-next-line:no-any
@@ -33,8 +42,11 @@ class DraftsItem extends React.Component<Props> {
     saved: false,
     liked: false,
     tags: [] as any,
+    those: [] as any,
+    interest: '',
     suggestions: [] as any,
-    deleting: false
+    deleting: false,
+    loading: false
   };
 
   componentWillMount() {
@@ -43,16 +55,43 @@ class DraftsItem extends React.Component<Props> {
   }
 
   publish = () => {
-    this.setState({saved: true});
+    const tags = this.state.tags;
+    const those = _.map(tags, 'value');
+    const interest = this.state.interest;
+    this.setState({saved: true, loading: true});
     this.props.client.mutate({
       mutation: PUBLISH_ARTICLE,
       variables: {
-        id: this.props.article.id
+        id: this.props.article.id,
+        category: interest,
+        tags: those
+      },
+      update: (cache, { data: { publishArticle } }) => {
+        const { articles } = cache.readQuery({ query: DRAFTS });
+        const node = {
+          node: {
+            ...publishArticle
+          }
+        };
+        console.log(articles);
+        /*cache.writeQuery({
+          query: ARTICLES,
+          data: { articles: articles.edges.concat(node) }
+        });*/
+      },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        publishArticle: {
+          id: this.props.article.id,
+          __typename: 'Article',
+          isPublished: true
+        }
       }
     }).then((res) => {
-      // dhjh
+      this.setState({loading: false});
+      UIkit.modal('#modal-full').hide();
     }).catch((err) => {
-      // ghg
+      this.setState({loading: false});
     });
   }
 
@@ -74,8 +113,8 @@ class DraftsItem extends React.Component<Props> {
         .allInterest
         .map((interest) => {
           const temp = {
-            id: interest.id,
-            name: interest.name
+            value: interest.id,
+            label: interest.name
           };
           tempList.push(temp);
         });
@@ -87,18 +126,48 @@ class DraftsItem extends React.Component<Props> {
     });
   }
 
+  setCategory= (e) => {
+    this.setState({interest: e.target.value});
+  }
+
+  handleChange = (tags) => {
+    this.setState({ tags });
+  }
+
   deleteArticle = () => {
-    this.setState({deleting: true});
+    this.setState({deleting: true, loading: true});
     this.props.client.mutate({
       mutation: DELETE_ARTICLE,
       variables: {
         id: this.props.article.id
+      },
+      update: (cache, { data: { deleteArticle } }) => {
+        const { drafts } = cache.readQuery({ query: DRAFTS });
+        const node = {
+          node: {
+            ...deleteArticle
+          }
+        };
+        // console.log(articles);
+        /*cache.writeQuery({
+          query: ARTICLES,
+          data: { articles: articles.edges.concat(node) }
+        });*/
+      },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        deleteArticle: {
+          id: this.props.article.id,
+          __typename: 'Article',
+          isPublished: true
+        }
       }
     }).then((res) => {
-      this.setState({deleting: true});
+      this.setState({deleting: true, loading: false});
       UIkit.modal('#modal-delete').hide();
+      this.setState({loading: false});
     }).catch((err) => {
-      this.setState({deleting: true});
+      this.setState({deleting: true, loading: false});
     });
   }
 
@@ -127,25 +196,25 @@ class DraftsItem extends React.Component<Props> {
           >
             <div style={{ paddingTop: 20 }}>
               <div
-                  className="card-body uk-padding-remove-vertical simple-link"
-                  style={{ paddingTop: this.props.small ? 0 : 10, borderBottom: 1 }}
+                className="card-body uk-padding-remove-vertical simple-link"
+                style={{ paddingTop: this.props.small ? 0 : 10, borderBottom: 1 }}
               >
-                  <Link to={`/write/${article.id}`} className="simple-link">
-                      <h5
-                          className="uk-text-medium uk-text-bold uk-text-break"
-                          style={{ fontSize: this.props.small ? 17 : 23, fontFamily: 'Crimson Text' }}
-                      >
-                        {this.props.small
-                            ? article.title.truncString('...', 36)
-                            : article.title.truncString('...', 140)}
-                      </h5>
-                  </Link>
-                  <p style={{ color: '#212121', fontFamily: 'Muli', fontSize: this.props.small ? 14 : 17 }}>
-                      {this.props.small ? body.truncString('...', 70) : body.truncString('...', 140)}
-                  </p>
+                <Link to={`/write/${article.id}`} className="simple-link">
+                  <h5
+                    className="uk-text-medium uk-text-bold uk-text-break"
+                    style={{ fontSize: this.props.small ? 17 : 23, fontFamily: 'Crimson Text' }}
+                  >
+                    {this.props.small
+                      ? article.title.truncString('...', 36)
+                      : article.title.truncString('...', 140)}
+                  </h5>
+                </Link>
+                <p style={{ color: '#212121', fontFamily: 'Muli', fontSize: this.props.small ? 14 : 17 }}>
+                    {this.props.small ? body.truncString('...', 70) : body.truncString('...', 140)}
+                </p>
               </div>
               <div
-                  className="post-stats clearfix uk-padding-small"
+                className="post-stats clearfix uk-padding-small"
               >
                 <div className="uk-flex pull-left">
                   <p className="uk-text-meta uk-margin-remove-top">
@@ -202,13 +271,57 @@ class DraftsItem extends React.Component<Props> {
                     <div className="uk-padding-large">
                         <h1>Publish Article</h1>
                         <p>Lets pick some tags to finish up the process.</p>
-                        <ReactTags
-                          tags={this.state.tags}
-                          suggestions={this.state.suggestions}
-                          handleDelete={this.handleDelete}
-                          handleAddition={this.handleAddition}
+
+                        <div
+                          className="uk-flex uk-flex-around"
+                          style={{ marginBottom: 20 }}
+                        >
+                          <Dropdowns
+                            style={{backgroundColor: 'transparent'}}
+                          >
+                            <span>Category:</span>
+                            {this.props.allInterest.loading ? (
+                              <div />
+                              ) : (
+                              <RequiredSelector
+                                data-cy="composer-community-selector"
+                                style={{minWidth: 180}}
+                                onChange={this.setCategory}
+                              >
+                                <option key={0} value="">
+                                  Select Category
+                                </option>
+                                {this.props.allInterest.allInterest.map((interest) => {
+                                  return (
+                                    <option key={interest.id} value={interest.id}>
+                                      {interest.name}
+                                    </option>
+                                  );
+                                })}
+                              </RequiredSelector>
+                            )}
+                          </Dropdowns>
+                        </div>
+                        {this.state.interest}
+                        {JSON.stringify(this.state.tags)}
+                        {JSON.stringify(this.state.those)}
+                        {this.props.article.id}
+                        <Select
+                          name="form-field-name"
+                          value={this.state.tags}
+                          multi
+                          placeholder="Add at most 5 tags"
+                          onChange={this.handleChange}
+                          options={this.state.suggestions}
                         />
-                        <StyledOutlineButton>Publish Now</StyledOutlineButton>
+                        <StyledOutlineButton
+                          disabled={
+                            this.state.tags.length < 1 || this.state.interest === '' || this.state.loading
+                          }
+                          onClick={() => this.publish()}
+                          style={{ marginTop: 20 }}
+                        >Publish Now
+                        </StyledOutlineButton>
                     </div>
                   </div>
                 </div>
@@ -218,31 +331,8 @@ class DraftsItem extends React.Component<Props> {
   }
 }
 
-export default compose(withApollo)(DraftsItem);
-
-/*
-
-          <{this.props.small && (this.props.article.link === null) ? null : (
-                <div className="image">
-                  <div
-                    data-uk-lightbox="animation: fade; video-autoplay: true;"
-                    className="uk-inline-clip uk-transition-toggle"
-                  >
-                      <a
-                        className="uk-inline"
-                        href="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
-                      >
-                        <img
-                          src="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
-                          className="img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque"
-                          alt="..."
-                          style={{maxHeight: 280 }}
-                        />
-                      </a>
-                  </div>
-                </div>)
-              }  
-                        <a className="response-count uk-flex uk-inline">
-                            <span uk-icon="icon: forward; ratio: 1.2" /> <div className="uk-visible@s">Share</div>
-                        </a>
-*/
+export default withRouter(
+  compose(
+    withApollo, 
+    graphql <Response, {}, Props> (ALL_INTEREST, {name: 'allInterest'}),
+  )(DraftsItem));

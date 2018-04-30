@@ -59,7 +59,7 @@ const SuggestedArticleList = () => (
         />);
     }
     return (
-      <div className="uk-card person">
+      <div className="uk-card person" style={{backgroundColor: '#fff'}}>
         <Label text="Suggested Articles for you" />
         <InfiniteScroll
           pageStart={0}
@@ -87,7 +87,7 @@ const SuggestedArticleList = () => (
         >
             {data.getSuggestedArticles ? data.getSuggestedArticles.map((article) => (
                 <div key={article.id}>
-                    <ArticleItem small={true} article={article} />
+                    <ArticleItem small={true} hideFooter={true} article={article} />
                 </div>
             )) : null}
         </InfiniteScroll>

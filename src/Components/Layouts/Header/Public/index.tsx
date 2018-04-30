@@ -45,26 +45,28 @@ const PublicHeader = (props: Props) => {
           style={{marginBottom: 0}}
         >
           <div className="nav-overlay uk-navbar-left">
-            <Link to="/" className="uk-navbar-item uk-logo uk-visible@m" href="#">
-              <img 
-                src={require('../../../../Assets/unizonn/uniz_.svg')} 
-                style={{height: 40}}
-                // tslint:disable-next-line:jsx-boolean-value
-                uk-svg
-              />
-            </Link>
-            <Link to="/" className="uk-navbar-item uk-logo uk-hidden@m" href="#">
-              <img 
-                src={require('../../../../Assets/unizonn/unizz_small.svg')} 
-                style={{height: 40}}
-                // tslint:disable-next-line:jsx-boolean-value
-                uk-svg
-              />
-            </Link>
+            
+          <Link to="/" className="uk-navbar-item uk-logo uk-visible@m" href="#">
+            <img 
+              src={require('../../../../Assets/unizonn/uni_green.svg')} 
+              style={{height: 70}}
+              // tslint:disable-next-line:jsx-boolean-value
+              uk-svg
+            />
+          </Link>
+          <Link to="/" className="uk-navbar-item uk-logo uk-hidden@m" href="#">
+            <img 
+              src={require('../../../../Assets/unizonn/uni_green_s.svg')} 
+              style={{height: 70}}
+              // tslint:disable-next-line:jsx-boolean-value
+              uk-svg
+            />
+          </Link>
             <div className="nav-overlay uk-navbar-right uk-visible@s">
               <Tabs>
                 <PricingTab
                   dark={true}
+                  style={{ color: '#212121' }}
                   selected={props.location === 'blog'}
                   to="/blog"
                 >
@@ -72,6 +74,7 @@ const PublicHeader = (props: Props) => {
                 </PricingTab>
                 <SupportTab
                   dark={true}
+                  style={{ color: '#212121' }}
                   selected={props.location === 'support'}
                   to="/support"
                 >

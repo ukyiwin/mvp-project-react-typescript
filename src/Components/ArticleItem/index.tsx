@@ -18,6 +18,7 @@ import { ARTICLES } from 'Graphql/Query';
 interface Props {
     article: Article;
     small?: boolean;
+    hideFooter?: boolean;
     client: any;
 }
 
@@ -195,7 +196,7 @@ class ArticleItem extends React.Component<Props> {
         const body = strip_html_tags(article.body);
         return (
             <div
-              className="uk-card uk-card-default raised uk-width-1-1"
+              className={`uk-card ${this.props.hideFooter ? '' : 'uk-card-default'} uk-width-1-1`}
               style={{
                   marginBottom: this.props.small ? 7 : 15,
                   backgroundColor: '#fff',
@@ -253,63 +254,65 @@ class ArticleItem extends React.Component<Props> {
                         {this.props.small ? body.truncString('...', 70) : body.truncString('...', 140)}
                     </p>
                 </div>
-                <div
-                    className="post-stats clearfix uk-padding-small"
-                >
-                    <div className="uk-flex pull-left">
-                        <Likebutton 
-                          liked={this.state.liked} 
-                          likeCount={article.likes ? article.likes.length : ''} 
-                          text="Like" 
-                          frontIcon="like" 
-                          frontClick={() => this.like()}
-                          backClick={() => this.unLike()}
-                          backIcon="like-fill" 
-                          buttonType="two" />
-                        <Likebutton 
-                          likeCount={article.comments ? article.comments.length : ''} 
-                          link={`/article/${article.id}#comments`}
-                          frontIcon="post" 
-                          text="Comment"
-                        />
-                    </div>
+                {this.props.hideFooter ? <hr /> :
+                  <div
+                      className="post-stats clearfix uk-padding-small"
+                  >
+                      <div className="uk-flex pull-left">
+                          <Likebutton 
+                            liked={this.state.liked} 
+                            likeCount={article.likes ? article.likes.length : ''} 
+                            text="Like" 
+                            frontIcon="like" 
+                            frontClick={() => this.like()}
+                            backClick={() => this.unLike()}
+                            backIcon="like-fill" 
+                            buttonType="two" />
+                          <Likebutton 
+                            likeCount={article.comments ? article.comments.length : ''} 
+                            link={`/article/${article.id}#comments`}
+                            frontIcon="post" 
+                            text="Comment"
+                          />
+                      </div>
 
-                    <div className="uk-flex  response-count pull-right">
-                        <div className="dropdown">
-                            <button className="uk-button uk-button-text uk-margin-right" type="button">
-                                <span uk-icon="icon: more; ratio: 1.0" />
-                            </button>
-                            <div data-uk-drop="mode: click; pos: bottom-right">
-                                <ul className="menu">
-                                    <li className="menu-item uk-padding-small">
-                                        <a href="#" className="uk-text-bold">
-                                            <span uk-icon="icon: plus-circle; ratio: 1" /> Activity
-                                        </a>
-                                    </li>
-                                    <li className="menu-item uk-padding-small">
-                                        <a href="#" className="uk-text-bold">
-                                          <span uk-icon="icon: warning; ratio: 1" /> Don't like this
-                                        </a>
-                                    </li>
-                                    <li className="menu-item uk-padding-small">
-                                        <a href="#" className="uk-text-bold">
-                                            <span uk-icon="icon: info; ratio: 1" /> Report
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <Likebutton
-                          frontIcon="down" 
-                          text="Save" 
-                          backIcon="down-fill" 
-                          buttonType="two"
-                          liked={this.state.saved} 
-                          frontClick={() => this.save()}
-                          backClick={() => this.unSave()}
-                        />
-                    </div>
-                </div>
+                      <div className="uk-flex  response-count pull-right">
+                          <div className="dropdown">
+                              <button className="uk-button uk-button-text uk-margin-right" type="button">
+                                  <span uk-icon="icon: more; ratio: 1.0" />
+                              </button>
+                              <div data-uk-drop="mode: click; pos: bottom-right">
+                                  <ul className="menu">
+                                      <li className="menu-item uk-padding-small">
+                                          <a href="#" className="uk-text-bold">
+                                              <span uk-icon="icon: plus-circle; ratio: 1" /> Activity
+                                          </a>
+                                      </li>
+                                      <li className="menu-item uk-padding-small">
+                                          <a href="#" className="uk-text-bold">
+                                            <span uk-icon="icon: warning; ratio: 1" /> Don't like this
+                                          </a>
+                                      </li>
+                                      <li className="menu-item uk-padding-small">
+                                          <a href="#" className="uk-text-bold">
+                                              <span uk-icon="icon: info; ratio: 1" /> Report
+                                          </a>
+                                      </li>
+                                  </ul>
+                              </div>
+                          </div>
+                          <Likebutton
+                            frontIcon="down" 
+                            text="Save" 
+                            backIcon="down-fill" 
+                            buttonType="two"
+                            liked={this.state.saved} 
+                            frontClick={() => this.save()}
+                            backClick={() => this.unSave()}
+                          />
+                      </div>
+                  </div> 
+                }
                 </div>
             </div>
         );

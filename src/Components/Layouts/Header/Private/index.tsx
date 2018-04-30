@@ -56,7 +56,7 @@ class PrivateHeader extends React.Component<Props> {
             <div className="nav-overlay uk-navbar-left">
               <Link to="/" className="uk-navbar-item uk-logo uk-visible@m" href="#">
                 <img 
-                  src={require('../../../../Assets/unizonn/unizz_small.svg')} 
+                  src={require('../../../../Assets/unizonn/uni_green.svg')} 
                   style={{height: 40}}
                   // tslint:disable-next-line:jsx-boolean-value
                   uk-svg
@@ -64,7 +64,7 @@ class PrivateHeader extends React.Component<Props> {
               </Link>
               <Link to="/" className="uk-navbar-item uk-logo uk-hidden@m" href="#">
                 <img 
-                  src={require('../../../../Assets/unizonn/unizz_small.svg')} 
+                  src={require('../../../../Assets/unizonn/uni_green_s.svg')} 
                   style={{height: 40}}
                   // tslint:disable-next-line:jsx-boolean-value
                   uk-svg
@@ -98,16 +98,18 @@ class PrivateHeader extends React.Component<Props> {
               </ul>
               <div className="uk-navbar-right uk-visible@s">
                 <ul className="uk-iconnav">
-                  <div className="uk-flex">
-                    <SearchContainer />
+                  <div className="uk-navbar-nav uk-padding-small">
+                    <Link to="/search" className="" style={{color: '#fff'}}><Icon glyph="search" size={34} /></Link>
                   </div>
-                  <NotificationsTab
-                    location={props.history.location}
-                    currentUser={props.me}
-                    data-badge="8"
-                    hideText={true}
-                    active={props.history.location.pathname.includes('/notifications')}
-                  />
+                  <div className="uk-navbar-nav uk-padding-small">
+                    <NotificationsTab
+                      location={props.history.location}
+                      currentUser={props.me}
+                      data-badge="8"
+                      hideText={true}
+                      active={props.history.location.pathname.includes('/notifications')}
+                    />
+                  </div>
                 </ul>
                 <ul className="uk-navbar-nav">
                   <li>
@@ -294,7 +296,7 @@ class PrivateHeader extends React.Component<Props> {
               />
               <Link to="/" className="uk-navbar-item uk-logo uk-visible@m" href="#">
                 <img 
-                  src={require('../../../../Assets/unizonn/unizz_small.svg')} 
+                  src={require('../../../../Assets/unizonn/uni_green.svg')} 
                   style={{height: 40}}
                   // tslint:disable-next-line:jsx-boolean-value
                   uk-svg
@@ -302,7 +304,7 @@ class PrivateHeader extends React.Component<Props> {
               </Link>
               <Link to="/" className="uk-navbar-item uk-logo uk-hidden@m" href="#">
                 <img 
-                  src={require('../../../../Assets/unizonn/unizz_small.svg')} 
+                  src={require('../../../../Assets/unizonn/uni_green_s.svg')} 
                   style={{height: 40}}
                   // tslint:disable-next-line:jsx-boolean-value
                   uk-svg

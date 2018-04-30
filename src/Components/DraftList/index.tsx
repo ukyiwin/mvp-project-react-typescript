@@ -33,7 +33,7 @@ const user = cookies.get(CURRENT_USER) as User;
 const DraftsList = () => (
   <Query
     query={DRAFTS}
-    pollInterval={5000}
+    pollInterval={500000}
   >
   {({ loading, error, data: {drafts}, fetchMore, networkStatus, refetch }) => {
     if (loading) {

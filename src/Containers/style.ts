@@ -276,6 +276,7 @@ export const LinkBlock = styled(Link)`
   margin: 0 24px;
   flex: 0 0 auto;
   position: relative;
+  color: lime;
   &:hover {
     text-decoration: none;
   }
