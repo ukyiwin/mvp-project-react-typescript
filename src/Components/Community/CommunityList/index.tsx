@@ -7,14 +7,17 @@ import { User } from 'CustomTypings/schema';
 import { CURRENT_USER } from '../../../constants';
 import ServerIndexItem from 'Components/Community/CommunitySidebar/serverName';
 
-const user = cookies.get(CURRENT_USER) as User;
-
 class CommunityList extends React.Component<any> {
   
+  user: User;
+  constructor(props) {
+    super(props);
+    this.user = cookies.get(CURRENT_USER) as User;
+  }
   render() {
     return (
       <div>
-        <Query query={MY_COMMUNITIES} variables={{ username: user.username ?  user.username : '' }}>
+        <Query query={MY_COMMUNITIES} variables={{ username: this.user.username ?  this.user.username : '' }}>
           {({ data, loading, error }) => {
 
             if (loading) {

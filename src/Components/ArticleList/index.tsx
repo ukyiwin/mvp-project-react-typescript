@@ -29,9 +29,9 @@ export const MyLoader = () => (
     </ContentLoader>
 );
 
-const user = cookies.get(CURRENT_USER) as User;
-
-const ArticleList = () => (
+const ArticleList = () => {
+  const user = cookies.get(CURRENT_USER) as User;
+  return(
   <Query
     query={ARTICLES}
     variables={{myUsername: user.username ?  user.username : ''  }}
@@ -102,6 +102,6 @@ const ArticleList = () => (
     );
     }}
   </Query>
-);
+); };
 
 export default ArticleList;

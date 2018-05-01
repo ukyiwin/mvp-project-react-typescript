@@ -36,8 +36,8 @@ export default class Search extends React.Component {
         <AppViewWrapper>
           <Column type="only">
             <img 
-              src={require('../../Assets/unizonn/uniz_.svg')} 
-              style={{height: 80, marginBottom: 20}}
+              src={require('../../Assets/unizonn/uni_green.svg')} 
+              style={{height: 160, marginBottom: 20}}
               uk-svg
             />
             <form className="uk-search uk-width-1-1 uk-search-large uk-search-default uk-margin-bottom">
@@ -58,24 +58,6 @@ export default class Search extends React.Component {
                 </div>
               </Link>
               <Link to="/find/community">
-                <div>
-                  <div className="uk-card uk-card-default uk-card-body">Find communities</div>
-                </div>
-              </Link>
-              <Link to="/library">
-                <div>
-                  <div className="uk-card uk-card-default uk-card-body">Find Library</div>
-                </div>
-              </Link>
-            </div>
-            <h5>Top trending communities</h5>
-            <div className="uk-child-width-1-2@s uk-child-width-1-3@m uk-text-center uk-margin-bottom" data-uk-grid>
-              <Link to="/connections">
-                <div>
-                  <div className="uk-card uk-card-default uk-card-body">Find students</div>
-                </div>
-              </Link>
-              <Link to="/find/communities">
                 <div>
                   <div className="uk-card uk-card-default uk-card-body">Find communities</div>
                 </div>

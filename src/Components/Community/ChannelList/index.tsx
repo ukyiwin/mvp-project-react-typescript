@@ -13,8 +13,6 @@ import { Button } from 'semantic-ui-react';
 import Icon from 'Components/Icons';
 import CreateChannelForm from '../CreateChannelForm';
 
-const user = cookies.get(CURRENT_USER) as User;
-
 interface Props {
   client?: any;
   history?: any;
@@ -22,8 +20,11 @@ interface Props {
 }
 
 class CommunitySidebar extends React.Component<Props> {
+
+  user: User;
   constructor(props) {
     super(props);
+    this.user = cookies.get(CURRENT_USER) as User;
   }
 
   componentDidMount() {
@@ -52,7 +53,9 @@ class CommunitySidebar extends React.Component<Props> {
           </Button.Content>
         </div>
         <SearchBox placeholder="Search for channels and chat" />
-        <Query query={GET_COMMUNITY_CHANNELS_BY_SLUG} variables={{ slug: this.props.communityId, username: user.username ?  user.username : '' }}>
+        <Query 
+          query={GET_COMMUNITY_CHANNELS_BY_SLUG} 
+          variables={{ slug: this.props.communityId, username: this.user.username ?  this.user.username : '' }}>
           {({ data, loading, error, networkStatus }) => {
 
             if (loading || networkStatus === 2 || networkStatus === 4) {
@@ -104,25 +107,5 @@ class CommunitySidebar extends React.Component<Props> {
     );
   }
 }
-/*
-{this.props.channels.getAllChat ? this.props.channels.getAllChat.map((item: Channels, index) => (
-  <ListItem
-    key={index}
-    primaryText={item.title}
-    avatar={item.avatar}
-  />
-)) : */
 
 export default withRouter(CommunitySidebar);
-
-/*
-<ul className="index-item-wrapper">
-          {Object.keys(servers).map((key) => {
-            const selected = key === serverId ? 'selected-server' : '';
-            return (
-              <ServerIndexItem className="server-index-item" 
-              key={key} server={servers[key]} selected={selected}/>
-            ) ;
-          })}
-        </ul>
-        */

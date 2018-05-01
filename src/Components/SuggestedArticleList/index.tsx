@@ -30,9 +30,9 @@ export const MyLoader = () => (
     </ContentLoader>
 );
 
-const user = cookies.get(CURRENT_USER) as User;
-
-const SuggestedArticleList = () => (
+const SuggestedArticleList = () => {
+  const user = cookies.get(CURRENT_USER) as User;
+  return(
   <Query query={GET_SUGGESTED_ARTICLES} pollInterval={5000} >
   {({ loading, error, data, fetchMore, networkStatus, refetch }) => {
     if (loading) {
@@ -95,6 +95,6 @@ const SuggestedArticleList = () => (
     );
     }}
   </Query>
-);
+); };
 
 export default SuggestedArticleList;

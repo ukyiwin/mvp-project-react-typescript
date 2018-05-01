@@ -27,79 +27,80 @@ export const MyLoader = () => (
     </ContentLoader>
 );
 
-const user = cookies.get(CURRENT_USER) as User;
-
-const PublishList = () => (
-  <Query
-    query={PUBLISHED}
-    variables={{username: user.username ? user.username : ''  }}
-    pollInterval={5000}
-  >
-  {({ loading, error, data: { published }, fetchMore, networkStatus, refetch }) => {
-    if (loading) {
+const PublishList = () => {
+  const user = cookies.get(CURRENT_USER) as User;
+  return(
+    <Query
+      query={PUBLISHED}
+      variables={{username: user.username ? user.username : ''  }}
+      pollInterval={5000}
+    >
+    {({ loading, error, data: { published }, fetchMore, networkStatus, refetch }) => {
+      if (loading) {
+        return (
+          <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
+            <div><MyLoader /></div>
+            <br />
+            <div><MyLoader /></div>
+            <br />
+            <div><MyLoader /></div>
+            <br />
+            <div><MyLoader /></div>
+          </div>
+        );
+      }
+      if (error) {
+          return <ErrorComponent />;
+      }
+      if (published.edges.length < 1) {
+        return (
+          <EmptyComponent 
+            title="No published articles" 
+            subtitle="Write an article and publish to see it here"
+          />);
+      }
       return (
-        <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
-          <div><MyLoader /></div>
-          <br />
-          <div><MyLoader /></div>
-          <br />
-          <div><MyLoader /></div>
-          <br />
-          <div><MyLoader /></div>
-        </div>
-      );
-    }
-    if (error) {
-        return <ErrorComponent />;
-    }
-    if (published.edges.length < 1) {
-      return (
-        <EmptyComponent 
-          title="No published articles" 
-          subtitle="Write an article and publish to see it here"
-        />);
-    }
-    return (
-        <InfiniteScroll
-          pageStart={0}
-          hasMore={published.pageInfo.hasNextPage}
-          loadMore={() =>
-            fetchMore({
-              variables: {
-                username: user.username ? user.username : '' ,
-                cursor: published.pageInfo.endCursor
-              },
-              updateQuery: (previousResult, { fetchMoreResult }) => {
-                const newEdges = fetchMoreResult.published.edges;
-                const pageInfo = fetchMoreResult.published.pageInfo;
-  
-                return newEdges.length
-                  ? {
-                      published: {
-                        __typename: previousResult.published.__typename,
-                        edges: [...previousResult.published.edges, ...newEdges],
-                        pageInfo
+          <InfiniteScroll
+            pageStart={0}
+            hasMore={published.pageInfo.hasNextPage}
+            loadMore={() =>
+              fetchMore({
+                variables: {
+                  username: user.username ? user.username : '' ,
+                  cursor: published.pageInfo.endCursor
+                },
+                updateQuery: (previousResult, { fetchMoreResult }) => {
+                  const newEdges = fetchMoreResult.published.edges;
+                  const pageInfo = fetchMoreResult.published.pageInfo;
+    
+                  return newEdges.length
+                    ? {
+                        published: {
+                          __typename: previousResult.published.__typename,
+                          edges: [...previousResult.published.edges, ...newEdges],
+                          pageInfo
+                        }
                       }
-                    }
-                  : previousResult;
-              }
-            })}
-          loader={
-            <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
-              <MyLoader />
-            </div>
-          // tslint:disable-next-line:jsx-curly-spacing
-          }
-        >
-          {published.edges.map((article) => (
-            <div key={article.node.id}>
-              <ArticleItem article={article.node} />
-            </div>
-          ))}
-        </InfiniteScroll>
-    );
-    }}
-  </Query>
-);
+                    : previousResult;
+                }
+              })}
+            loader={
+              <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
+                <MyLoader />
+              </div>
+            // tslint:disable-next-line:jsx-curly-spacing
+            }
+          >
+            {published.edges.map((article) => (
+              <div key={article.node.id}>
+                <ArticleItem article={article.node} />
+              </div>
+            ))}
+          </InfiniteScroll>
+      );
+      }}
+    </Query>
+  );
+};
 
 export default PublishList;

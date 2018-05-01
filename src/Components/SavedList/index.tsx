@@ -27,79 +27,80 @@ export const MyLoader = () => (
     </ContentLoader>
 );
 
-const user = cookies.get(CURRENT_USER) as User;
-
-const SavedList = () => (
-  <Query
-    query={SAVED}
-    variables={{myUsername: user.username ?  user.username : ''  }}
-    pollInterval={5000}
-  >
-  {({ loading, error, data: { saved }, fetchMore, networkStatus, refetch }) => {
-    if (loading) {
+const SavedList = () => {
+  const user = cookies.get(CURRENT_USER) as User;
+  return(
+    <Query
+      query={SAVED}
+      variables={{myUsername: user.username ?  user.username : ''  }}
+      pollInterval={5000}
+    >
+    {({ loading, error, data: { saved }, fetchMore, networkStatus, refetch }) => {
+      if (loading) {
+        return (
+          <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
+            <div><MyLoader /></div>
+            <br />
+            <div><MyLoader /></div>
+            <br />
+            <div><MyLoader /></div>
+            <br />
+            <div><MyLoader /></div>
+          </div>
+        );
+      }
+      if (error) {
+          return <ErrorComponent />;
+      }
+      if (saved.edges.length < 1) {
+        return (
+          <EmptyComponent 
+            title="No saved Articles" 
+            subtitle="Explore the articles section and save articles you like to see them here"
+          />);
+      }
       return (
-        <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
-          <div><MyLoader /></div>
-          <br />
-          <div><MyLoader /></div>
-          <br />
-          <div><MyLoader /></div>
-          <br />
-          <div><MyLoader /></div>
-        </div>
-      );
-    }
-    if (error) {
-        return <ErrorComponent />;
-    }
-    if (saved.edges.length < 1) {
-      return (
-        <EmptyComponent 
-          title="No saved Articles" 
-          subtitle="Explore the articles section and save articles you like to see them here"
-        />);
-    }
-    return (
-        <InfiniteScroll
-          pageStart={0}
-          hasMore={saved.pageInfo.hasNextPage}
-          loadMore={() =>
-            fetchMore({
-              variables: {
-                myUsername: user.username ? user.username : '',
-                cursor: saved.pageInfo.endCursor
-              },
-              updateQuery: (previousResult, { fetchMoreResult }) => {
-                const newEdges = fetchMoreResult.saved.edges;
-                const pageInfo = fetchMoreResult.saved.pageInfo;
-  
-                return newEdges.length
-                  ? {
-                      saved: {
-                        __typename: previousResult.saved.__typename,
-                        edges: [...previousResult.saved.edges, ...newEdges],
-                        pageInfo
+          <InfiniteScroll
+            pageStart={0}
+            hasMore={saved.pageInfo.hasNextPage}
+            loadMore={() =>
+              fetchMore({
+                variables: {
+                  myUsername: user.username ? user.username : '',
+                  cursor: saved.pageInfo.endCursor
+                },
+                updateQuery: (previousResult, { fetchMoreResult }) => {
+                  const newEdges = fetchMoreResult.saved.edges;
+                  const pageInfo = fetchMoreResult.saved.pageInfo;
+    
+                  return newEdges.length
+                    ? {
+                        saved: {
+                          __typename: previousResult.saved.__typename,
+                          edges: [...previousResult.saved.edges, ...newEdges],
+                          pageInfo
+                        }
                       }
-                    }
-                  : previousResult;
-              }
-            })}
-          loader={
-            <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
-              <MyLoader />
-            </div>
-          // tslint:disable-next-line:jsx-curly-spacing
-          }
-        >
-          {saved.edges.map((article) => (
-            <div key={article.node.id}>
-              <ArticleItem article={article.node} />
-            </div>
-          ))}
-        </InfiniteScroll>
-    );
-    }}
-  </Query>
-);
+                    : previousResult;
+                }
+              })}
+            loader={
+              <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
+                <MyLoader />
+              </div>
+            // tslint:disable-next-line:jsx-curly-spacing
+            }
+          >
+            {saved.edges.map((article) => (
+              <div key={article.node.id}>
+                <ArticleItem article={article.node} />
+              </div>
+            ))}
+          </InfiniteScroll>
+      );
+      }}
+    </Query>
+  ); 
+};
 
 export default SavedList;
