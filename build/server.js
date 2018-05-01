@@ -20,7 +20,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "8baf9a4036c4a176543c"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "bba1f3e5fb4eff33dfd0"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -15459,11 +15459,7 @@ class Connection extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__style__["a" /* Wrapper */], { "data-cy": "connection-page" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2_Components_Titlebar__["a" /* default */], { title: 'Connections', noComposer: true }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5_Containers_Connection_components_searchWrapper__["a" /* default */], { redirectPath: window.location },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Search__["a" /* default */], null)),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: " -center" },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_Profile__["a" /* CommunityProfile */], { user: user }),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_Profile__["a" /* CommunityProfile */], { user: user }),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3_Components_Profile__["a" /* CommunityProfile */], { user: user })))));
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6_Components_Search__["a" /* default */], null)))));
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["default"] = Connection;
