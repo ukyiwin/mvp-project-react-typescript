@@ -34,71 +34,72 @@ interface Props {
   articleId: string;
 }
 
-const user = cookies.get(CURRENT_USER) as User;
-
-const SimilarArticleList = (props: Props) => (
-  <Query query={GET_SIMILAR_ARTICLES} variables={{id: props.articleId}} pollInterval={5000} >
-  {({ loading, error, data, fetchMore, networkStatus, refetch }) => {
-    if (loading) {
+const SimilarArticleList = (props: Props) => {
+  const user = cookies.get(CURRENT_USER) as User;
+  return(
+    <Query query={GET_SIMILAR_ARTICLES} variables={{id: props.articleId}} pollInterval={5000} >
+    {({ loading, error, data, fetchMore, networkStatus, refetch }) => {
+      if (loading) {
+        return (
+          <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
+            <div><MyLoader /></div>
+            <br />
+            <div><MyLoader /></div>
+            <br />
+            <div><MyLoader /></div>
+            <br />
+            <div><MyLoader /></div>
+          </div>
+        );
+      }
+      if (error) {
+          return <ErrorComponent />;
+      }
+      if (data.getSimilarArticles === null) {
+        return (
+          <EmptyComponent 
+            title="Articles for You" 
+            subtitle="We could not recommend articles for you"
+          />);
+      }
       return (
-        <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
-          <div><MyLoader /></div>
-          <br />
-          <div><MyLoader /></div>
-          <br />
-          <div><MyLoader /></div>
-          <br />
-          <div><MyLoader /></div>
+        <div className="uk-card person">
+          <Label text="Suggested People to Follow" />
+          <InfiniteScroll
+            pageStart={0}
+            hasMore={true}
+            loadMore={() =>
+              fetchMore({
+                variables: {
+                  limit: 10,
+                  offset: data.getSimilarArticles.length
+                },
+                updateQuery: (prev, { fetchMoreResult }) =>  {
+                  if (!fetchMoreResult) {
+                    // this.set;
+                    return prev;
+                  }
+                  return {...prev, getSimilarArticles: [...prev.getSimilarArticles, ...fetchMoreResult.getSimilarArticles]};
+                },
+              })}
+            loader={
+              <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
+                <MyLoader />
+              </div>
+            // tslint:disable-next-line:jsx-curly-spacing
+            }
+          >
+              {data.getSimilarArticles ? data.getSimilarArticles.map((article) => (
+                  <div key={article.id}>
+                      <ArticleItem small={true} article={article} />
+                  </div>
+              )) : null}
+          </InfiniteScroll>
         </div>
       );
-    }
-    if (error) {
-        return <ErrorComponent />;
-    }
-    if (data.getSimilarArticles === null) {
-      return (
-        <EmptyComponent 
-          title="Articles for You" 
-          subtitle="We could not recommend articles for you"
-        />);
-    }
-    return (
-      <div className="uk-card person">
-        <Label text="Suggested People to Follow" />
-        <InfiniteScroll
-          pageStart={0}
-          hasMore={true}
-          loadMore={() =>
-            fetchMore({
-              variables: {
-                limit: 10,
-                offset: data.getSimilarArticles.length
-              },
-              updateQuery: (prev, { fetchMoreResult }) =>  {
-                if (!fetchMoreResult) {
-                  // this.set;
-                  return prev;
-                }
-                return {...prev, getSimilarArticles: [...prev.getSimilarArticles, ...fetchMoreResult.getSimilarArticles]};
-              },
-            })}
-          loader={
-            <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
-              <MyLoader />
-            </div>
-          // tslint:disable-next-line:jsx-curly-spacing
-          }
-        >
-            {data.getSimilarArticles ? data.getSimilarArticles.map((article) => (
-                <div key={article.id}>
-                    <ArticleItem small={true} article={article} />
-                </div>
-            )) : null}
-        </InfiniteScroll>
-      </div>
-    );
-    }}
-  </Query>
-);
+      }}
+    </Query>
+  );
+};
 
 export default SimilarArticleList;

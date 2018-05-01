@@ -274,7 +274,7 @@ export default class Profile extends React.Component<Props> {
                         }
                         if (activity.edges.length < 1) {
                           return (
-                            <NullState bg="null" heading={'Write an article'} />
+                            <NullState bg="null" heading={'NO Write an article'} />
                           );
                         }
                         return (
@@ -323,14 +323,12 @@ export default class Profile extends React.Component<Props> {
                 }
   
                 {selectedView === 'connections' && 
-                  <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
-                    jjkjk
-                  </div>
+                  <NullState bg="null" heading={'You have no connection now'} />
                 }
 
                 {selectedView === 'community' && (
                     <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
-                      <NullState bg="null" heading={'Write'} />
+                      <NullState bg="null" heading={'Join a community or create one'} />
                     </div>
                   )
                 }

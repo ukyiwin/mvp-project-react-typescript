@@ -39,11 +39,6 @@ export default class Connection extends React.Component {
           >
             <Search />
           </CommunitySearchWrapper>
-          <div className=" -center">
-          <CommunityProfile user={user} />
-          <CommunityProfile user={user} />
-          <CommunityProfile user={user} />
-          </div>
         </Wrapper>
       </AppViewWrapper>
     );

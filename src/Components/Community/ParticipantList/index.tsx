@@ -13,8 +13,6 @@ import { Button } from 'semantic-ui-react';
 import Icon from 'Components/Icons';
 import CreateChannelForm from '../CreateChannelForm';
 
-const user = cookies.get(CURRENT_USER) as User;
-
 interface Props {
   client?: any;
   history?: any;
@@ -22,8 +20,11 @@ interface Props {
 }
 
 class ParticipantList extends React.Component<Props> {
+  
+  user: User;
   constructor(props) {
     super(props);
+    this.user = cookies.get(CURRENT_USER) as User;
   }
 
   componentDidMount() {
@@ -68,11 +69,11 @@ class ParticipantList extends React.Component<Props> {
               >
               {
                 data.getParticipants.map((user) => (
-                  <Link to={`/n/${user.username ?  user.username : '' }`}>
+                  <Link to={`/n/${user.username}`}>
                     <ListItem
                       key={user.id}
                       primaryText={user.firstname + ' ' + user.lastname}
-                      secondaryText={user.username ?  user.username : ''}
+                      secondaryText={user.username}
                       avatar={user.avatar}
                     />
                   </Link>

@@ -28,9 +28,11 @@ export const MyLoader = () => (
     </ContentLoader>
 );
 
-const user = cookies.get(CURRENT_USER) as User;
+const DraftsList = () => {
+  
+  const user = cookies.get(CURRENT_USER) as User;
 
-const DraftsList = () => (
+  return(
   <Query
     query={DRAFTS}
     pollInterval={500000}
@@ -100,6 +102,6 @@ const DraftsList = () => (
     );
     }}
   </Query>
-);
+); };
 
 export default DraftsList;
