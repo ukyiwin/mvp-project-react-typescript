@@ -120,7 +120,7 @@ class Login extends React.Component<RouteComponentProps<any> & Props & ChildProp
                     <meta name="an inclusive community" content="Unizonn login" />
                 </Helmet>
                 <div className="uk-width-2-5 sideBg uk-visible@m" id="sideBg">
-                    <div className="uk-flex uk-flex-stretch uk-flex-middle">.</div>
+                    <div className="uk-flex uk-flex-stretch uk-flex-middle" />
                 </div>
                 <div
                   className="uk-container uk-width-3-5@m uk-width-1-1@s uk-flex

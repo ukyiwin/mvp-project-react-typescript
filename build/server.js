@@ -22,7 +22,7 @@ module.exports =
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "2e5e63e8aa68b1cac9df"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "9b80f7e24d0c5f012875"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -2649,8 +2649,10 @@ class CommunitySidebar extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { id: "modal-add-channel", className: "uk-modal-full", style: { flex: 1 }, "data-uk-modal": true },
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-modal-dialog" },
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "uk-modal-close-full uk-close-large", type: "button", "data-uk-close": true }),
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-flex uk-child-width-1-1@s uk-flex-middle", "data-uk-grid": true },
-                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-large", "uk-height-viewport": true },
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-grid-collapse uk-child-width-1-2@s uk-flex-middle", "data-uk-grid": true },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-large", "uk-height-viewport": true, id: "sideBg" },
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-flex uk-flex-stretch uk-flex-middle" })),
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-large" },
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", null, "Create Channel"),
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", null, "Start a channel on some topics."),
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_CreateChannelForm__WEBPACK_IMPORTED_MODULE_11__["default"], { communityId: this.props.communityId })))))));
@@ -2767,7 +2769,8 @@ class CommunitySidebar extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-modal-dialog" },
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "uk-modal-close-full uk-close-large", type: "button", "data-uk-close": true }),
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-grid-collapse uk-child-width-1-2@s uk-flex-middle", "data-uk-grid": true },
-                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-large", "uk-height-viewport": true }, "djkjkj"),
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-large", "uk-height-viewport": true, id: "sideBg" },
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-flex uk-flex-stretch uk-flex-middle" })),
                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-large" },
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "Create Community"),
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", null, "Start a beautiful community today."),
@@ -14143,7 +14146,7 @@ class Login extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("title", null, "Unizonn | Login"),
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("meta", { name: "an inclusive community", content: "Unizonn login" })),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-2-5 sideBg uk-visible@m", id: "sideBg" },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-flex uk-flex-stretch uk-flex-middle" }, ".")),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-flex uk-flex-stretch uk-flex-middle" })),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-container uk-width-3-5@m uk-width-1-1@s uk-flex\n                  uk-flex-stretch uk-flex-middle" },
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("form", { className: "uk-form-vertical uk-width-1-1 uk-margin-large uk-padding-large uk-padding-remove-vertical", onSubmit: this.handleSubmit },
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-margin" },

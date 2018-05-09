@@ -45,8 +45,8 @@ class CommunitySidebar extends React.Component<any> {
           <div className="uk-modal-dialog">
             <button className="uk-modal-close-full uk-close-large" type="button" data-uk-close/>
             <div className="uk-grid-collapse uk-child-width-1-2@s uk-flex-middle" data-uk-grid>
-                <div className="uk-padding-large" uk-height-viewport>
-                  djkjkj
+                <div className="uk-padding-large" uk-height-viewport id="sideBg">
+                  <div className="uk-flex uk-flex-stretch uk-flex-middle" />
                 </div>
                 <div className="uk-padding-large">
                     <h1>Create Community</h1>
