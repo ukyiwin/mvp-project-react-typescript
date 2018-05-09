@@ -44,7 +44,7 @@ class LeftSideBar extends React.Component<RouteComponentProps & Props> {
 
             return (
               <div className=" uk-width-1-1">
-                <div className="uk-width-1-1 raised uk-card card" style={{ marginBottom: 10}}>
+                <div className="uk-width-1-1 raised uk-card card" data-uk-sticky="offset: 100" style={{ marginBottom: 10}}>
                   <UserProfile
                     user={data.me}
                     username={data.me.username}

@@ -55,7 +55,7 @@ class ParticipantList extends React.Component<Props> {
             }
 
             if (error) {
-              return <div className="uk-padding-small">{console.log(error)}Error loading channels</div>;
+              return <div className="uk-padding-small">Error loading channels</div>;
             }
 
             if (data.getParticipants.length < 1) {

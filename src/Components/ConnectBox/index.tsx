@@ -31,9 +31,7 @@ export const MyLoader = () => (
     </ContentLoader>
 );
 
-const user = cookies.get(CURRENT_USER) as User;
-
-const ConnectBox = () => (
+const ConnectBox = (props) => (
   <Query query={GET_SUGGESTED_CONNECTIONS} pollInterval={5000} >
   {({ loading, error, data, fetchMore, networkStatus, refetch }) => {
     if (loading) {

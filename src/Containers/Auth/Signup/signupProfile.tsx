@@ -97,8 +97,6 @@ class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
           query: ALL_COUNTRIES,
       })
       .then((result) => {
-          // tslint:disable-next-line:no-console
-          console.log(result.data.getCountry);
           this.setState({ countryList: result.data.getCountry });
       })
       .catch((err) => {
@@ -115,8 +113,6 @@ class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
             },
       })
       .then((result) => {
-            // tslint:disable-next-line:no-console
-            console.log(result);
             this.setState({ institutionList: result.data.getInstitution });
       })
       .catch((err) => {
@@ -178,14 +174,8 @@ class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
                 // tslint:disable-next-line:no-console
                 console.log('error', arguments);
         },
-        complete() {
-                // tslint:disable-next-line:no-console
-                console.log('complete', arguments);
-        },
         // tslint:disable-next-line:typedef
         loadStart(e) {
-                // tslint:disable-next-line:no-console
-                console.log('loadStart', arguments);
                 if (bar) {
                     bar.removeAttribute('hidden');
                     bar.max = e.total;
@@ -194,8 +184,6 @@ class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
         },
         // tslint:disable-next-line:typedef
         progress(e) {
-                // tslint:disable-next-line:no-console
-                console.log('progress', arguments);
                 if (bar) {
                     bar.max = e.total;
                     bar.value = e.loaded;
@@ -203,8 +191,6 @@ class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
         },
         // tslint:disable-next-line:typedef
         loadEnd(e) {
-                // tslint:disable-next-line:no-console
-                console.log('loadEnd', arguments);
 
                 if (bar) {
                     bar.max = e.total;
@@ -213,8 +199,6 @@ class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
         },
 
             completeAll: (result, response) => {
-              // tslint:disable-next-line:no-console
-              console.log('completeAll', result.response);
               const data = JSON.parse(result.response);
               this.setState({ photo: data.id, url: data.url });
               setTimeout(() => {

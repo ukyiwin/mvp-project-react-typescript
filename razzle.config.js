@@ -1,7 +1,7 @@
 'use strict';
 const path = require('path');
 const autoprefixer = require("autoprefixer");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+// const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const Visualizer = require("webpack-visualizer-plugin");
 const razzleHeroku = require("razzle-heroku");
 const OfflinePlugin = require('offline-plugin');
@@ -26,8 +26,7 @@ module.exports = {
 
     config.resolve.extensions = config.resolve.extensions.concat([
       '.ts',
-      '.tsx',
-      '.js'
+      '.tsx'
     ]);
 
     config.devtool = 'cheap-module-source-map';
@@ -45,26 +44,15 @@ module.exports = {
 
     // Safely locate Babel-Loader in Razzle's webpack internals
     const babelLoader = config.module.rules.findIndex(
-      rule => rule.options && rule.options.babelrc
+      rule => rule.use[1].options && rule.use[1].options.babelrc
     );
 
+    // Get the correct `include` option, since that hasn't changed.
     // This tells Razzle which directories to transform.
     const { include } = config.module.rules[babelLoader];
 
-    // Declare our TypeScript loader configuration
-    const tsLoader = {
-      include,
-      test: /\.tsx?$/,
-      loader: 'ts-loader',
-      options: {
-        // this will make errors clickable in `Problems` tab of VSCode
-        visualStudioErrorFormat: true,
-            // disable type checker - we will use it in fork plugin
-        transpileOnly: true,
-      },
-    };
-
-    const tslintLoader = {
+    // Add tslint-loader
+    config.module.rules.push({
       include,
       enforce: 'pre',
       test: /\.tsx?$/,
@@ -73,12 +61,30 @@ module.exports = {
         emitErrors: true,
         configFile: './tslint.json',
       },
+    });
+
+    // Add tslint-loader
+    config.module.rules.push({
+      include,
+      enforce: 'pre',
+      test: /\.tsx?$/,
+      loader: 'tslint-loader',
+      options: {
+        emitErrors: true,
+        configFile: './tslint.json',
+      },
+    });
+
+    const tsLoader = {
+      include,
+      test: /\.tsx?$/,
+      loader: 'ts-loader',
+      options: {
+        transpileOnly: true,
+      },
     };
 
-    config.module.rules.push(tslintLoader);
-
-    // Fully replace babel-loader with ts-loader
-    config.module.rules[babelLoader] = tsLoader;
+    config.module.rules.push(tsLoader)
 
     // If you want to use Babel & Typescript together (e.g. if you
     // are migrating incrementally and still need some Babel transforms)
@@ -177,11 +183,11 @@ module.exports = {
           options: { name: 'images/[name].[hash].[ext]', publicPath: '../' }
     });*/
 
-    config.plugins.push(
+    /*config.plugins.push(
       new ExtractTextPlugin({
         filename: 'styles/[name].[contenthash].css'
       })
-    );
+    );*/
     if (dev) {
       // For development, include source map
       config.module.rules.push({
@@ -192,9 +198,9 @@ module.exports = {
       config.plugins.push(
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new webpack.IgnorePlugin(/moment/, /react-kronos/),
-        new ExtractTextPlugin({
+        /*new ExtractTextPlugin({
           filename: 'styles/[name].[contenthash].css'
-        }),
+        }),*/
         new webpack.ProvidePlugin({
           $: 'jquery',
           jQuery: 'jquery',
@@ -222,9 +228,9 @@ module.exports = {
           new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
           new webpack.IgnorePlugin(/moment/, /react-kronos/),
           new Visualizer(),
-          new ExtractTextPlugin({
+          /*new ExtractTextPlugin({
             filename: 'styles/[name].[contenthash].css'
-          }),
+          }),*/
           new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',

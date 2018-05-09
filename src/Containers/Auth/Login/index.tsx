@@ -57,7 +57,7 @@ class Login extends React.Component<RouteComponentProps<any> & Props & ChildProp
 
     handleSubmit = (evt) => {
         evt.preventDefault();
-        console.log('error from');
+        
         if (!this.canBeSubmitted()) {
             return;
         }

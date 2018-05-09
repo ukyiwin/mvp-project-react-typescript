@@ -8,6 +8,7 @@ import { Article, User } from 'CustomTypings/schema';
 import ContentLoader from 'react-content-loader';
 import { cookies } from 'link';
 import { CURRENT_USER } from '../../constants';
+import { withCurrentUser } from 'Utils/withCurrentUser';
 
 // const MyFacebookLoader = () => <Facebook />;
 
@@ -29,79 +30,119 @@ export const MyLoader = () => (
     </ContentLoader>
 );
 
-const ArticleList = () => {
-  const user = cookies.get(CURRENT_USER) as User;
-  return(
-  <Query
-    query={ARTICLES}
-    variables={{myUsername: user.username ?  user.username : ''  }}
-    pollInterval={5000}
-  >
-  {({ loading, error, data: { articles }, fetchMore, networkStatus, refetch }) => {
-    if (loading) {
-      return (
-        <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
-          <div><MyLoader /></div>
-          <br />
-          <div><MyLoader /></div>
-          <br />
-          <div><MyLoader /></div>
-          <br />
-          <div><MyLoader /></div>
-        </div>
-      );
-    }
-    if (error) {
-        return <ErrorComponent />;
-    }
-    if (articles.edges.length < 1) {
-      return (
-        <EmptyComponent 
-          title="There is no article for you" 
-          subtitle="Connect to other students or update your interest in your profile settings"
-        />);
-    }
-    return (
-        <InfiniteScroll
-          pageStart={0}
-          hasMore={articles.pageInfo.hasNextPage}
-          loadMore={() =>
-            fetchMore({
-              variables: {
-                myUsername: user.username ?  user.username : '' ,
-                cursor: articles.pageInfo.endCursor
-              },
-              updateQuery: (previousResult, { fetchMoreResult }) => {
-                const newEdges = fetchMoreResult.articles.edges;
-                const pageInfo = fetchMoreResult.articles.pageInfo;
+const ArticleList = (props) => {
   
-                return newEdges.length
-                  ? {
-                      articles: {
-                        __typename: previousResult.articles.__typename,
-                        edges: [...previousResult.articles.edges, ...newEdges],
-                        pageInfo
-                      }
-                    }
-                  : previousResult;
+  const user = props.currentUser;
+  
+  return(
+    <Query
+      query={ARTICLES}
+      variables={{myUsername: user.username ?  user.username : ''  }}
+      notifyOnNetworkStatusChange
+    >
+    {({ loading, error, data: { articles }, fetchMore, subscribeToMore, networkStatus, refetch }) => {
+      if (loading) {
+        return (
+          <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
+            <div><MyLoader /></div>
+            <br />
+            <div><MyLoader /></div>
+            <br />
+            <div><MyLoader /></div>
+            <br />
+            <div><MyLoader /></div>
+          </div>
+        );
+      }
+      if (error) {
+          return <ErrorComponent />;
+      }
+      if (!articles) {
+        return (
+          <EmptyComponent 
+            title="There is no article for you" 
+            subtitle="Connect to other students or update your interest in your profile settings"
+          />);
+      }
+      if (articles.edges.length < 1) {
+        return (
+          <EmptyComponent 
+            title="There is no article for you" 
+            subtitle="Connect to other students or update your interest in your profile settings"
+          />);
+      }
+
+      /*subscribeToMore({
+        document: ARTICLE_SUBSCRIPTION,
+        variables: {
+          myUsername: user.username ?  user.username : ''
+        },
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) return prev;
+          const newArticleItem = subscriptionData.data.articleAdded;
+
+          return Object.assign({}, prev, {
+            entry: {
+              articles: [newFeedItem, ...prev.entry.comments]
+            }
+          });
+        }
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          const newEdges = fetchMoreResult.articles.edges;
+          const pageInfo = fetchMoreResult.articles.pageInfo;
+
+          return newEdges.length
+            ? {
+                articles: {
+                  __typename: previousResult.articles.__typename,
+                  edges: [...previousResult.articles.edges, ...newEdges],
+                  pageInfo
+                }
               }
-            })}
-          loader={
-            <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
-              <MyLoader />
-            </div>
-          // tslint:disable-next-line:jsx-curly-spacing
-          }
-        >
-          {articles.edges.map((article) => (
-            <div key={article.node.id}>
-                <ArticleItem article={article.node} />
-            </div>
-          ))}
-        </InfiniteScroll>
-    );
-    }}
-  </Query>
+            : previousResult;
+        }
+      });*/
+      return (
+          <InfiniteScroll
+            pageStart={0}
+            hasMore={articles.pageInfo.hasNextPage}
+            loadMore={() =>
+              fetchMore({
+                variables: {
+                  myUsername: user.username ?  user.username : '' ,
+                  cursor: articles.pageInfo.endCursor
+                },
+                updateQuery: (previousResult, { fetchMoreResult }) => {
+                  const newEdges = fetchMoreResult.articles.edges;
+                  const pageInfo = fetchMoreResult.articles.pageInfo;
+    
+                  return newEdges.length
+                    ? {
+                        articles: {
+                          __typename: previousResult.articles.__typename,
+                          edges: [...previousResult.articles.edges, ...newEdges],
+                          pageInfo
+                        }
+                      }
+                    : previousResult;
+                }
+              })}
+            loader={
+              <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
+                <MyLoader />
+              </div>
+            // tslint:disable-next-line:jsx-curly-spacing
+            }
+          >
+            {articles.edges.map((article) => (
+              <div key={article.node.id}>
+                  <ArticleItem article={article.node} />
+              </div>
+            ))}
+          </InfiniteScroll>
+      );
+      }}
+    </Query>
 ); };
 
-export default ArticleList;
+export default withCurrentUser(ArticleList);

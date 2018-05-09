@@ -50,8 +50,6 @@ class InterestPage extends React.Component<RouteComponentProps<any> & Props, Sta
 
     // tslint:disable-next-line:no-any
     save(): any {
-        // tslint:disable-next-line:no-console
-        console.log(this.state.selected);
         let inter: string[] = [];
         inter = this.state.selected;
         this.props.client
@@ -62,7 +60,6 @@ class InterestPage extends React.Component<RouteComponentProps<any> & Props, Sta
                 },
             })
             .then((result) => {
-                console.log(result);
                 this.props.history.push('/signup/complete');
             })
             .catch((err) => {
@@ -71,8 +68,6 @@ class InterestPage extends React.Component<RouteComponentProps<any> & Props, Sta
     }
 
     render() {
-        // tslint:disable-next-line:no-console
-        console.log(this.props.interests.allInterest);
         if (this.props.interests.loading) {
             return <div>Loading</div>;
         }

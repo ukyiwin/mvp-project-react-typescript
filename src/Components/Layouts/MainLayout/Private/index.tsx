@@ -39,14 +39,30 @@ const PrivateLayout: React.SFC<RouteComponentProps<any> & DefaultProps> = (props
                 isAuthenticated ? (
                   <>
                     <PrivateHeader  me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
-                    <AppViewWrapper data-cy="inbox-scroller">
+                    <AppViewWrapper
+                      data-cy="inbox-scroller"
+                      style={{
+                        overflow: 'auto',
+                        position: 'absolute',
+                        top: '0px',
+                        right: 0,
+                        bottom: '10px',
+                        marginTop: 70
+                      }}
+                    >
                       <div 
-                        className="uk-position-relative uk-flex uk-flex-center uk-flex-around uk-width-1-1" 
-                        style={{paddingTop: 30, marginBottom: 50}}>
+                        className="uk-flex uk-flex-center uk-flex-around uk-width-1-1"
+                        style={{
+                          paddingTop: 30,
+                          marginBottom: 50
+                        }}
+                      >
                           <div className="uk-width-1-5 uk-margin-large-left uk-margin-small-right uk-visible@m">
-                              <LeftSideBar />
+                            <LeftSideBar />
                           </div>
-                          <div className="uk-margin-small@s uk-width-expand">
+                          <div
+                            className="uk-margin-small@s uk-width-expand"
+                          >
                             <ThreadsListScrollContainer id={'scroller-for-dm-threads'}>
                               <Component {...matctProps} />
                             </ThreadsListScrollContainer>
@@ -72,8 +88,8 @@ const PrivateLayout: React.SFC<RouteComponentProps<any> & DefaultProps> = (props
                               <RightSideBar />
                           </div>
                       </div>
-                      <BottomNav me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
-                    </AppViewWrapper>
+                      </AppViewWrapper>
+                    <BottomNav me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
                   </>
                 ) : (
                     <Redirect to={{ pathname: '/' }} />

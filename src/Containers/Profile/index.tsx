@@ -55,8 +55,7 @@ export default class Profile extends React.Component<Props> {
 
   componentWillMount() {
     const { match: { params } } = this.props;
-    // tslint:disable-next-line:no-console
-    console.log(params);
+    
     if (params.username) {
         this.setState({username: params.username});
     } else {
@@ -65,8 +64,6 @@ export default class Profile extends React.Component<Props> {
   }
   // tslint:disable-next-line:typedef
   componentDidUpdate(prevProps) {
-      // tslint:disable-next-line:no-console
-      console.log(prevProps);
       const oldId = prevProps.match.params.username;
       const newId = this.props.match.params.username;
       if (newId !== oldId) {
@@ -169,7 +166,7 @@ export default class Profile extends React.Component<Props> {
         {({loading, error, data}) => {
           if (loading) { return null; }
           if (error) { return `Error!: ${error}`; }
-          console.log(data);
+          
           const currentUser = cookies.get(CURRENT_USER) as User;
           const user = data.getUserByUsername as User;
           const { username } = user;

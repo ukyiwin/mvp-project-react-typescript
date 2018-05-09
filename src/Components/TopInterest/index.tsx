@@ -14,7 +14,6 @@ const TopInterest = () => (
       if (error) {
           return <ErrorComponent />;
       }
-      console.log(data);
       return (
           <div className="tags-wrapper uk-padding-small undefined">
             {data.allInterest.map((interest, i) => (

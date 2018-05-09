@@ -49,7 +49,7 @@ const PublicHeader = (props: Props) => {
           <Link to="/" className="uk-navbar-item uk-logo uk-visible@m" href="#">
             <img 
               src={require('../../../../Assets/unizonn/uni_green.svg')} 
-              style={{height: 70}}
+              style={{height: 50}}
               // tslint:disable-next-line:jsx-boolean-value
               uk-svg
             />
@@ -57,7 +57,7 @@ const PublicHeader = (props: Props) => {
           <Link to="/" className="uk-navbar-item uk-logo uk-hidden@m" href="#">
             <img 
               src={require('../../../../Assets/unizonn/uni_green_s.svg')} 
-              style={{height: 70}}
+              style={{height: 50}}
               // tslint:disable-next-line:jsx-boolean-value
               uk-svg
             />

@@ -36,7 +36,7 @@ export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
-export const httpLink = new BatchHttpLink({ uri: 'https://uniserver.herokuapp.com', fetch });
+export const httpLink = new BatchHttpLink({ uri: 'http://localhost:4000', fetch });
 
 export const middlewareLink = new ApolloLink((operation: any, forward: any) => {
   // get the authentication token from local storage if it exists

@@ -73,7 +73,6 @@ class DraftsItem extends React.Component<Props> {
             ...publishArticle
           }
         };
-        console.log(articles);
         /*cache.writeQuery({
           query: ARTICLES,
           data: { articles: articles.edges.concat(node) }
@@ -118,15 +117,13 @@ class DraftsItem extends React.Component<Props> {
           };
           tempList.push(temp);
         });
-      // tslint:disable-next-line:no-console
-      console.log(result);
       this.setState({suggestions: tempList});
     }).catch((err) => {
       console.log('hjhjhjhjhj');
     });
   }
 
-  setCategory= (e) => {
+  setCategory = (e) => {
     this.setState({interest: e.target.value});
   }
 
@@ -148,7 +145,6 @@ class DraftsItem extends React.Component<Props> {
             ...deleteArticle
           }
         };
-        // console.log(articles);
         /*cache.writeQuery({
           query: ARTICLES,
           data: { articles: articles.edges.concat(node) }

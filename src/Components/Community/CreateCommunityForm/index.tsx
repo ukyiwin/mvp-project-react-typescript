@@ -207,7 +207,6 @@ class CreateCommunityForm extends React.Component<Props> {
                             }
                           }).then((res) => {
                             this.setState({ isLoading: false });
-                            console.log(res);
                             this.props.history.redirect(`/community/${res.data.createCommunity.id}`);
                           }).catch((err) => {
                             this.setState({ isLoading: false });

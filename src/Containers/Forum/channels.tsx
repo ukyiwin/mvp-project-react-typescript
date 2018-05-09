@@ -109,7 +109,6 @@ class Forum extends React.Component<Props> {
     return <div>Loading</div>;
   }
   render() {
-    console.log(this.props.channels);
     return (
       <ThemeProvider color="#f2912c">
         <div className="App">

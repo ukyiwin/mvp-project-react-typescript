@@ -96,7 +96,6 @@ class ArticleItem extends React.Component<Props> {
               ...unSaveArticle
             }
           };
-          console.log(articles);
           /*cache.writeQuery({
             query: ARTICLES,
             data: { articles: articles.edges.concat(node) }
@@ -133,7 +132,6 @@ class ArticleItem extends React.Component<Props> {
               ...likeArticle
             }
           };
-          console.log(articles);
           /*cache.writeQuery({
             query: ARTICLES,
             data: { articles: articles.edges.concat(node) }
@@ -169,7 +167,6 @@ class ArticleItem extends React.Component<Props> {
               ...unLikeArticle
             }
           };
-          console.log(articles);
           /*cache.writeQuery({
             query: ARTICLES,
             data: { articles: articles.edges.concat(node) }

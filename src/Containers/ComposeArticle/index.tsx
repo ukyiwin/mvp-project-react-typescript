@@ -69,20 +69,18 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
 
   handleChange = (value) => {
     this.setState({value});
-    // console.log(`Selected: ${selectedOption.label}`);
   }
 
   handleChangeBody = (value) => {
     this.setState({value});
-    // console.log(`Selected: ${selectedOption.label}`);
   }
 
   autoSave = () => {
-    // console.log(`Selected: ${selectedOption.label}`);
+    // g(`Selected: ${selectedOption.label}`);
   }
 
   publish = () => {
-    // console.log(`Selected: ${selectedOption.label}`);
+    // (`Selected: ${selectedOption.label}`);
   }
 
   addInterestContent() {
@@ -103,8 +101,6 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
             };
             tempList.push(temp);
           });
-        // tslint:disable-next-line:no-console
-        console.log(result);
         this.setState({category: tempList});
       });
   }
@@ -114,8 +110,7 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
     const {match: {
         params
       }} = this.props;
-    // tslint:disable-next-line:no-console
-    console.log(params);
+    
     if (params.id) {
       this.fetchArticle(params.id);
     } else {
@@ -124,12 +119,10 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
   }
   // tslint:disable-next-line:typedef
   componentDidUpdate(prevProps) {
-    // tslint:disable-next-line:no-console
-    console.log(prevProps);
+    
     const oldId = prevProps.match.params.id;
     const newId = this.props.match.params.id;
-    // tslint:disable-next-line:no-console
-    console.log(oldId);
+    
     if (newId !== oldId) {
       this.fetchArticle(oldId);
     }
@@ -150,8 +143,6 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
           editorState,
       });
 
-      console.log('hey man im lonely');
-      console.log(result.data.getArticleById.headerImage);
       if (result.data.getArticleById.headerImage) {
         this.setState({
           photoId: result.data.getArticleById.headerImage.id,
@@ -204,14 +195,13 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
 
   onChangeBody = (editorState) => {
     this.setState({editorState});
-    console.log(editorState);
   }
 
-  onChangetitle= (e) => {
+  onChangetitle = (e) => {
     this.setState({title: e.target.value});
   }
 
-  setCategory= (e) => {
+  setCategory = (e) => {
     this.setState({interest: e.target.value});
   }
 
@@ -232,16 +222,15 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
         }
       }).then((result) => {
         this.setState({article: result.data.createArticle});
-        console.log(result);
       }).catch((err) => {
         console.log(err);
       });
     }
     
   }
+  
   render() {
     const {value, category, title, editorState, interest} = this.state;
-    console.log(title);
 
     return (
       <IdleTimer
@@ -266,32 +255,15 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
               </button>
             </FlexRow>
             <div className="uk-flex uk-flex-around">
-              <Dropdowns
-                style={{backgroundColor: 'transparent'}}
-              >
-                <span>Category:</span>
-                {this.props.allInterest.loading ? (
-                  <div />
-                ) : (
-                  <RequiredSelector
-                    data-cy="composer-community-selector"
-                    style={{minWidth: 180}}
-                    onChange={this.setCategory}
-                  >
-                    {this.props.allInterest.allInterest.map((interest) => {
-                      return (
-                        <option key={interest.id} value={interest.id}>
-                          {interest.name}
-                        </option>
-                      );
-                    })}
-                  </RequiredSelector>
-                )}
-              </Dropdowns>
               <FlexRow>
               <button
                 className="uk-button uk-light uk-button-small uk-margin-left uk-button-default"
-                type="button">
+                type="button"
+                onClick={() => {
+                  this.save();
+                  this.props.history.push('/drafts');
+                }}
+              >
                 Drafts
               </button>
               <button

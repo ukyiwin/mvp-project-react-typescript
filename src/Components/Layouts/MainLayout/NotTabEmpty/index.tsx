@@ -28,7 +28,7 @@ const NoTabLayout: React.SFC<RouteComponentProps<any> & DefaultProps> = (props) 
               isAuthenticated ? (
                   <div className="uk-width-1-1 uk-height-1-1 ">
                     <PrivateHeader  me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
-                    <div className="uk-width-1-1 uk-flex  uk-height-1-1 ">
+                    <div className="uk-width-1-1 uk-flex uk-height-1-1">
                         <Component {...matctProps} />
                     </div>
                   </div>

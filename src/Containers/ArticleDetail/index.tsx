@@ -25,11 +25,13 @@ import { cookies } from 'link';
 import { CURRENT_USER } from '../../constants';
 import InterestItemSlim from 'Components/InterestItemSlim';
 import SimilarArticleList from 'Components/SimilarArticleList';
+import { withCurrentUser } from 'Utils/withCurrentUser';
 // import 'medium-draft/lib/index.css';
 
 interface Props {
-    // tslint:disable-next-line:no-any
-    client?: any;
+  // tslint:disable-next-line:no-any
+  client?: any;
+  currentUser?: any;
 }
 
 class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
@@ -46,8 +48,6 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
 
   componentWillMount() {
     const { match: { params } } = this.props;
-    // tslint:disable-next-line:no-console
-    console.log(params);
     if (params.slug) {
         this.fetchArticleandOthers(params.slug);
     } else {
@@ -56,37 +56,32 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
   }
     // tslint:disable-next-line:typedef
   componentDidUpdate(prevProps) {
-    // tslint:disable-next-line:no-console
-    console.log(prevProps);
     const oldId = prevProps.match.params.slug;
     const newId = this.props.match.params.slug;
-    // tslint:disable-next-line:no-console
-    console.log(oldId);
+    
     if (newId !== oldId) {
         this.fetchArticleandOthers(oldId);
     }
   }
 
   fetchArticleandOthers(slugOrId: string) {
-    const user = cookies.get(CURRENT_USER) as User;
+    const user = this.props.currentUser;
     this.props.client
-        .query({
-            query: GET_ARTICLE_BY_ID,
-            variables: {
-                id: slugOrId, myUsername: user.username ? user.username : ''
-            },
-        })
-        .then((result) => {
-            // tslint:disable-next-line:no-console
-            console.log(result.data.getArticleById);
+      .query({
+        query: GET_ARTICLE_BY_ID,
+        variables: {
+            id: slugOrId, myUsername: user.username ? user.username : ''
+        },
+      })
+      .then((result) => {
             const editorState = createEditorState(convertToRaw(mediumDraftImporter(result.data.getArticleById.body)));
             this.setState({ currentArticle: result.data.getArticleById, loading: false, editorState });
-        })
-        .catch((err) => {
+      })
+      .catch((err) => {
             // tslint:disable-next-line:no-console
             console.log(err);
             this.props.history.replace('/not-found');
-        });
+      });
   }
 
   onChange = (commentEditorState) => {
@@ -206,7 +201,6 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
                 className="uk-button uk-button-primary uk-button-small uk-text-right"
                 disabled={loading}
                 onClick={() => {
-                  console.log(data);
                   const articleId = this.state.currentArticle.id;
                   const edi = this.state.commentEditorState;
                   const renderedHTML = mediumDraftExporter(edi.getCurrentContent());
@@ -243,7 +237,6 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
               console.log(error);
               return <ErrorComponent />;
             }
-            console.log(data);
             if (data.comments.length === 0) {
               return null;
             }
@@ -296,4 +289,4 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
   }
 }
 
-export default withRouter(compose(withApollo)(ArticleDetail));
+export default withRouter(compose(withApollo, withCurrentUser)(ArticleDetail));

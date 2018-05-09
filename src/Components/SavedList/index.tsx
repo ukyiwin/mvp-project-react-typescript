@@ -8,6 +8,7 @@ import { Article, User } from 'CustomTypings/schema';
 import ContentLoader from 'react-content-loader';
 import { cookies } from 'link';
 import { CURRENT_USER } from '../../constants';
+import { withCurrentUser } from 'Utils/withCurrentUser';
 
 export const MyLoader = () => (
     <ContentLoader height={200} width={400} speed={2} primaryColor={'#f3f3f3'} secondaryColor={'#ecebeb'}>
@@ -27,8 +28,8 @@ export const MyLoader = () => (
     </ContentLoader>
 );
 
-const SavedList = () => {
-  const user = cookies.get(CURRENT_USER) as User;
+const SavedList = (props) => {
+  const user = props.currentUser;
   return(
     <Query
       query={SAVED}
@@ -103,4 +104,4 @@ const SavedList = () => {
   ); 
 };
 
-export default SavedList;
+export default withCurrentUser(SavedList);
