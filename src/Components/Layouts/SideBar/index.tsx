@@ -21,7 +21,7 @@ class SideBar extends React.Component<RouteComponentProps<any> & Props> {
                 <div className="uk-offcanvas-bar un-sidebar-container" style={{ margin: 0, padding: 0, color: '#000' }}>
                     <ul className="uk-nav" style={{ margin: 0, padding: 0, color: '#000' }}>
                         <li>
-                            <Link to="/home" className="uk-light">
+                            <Link to="/" className="uk-light">
                                 <span className="uk-margin-small-right" uk-icon="icon: home" /> Articles
                             </Link>
                         </li>

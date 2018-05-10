@@ -296,10 +296,10 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
             </li>
           </ul>
           <div
-            className="uk-width-1-1 uk-padding-large mdc-card mdc-elevation--z5 uk-padding-remove-vertical">
+            className="uk-width-1-1 un-padding--large mdc-card mdc-elevation--z5 uk-padding-remove-vertical">
             <div
-              className="uk-width-1-1 uk-padding-large uk-padding-remove-vertical uk-margin-top">
-              <div className="uk-width-1-1 uk-padding-large uk-padding-remove-vertical">
+              className="uk-width-1-1 un-padding--large uk-padding-remove-vertical uk-margin-top">
+              <div className="uk-width-1-1 un-padding--large uk-padding-remove-vertical">
                 <Textarea
                   data-cy="composer-title-input"
                   onChange={this.onChangetitle}
@@ -313,11 +313,11 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
               </div>
             </div>
             <div
-              className="uk-width-1-1 uk-padding-large uk-padding-remove-vertical"
+              className="uk-width-1-1 un-padding--large uk-padding-remove-vertical"
               style={{
               minHeight: '80vh'
             }}>
-              <div className="uk-width-1-1 uk-padding-large uk-padding-remove-vertical">
+              <div className="uk-width-1-1 un-padding--large uk-padding-remove-vertical">
                 <Editor
                   ref={(ref) => this.editor = ref}
                   editorState={editorState}

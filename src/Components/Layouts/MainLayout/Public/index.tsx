@@ -33,7 +33,7 @@ const PublicLayout: React.SFC<RouteComponentProps<any> & DefaultProps> = (props)
                       <Component {...matchProps} refreshToken={refreshToken} />
                     </div>
                 ) : (
-                    <Redirect to={{ pathname: '/home' }} />
+                    <Redirect to={{ pathname: '/' }} />
                 )
             }
         />

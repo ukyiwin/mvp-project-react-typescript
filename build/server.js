@@ -22,7 +22,7 @@ module.exports =
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "9b80f7e24d0c5f012875"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "97a47b35570fc104a763"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1377,7 +1377,7 @@ class ArticleItem extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                     ' ',
                                     body.lengthInMinutes())))))),
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "card-body uk-padding-remove-vertical simple-link", style: { paddingTop: this.props.small ? 0 : 6, borderBottom: 1 } },
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { to: `/article/${article.id}`, className: "simple-link" },
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { to: `/article/${article.slug ? article.slug : article.id}`, className: "simple-link" },
                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h5", { className: "uk-text-medium uk-text-bold uk-text-break", style: { fontSize: this.props.small ? 17 : 23, fontFamily: 'Crimson Text' } }, this.props.small
                             ? article.title.truncString('...', 36)
                             : article.title.truncString('...', 140))),
@@ -7448,7 +7448,7 @@ class BottomNav extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                 style: { marginBottom: 0, backgroundColor: '#020202' } },
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("ul", { className: "uk-navbar-nav uk-flex-between" },
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null,
-                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_2__["HomeTab"], { "data-active": props.match.url === '/home' && props.match.isExact, to: "/home" },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_2__["HomeTab"], { "data-active": props.match.url === '/' && props.match.isExact, to: "/" },
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Icons__WEBPACK_IMPORTED_MODULE_3__["default"], { glyph: "home" }))),
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null,
                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_2__["LibraryTab"], { "data-active": props.match.url === '/community' && props.match.isExact, to: "/community" },
@@ -7797,7 +7797,7 @@ class PrivateHeader extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("img", { src: __webpack_require__(/*! ../../../../Assets/unizonn/uni_green_s.svg */ "./src/Assets/unizonn/uni_green_s.svg"), style: { height: 40 }, "uk-svg": true })),
                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("ul", { className: "uk-navbar-nav uk-visible@m" },
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null,
-                                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_4__["HomeTab"], { "data-active": props.match.url === '/home' && props.match.isExact, to: "/home" },
+                                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_4__["HomeTab"], { "data-active": props.match.url === '/' && props.match.isExact, to: "/" },
                                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Icons__WEBPACK_IMPORTED_MODULE_6__["default"], { glyph: "home" }),
                                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_4__["Label"], null, "Articles"))),
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null,
@@ -7927,7 +7927,7 @@ class PrivateHeader extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("img", { src: __webpack_require__(/*! ../../../../Assets/unizonn/uni_green_s.svg */ "./src/Assets/unizonn/uni_green_s.svg"), style: { height: 40 }, "uk-svg": true })),
                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("ul", { className: "uk-navbar-nav uk-visible@m" },
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null,
-                                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_4__["HomeTab"], { "data-active": props.match.url === '/home' && props.match.isExact, to: "/home" },
+                                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_4__["HomeTab"], { "data-active": props.match.url === '/' && props.match.isExact, to: "/" },
                                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Icons__WEBPACK_IMPORTED_MODULE_6__["default"], { glyph: "home" }),
                                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_4__["Label"], null, "Articles"))),
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null,
@@ -8491,7 +8491,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "react-router-dom");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var Components_Layouts_Header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! Components/Layouts/Header */ "./src/Components/Layouts/Header/index.tsx");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./style.scss */ "./src/Components/Layouts/MainLayout/Lounge/style.scss");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_2__);
 var __rest = (undefined && undefined.__rest) || function (s, e) {
     var t = {};
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
@@ -8507,18 +8508,21 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
 const EmptyLayout = (props) => {
     const { component: Component, isAuthenticated, exact } = props, rest = __rest(props, ["component", "isAuthenticated", "exact"]);
     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], Object.assign({}, rest, { exact: exact, render: (matctProps) => isAuthenticated ? (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-flex uk-height-1-1", style: {
-                    overflow: 'auto',
-                    position: 'absolute',
-                    top: '0px',
-                    right: 0,
-                    bottom: '10px',
-                    marginTop: 70
-                } },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Component, Object.assign({}, matctProps))),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Layouts_Header__WEBPACK_IMPORTED_MODULE_2__["BottomNav"], { me: props.me, isAuthenticated: isAuthenticated, logout: props.logout }))) : (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], { to: { pathname: '/' } })) })));
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-flex uk-height-1-1" },
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Component, Object.assign({}, matctProps))))) : (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], { to: { pathname: '/' } })) })));
 };
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["withRouter"])(EmptyLayout));
+
+
+/***/ }),
+
+/***/ "./src/Components/Layouts/MainLayout/Lounge/style.scss":
+/*!*************************************************************!*\
+  !*** ./src/Components/Layouts/MainLayout/Lounge/style.scss ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
 
 
 /***/ }),
@@ -8743,7 +8747,7 @@ const PublicLayout = (props) => {
     const { component: Component, isAuthenticated, exact, refreshToken } = props, rest = __rest(props, ["component", "isAuthenticated", "exact", "refreshToken"]);
     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], Object.assign({}, rest, { exact: exact !== null ? exact : true, render: (matchProps) => isAuthenticated !== true ? (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-position-relative" },
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Layouts_Header__WEBPACK_IMPORTED_MODULE_2__["PublicHeader"], { me: props.me, isAuthenticated: isAuthenticated, logout: props.logout }),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Component, Object.assign({}, matchProps, { refreshToken: refreshToken })))) : (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], { to: { pathname: '/home' } })) })));
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Component, Object.assign({}, matchProps, { refreshToken: refreshToken })))) : (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], { to: { pathname: '/' } })) })));
 };
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["withRouter"])(PublicLayout));
 
@@ -13757,7 +13761,6 @@ class App extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("meta", { name: "an inclusive community", content: "Unizonn community" })),
                                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null,
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], { exact: true, path: "/", render: () => isAuthenticated ? (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Layouts_MainLayout__WEBPACK_IMPORTED_MODULE_7__["PrivateLayout"], { exact: true, me: this.state.me, component: Home, isAuthenticated: isAuthenticated, logout: this._logout })) : (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Layouts_MainLayout__WEBPACK_IMPORTED_MODULE_7__["PublicLayout"], { exact: true, me: this.state.me, component: PublicHome, refreshToken: this.refreshToken, isAuthenticated: isAuthenticated, logout: this._logout })) }),
-                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Layouts_MainLayout__WEBPACK_IMPORTED_MODULE_7__["PrivateLayout"], { me: this.state.me, component: Home, path: "/home", exact: true, isAuthenticated: isAuthenticated, logout: this._logout }),
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Layouts_MainLayout__WEBPACK_IMPORTED_MODULE_7__["EmptyLayout"], { me: this.state.me, exact: true, component: Profile, path: "/n/:username", isAuthenticated: isAuthenticated, logout: this._logout }),
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Layouts_MainLayout__WEBPACK_IMPORTED_MODULE_7__["EmptyLayout"], { component: Settings, path: "/n/:username/settings", exact: true, isAuthenticated: isAuthenticated, logout: this._logout, me: this.state.me }),
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Layouts_MainLayout__WEBPACK_IMPORTED_MODULE_7__["EmptyLayout"], { component: Search, path: "/n/:username/connections", exact: true, isAuthenticated: isAuthenticated, logout: this._logout, me: this.state.me }),
@@ -13871,16 +13874,163 @@ class ArticleDetail extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
             currentArticle: {},
             loading: true,
             editorState: Object(medium_draft__WEBPACK_IMPORTED_MODULE_3__["createEditorState"])(),
-            commentEditorState: Object(medium_draft__WEBPACK_IMPORTED_MODULE_3__["createEditorState"])()
+            commentEditorState: Object(medium_draft__WEBPACK_IMPORTED_MODULE_3__["createEditorState"])(),
+            liked: false,
+            saved: false,
+            slug: ''
         };
         this.onChange = (commentEditorState) => {
             this.setState({ commentEditorState });
+        };
+        this.save = () => {
+            this.setState({ saved: true });
+            const user = this.props.currentUser;
+            const { slug } = this.state;
+            const arr = [];
+            this.props.client.mutate({
+                mutation: Graphql_Mutation__WEBPACK_IMPORTED_MODULE_13__["SAVE_ARTICLE"],
+                variables: {
+                    id: this.props.article.id,
+                },
+                update: (cache, { data: { saveArticle } }) => {
+                    const { articles } = cache.readQuery({
+                        query: Graphql_Query__WEBPACK_IMPORTED_MODULE_9__["GET_ARTICLE_BY_ID"],
+                        variables: {
+                            id: slug, myUsername: user.username ? user.username : ''
+                        },
+                    });
+                    cache.writeQuery({
+                        query: Graphql_Query__WEBPACK_IMPORTED_MODULE_9__["GET_ARTICLE_BY_ID"],
+                        variables: {
+                            id: slug, myUsername: user.username ? user.username : ''
+                        },
+                        data: { getArticleById: saveArticle }
+                    });
+                },
+                optimisticResponse: {
+                    __typename: 'Mutation',
+                    saveArticle: {
+                        id: this.props.article.id,
+                        __typename: 'Article',
+                        saved: arr.push(user.id)
+                    }
+                }
+            }).then((res) => {
+                // dhjh
+            }).catch((err) => {
+                // ghg
+            });
+        };
+        this.unSave = () => {
+            this.setState({ saved: false });
+            const user = this.props.currentUser;
+            const { slug } = this.state;
+            const arr = [];
+            this.props.client.mutate({
+                mutation: Graphql_Mutation__WEBPACK_IMPORTED_MODULE_13__["UNSAVE_ARTICLE"],
+                variables: {
+                    id: this.props.article.id
+                },
+                update: (cache, { data: { unSaveArticle } }) => {
+                    const { articles } = cache.readQuery({
+                        query: Graphql_Query__WEBPACK_IMPORTED_MODULE_9__["GET_ARTICLE_BY_ID"],
+                        variables: {
+                            id: slug, myUsername: user.username ? user.username : ''
+                        },
+                    });
+                    cache.writeQuery({
+                        query: Graphql_Query__WEBPACK_IMPORTED_MODULE_9__["GET_ARTICLE_BY_ID"],
+                        variables: {
+                            id: slug, myUsername: user.username ? user.username : ''
+                        },
+                        data: { getArticleById: unSaveArticle }
+                    });
+                },
+                optimisticResponse: {
+                    __typename: 'Mutation',
+                    unSaveArticle: {
+                        id: this.props.article.id,
+                        __typename: 'Article',
+                        saved: null
+                    }
+                }
+            });
+        };
+        this.like = () => {
+            this.setState({ liked: true });
+            const user = this.props.currentUser;
+            const { slug } = this.state;
+            const arr = [];
+            this.props.client.mutate({
+                mutation: Graphql_Mutation__WEBPACK_IMPORTED_MODULE_13__["LIKE_ARTICLE"],
+                variables: {
+                    id: this.props.article.id
+                },
+                update: (cache, { data: { likeArticle } }) => {
+                    const { articles } = cache.readQuery({
+                        query: Graphql_Query__WEBPACK_IMPORTED_MODULE_9__["GET_ARTICLE_BY_ID"],
+                        variables: {
+                            id: slug, myUsername: user.username ? user.username : ''
+                        },
+                    });
+                    cache.writeQuery({
+                        query: Graphql_Query__WEBPACK_IMPORTED_MODULE_9__["GET_ARTICLE_BY_ID"],
+                        variables: {
+                            id: slug, myUsername: user.username ? user.username : ''
+                        },
+                        data: { getArticleById: likeArticle }
+                    });
+                },
+                optimisticResponse: {
+                    __typename: 'Mutation',
+                    likeArticle: {
+                        id: this.props.article.id,
+                        __typename: 'Article',
+                        liked: arr.push(user.id)
+                    }
+                }
+            });
+        };
+        this.unLike = () => {
+            this.setState({ liked: false });
+            const user = this.props.currentUser;
+            const { slug } = this.state;
+            this.props.client.mutate({
+                mutation: Graphql_Mutation__WEBPACK_IMPORTED_MODULE_13__["UNLIKE_ARTICLE"],
+                variables: {
+                    id: this.props.article.id
+                },
+                update: (cache, { data: { unLikeArticle } }) => {
+                    const { articles } = cache.readQuery({
+                        query: Graphql_Query__WEBPACK_IMPORTED_MODULE_9__["GET_ARTICLE_BY_ID"],
+                        variables: {
+                            id: slug, myUsername: user.username ? user.username : ''
+                        },
+                    });
+                    cache.writeQuery({
+                        query: Graphql_Query__WEBPACK_IMPORTED_MODULE_9__["GET_ARTICLE_BY_ID"],
+                        variables: {
+                            id: slug, myUsername: user.username ? user.username : ''
+                        },
+                        data: { getArticleById: unLikeArticle }
+                    });
+                },
+                optimisticResponse: {
+                    __typename: 'Mutation',
+                    unLikeArticle: {
+                        id: this.props.article.id,
+                        __typename: 'Article',
+                        liked: []
+                    }
+                }
+            });
         };
     }
     componentWillMount() {
         const { match: { params } } = this.props;
         if (params.slug) {
             this.fetchArticleandOthers(params.slug);
+            this.setState({ slug: params.slug });
         }
         else {
             this.props.history.goBack();
@@ -13892,6 +14042,7 @@ class ArticleDetail extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         const newId = this.props.match.params.slug;
         if (newId !== oldId) {
             this.fetchArticleandOthers(oldId);
+            this.setState({ slug: oldId });
         }
     }
     fetchArticleandOthers(slugOrId) {
@@ -13906,6 +14057,13 @@ class ArticleDetail extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
             .then((result) => {
             const editorState = Object(medium_draft__WEBPACK_IMPORTED_MODULE_3__["createEditorState"])(Object(draft_js__WEBPACK_IMPORTED_MODULE_12__["convertToRaw"])(medium_draft_lib_importer__WEBPACK_IMPORTED_MODULE_11___default()(result.data.getArticleById.body)));
             this.setState({ currentArticle: result.data.getArticleById, loading: false, editorState });
+            // UIkit.notification('MyMessage', 'danger');
+            const user = this.props.currentUser;
+            const saved = this.props.article.saved ? (result.data.getArticleById.saved.length > 0) : false;
+            const liked = this.props.article.liked ? (result.data.getArticleById.liked.length > 0) : false;
+            this.setState({ liked });
+            this.setState({ saved });
+            this.setState({ user });
         })
             .catch((err) => {
             // tslint:disable-next-line:no-console
@@ -13941,7 +14099,7 @@ class ArticleDetail extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_InterestItemSlim__WEBPACK_IMPORTED_MODULE_17__["default"], { key: article.category.id, url: article.category.avatar, name: article.category.name })) : null,
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "post-stats clearfix uk-padding-small uk-padding-remove-horizontal", style: { paddingTop: 10, paddingBottom: 1 } },
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-flex pull-left" },
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_LikeButton__WEBPACK_IMPORTED_MODULE_6__["default"], { liked: true, likeCount: 1, text: "Like", frontIcon: "like", backIcon: "like-fill", buttonType: "two" })),
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_LikeButton__WEBPACK_IMPORTED_MODULE_6__["default"], { liked: this.state.liked, likeCount: article.likes ? article.likes.length : '', text: "Like", frontIcon: "like", frontClick: () => this.like(), backClick: () => this.unLike(), backIcon: "like-fill", buttonType: "two" })),
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-flex  response-count pull-right" },
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "dropdown" },
                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "uk-button uk-button-text uk-margin-right", type: "button" },
@@ -13960,36 +14118,43 @@ class ArticleDetail extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { href: "#", className: "uk-text-bold" },
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { "uk-icon": "icon: info; ratio: 1" }),
                                         " Report"))))),
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_LikeButton__WEBPACK_IMPORTED_MODULE_6__["default"], { liked: false, frontIcon: "down", text: "Save", backIcon: "down-fill", buttonType: "two" })))));
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_LikeButton__WEBPACK_IMPORTED_MODULE_6__["default"], { frontIcon: "down", text: "Save", backIcon: "down-fill", buttonType: "two", liked: this.state.saved, frontClick: () => this.save(), backClick: () => this.unSave() })))));
     }
     renderCommentBox() {
         const { commentEditorState } = this.state;
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_2__["Mutation"], { mutation: Graphql_Mutation__WEBPACK_IMPORTED_MODULE_13__["CREATE_COMMENT"] }, (commentArticle, { data, loading }) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-card card uk-card-small uk-width-1-1", style: { borderRadius: 1, marginBottom: 30, padding: 10, backgroundColor: '#fff' } },
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-grid-small uk-flex", "uk-grid": true, style: { padding: 0, marginTop: 3 } },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-auto" },
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Avatar__WEBPACK_IMPORTED_MODULE_4__["default"], { url: 'https://getuikit.com/docs/images/avatar.jpg', size: 30, presence: false })),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-auto post-info" }, "John Doe")),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](medium_draft__WEBPACK_IMPORTED_MODULE_3__["Editor"], { ref: (ref) => this.editor = ref, editorState: commentEditorState, onChange: this.onChange, placeholder: "Write you comment..." }),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "uk-button uk-button-primary uk-button-small uk-text-right", disabled: loading, onClick: () => {
-                        const articleId = this.state.currentArticle.id;
-                        const edi = this.state.commentEditorState;
-                        const renderedHTML = medium_draft_lib_exporter__WEBPACK_IMPORTED_MODULE_14___default()(edi.getCurrentContent());
-                        commentArticle({
-                            variables: {
-                                articleId,
-                                text: renderedHTML
-                            }
-                        }).then((res) => {
-                            this.setState({ commentEditorState: Object(medium_draft__WEBPACK_IMPORTED_MODULE_3__["createEditorState"])() });
-                        }).catch((err) => {
-                            console.log(err);
-                        });
-                    } }, "Comment"))))));
+        const { currentUser } = this.props;
+        if (currentUser) {
+            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_2__["Mutation"], { mutation: Graphql_Mutation__WEBPACK_IMPORTED_MODULE_13__["CREATE_COMMENT"] }, (commentArticle, { data, loading }) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-card card uk-card-small uk-width-1-1", style: { borderRadius: 1, marginBottom: 30, padding: 10, backgroundColor: '#fff' } },
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-grid-small uk-flex", "uk-grid": true, style: { padding: 0, marginTop: 3 } },
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-auto" },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Avatar__WEBPACK_IMPORTED_MODULE_4__["default"], { url: currentUser.avatar, size: 30, presence: false })),
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-auto post-info" },
+                        currentUser.firstname,
+                        " ",
+                        currentUser.lastname)),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](medium_draft__WEBPACK_IMPORTED_MODULE_3__["Editor"], { ref: (ref) => this.editor = ref, editorState: commentEditorState, onChange: this.onChange, placeholder: "Write you comment..." }),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "uk-button uk-button-primary uk-button-small uk-text-right", disabled: loading, onClick: () => {
+                            const articleId = this.state.currentArticle.id;
+                            const edi = this.state.commentEditorState;
+                            const renderedHTML = medium_draft_lib_exporter__WEBPACK_IMPORTED_MODULE_14___default()(edi.getCurrentContent());
+                            commentArticle({
+                                variables: {
+                                    articleId,
+                                    text: renderedHTML
+                                }
+                            }).then((res) => {
+                                this.setState({ commentEditorState: Object(medium_draft__WEBPACK_IMPORTED_MODULE_3__["createEditorState"])() });
+                            }).catch((err) => {
+                                console.log(err);
+                            });
+                        } }, "Comment"))))));
+        }
+        return null;
     }
     renderCommentList() {
         const articleId = this.state.currentArticle.id;
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_2__["Query"], { query: Graphql_Query__WEBPACK_IMPORTED_MODULE_9__["GET_COMMENTS"], variables: { articleId } }, ({ loading, error, data }) => {
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_2__["Query"], { query: Graphql_Query__WEBPACK_IMPORTED_MODULE_9__["GET_COMMENTS"], variables: { articleId } }, ({ loading, error, data, subscribeToMore }) => {
             if (loading) {
                 return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Loading__WEBPACK_IMPORTED_MODULE_15__["default"], null);
             }
@@ -15346,16 +15511,16 @@ class ComposeWrite extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                 } },
                                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("img", { src: this.state.headerImage, height: 350, className: "uk-width-1-1" }),
                                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_avatar_image_cropper__WEBPACK_IMPORTED_MODULE_4___default.a, { apply: this.apply, className: "uk-width-1-1 float-center uk-overlay uk-position-center", text: "Add header image" }))))),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-large mdc-card mdc-elevation--z5 uk-padding-remove-vertical" },
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-large uk-padding-remove-vertical uk-margin-top" },
-                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-large uk-padding-remove-vertical" },
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 un-padding--large mdc-card mdc-elevation--z5 uk-padding-remove-vertical" },
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 un-padding--large uk-padding-remove-vertical uk-margin-top" },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 un-padding--large uk-padding-remove-vertical" },
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_textarea_autosize__WEBPACK_IMPORTED_MODULE_5___default.a, { "data-cy": "composer-title-input", onChange: this.onChangetitle, style: _style__WEBPACK_IMPORTED_MODULE_14__["ThreadTitle"], value: title, placeholder: 'Title of article', 
                                 // tslint:disable-next-line:jsx-no-string-ref
                                 ref: 'titleTextarea', autoFocus: true }))),
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-large uk-padding-remove-vertical", style: {
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 un-padding--large uk-padding-remove-vertical", style: {
                             minHeight: '80vh'
                         } },
-                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-large uk-padding-remove-vertical" },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 un-padding--large uk-padding-remove-vertical" },
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](medium_draft__WEBPACK_IMPORTED_MODULE_6__["Editor"], { ref: (ref) => this.editor = ref, editorState: editorState, onChange: this.onChangeBody, placeholder: "Write article content", className: 'threadComposer' })))))));
     }
 }
@@ -16919,6 +17084,10 @@ class HomePublic extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-container" },
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-grid-match uk-flex uk-width-1-1", "uk-grid": true },
                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding uk-width-1-2@m uk-width-1-1@s" },
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { "data-uk-lightbox": true, className: "uk-text-center" },
+                                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { className: "mdc-elevation--z5", style: { height: 150, width: 150, marginTop: 20, borderRadius: 10 }, href: "//vimeo.com/267226915", "data-caption": "Vimeo" },
+                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { className: "green", "uk-icon": "icon: play-circle; ratio: 5" })),
+                                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h5", null, "Click to learn about Unizonn")),
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_InputBoxLogin__WEBPACK_IMPORTED_MODULE_2__["default"], null)),
                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-2@m uk-flex-middle uk-visible@s" },
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { "data-uk-lightbox": true, className: "uk-text-center" },
@@ -17277,7 +17446,10 @@ class NotFound extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "row" },
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "col-twelve" },
                                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", { className: "kern-this", style: { fontSize: 200 } }, "404 Error."),
-                                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", { style: { fontSize: 30 } }, "Oooooops! Looks like nothing was found at this location. You found the coconuts!!!"),
+                                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", { style: { fontSize: 30 } },
+                                    "Oooooops! Looks like nothing was found at this location.",
+                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
+                                    "You found the coconuts!!!"),
                                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "search" },
                                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("form", null,
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("input", { type: "text", id: "s", name: "s", style: { height: 60, width: 500, padding: 10 }, placeholder: "Type and hit enter \u2026" }))))))))));

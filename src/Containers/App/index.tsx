@@ -338,14 +338,6 @@ class App extends React.Component<Props & ChildProps<Response & Props>, State> {
                             }
                             // tslint:disable-next-line:jsx-alignment
                         />
-                        <PrivateLayout 
-                          me={this.state.me} 
-                          component={Home} 
-                          path="/home" 
-                          exact={true} 
-                          isAuthenticated={isAuthenticated} 
-                          logout={this._logout} 
-                        />
                         <EmptyLayout 
                           me={this.state.me} 
                           exact={true}

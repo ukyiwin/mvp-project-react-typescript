@@ -17,8 +17,9 @@ export default class NotFound extends React.Component {
                 
                   <h1 className="kern-this" style={{ fontSize: 200 }}>404 Error.</h1>
                   <p style={{ fontSize: 30 }}>
-                Oooooops! Looks like nothing was found at this location.
-                You found the coconuts!!!
+                    Oooooops! Looks like nothing was found at this location.
+                    <br />
+                    You found the coconuts!!!
                   </p>
 
                   <div className="search">

@@ -72,7 +72,7 @@ class PrivateHeader extends React.Component<Props> {
               </Link>
               <ul className="uk-navbar-nav uk-visible@m">
                   <li>
-                    <HomeTab data-active={props.match.url === '/home' && props.match.isExact} to="/home">
+                    <HomeTab data-active={props.match.url === '/' && props.match.isExact} to="/">
                       <Icon glyph="home" />
                       <Label>Articles</Label>
                     </HomeTab>
@@ -312,7 +312,7 @@ class PrivateHeader extends React.Component<Props> {
               </Link>
               <ul className="uk-navbar-nav uk-visible@m">
                   <li>
-                    <HomeTab data-active={props.match.url === '/home' && props.match.isExact} to="/home">
+                    <HomeTab data-active={props.match.url === '/' && props.match.isExact} to="/">
                       <Icon glyph="home" />
                       <Label>Articles</Label>
                     </HomeTab>

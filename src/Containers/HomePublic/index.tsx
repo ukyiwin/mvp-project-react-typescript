@@ -60,6 +60,16 @@ class HomePublic extends React.Component<Props> {
                   <div className="uk-container">
                     <div className="uk-grid-match uk-flex uk-width-1-1" uk-grid>
                       <div className="uk-padding uk-width-1-2@m uk-width-1-1@s">
+                        <div data-uk-lightbox  className="uk-text-center">
+                          <a
+                            className="mdc-elevation--z5"
+                            style={{ height: 150, width: 150, marginTop: 20, borderRadius: 10 }}
+                            href="//vimeo.com/267226915" data-caption="Vimeo"
+                          >
+                            <span className="green" uk-icon="icon: play-circle; ratio: 5" />
+                          </a>
+                          <h5>Click to learn about Unizonn</h5>
+                        </div>
                         <InputBoxLogin />
                       </div>
                       <div className="uk-width-1-2@m uk-flex-middle uk-visible@s">

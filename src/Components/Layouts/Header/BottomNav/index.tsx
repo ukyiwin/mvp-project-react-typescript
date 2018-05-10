@@ -57,7 +57,7 @@ class BottomNav extends React.Component<Props> {
           >
             <ul className="uk-navbar-nav uk-flex-between">
                   <li>
-                    <HomeTab data-active={props.match.url === '/home' && props.match.isExact} to="/home">
+                    <HomeTab data-active={props.match.url === '/' && props.match.isExact} to="/">
                       <Icon glyph="home" />
                     </HomeTab>
                   </li>

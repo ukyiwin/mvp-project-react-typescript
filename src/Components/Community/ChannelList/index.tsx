@@ -42,7 +42,8 @@ class CommunitySidebar extends React.Component<Props> {
           <div 
             className="uk-text-capitalize uk-text-medium uk-text-bold uk-text-truncate"
             style={{ marginLeft: 5 }}
-          >Channels
+          >
+            Channels
           </div>
           <Button.Content
             circular
