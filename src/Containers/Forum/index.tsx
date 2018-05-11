@@ -24,6 +24,7 @@ import { Channels } from 'CustomTypings/schema';
 import './style.scss';
 import { Button } from 'semantic-ui-react';
 import Icon from 'Components/Icons';
+import SeoMaker from 'Components/SeoMaker';
 
 const ChatDetail = asyncComponent({
   resolve: () => import('../ChatDetail'),
@@ -95,9 +96,8 @@ class Forum extends React.Component<Props> {
 
   renderContent() {
     return(
-      <div 
-        style={{height: '91vh', width: '100vw'}}
-        className="uk-width-1-1 uk-flex"
+      <div
+        className="uk-flex uk-flex-stretch un-community--box"
       >
         <CommunitySidebar itemClick={this.selectCommunity} />
         <ChannelList communityId={this.state.channelCommunity} />
@@ -110,9 +110,7 @@ class Forum extends React.Component<Props> {
               circular
               style={{ marginRight: 10 }}
               compact
-            >
-              <Icon glyph="plus" />
-            </Button.Content>
+            />
             <div 
               className="uk-text-capitalize uk-text-medium uk-text-bold uk-text-truncate"
               style={{ marginLeft: 5 }}
@@ -127,7 +125,7 @@ class Forum extends React.Component<Props> {
                 this.setState({ openParticipantSide: value });
               }}
             >
-              <Icon glyph="plus" />
+              <Icon glyph="person" />
             </Button.Content>
           </div>
           <ChatDetail channelId={this.state.channelId} />
@@ -140,13 +138,10 @@ class Forum extends React.Component<Props> {
   render() {
     return (
       <ThemeProvider color="#f2912c">
-        <div className="App">
-          <Helmet>
-            <title>Unizonn | Community</title>
-            <meta name="an inclusive community" content="Unizonn community" />
-          </Helmet>
+        <>
+          <SeoMaker />
           {this.renderContent()}
-        </div>
+        </>
       </ThemeProvider>
     );
   }

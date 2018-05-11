@@ -44,11 +44,11 @@ class PrivateHeader extends React.Component<Props> {
     if (props.isAuthenticated) {
       return (
         <div
-          data-uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky mdc-toolbar mdc-toolbar--fixed"
+          data-uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky;"
           style={{marginBottom: 0}}
         >
           <nav 
-            className="uk-navbar-container mdc-elevation--z2 uk-margin uk-background-secondary raised mdc-toolbar mdc-toolbar--fixed uk-dark" 
+            className="uk-navbar-container mdc-elevation--z2 mdc-toolbar mdc-toolbar--fixed uk-margin uk-background-secondary uk-dark" 
             // tslint:disable-next-line:jsx-boolean-value
             uk-navbar
             style={{marginBottom: 0, backgroundColor: '#020202'}}
@@ -72,7 +72,7 @@ class PrivateHeader extends React.Component<Props> {
               </Link>
               <ul className="uk-navbar-nav uk-visible@m">
                   <li>
-                    <HomeTab data-active={props.match.url === '/home' && props.match.isExact} to="/home">
+                    <HomeTab data-active={props.match.url === '/' && props.match.isExact} to="/">
                       <Icon glyph="home" />
                       <Label>Articles</Label>
                     </HomeTab>
@@ -312,7 +312,7 @@ class PrivateHeader extends React.Component<Props> {
               </Link>
               <ul className="uk-navbar-nav uk-visible@m">
                   <li>
-                    <HomeTab data-active={props.match.url === '/home' && props.match.isExact} to="/home">
+                    <HomeTab data-active={props.match.url === '/' && props.match.isExact} to="/">
                       <Icon glyph="home" />
                       <Label>Articles</Label>
                     </HomeTab>

@@ -70,6 +70,50 @@ export const MY_COMMUNITIES = gql`
   }
 `;
 
+export const USER_COMMUNITIES = gql`
+  query userCommunities($username: String!, $myUsername: String){
+    userCommunities{
+      id
+      createdAt
+      updatedAt
+      title
+      channels{
+        id
+        createdAt
+        title
+      }
+      description
+      author{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      avatar
+      slug
+      isPrivate
+      participants{
+        id
+        username
+      }
+      moderators{
+        id
+        username
+      }
+      joined: participants(where: {username: $myUsername}){
+        id
+      }
+      isAdmin: moderators(where: {username: $myUsername}){
+        id
+      }
+      isBarned: blockedUsers(where: {username: $myUsername}){
+        id
+      }
+    }
+  }
+`;
+
 /**
  * @description user registration for graphql mutation
  */

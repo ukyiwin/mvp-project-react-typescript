@@ -51,7 +51,6 @@ class DraftsItem extends React.Component<Props> {
 
   componentWillMount() {
     // UIkit.notification('MyMessage', 'danger');
-    const user = cookies.get(CURRENT_USER);
   }
 
   publish = () => {
@@ -73,7 +72,6 @@ class DraftsItem extends React.Component<Props> {
             ...publishArticle
           }
         };
-        console.log(articles);
         /*cache.writeQuery({
           query: ARTICLES,
           data: { articles: articles.edges.concat(node) }
@@ -118,15 +116,13 @@ class DraftsItem extends React.Component<Props> {
           };
           tempList.push(temp);
         });
-      // tslint:disable-next-line:no-console
-      console.log(result);
       this.setState({suggestions: tempList});
     }).catch((err) => {
       console.log('hjhjhjhjhj');
     });
   }
 
-  setCategory= (e) => {
+  setCategory = (e) => {
     this.setState({interest: e.target.value});
   }
 
@@ -148,7 +144,6 @@ class DraftsItem extends React.Component<Props> {
             ...deleteArticle
           }
         };
-        // console.log(articles);
         /*cache.writeQuery({
           query: ARTICLES,
           data: { articles: articles.edges.concat(node) }
@@ -302,10 +297,6 @@ class DraftsItem extends React.Component<Props> {
                             )}
                           </Dropdowns>
                         </div>
-                        {this.state.interest}
-                        {JSON.stringify(this.state.tags)}
-                        {JSON.stringify(this.state.those)}
-                        {this.props.article.id}
                         <Select
                           name="form-field-name"
                           value={this.state.tags}

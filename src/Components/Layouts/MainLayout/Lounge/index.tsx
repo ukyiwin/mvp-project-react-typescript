@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Route, Redirect, withRouter, RouteComponentProps } from 'react-router-dom';
 // import { FooterPublic } from 'Components/Layouts/FooterPublic';
 import { User } from 'CustomTypings/schema';
+import { BottomNav } from 'Components/Layouts/Header';
+import './style.scss';
 
 interface DefaultProps {
     // tslint:disable-next-line:no-any
@@ -25,11 +27,13 @@ const EmptyLayout: React.SFC<RouteComponentProps<any> & DefaultProps> = (props) 
             exact={exact}
             render={(matctProps) =>
               isAuthenticated ? (
-                  <div className="uk-width-1-1 uk-height-1-1 ">
-                      <div className="uk-width-1-1 uk-flex  uk-height-1-1 ">
-                          <Component {...matctProps} />
-                      </div>
-                  </div>
+                  <>
+                    <div
+                      className="uk-width-1-1 uk-flex uk-height-1-1"
+                    >
+                      <Component {...matctProps} />
+                    </div>
+                  </>
               ) : (
                   <Redirect to={{ pathname: '/' }} />
               )

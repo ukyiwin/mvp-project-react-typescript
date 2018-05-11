@@ -72,6 +72,34 @@ export const ARTICLES = gql`
   ${ARTICLE_FRAGMENT}
 `;
 
+export const GET_ARTICLES_BY_INTEREST = gql`
+  query getArticlesByInterest($text: String!, $username: String, $cursor: String) {
+    getArticlesByInterest(text: $text, cursor: $cursor){
+      aggregate {
+        count
+      }
+      edges {
+        node {
+          saved: userFavourited(where: {username: $username }) {
+            username
+          }
+          liked: likes(where: {username: $username }) {
+            username
+          }
+          ...articleFragment
+        }
+      }
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
 export const SEARCH_ARTICLE = gql`
   query searchArticle($text: String!, $cursor: ID, $username: String) {
     searchArticle(text: $text, cursor: $cursor){
@@ -249,7 +277,7 @@ export const ME = gql`
  * @description check if current user article
  */
 export const GET_USER_BY_USERNAME = gql`
-  query getUserByUsername($username: String!) {
+  query getUserByUsername($username: String!, $myUsername: String) {
     getUserByUsername(username: $username) {
       ...userFragment
       connections{
@@ -263,15 +291,50 @@ export const GET_USER_BY_USERNAME = gql`
         title
         body
       }
-      isFollowing: followers(where: {username: $username}){
+      isFollowing: followers(where: {username: $myUsername}){
         id
         username
       }
-      isFollower: following(where: {username: $username}){
+      isFollower: following(where: {username: $myUsername}){
         id
         username
       }
-      isConnected: connections(where: {username: $username}){
+      isConnected: connections(where: {username: $myUsername}){
+        id
+        username
+      }
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+/**
+ * @description check if current user article
+ */
+export const GET_CONNECTIONS = gql`
+  query getConnections($myUsername: String) {
+    getConnections {
+      ...userFragment
+      connections{
+        username
+        id
+      }
+      avatar
+      headerImage
+      articles{
+        id
+        title
+        body
+      }
+      isFollowing: followers(where: {username: $myUsername}){
+        id
+        username
+      }
+      isFollower: following(where: {username: $myUsername}){
+        id
+        username
+      }
+      isConnected: connections(where: {username: $myUsername}){
         id
         username
       }

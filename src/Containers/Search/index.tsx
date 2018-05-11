@@ -18,7 +18,7 @@ import Icon from 'Components/Icons';
 import PublishList from 'Components/PublishList';
 import SearchArticle from 'Components/SearchArticle';
 
-export default class Search extends React.Component {
+export default class Search extends React.Component<any> {
 
   state = {
     value: ''
@@ -34,11 +34,16 @@ export default class Search extends React.Component {
       <FlexCol style={{ flex: '1 1 auto', maxHeight: 'calc(100% - 48px)', backgroundColor: '#fff' }}>
         <Titlebar title={'Search'} provideBack={false} noComposer />
         <AppViewWrapper>
+          <button
+            className="uk-modal-close-full uk-close-large"
+            type="button"
+            data-uk-close
+            onClick={() => this.props.history.goBack()}
+          />
           <Column type="only">
             <img 
-              src={require('../../Assets/unizonn/uni_green.svg')} 
-              style={{height: 160, marginBottom: 20}}
-              uk-svg
+              src={require('../../Assets/unizonn/uni_black.svg')} 
+              style={{height: 100, margin: 20, marginTop: 40}}
             />
             <form className="uk-search uk-width-1-1 uk-search-large uk-search-default uk-margin-bottom">
               <span data-uk-search-icon />

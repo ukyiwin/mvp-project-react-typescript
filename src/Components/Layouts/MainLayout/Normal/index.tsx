@@ -3,6 +3,7 @@ import { Route, Redirect, withRouter, RouteComponentProps } from 'react-router-d
 // import { FooterPublic } from 'Components/Layouts/FooterPublic';
 import { User } from 'CustomTypings/schema';
 import { PrivateHeader, BottomNav } from 'Components/Layouts/Header';
+import AppViewWrapper from 'Components/AppViewWrapper';
 import './style.scss';
 
 interface DefaultProps {
@@ -27,13 +28,27 @@ const EmptyLayout: React.SFC<RouteComponentProps<any> & DefaultProps> = (props) 
             exact={exact}
             render={(matctProps) =>
               isAuthenticated ? (
-                  <div className="uk-width-1-1 uk-height-1-1 ">
+                  <>
                     <PrivateHeader  me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
-                    <div className="uk-width-1-1 uk-flex  uk-height-1-1 ">
+                    <AppViewWrapper
+                      data-cy="inbox-scroller"
+                      style={{
+                        overflow: 'auto',
+                        position: 'absolute',
+                        top: '0px',
+                        right: 0,
+                        bottom: '10px',
+                        marginTop: 70
+                      }}
+                    >
+                      <div 
+                        className="uk-width-1-1 uk-flex uk-height-1-1"
+                      >
                         <Component {...matctProps} />
-                    </div>
+                      </div>
+                    </AppViewWrapper>
                     <BottomNav me={props.me} isAuthenticated={isAuthenticated} logout={props.logout} />
-                  </div>
+                  </>
               ) : (
                   <Redirect to={{ pathname: '/' }} />
               )

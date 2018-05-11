@@ -5,10 +5,9 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { ErrorComponent, LoadingComponent, EmptyComponent } from 'Components/EmptyStates';
 import { GET_SUGGESTED_ARTICLES } from 'Graphql/Query';
 import Label from 'Components/Label';
-import { Article, User } from 'CustomTypings/schema';
+import { Article } from 'CustomTypings/schema';
 import ContentLoader from 'react-content-loader';
 import { cookies } from 'link';
-import { CURRENT_USER } from '../../constants';
 
 // const MyFacebookLoader = () => <Facebook />;
 
@@ -31,7 +30,6 @@ export const MyLoader = () => (
 );
 
 const SuggestedArticleList = () => {
-  const user = cookies.get(CURRENT_USER) as User;
   return(
   <Query query={GET_SUGGESTED_ARTICLES} pollInterval={5000} >
   {({ loading, error, data, fetchMore, networkStatus, refetch }) => {

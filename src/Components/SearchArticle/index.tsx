@@ -11,8 +11,6 @@ import { CURRENT_USER } from '../../constants';
 import { NullState } from 'Components/Upsell';
 import { Loading } from 'Components/Loading';
 
-// const user = cookies.get(CURRENT_USER) as User;
-
 interface Props {
   searchString: string;
 }

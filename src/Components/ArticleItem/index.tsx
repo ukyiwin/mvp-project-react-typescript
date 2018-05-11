@@ -96,7 +96,6 @@ class ArticleItem extends React.Component<Props> {
               ...unSaveArticle
             }
           };
-          console.log(articles);
           /*cache.writeQuery({
             query: ARTICLES,
             data: { articles: articles.edges.concat(node) }
@@ -133,7 +132,6 @@ class ArticleItem extends React.Component<Props> {
               ...likeArticle
             }
           };
-          console.log(articles);
           /*cache.writeQuery({
             query: ARTICLES,
             data: { articles: articles.edges.concat(node) }
@@ -169,7 +167,6 @@ class ArticleItem extends React.Component<Props> {
               ...unLikeArticle
             }
           };
-          console.log(articles);
           /*cache.writeQuery({
             query: ARTICLES,
             data: { articles: articles.edges.concat(node) }
@@ -240,7 +237,7 @@ class ArticleItem extends React.Component<Props> {
                     className="card-body uk-padding-remove-vertical simple-link"
                     style={{ paddingTop: this.props.small ? 0 : 6, borderBottom: 1 }}
                 >
-                    <Link to={`/article/${article.id}`} className="simple-link">
+                    <Link to={`/article/${article.slug ? article.slug : article.id}`} className="simple-link">
                         <h5
                             className="uk-text-medium uk-text-bold uk-text-break"
                             style={{ fontSize: this.props.small ? 17 : 23, fontFamily: 'Crimson Text' }}

@@ -8,8 +8,6 @@ import { GET_SIMILAR_ARTICLES } from 'Graphql/Query';
 import { Article, User } from 'CustomTypings/schema';
 import ContentLoader from 'react-content-loader';
 import { cookies } from 'link';
-import { CURRENT_USER } from '../../constants';
-
 // const MyFacebookLoader = () => <Facebook />;
 
 export const MyLoader = () => (
@@ -35,7 +33,6 @@ interface Props {
 }
 
 const SimilarArticleList = (props: Props) => {
-  const user = cookies.get(CURRENT_USER) as User;
   return(
     <Query query={GET_SIMILAR_ARTICLES} variables={{id: props.articleId}} pollInterval={5000} >
     {({ loading, error, data, fetchMore, networkStatus, refetch }) => {

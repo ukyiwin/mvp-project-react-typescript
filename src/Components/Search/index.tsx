@@ -13,11 +13,12 @@ import { User } from 'CustomTypings/schema';
 import { CURRENT_USER } from '../../constants';
 import { SEARCH_USER } from 'Graphql/Query';
 import ListItem from 'anchor-ui/list-item';
-
-const user = cookies.get(CURRENT_USER) as User;
+import { withCurrentUser } from 'Utils/withCurrentUser';
 
 // tslint:disable-next-line:no-empty-interface
-interface Props {}
+interface Props {
+  currentUser?: any;
+}
 interface State {
   searchQueryString?: string;
 }
@@ -33,12 +34,16 @@ class Search extends React.Component<Props, State> {
 
   render() {
     const { searchQueryString } = this.state;
+    const { currentUser } = this.props;
     const searchFilter = { everythingFeed: true };
 
     return (
       <View>
         <SearchInput handleSubmit={this.handleSubmit} />
-        <Query pollInterval={100000} query={SEARCH_USER} variables={{ text: searchQueryString, username: user.username ? user.username : ''}} >
+        <Query
+          pollInterval={100000}
+          query={SEARCH_USER}
+          variables={{ text: searchQueryString, username: currentUser.username ? currentUser.username : ''}} >
         {({loading, error, data}) => {
           if (loading) { return <Loading />; }
           if (error) { return <div>Error loading</div>; }
@@ -68,4 +73,4 @@ class Search extends React.Component<Props, State> {
   }
 }
 
-export default Search;
+export default withCurrentUser(Search);

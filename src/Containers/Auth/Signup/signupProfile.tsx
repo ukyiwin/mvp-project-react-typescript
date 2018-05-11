@@ -97,8 +97,6 @@ class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
           query: ALL_COUNTRIES,
       })
       .then((result) => {
-          // tslint:disable-next-line:no-console
-          console.log(result.data.getCountry);
           this.setState({ countryList: result.data.getCountry });
       })
       .catch((err) => {
@@ -115,8 +113,6 @@ class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
             },
       })
       .then((result) => {
-            // tslint:disable-next-line:no-console
-            console.log(result);
             this.setState({ institutionList: result.data.getInstitution });
       })
       .catch((err) => {
@@ -125,15 +121,15 @@ class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
   }
 
   getDepartment(value: string) {
-      this.props.client
+    this.props.client
       .query({
-            query: ALL_DEPARTMENTS,
-            variables: {
-                idInstitutions: value,
-            },
+        query: ALL_DEPARTMENTS,
+        variables: {
+          idInstitutions: value,
+        },
       })
       .then((result) => {
-          this.setState({ departmentList: result.data.getDepartment });
+        this.setState({ departmentList: result.data.getDepartment });
       })
       .catch((err) => {
           // jkjk
@@ -147,14 +143,6 @@ class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
     }
     this.getCountry();
   }
-    /*<div className="js-upload uk-placeholder uk-text-center">
-                      <span uk-icon="icon: cloud-upload" />
-                      <span className="uk-text-middle">Attach photo by dropping it here or </span>
-                      <div uk-form-custom="">
-                          <input type="file" multiple={false} />
-                          <span className="uk-link">selecting one</span>
-                      </div>
-                  </div>*/
 
   componentDidMount() {
         const bar = document.getElementById('js-progressbar') as HTMLInputElement;
@@ -178,14 +166,8 @@ class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
                 // tslint:disable-next-line:no-console
                 console.log('error', arguments);
         },
-        complete() {
-                // tslint:disable-next-line:no-console
-                console.log('complete', arguments);
-        },
         // tslint:disable-next-line:typedef
         loadStart(e) {
-                // tslint:disable-next-line:no-console
-                console.log('loadStart', arguments);
                 if (bar) {
                     bar.removeAttribute('hidden');
                     bar.max = e.total;
@@ -194,27 +176,20 @@ class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
         },
         // tslint:disable-next-line:typedef
         progress(e) {
-                // tslint:disable-next-line:no-console
-                console.log('progress', arguments);
-                if (bar) {
-                    bar.max = e.total;
-                    bar.value = e.loaded;
-                }
+          if (bar) {
+              bar.max = e.total;
+              bar.value = e.loaded;
+          }
         },
         // tslint:disable-next-line:typedef
         loadEnd(e) {
-                // tslint:disable-next-line:no-console
-                console.log('loadEnd', arguments);
-
-                if (bar) {
-                    bar.max = e.total;
-                    bar.value = e.loaded;
-                }
+          if (bar) {
+            bar.max = e.total;
+            bar.value = e.loaded;
+          }
         },
 
             completeAll: (result, response) => {
-              // tslint:disable-next-line:no-console
-              console.log('completeAll', result.response);
               const data = JSON.parse(result.response);
               this.setState({ photo: data.id, url: data.url });
               setTimeout(() => {
@@ -268,113 +243,113 @@ class SignupProfile extends React.Component<RouteComponentProps<any> & Props> {
 
   render() {
     const errors = validateProfile(
-          this.state.photo,
-          this.state.country,
-          this.state.institution,
-          this.state.department,
+      this.state.photo,
+      this.state.country,
+      this.state.institution,
+      this.state.department,
     );
     const isDisabled = Object.keys(errors).some((x) => errors[x]);
     return (
-            <div
-              className="uk-flex uk-flex-center uk-width-1-1"
-              style={{ height: '80vh', backgroundColor: '#ffffff', width: '100vw' }}
+      <div
+        className="uk-flex uk-flex-center uk-width-1-1"
+        style={{ height: '80vh', backgroundColor: '#ffffff', width: '100vw' }}
+      >
+        <form
+          className="uk-form-horizontal uk-width-1-2@m uk-margin-large uk-padding-large uk-padding-remove-vertical"
+          onSubmit={this.handleSubmit}
+        >
+          <div className="uk-margin">
+            <h5 
+              className="uk-heading-primary  uk-padding-large uk-padding-remove-horizontal uk-text-center" 
+              style={{fontSize: 30, fontWeight: 'bold', paddingBottom: 5}}
             >
-              <form
-                className="uk-form-horizontal uk-width-1-2@m uk-margin-large uk-padding-large uk-padding-remove-vertical"
-                onSubmit={this.handleSubmit}
-              >
-                <div className="uk-margin">
-                  <h5 
-                    className="uk-heading-primary  uk-padding-large uk-padding-remove-horizontal uk-text-center" 
-                    style={{fontSize: 30, fontWeight: 'bold', paddingBottom: 5}}
-                  >
-                    You're Almost done 
-                  </h5>
-                </div>
-                <div className="uk-margin uk-flex uk-flex-center">
-                  <div 
-                    className="uk-inline"
-                    style={{backgroundColor: '#e1eaf1', width: 250, height: 250,
-                     border: '0px solid black', borderRadius: 200 }}
-                  >
-                      <img src={this.state.headerImage}
-                       style={{backgroundColor: '#e1eaf1', width: 250, height: 250,
-                       border: '1px solid black', borderRadius: 200 }}
-                       />
-                      <AvatarImageCropper 
-                        apply={this.apply}  
-                        rootStyle={{ width: 250, height: 250, borderRadius: 200 }}
-                        className=" uk-position-center" 
-                        text="Add header image" 
-                      />
-                  </div>
-                  <progress id="js-progressbar" className="uk-progress" value="0" max="100" hidden={true} />
-                </div>
-                <div className="uk-margin">
-                  <select
-                    className="uk-select"
-                    value={this.state.country}
-                    required={true}
-                    onChange={this.handleCountryChange}
-                  >
-                    <option value="">Select country</option>
-                    {this.state.countryList.map((country: Country, i) => (
-                        // tslint:disable-next-line:jsx-key
-                        <option key={i} value={country.id}>
-                            {country.name}
-                        </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="uk-margin">
-                  <select
-                    className="uk-select"
-                    value={this.state.institution}
-                    required={true}
-                    onChange={this.handleInstChange}
-                  >
-                    <option value="">Select institution</option>
-                    {this.state.institutionList.map((institution: Institutions, i) => (
-                        // tslint:disable-next-line:jsx-key
-                        <option key={i} value={institution.id}>
-                            {institution.title}
-                        </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="uk-margin">
-                  <select
-                    className="uk-select"
-                    value={this.state.department}
-                    required={true}
-                    onChange={this.handleDeptChange}
-                  >
-                    <option value="">Select course</option>
-                    {this.state.departmentList.map((course: Department, i) => (
-                        // tslint:disable-next-line:jsx-key
-                        <option key={i} value={course.id}>
-                            {course.name}
-                        </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="uk-margin">
-                            {this.state.loading ? (
-                                <div data-uk-spinner="ratio: 1" />
-                            ) : (
-                                <button
-                                    className={`uk-button uk-button-primary uk-width-1-1 ${
-                                        isDisabled ? 'disabled' : 'disabled'
-                                    }`}
-                                    disabled={isDisabled}
-                                    type="submit"
-                                >
-                                    SAVE & NEXT
-                                </button>
-                            )}
-                </div>
-              </form>
+              You're Almost done 
+            </h5>
+          </div>
+          <div className="uk-margin uk-flex uk-flex-center">
+            <div 
+              className="uk-inline"
+              style={{backgroundColor: '#e1eaf1', width: 250, height: 250,
+               border: '0px solid black', borderRadius: 200 }}
+            >
+                <img src={this.state.headerImage}
+                 style={{backgroundColor: '#e1eaf1', width: 250, height: 250,
+                 border: '1px solid black', borderRadius: 200 }}
+                 />
+                <AvatarImageCropper 
+                  apply={this.apply}  
+                  rootStyle={{ width: 250, height: 250, borderRadius: 200 }}
+                  className=" uk-position-center" 
+                  text="Add header image" 
+                />
             </div>
+            <progress id="js-progressbar" className="uk-progress" value="0" max="100" hidden={true} />
+          </div>
+          <div className="uk-margin">
+            <select
+              className="uk-select"
+              value={this.state.country}
+              required={true}
+              onChange={this.handleCountryChange}
+            >
+              <option value="">Select country</option>
+              {this.state.countryList.map((country: Country, i) => (
+                  // tslint:disable-next-line:jsx-key
+                  <option key={i} value={country.id}>
+                      {country.name}
+                  </option>
+              ))}
+            </select>
+          </div>
+          <div className="uk-margin">
+            <select
+              className="uk-select"
+              value={this.state.institution}
+              required={true}
+              onChange={this.handleInstChange}
+            >
+              <option value="">Select institution</option>
+              {this.state.institutionList.map((institution: Institutions, i) => (
+                  // tslint:disable-next-line:jsx-key
+                  <option key={i} value={institution.id}>
+                      {institution.title}
+                  </option>
+              ))}
+            </select>
+          </div>
+          <div className="uk-margin">
+            <select
+              className="uk-select"
+              value={this.state.department}
+              required={true}
+              onChange={this.handleDeptChange}
+            >
+              <option value="">Select course</option>
+              {this.state.departmentList.map((course: Department, i) => (
+                  // tslint:disable-next-line:jsx-key
+                  <option key={i} value={course.id}>
+                      {course.name}
+                  </option>
+              ))}
+            </select>
+          </div>
+          <div className="uk-margin">
+                      {this.state.loading ? (
+                          <div data-uk-spinner="ratio: 1" />
+                      ) : (
+                          <button
+                              className={`uk-button uk-button-primary uk-width-1-1 ${
+                                  isDisabled ? 'disabled' : 'disabled'
+                              }`}
+                              disabled={isDisabled}
+                              type="submit"
+                          >
+                              SAVE & NEXT
+                          </button>
+                      )}
+          </div>
+        </form>
+      </div>
     );
   }
 }
