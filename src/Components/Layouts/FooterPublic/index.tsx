@@ -10,9 +10,8 @@ const FooterPublic = () => {
     <Footer>
       <FlexRow>
         <img 
-          src={require('../../../Assets/unizonn/uni_green_s.svg')} 
-          style={{height: 70}}
-          // tslint:disable-next-line:jsx-boolean-value
+          src={require('../../../Assets/unizonn/uni_green.svg')} 
+          style={{ height: 40 }}
           uk-svg
         />
       </FlexRow>

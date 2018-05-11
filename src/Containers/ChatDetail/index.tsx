@@ -77,8 +77,8 @@ class ChatDetail extends React.Component<Props> {
 
         return(
           <>
-            <SeoMaker title={channelId} />
-            <div className="uk-width-1-1 fill-height-or-more">
+            <SeoMaker title={channelId} description={channelId} />
+            <div className="un-chat-detail--box">
               <MessageList
                 autoScroll 
                 className="fill-height-or-more" style={{ height: '71vh', flex: 1, backgroundColor: 'aliceblue' }}
@@ -97,68 +97,70 @@ class ChatDetail extends React.Component<Props> {
                   />
                 ))}
               </MessageList>
-              <Mutation mutation={SEND_MESSAGE_BY_SLUG}>
-              {(sendMessageBySlug, { data }) => (
-                <div className="input-box uk-width-auto">
-                  <MessageInput
-                    placeholder="Enter message"
-                    multiLine={true}
-                    style={{ margin: 0 }}
-                    value={emoji}
-                    sendMessage={() => {
-                      sendMessageBySlug({ 
-                        variables: { slug: channelId, text: emoji},
-                        optimisticResponse: {
-                          __typename: 'Mutation',
-                          sendMessageBySlug: {
-                            if: 1,
-                            __typename: 'Message',
-                            createdAt: new Date(),
-                            text: emoji,
-                            seen: false,
-                            user: currentUser,
-                            delivered: false,
-                            sent: true,
-                            channel: {
-                              slug: channelId
+              <div className="uk-width-auto">
+                <Mutation mutation={SEND_MESSAGE_BY_SLUG}>
+                {(sendMessageBySlug, { data }) => (
+                  <div className="fill-height-or-more input-box">
+                    <MessageInput
+                      placeholder="Enter message"
+                      multiLine={true}
+                      style={{ margin: 0 }}
+                      value={emoji}
+                      sendMessage={() => {
+                        sendMessageBySlug({ 
+                          variables: { slug: channelId, text: emoji},
+                          optimisticResponse: {
+                            __typename: 'Mutation',
+                            sendMessageBySlug: {
+                              if: 1,
+                              __typename: 'Message',
+                              createdAt: new Date(),
+                              text: emoji,
+                              seen: false,
+                              user: currentUser,
+                              delivered: false,
+                              sent: true,
+                              channel: {
+                                slug: channelId
+                              }
                             }
+                          },
+                          update: (proxy, { data: { sendMessageBySlug } }) => {
+                            // Read the data from our cache for this query.
+                            const data = proxy.readQuery({ 
+                              query: sendMessageBySlug, 
+                              variables: {slug: channelId}
+                            });
+                            
+                            data.getMessagesBySlug.push(sendMessageBySlug);
+                            // Write our data back to the cache.
+                            proxy.writeQuery({ query: sendMessageBySlug, data });
                           }
-                        },
-                        update: (proxy, { data: { sendMessageBySlug } }) => {
-                          // Read the data from our cache for this query.
-                          const data = proxy.readQuery({ 
-                            query: sendMessageBySlug, 
-                            variables: {slug: channelId}
-                           });
-                           
-                          data.getMessagesBySlug.push(sendMessageBySlug);
-                          // Write our data back to the cache.
-                          proxy.writeQuery({ query: sendMessageBySlug, data });
-                        }
-                      });
-                      this.setState({ emoji: '' });
-                    }}
-                    onChange={(event) => this.handleChange(event)}
-                    leftButton={
-                      <Button
-                        // tslint:disable-next-line:jsx-boolean-value
-                        iconButton
-                        onClick={this.toggleMenu}
-                      >
-                        <IconEmoji />
-                      </Button>
-                    }
-                  />
-                  <section>
-                    <EmojiMenu
-                      sendEmoji={(event, emoj) => this.sendEmoji(emoj)}
-                      open={open}
-                      hideMenu={this.toggleMenu}
+                        });
+                        this.setState({ emoji: '' });
+                      }}
+                      onChange={(event) => this.handleChange(event)}
+                      leftButton={
+                        <Button
+                          // tslint:disable-next-line:jsx-boolean-value
+                          iconButton
+                          onClick={this.toggleMenu}
+                        >
+                          <IconEmoji />
+                        </Button>
+                      }
                     />
-                  </section>
-                </div>
-              )}
-              </Mutation>
+                    <section>
+                      <EmojiMenu
+                        sendEmoji={(event, emoj) => this.sendEmoji(emoj)}
+                        open={open}
+                        hideMenu={this.toggleMenu}
+                      />
+                    </section>
+                  </div>
+                )}
+                </Mutation>
+              </div>
             </div>
           </>
         );

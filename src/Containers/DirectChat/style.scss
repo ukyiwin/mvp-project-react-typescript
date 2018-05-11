@@ -1,7 +1,8 @@
 .input-box {
   background-color: ivory;
   bottom: 0;
-  width: 74vw;
+  display: flex;
+  width: inherit;
   position: absolute; 
   margin: auto;
 }

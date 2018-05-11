@@ -51,7 +51,6 @@ class DraftsItem extends React.Component<Props> {
 
   componentWillMount() {
     // UIkit.notification('MyMessage', 'danger');
-    const user = cookies.get(CURRENT_USER);
   }
 
   publish = () => {
@@ -298,10 +297,6 @@ class DraftsItem extends React.Component<Props> {
                             )}
                           </Dropdowns>
                         </div>
-                        {this.state.interest}
-                        {JSON.stringify(this.state.tags)}
-                        {JSON.stringify(this.state.those)}
-                        {this.props.article.id}
                         <Select
                           name="form-field-name"
                           value={this.state.tags}

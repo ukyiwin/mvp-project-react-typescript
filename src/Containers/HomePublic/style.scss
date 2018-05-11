@@ -84,3 +84,38 @@
 .tomato {
   background: linear-gradient(to right, tomato 0%, gold 100%);
 }
+
+.player--box {
+  color: white;
+  animation-duration: 4s;
+  animation: bounce 2s infinite alternate;
+  -webkit-animation: bounce 2s infinite alternate;
+}
+
+.player--box:hover {
+  color: white;
+  border-color: limegreen;
+  border-radius: 2px;
+  border-width: 2px;
+  box-shadow: limegreen;
+  animation-duration: 1s;
+  animation: bounce 1s infinite alternate;
+  -webkit-animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-15px);
+  }
+}
+@-webkit-keyframes bounce {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-15px);
+  }
+}

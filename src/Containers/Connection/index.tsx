@@ -33,7 +33,6 @@ export default class Connection extends React.Component {
     return (
       <AppViewWrapper>
         <Wrapper data-cy="connection-page">
-          <Titlebar title={'Connections'} noComposer />
           <CommunitySearchWrapper
             redirectPath={window.location}
           >

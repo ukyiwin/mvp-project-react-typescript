@@ -120,6 +120,7 @@
     "react-lottie": "^1.1.0",
     "react-mobile-store-button": "^0.0.3",
     "react-modal-video": "^1.1.2",
+    "react-notify-toast": "^0.4.0",
     "react-parallax": "^1.7.0",
     "react-perfect-scrollbar": "^1.1.1",
     "react-recaptcha": "^2.3.8",

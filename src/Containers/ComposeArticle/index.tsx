@@ -7,6 +7,7 @@ import { compose, graphql, withApollo } from 'react-apollo';
 // import { Helmet } from 'react-helmet';
 import AvatarImageCropper from 'react-avatar-image-cropper';
 import Textarea from 'react-textarea-autosize';
+import Notifications, { notify } from 'react-notify-toast';
 import { ChildProps } from 'react-apollo/types';
 import { Interest, Article } from 'CustomTypings/schema';
 import { Editor, createEditorState } from 'medium-draft';
@@ -15,7 +16,8 @@ import mediumDraftImporter from 'medium-draft/lib/importer';
 import { convertToRaw } from 'draft-js';
 import mediumDraftExporter from 'medium-draft/lib/exporter';
 import axios from 'axios';
-import { CREATE_ARTICLE } from 'Graphql/Mutation';
+import * as UIkit from 'uikit';
+import { CREATE_ARTICLE, PUBLISH_ARTICLE } from 'Graphql/Mutation';
 import { urltoFile, b64toBlob } from 'Utils/helper';
 import {
   Container,
@@ -33,6 +35,7 @@ import 'medium-draft/lib/index.css';
 import './style.scss';
 import { Button, TextButton } from 'Components/Buttons';
 import { FlexRow } from 'Components/Globals';
+import { StyledOutlineButton } from 'Components/Buttons/style';
 interface Props {
   // tslint:disable-next-line:no-any
   allInterest: any;
@@ -58,13 +61,17 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
     category: '',
     removeSelected: true,
     value: [],
-    tags: [],
     headerImage: '',
     photoId: '',
     articleId: '',
     // tslint:disable-next-line:no-object-literal-type-assertion
     article: {} as Article,
-    editorState: createEditorState()
+    editorState: createEditorState(),
+    tags: [] as any,
+    those: [] as any,
+    suggestions: [] as any,
+    deleting: false,
+    loading: false
   };
 
   handleChange = (value) => {
@@ -75,34 +82,96 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
     this.setState({value});
   }
 
+  publish = () => {
+    const tags = this.state.tags;
+    const those = _.map(tags, 'value');
+    const interest = this.state.interest;
+    this.setState({saved: true, loading: true});
+    this.props.client.mutate({
+      mutation: PUBLISH_ARTICLE,
+      variables: {
+        id: this.props.article.id,
+        category: interest,
+        tags: those
+      },
+      update: (cache, { data: { publishArticle } }) => {
+        const { getArticleById } = cache.readQuery({ 
+          query: GET_ARTICLE_BY_ID, 
+          variables: {
+            id: this.state.article.id
+          }
+        });
+
+        cache.writeQuery({
+          query: GET_ARTICLE_BY_ID, 
+          variables: {
+            id: this.state.article.id
+          },
+          data: { getArticleById: publishArticle }
+        });
+      },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        publishArticle: {
+          id: this.state.article.id,
+          __typename: 'Article',
+          isPublished: true
+        }
+      }
+    }).then((res) => {
+      this.setState({loading: false});
+      UIkit.modal('#modal-full').hide();
+    }).catch((err) => {
+      this.setState({loading: false});
+    });
+  }
+
+  handleDelete = (i) => {
+    const tags = this.state.tags.slice(0);
+    tags.splice(i, 1);
+    this.setState({ tags });
+  }
+ 
+  handleAddition(tag) {
+    const tags = [].concat(this.state.tags, tag);
+    this.setState({ tags });
+  }
+
   autoSave = () => {
     // g(`Selected: ${selectedOption.label}`);
   }
 
-  publish = () => {
-    // (`Selected: ${selectedOption.label}`);
+  loadInterest() {
+    this.addInterestContent();
+    UIkit.modal('#modal-full').show();
   }
 
   addInterestContent() {
     this
-      .props
-      .client
-      .query({query: ALL_INTEREST})
-      .then((result) => {
-        // tslint:disable-next-line:no-any
-        const tempList = []as any;
-        result
-          .data
-          .allInterest
-          .map((interest) => {
-            const temp = {
-              value: interest.id,
-              label: interest.name
-            };
-            tempList.push(temp);
-          });
-        this.setState({category: tempList});
-      });
+    .props
+    .client
+    .query({query: ALL_INTEREST})
+    .then((result) => {
+      // tslint:disable-next-line:no-any
+      const tempList = []as any;
+      result
+        .data
+        .allInterest
+        .map((interest) => {
+          const temp = {
+            value: interest.id,
+            label: interest.name
+          };
+          tempList.push(temp);
+        });
+      this.setState({suggestions: tempList});
+    }).catch((err) => {
+      console.log('hjhjhjhjhj');
+    });
+  }
+
+  setCategory = (e) => {
+    this.setState({interest: e.target.value});
   }
 
   componentWillMount() {
@@ -211,6 +280,7 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
       const id = article.id;
       const edi = this.state.editorState;
       const renderedHTML = mediumDraftExporter(edi.getCurrentContent());
+      notify.show('Saving article...!');
       this.props.client.mutate({
         mutation: CREATE_ARTICLE,
         variables: {
@@ -268,7 +338,9 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
               </button>
               <button
                 className="uk-button uk-button-small uk-margin-left uk-button-primary"
-                type="button">
+                type="button"
+                onClick={() => this.loadInterest()}
+              >
                 Publish
               </button>
               </FlexRow>
@@ -325,6 +397,73 @@ class ComposeWrite extends React.Component < RouteComponentProps<any> & Props & 
                   placeholder="Write article content"
                   className={'threadComposer'}
                 />
+              </div>
+            </div>
+          </div>
+          <div
+            id="modal-full"
+            className="uk-modal-full"
+            data-uk-modal
+          >
+            <div className="uk-modal-dialog" style={{ height: '100vh' }}>
+              <button className="uk-modal-close-full uk-close-large" type="button" data-uk-close />
+              <div
+                className=" uk-height-1-1 uk-grid-collapse uk-child-width-1-2@s"
+                data-uk-grid
+              >
+                <div className="uk-background-cover uk-visible@m" id="sideBg">
+                  <div className="uk-flex uk-flex-stretch uk-flex-middle" />
+                </div>
+                <div className="uk-padding-large">
+                    <h1>Publish Article</h1>
+                    <p>Lets pick some tags to finish up the process.</p>
+                    <div
+                      className="uk-flex uk-flex-around"
+                      style={{ marginBottom: 20 }}
+                    >
+                      <Dropdowns
+                        style={{backgroundColor: 'transparent'}}
+                      >
+                        <span>Category:</span>
+                        {this.props.allInterest.loading ? (
+                          <div />
+                          ) : (
+                          <RequiredSelector
+                            data-cy="composer-community-selector"
+                            style={{minWidth: 180}}
+                            onChange={this.setCategory}
+                          >
+                            <option key={0} value="">
+                              Select Category
+                            </option>
+                            {this.props.allInterest.allInterest.map((interest) => {
+                              return (
+                                <option key={interest.id} value={interest.id}>
+                                  {interest.name}
+                                </option>
+                              );
+                            })}
+                          </RequiredSelector>
+                        )}
+                      </Dropdowns>
+                    </div>
+                    <Select
+                      name="form-field-name"
+                      value={this.state.tags}
+                      multi
+                      placeholder="Add at most 5 tags"
+                      onChange={this.handleChange}
+                      options={this.state.suggestions}
+                    />
+                    <StyledOutlineButton
+                      disabled={
+                        this.state.tags.length < 1 || this.state.interest === '' || this.state.loading
+                      }
+                      onClick={() => this.publish()}
+                      style={{ marginTop: 20 }}
+                    >Publish Now
+                    </StyledOutlineButton>
+                </div>
               </div>
             </div>
           </div>

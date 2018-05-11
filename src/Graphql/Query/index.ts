@@ -72,6 +72,34 @@ export const ARTICLES = gql`
   ${ARTICLE_FRAGMENT}
 `;
 
+export const GET_ARTICLES_BY_INTEREST = gql`
+  query getArticlesByInterest($text: String!, $username: String, $cursor: String) {
+    getArticlesByInterest(text: $text, cursor: $cursor){
+      aggregate {
+        count
+      }
+      edges {
+        node {
+          saved: userFavourited(where: {username: $username }) {
+            username
+          }
+          liked: likes(where: {username: $username }) {
+            username
+          }
+          ...articleFragment
+        }
+      }
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
 export const SEARCH_ARTICLE = gql`
   query searchArticle($text: String!, $cursor: ID, $username: String) {
     searchArticle(text: $text, cursor: $cursor){

@@ -71,6 +71,12 @@ const Interest = asyncComponent({
   resolve: () => import('Containers/Auth/Signup/interest'),
   LoadingComponent: () => <LoadingComponent />,
 });
+
+const FindInterest = asyncComponent({
+  resolve: () => import('Containers/Interest'),
+  LoadingComponent: () => <LoadingComponent />,
+});
+
 const Maps = asyncComponent({
   resolve: () => import('Containers/Maps'),
   LoadingComponent: () => <LoadingComponent />,
@@ -281,8 +287,8 @@ class App extends React.Component<Props & ChildProps<Response & Props>, State> {
                 // localStorage.removeItem(AUTH_TOKEN);
                 if (error) {
                     // tslint:disable-next-line:no-console
-                    console.log(error);
-                    this._logout();
+                  console.log(error);
+                  // this._logout();
                 }
             });
     }
@@ -579,8 +585,8 @@ class App extends React.Component<Props & ChildProps<Response & Props>, State> {
                           me={this.state.me}
                         />
                         <EmptyLayout 
-                          component={Search} 
-                          path="/search/:interest" 
+                          component={FindInterest} 
+                          path="/interest/:slug" 
                           exact={true} 
                           isAuthenticated={isAuthenticated}
                           logout={this._logout}

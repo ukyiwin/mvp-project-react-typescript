@@ -1,7 +1,7 @@
 'use strict';
 const path = require('path');
 const autoprefixer = require("autoprefixer");
-// const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const Visualizer = require("webpack-visualizer-plugin");
 const razzleHeroku = require("razzle-heroku");
 const OfflinePlugin = require('offline-plugin');

@@ -162,7 +162,7 @@ export default class Profile extends React.Component<Props> {
     const { username, hasNoThreads, selectedView, hasThreads } = this.state;
   
     return (
-      <Query pollInterval={20000} query={GET_USER_BY_USERNAME} variables={{ username }} >
+      <Query query={GET_USER_BY_USERNAME} variables={{ username }} >
         {({loading, error, data}) => {
           if (loading) { return null; }
           if (error) { return `Error!: ${error}`; }
@@ -180,7 +180,7 @@ export default class Profile extends React.Component<Props> {
               backRoute={'/'}
               noComposer
             />
-            <Grid  style={{backgroundColor: ''}}>
+            <Grid  style={{backgroundColor: '#000'}}>
               <CoverPhoto src={user.headerImage ? user.headerImage : ''} style={{ backgroundColor: '#fff' }}/>
               <Meta style={{ backgroundColor: '#fff' }}>
                 <UserProfile
@@ -203,7 +203,7 @@ export default class Profile extends React.Component<Props> {
                     </Link>
                   )}
               </Meta>
-              <Content>
+              <Content style={{ backgroundColor: '#000' }}>
                 <SegmentedControl style={{ margin: '0 0 0 0', paddingTop: 16, backgroundColor: '#fff' }}>
                   <DesktopSegment
                     segmentLabel="article"
@@ -253,7 +253,7 @@ export default class Profile extends React.Component<Props> {
   
                 {selectedView === 'article' && (
                     <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
-                      <Query query={ACTIVITY} variables={{ username: currentUser.username }} >
+                      <Query query={ACTIVITY} variables={{ username: user.username }} >
                       {({ loading, error, data: { activity }, fetchMore, networkStatus, refetch }) => {
                         if (loading) {
                           return (
@@ -269,11 +269,13 @@ export default class Profile extends React.Component<Props> {
                         if (error) {
                           return <ErrorComponent />;
                         }
+
                         if (activity.edges.length < 1) {
                           return (
-                            <NullState bg="null" heading={'NO Write an article'} />
+                            <NullState bg="null" heading={'User has not published an article yet'} />
                           );
                         }
+
                         return (
                             <InfiniteScroll
                               pageStart={0}
@@ -319,13 +321,142 @@ export default class Profile extends React.Component<Props> {
                   )
                 }
   
-                {selectedView === 'connections' && 
-                  <NullState bg="null" heading={'You have no connection now'} />
+                {selectedView === 'connections' &&  (
+                    <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
+                      <Query query={ACTIVITY} variables={{ username: user.username }} >
+                      {({ loading, error, data: { activity }, fetchMore, networkStatus, refetch }) => {
+                        if (loading) {
+                          return (
+                            <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
+                              <div><MyLoader /></div>
+                              <br />
+                              <div><MyLoader /></div>
+                              <br />
+                              <div><MyLoader /></div>
+                            </div>
+                          );
+                        }
+                        if (error) {
+                          return <ErrorComponent />;
+                        }
+
+                        if (activity.edges.length < 1) {
+                          return (
+                            <NullState bg="null" heading={'No connection yet'} />
+                          );
+                        }
+
+                        return (
+                            <InfiniteScroll
+                              pageStart={0}
+                              hasMore={activity.pageInfo.hasNextPage}
+                              loadMore={() =>
+                                fetchMore({
+                                  variables: {
+                                    username: user.username,
+                                    cursor: activity.pageInfo.endCursor
+                                  },
+                                  updateQuery: (previousResult, { fetchMoreResult }) => {
+                                    const newEdges = fetchMoreResult.activity.edges;
+                                    const pageInfo = fetchMoreResult.activity.pageInfo;
+                      
+                                    return newEdges.length
+                                      ? {
+                                        activity: {
+                                            __typename: previousResult.activity.__typename,
+                                            edges: [...previousResult.activity.edges, ...newEdges],
+                                            pageInfo
+                                          }
+                                        }
+                                      : previousResult;
+                                  }
+                                })}
+                              loader={
+                                <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
+                                  <MyLoader />
+                                </div>
+                              // tslint:disable-next-line:jsx-curly-spacing
+                              }
+                            >
+                              {activity.edges.map((article) => (
+                                <div key={article.node.id}>
+                                    <ArticleItem article={article.node} />
+                                </div>
+                              ))}
+                            </InfiniteScroll>
+                        );
+                        }}
+                      </Query>
+                    </div>
+                  )
                 }
 
-                {selectedView === 'community' && (
+                {selectedView === 'community' &&  (
                     <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
-                      <NullState bg="null" heading={'Join a community or create one'} />
+                      <Query query={ACTIVITY} variables={{ username: user.username }} >
+                      {({ loading, error, data: { activity }, fetchMore, networkStatus, refetch }) => {
+                        if (loading) {
+                          return (
+                            <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
+                              <div><MyLoader /></div>
+                              <br />
+                              <div><MyLoader /></div>
+                              <br />
+                              <div><MyLoader /></div>
+                            </div>
+                          );
+                        }
+                        if (error) {
+                          return <ErrorComponent />;
+                        }
+
+                        if (activity.edges.length < 1) {
+                          return (
+                            <NullState bg="null" heading={'User has not join a community yet'} />
+                          );
+                        }
+
+                        return (
+                            <InfiniteScroll
+                              pageStart={0}
+                              hasMore={activity.pageInfo.hasNextPage}
+                              loadMore={() =>
+                                fetchMore({
+                                  variables: {
+                                    username: user.username,
+                                    cursor: activity.pageInfo.endCursor
+                                  },
+                                  updateQuery: (previousResult, { fetchMoreResult }) => {
+                                    const newEdges = fetchMoreResult.activity.edges;
+                                    const pageInfo = fetchMoreResult.activity.pageInfo;
+                      
+                                    return newEdges.length
+                                      ? {
+                                        activity: {
+                                            __typename: previousResult.activity.__typename,
+                                            edges: [...previousResult.activity.edges, ...newEdges],
+                                            pageInfo
+                                          }
+                                        }
+                                      : previousResult;
+                                  }
+                                })}
+                              loader={
+                                <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
+                                  <MyLoader />
+                                </div>
+                              // tslint:disable-next-line:jsx-curly-spacing
+                              }
+                            >
+                              {activity.edges.map((article) => (
+                                <div key={article.node.id}>
+                                    <ArticleItem article={article.node} />
+                                </div>
+                              ))}
+                            </InfiniteScroll>
+                        );
+                        }}
+                      </Query>
                     </div>
                   )
                 }

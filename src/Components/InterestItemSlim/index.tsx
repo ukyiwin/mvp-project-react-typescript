@@ -7,7 +7,7 @@ interface Props {
 }
 
 const InterestItemSlim = (props: Props) => {
-    return <Link className="ui label" to={`/search/${props.url}`} style={{margin: 2}}>
+    return <Link className="ui label chip" to={`/interest/${props.name}`} style={{margin: 2}}>
       {props.name}
     </Link>;
 };

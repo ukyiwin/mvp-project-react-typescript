@@ -70,22 +70,21 @@ const PrivateLayout: React.SFC<RouteComponentProps<any> & DefaultProps> = (props
                           <div
                               className="uk-width-1-5 uk-margin-large-right uk-margin-small-left uk-visible@m"
                           >
-                              {!isAuthenticated ? (
-                                  <div 
-                                    className="uk-card uk-card-default uk-card-body uk-width-1-1 uk-padding-small"
-                                    style={{marginBottom: 10}}
-                                  >
-                                      <h3 className="uk-card-title">Hello</h3>
-                                      <p>
-                                          Please signup or login to get the Unizonn experience. It will only take a few
-                                          steps
-                                      </p>
-                                      <Link to="/login" className="uk-button uk-button-primary">
-                                          Login
-                                      </Link>
-                                  </div>
-                              ) : null}
-                              <RightSideBar />
+                            {!props.me.bio ? (
+                                <div 
+                                  className="uk-card uk-card-default uk-card-body uk-width-1-1 uk-padding-small"
+                                  style={{marginBottom: 10}}
+                                >
+                                    <h3 className="uk-card-title">Hey! {props.me.firstname}</h3>
+                                    <p>
+                                        Please update your profile header image and biography by clicking below
+                                    </p>
+                                    <Link to={`/n/${props.me.username}/settings`} className="uk-button uk-button-primary">
+                                        Update Profile
+                                    </Link>
+                                </div>
+                            ) : null}
+                            <RightSideBar />
                           </div>
                       </div>
                       </AppViewWrapper>

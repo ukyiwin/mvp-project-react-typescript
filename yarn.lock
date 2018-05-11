@@ -8563,6 +8563,10 @@ object-assign@^2.0.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-2.1.1.tgz#43c36e5d569ff8e4816c4efa8be02d26967c18aa"
 
+object-assign@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-3.0.0.tgz#9bedd5ca0897949bca47e7ff408062d549f587f2"
+
 object-copy@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/object-copy/-/object-copy-0.1.0.tgz#7e7d858b781bd7c991a41ba975ed3812754e998c"
@@ -9871,7 +9875,7 @@ react-dom@^0.14.0:
   version "0.14.9"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-0.14.9.tgz#05064a3dcf0fb1880a3b2bfc9d58c55d8d9f6293"
 
-react-dom@^15.0.1:
+"react-dom@^0.14.7 || ^15.0.0", react-dom@^15.0.1:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.2.tgz#41cfadf693b757faf2708443a1d1fd5a02bef730"
   dependencies:
@@ -10071,6 +10075,15 @@ react-modal-video@^1.1.2:
   resolved "https://registry.yarnpkg.com/react-modal-video/-/react-modal-video-1.1.2.tgz#8ee8393bc08dd7fd84998b9be4d0fd75b743990f"
   dependencies:
     react-transition-group "^2.2.1"
+
+react-notify-toast@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-notify-toast/-/react-notify-toast-0.4.0.tgz#9b2711fd47609dabffce9a3937afffeb510ea2a8"
+  dependencies:
+    object-assign "^3.0.0"
+    prop-types "^15.5.8"
+    react "^0.14.7 || ^15.0.0"
+    react-dom "^0.14.7 || ^15.0.0"
 
 react-onclickoutside@^6.6.3:
   version "6.7.1"
@@ -10387,7 +10400,7 @@ react@^0.14.0:
     envify "^3.0.0"
     fbjs "^0.6.1"
 
-react@^15.0.1:
+"react@^0.14.7 || ^15.0.0", react@^15.0.1:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
   dependencies:

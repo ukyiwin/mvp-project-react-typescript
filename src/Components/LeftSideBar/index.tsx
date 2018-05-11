@@ -7,6 +7,7 @@ import TopInterest from 'Components/TopInterest';
 import glamorous from 'glamorous';
 import { ME } from 'Graphql/Query';
 import { UserProfile } from 'Components/Profile';
+import { MyLoader } from 'Components/SuggestedArticleList';
 
 // import { Link } from 'react-router-dom';
 
@@ -35,7 +36,12 @@ class LeftSideBar extends React.Component<RouteComponentProps & Props> {
           <Query query={ME}>
           {({data, loading, error}) => {
             if (loading) {
-              return null;
+              return (
+                <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
+                  <div><MyLoader /></div>
+                  <br />
+                </div>
+              );
             }
 
             if (error) {

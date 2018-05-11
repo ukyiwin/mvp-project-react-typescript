@@ -26,23 +26,22 @@ interface State {
     show: boolean;
 }
 class InterestPage extends React.Component<RouteComponentProps<any> & Props, State> {
-    state = {
-        show: false,
-        selected: ['1'],
-        loading: false,
-    };
+  state = {
+    show: false,
+    selected: ['1'],
+    loading: false,
+  };
 
-    onSelectAdd = (id) => {
-        const temp = this.state.selected;
-        const index = this.state.selected.indexOf(id);
-
-        if (index === -1) {
-            temp.push(id);
-        } else {
-            temp.splice(index, 1);
-        }
-        this.setState({ selected: temp });
+  onSelectAdd = (id) => {
+    const temp = this.state.selected;
+    const index = this.state.selected.indexOf(id);
+    if (index === -1) {
+        temp.push(id);
+    } else {
+        temp.splice(index, 1);
     }
+    this.setState({ selected: temp });
+  }
 
     onSelectRemove = (id) => {
         this.state.selected.indexOf(id);
@@ -50,21 +49,21 @@ class InterestPage extends React.Component<RouteComponentProps<any> & Props, Sta
 
     // tslint:disable-next-line:no-any
     save(): any {
-        let inter: string[] = [];
-        inter = this.state.selected;
-        this.props.client
-            .mutate({
-                mutation: ADD_INTERESTS,
-                variables: {
-                    interests: inter,
-                },
-            })
-            .then((result) => {
-                this.props.history.push('/signup/complete');
-            })
-            .catch((err) => {
-                UIkit.notification(`${err.message}`, { status: 'danger', pos: 'top-right' });
-            });
+      let inter: string[] = [];
+      inter = this.state.selected;
+      this.props.client
+        .mutate({
+            mutation: ADD_INTERESTS,
+            variables: {
+                interests: inter,
+            },
+        })
+        .then((result) => {
+          this.props.history.push('/signup/complete');
+        })
+        .catch((err) => {
+          UIkit.notification(`${err.message}`, { status: 'danger', pos: 'top-right' });
+        });
     }
 
     render() {

@@ -43,7 +43,7 @@ class CommunitySidebar extends React.Component<Props> {
             className="uk-text-capitalize uk-text-medium uk-text-bold uk-text-truncate"
             style={{ marginLeft: 5 }}
           >
-            Channels
+          Channels
           </div>
           <Button.Content
             circular
@@ -95,11 +95,8 @@ class CommunitySidebar extends React.Component<Props> {
         <div id="modal-add-channel" className="uk-modal-full" style={{ flex: 1 }} data-uk-modal>
           <div className="uk-modal-dialog">
             <button className="uk-modal-close-full uk-close-large" type="button" data-uk-close/>
-            <div className="uk-grid-collapse uk-child-width-1-2@s uk-flex-middle" data-uk-grid>
-                <div className="uk-padding-large" uk-height-viewport id="sideBg">
-                  <div className="uk-flex uk-flex-stretch uk-flex-middle" />
-                </div>
-                <div className="uk-padding-large">
+            <div className="uk-flex uk-child-width-1-1@s uk-flex-middle" data-uk-grid>
+                <div className="uk-padding-large" uk-height-viewport>
                     <h2>Create Channel</h2>
                     <p>Start a channel on some topics.</p>
                     <CreateChannelForm communityId={this.props.communityId}/>

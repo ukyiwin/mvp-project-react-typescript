@@ -52,7 +52,7 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
   componentWillMount() {
     const { match: { params } } = this.props;
     if (params.slug) {
-        this.fetchArticleandOthers(params.slug);
+        // this.fetchArticleandOthers(params.slug);
         this.setState({slug: params.slug});
     } else {
         this.props.history.goBack();
@@ -84,18 +84,17 @@ class ArticleDetail extends React.Component<RouteComponentProps<any> & Props> {
         // UIkit.notification('MyMessage', 'danger');
         const user = this.props.currentUser;
 
-        const saved = this.props.article.saved ? (result.data.getArticleById.saved.length > 0) : false;
-        const liked = this.props.article.liked ? (result.data.getArticleById.liked.length > 0) : false;
+        const saved = result.data.getArticleById.saved ? (result.data.getArticleById.saved.length > 0) : false;
+        const liked = result.data.getArticleById.liked ? (result.data.getArticleById.liked.length > 0) : false;
         
         this.setState({liked});
         this.setState({saved});
         this.setState({user});
       })
-
       .catch((err) => {
-            // tslint:disable-next-line:no-console
-            console.log(err);
-            this.props.history.replace('/not-found');
+        // tslint:disable-next-line:no-console
+        console.log(err);
+        // this.props.history.replace('/not-found');
       });
   }
 

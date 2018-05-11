@@ -4,9 +4,10 @@ import InputBoxLogin from 'Components/InputBoxLogin';
 import { Parallax } from 'react-scroll-parallax';
 import * as Jquery from 'jquery';
 import { CommunitySearch, Yours } from 'Components/SearchBoxHome';
-import './style.scss';
 import { FooterPublic } from 'Components/Layouts/FooterPublic';
 import { Icon } from 'semantic-ui-react';
+import * as UIkit from 'uikit';
+import './style.scss';
 
 interface Props {
     classes?: object;
@@ -60,31 +61,39 @@ class HomePublic extends React.Component<Props> {
                   <div className="uk-container">
                     <div className="uk-grid-match uk-flex uk-width-1-1" uk-grid>
                       <div className="uk-padding uk-width-1-2@m uk-width-1-1@s">
-                        <div data-uk-lightbox  className="uk-text-center">
+                        <div className="uk-text-center uk-hidden@s">
                           <a
                             className="mdc-elevation--z5"
+                            onClick={() => UIkit.modal('#modal-media-vimeo').show()}
                             style={{ height: 150, width: 150, marginTop: 20, borderRadius: 10 }}
-                            href="//vimeo.com/267226915" data-caption="Vimeo"
                           >
-                            <span className="green" uk-icon="icon: play-circle; ratio: 5" />
+                            <span className="player--box" uk-icon="icon: play-circle; ratio: 5" />
                           </a>
                           <h5>Click to learn about Unizonn</h5>
                         </div>
                         <InputBoxLogin />
                       </div>
                       <div className="uk-width-1-2@m uk-flex-middle uk-visible@s">
-                        <div data-uk-lightbox  className="uk-text-center">
+                        <div
+                          className="uk-text-center"
+                        >
                           <a
                             className="mdc-elevation--z5"
-                            style={{ height: 150, width: 150, borderRadius: 10 }}
-                            href="//vimeo.com/267226915" data-caption="Vimeo"
+                            onClick={() => UIkit.modal('#modal-media-vimeo').show()}
+                            style={{ height: 150, width: 150, marginTop: 20, borderRadius: 10 }}
                           >
-                            <span uk-icon="icon: play-circle; ratio: 9" />
+                            <span className="player--box" uk-icon="icon: play-circle; ratio: 9" />
                           </a>
                           <h5>Click to learn about Unizonn</h5>
                         </div>
                       </div>
                     </div>
+                  </div>
+                </div>
+                <div id="modal-media-vimeo" className="uk-flex-top" data-uk-modal>
+                  <div className="uk-modal-dialog uk-width-auto uk-margin-auto-vertical">
+                    <button className="uk-modal-close-outside" type="button" data-uk-close />
+                    <iframe src="//player.vimeo.com/video/267226915" width="630" height="381" frameborder="0" uk-video />
                   </div>
                 </div>
                 <div
