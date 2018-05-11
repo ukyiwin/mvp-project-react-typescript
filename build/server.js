@@ -22,7 +22,7 @@ module.exports =
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "4eed7b44f6e52d95471c"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "9e67b5aaef911b367cff"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -21482,7 +21482,7 @@ const GET_USER_BY_USERNAME = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a 
  */
 const USER_CONNECTIONS = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
   query userConnections($username: String!, $myUsername: String) {
-    getConnections($username: String!) {
+    getConnections($username: $username) {
       ...userFragment
       connections{
         username
