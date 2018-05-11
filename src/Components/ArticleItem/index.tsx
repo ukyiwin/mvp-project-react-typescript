@@ -187,6 +187,59 @@ class ArticleItem extends React.Component<Props> {
       });
     }
 
+    renderImage(small, article) {
+      if (small) {
+        return null;
+      } else {
+        if (article.headerImage) {
+          return(
+            <div className="image">
+              <div
+                data-uk-lightbox="animation: fade; video-autoplay: true;"
+                className="uk-inline-clip uk-transition-toggle"
+              >
+                <a
+                  className="uk-inline"
+                  href="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
+                >
+                  <img
+                    src="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
+                    className="img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque"
+                    alt="..."
+                    style={{maxHeight: 280 }}
+                  />
+                </a>
+              </div>
+            </div>
+          );
+        }
+        if (article.photo) {
+          return(
+            <div className="image">
+              <div
+                data-uk-lightbox="animation: fade; video-autoplay: true;"
+                className="uk-inline-clip uk-transition-toggle"
+              >
+                <a
+                  className="uk-inline"
+                  href="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
+                >
+                  <img
+                    src="https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg"
+                    className="img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque"
+                    alt="..."
+                    style={{maxHeight: 280 }}
+                  />
+                </a>
+              </div>
+            </div>
+          );
+        } else {
+          return null;
+        }
+      }
+    }
+
     render() {
         const { article } = this.props;
         const { author } = article;
@@ -200,6 +253,7 @@ class ArticleItem extends React.Component<Props> {
               }}
             >
               <div className="">
+                {this.renderImage(this.props.small, article)} 
                 {this.props.small ? null : (
                     <div className="uk-padding-remove-bottom uk-padding-small">
                         <div className="uk-grid-small uk-flex" uk-grid={true}>

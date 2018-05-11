@@ -22,7 +22,7 @@ module.exports =
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "7a25c6feb1dc2c374b94"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "9debd7e71f3c987baf8f"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1348,6 +1348,28 @@ class ArticleItem extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         this.setState({ saved });
         this.setState({ user });
     }
+    renderImage(small, article) {
+        if (small) {
+            return null;
+        }
+        else {
+            if (article.headerImage) {
+                return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "image" },
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { "data-uk-lightbox": "animation: fade; video-autoplay: true;", className: "uk-inline-clip uk-transition-toggle" },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { className: "uk-inline", href: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg" },
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("img", { src: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg", className: "img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque", alt: "...", style: { maxHeight: 280 } })))));
+            }
+            if (article.photo) {
+                return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "image" },
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { "data-uk-lightbox": "animation: fade; video-autoplay: true;", className: "uk-inline-clip uk-transition-toggle" },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { className: "uk-inline", href: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg" },
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("img", { src: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg", className: "img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque", alt: "...", style: { maxHeight: 280 } })))));
+            }
+            else {
+                return null;
+            }
+        }
+    }
     render() {
         const { article } = this.props;
         const { author } = article;
@@ -1357,6 +1379,7 @@ class ArticleItem extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                 backgroundColor: '#fff',
             } },
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "" },
+                this.renderImage(this.props.small, article),
                 this.props.small ? null : (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-remove-bottom uk-padding-small" },
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-grid-small uk-flex", "uk-grid": true },
                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-auto" },
