@@ -1,7 +1,7 @@
 'use strict';
 const path = require('path');
 const autoprefixer = require("autoprefixer");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+// const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const Visualizer = require("webpack-visualizer-plugin");
 const razzleHeroku = require("razzle-heroku");
 const OfflinePlugin = require('offline-plugin');
@@ -198,9 +198,9 @@ module.exports = {
       config.plugins.push(
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new webpack.IgnorePlugin(/moment/, /react-kronos/),
-        new ExtractTextPlugin({
+        /*new ExtractTextPlugin({
           filename: 'styles/[name].[contenthash].css'
-        }),
+        }),*/
         new webpack.ProvidePlugin({
           $: 'jquery',
           jQuery: 'jquery',
@@ -218,19 +218,20 @@ module.exports = {
         // For production, extract CSS
         config.module.rules.push({
           test: /.scss$/,
-          use: ExtractTextPlugin.extract({
+          use: ["style-loader", cssLoader, postCSSLoader, sassLoader]
+          /*use: ExtractTextPlugin.extract({
             fallback: "style-loader",
             use: [cssLoader, postCSSLoader, sassLoader]
-          })
+          })*/
         });
 
         config.plugins.push(
           new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
           new webpack.IgnorePlugin(/moment/, /react-kronos/),
           new Visualizer(),
-          new ExtractTextPlugin({
+          /*new ExtractTextPlugin({
             filename: 'styles/[name].[contenthash].css'
-          }),
+          }),*/
           new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
