@@ -22,7 +22,7 @@ module.exports =
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "5ac164539f2b9776e7fb"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "7a25c6feb1dc2c374b94"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -9867,7 +9867,7 @@ class NotificationItem extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var Components_Avatar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Components/Avatar */ "./src/Components/Avatar/index.tsx");
+/* harmony import */ var Components_Avatar_avatar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Components/Avatar/avatar */ "./src/Components/Avatar/avatar.tsx");
 
 
 // tslint:disable-next-line:typedef
@@ -9885,7 +9885,10 @@ class PersonItem extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         const { name, url, user } = this.props;
         return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "card uk-flex uk-flex-stretch" },
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-icon" },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Avatar__WEBPACK_IMPORTED_MODULE_1__["default"], { url: user.avatar, size: 40, presence: false })),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Avatar_avatar__WEBPACK_IMPORTED_MODULE_1__["default"], { user: user, size: 40, onlineSize: 'large', src: user.avatar ? user.avatar : '', noLink: true, style: {
+                        boxShadow: '0 0 0 2px #fff',
+                        marginRight: '0',
+                    } })),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-content" },
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-title" },
                     user.firstname,

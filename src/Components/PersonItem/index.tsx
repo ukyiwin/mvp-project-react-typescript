@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Avatar from 'Components/Avatar';
+import Avatar from 'Components/Avatar/avatar';
 import FollowButton from 'Components/FollowButton';
 
 interface Props {
@@ -24,7 +24,17 @@ class PersonItem extends React.Component<Props> {
     return (
         <div className="card uk-flex uk-flex-stretch">
           <div className="tile-icon">
-            <Avatar url={user.avatar} size={40} presence={false} />
+            <Avatar
+              user={user}
+              size={40}
+              onlineSize={'large'}
+              src={user.avatar ? user.avatar : ''}
+              noLink
+              style={{
+                boxShadow: '0 0 0 2px #fff',
+                marginRight: '0',
+              }}
+            />
           </div>
           <div className="tile-content">
             <div className="tile-title">{user.firstname} {user.lastname}</div>
