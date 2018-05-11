@@ -5,7 +5,7 @@ import ArticleItem from 'Components/ArticleItem';
 import InfiniteScroll from 'react-infinite-scroller';
 import Avatar from 'Components/Avatar';
 import { compose, graphql, withApollo, QueryProps, Query, Mutation } from 'react-apollo';
-import { ME, GET_USER_BY_USERNAME, ACTIVITY } from 'Graphql/Query';
+import { ME, GET_USER_BY_USERNAME, GET_CONNECTIONS, ACTIVITY } from 'Graphql/Query';
 import { User } from 'CustomTypings/schema';
 import SeoMaker from 'Components/SeoMaker';
 import ArticleList, { MyLoader } from 'Components/ArticleList';
@@ -31,6 +31,10 @@ import { cookies } from 'link';
 import { CURRENT_USER } from '../../constants';
 import { ErrorComponent, EmptyComponent } from 'Components/EmptyStates';
 import { UN_FOLLOW_USER, FOLLOW_USER } from 'Graphql/Mutation/user';
+import { GET_COMMUNITY, MY_COMMUNITIES, USER_COMMUNITIES } from 'Graphql/Query/Community';
+import ServerIndexItem from 'Components/Community/CommunitySidebar/serverName';
+import { withCurrentUser } from 'Utils/withCurrentUser';
+import PersonItem from 'Components/PersonItem';
 
 interface Response {
   me: User;
@@ -41,9 +45,10 @@ type UserResponse = Response & QueryProps;
 interface Props {
   match: any;
   history: any;
+  currentUser?: any;
 }
 
-export default class Profile extends React.Component<Props> {
+class Profile extends React.Component<Props> {
   state = {
     messages: [],
     is_typing: false,
@@ -160,27 +165,19 @@ export default class Profile extends React.Component<Props> {
 
   render() {
     const { username, hasNoThreads, selectedView, hasThreads } = this.state;
-  
+    const { currentUser } = this.props;
+
     return (
-      <Query query={GET_USER_BY_USERNAME} variables={{ username }} >
+      <Query query={GET_USER_BY_USERNAME} variables={{ username, myUsername: currentUser.username }} >
         {({loading, error, data}) => {
           if (loading) { return null; }
           if (error) { return `Error!: ${error}`; }
-          
-          const currentUser = cookies.get(CURRENT_USER) as User;
           const user = data.getUserByUsername as User;
           const { username } = user;
           return(
           <AppViewWrapper data-cy="user-view">
             <SeoMaker title={user.firstname + ' ' + user.lastname} />
-            <Titlebar
-              title={data.firstname + ' ' + data.lastname}
-              subtitle={'Posts By'}
-              provideBack={true}
-              backRoute={'/'}
-              noComposer
-            />
-            <Grid  style={{backgroundColor: '#000'}}>
+            <Grid>
               <CoverPhoto src={user.headerImage ? user.headerImage : ''} style={{ backgroundColor: '#fff' }}/>
               <Meta style={{ backgroundColor: '#fff' }}>
                 <UserProfile
@@ -203,7 +200,7 @@ export default class Profile extends React.Component<Props> {
                     </Link>
                   )}
               </Meta>
-              <Content style={{ backgroundColor: '#000' }}>
+              <Content>
                 <SegmentedControl style={{ margin: '0 0 0 0', paddingTop: 16, backgroundColor: '#fff' }}>
                   <DesktopSegment
                     segmentLabel="article"
@@ -323,8 +320,8 @@ export default class Profile extends React.Component<Props> {
   
                 {selectedView === 'connections' &&  (
                     <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
-                      <Query query={ACTIVITY} variables={{ username: user.username }} >
-                      {({ loading, error, data: { activity }, fetchMore, networkStatus, refetch }) => {
+                      <Query query={GET_CONNECTIONS} variables={{ myUsername: currentUser.username }} >
+                      {({ loading, error, data: { getConnections }, fetchMore, networkStatus, refetch }) => {
                         if (loading) {
                           return (
                             <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
@@ -340,7 +337,7 @@ export default class Profile extends React.Component<Props> {
                           return <ErrorComponent />;
                         }
 
-                        if (activity.edges.length < 1) {
+                        if (getConnections.length < 1) {
                           return (
                             <NullState bg="null" heading={'No connection yet'} />
                           );
@@ -349,28 +346,7 @@ export default class Profile extends React.Component<Props> {
                         return (
                             <InfiniteScroll
                               pageStart={0}
-                              hasMore={activity.pageInfo.hasNextPage}
-                              loadMore={() =>
-                                fetchMore({
-                                  variables: {
-                                    username: user.username,
-                                    cursor: activity.pageInfo.endCursor
-                                  },
-                                  updateQuery: (previousResult, { fetchMoreResult }) => {
-                                    const newEdges = fetchMoreResult.activity.edges;
-                                    const pageInfo = fetchMoreResult.activity.pageInfo;
-                      
-                                    return newEdges.length
-                                      ? {
-                                        activity: {
-                                            __typename: previousResult.activity.__typename,
-                                            edges: [...previousResult.activity.edges, ...newEdges],
-                                            pageInfo
-                                          }
-                                        }
-                                      : previousResult;
-                                  }
-                                })}
+                              hasMore={false}
                               loader={
                                 <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
                                   <MyLoader />
@@ -378,9 +354,9 @@ export default class Profile extends React.Component<Props> {
                               // tslint:disable-next-line:jsx-curly-spacing
                               }
                             >
-                              {activity.edges.map((article) => (
-                                <div key={article.node.id}>
-                                    <ArticleItem article={article.node} />
+                              {getConnections.map((person) => (
+                                <div key={person.id}>
+                                    <PersonItem name={person.username} />
                                 </div>
                               ))}
                             </InfiniteScroll>
@@ -393,8 +369,11 @@ export default class Profile extends React.Component<Props> {
 
                 {selectedView === 'community' &&  (
                     <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
-                      <Query query={ACTIVITY} variables={{ username: user.username }} >
-                      {({ loading, error, data: { activity }, fetchMore, networkStatus, refetch }) => {
+                      <Query
+                        query={USER_COMMUNITIES}
+                        variables={{ username: user.username, myUsername: currentUser.username }}
+                      >
+                      {({ loading, error, data: { userCommunities }, fetchMore, networkStatus, refetch }) => {
                         if (loading) {
                           return (
                             <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
@@ -410,7 +389,7 @@ export default class Profile extends React.Component<Props> {
                           return <ErrorComponent />;
                         }
 
-                        if (activity.edges.length < 1) {
+                        if (userCommunities.length < 1) {
                           return (
                             <NullState bg="null" heading={'User has not join a community yet'} />
                           );
@@ -419,28 +398,7 @@ export default class Profile extends React.Component<Props> {
                         return (
                             <InfiniteScroll
                               pageStart={0}
-                              hasMore={activity.pageInfo.hasNextPage}
-                              loadMore={() =>
-                                fetchMore({
-                                  variables: {
-                                    username: user.username,
-                                    cursor: activity.pageInfo.endCursor
-                                  },
-                                  updateQuery: (previousResult, { fetchMoreResult }) => {
-                                    const newEdges = fetchMoreResult.activity.edges;
-                                    const pageInfo = fetchMoreResult.activity.pageInfo;
-                      
-                                    return newEdges.length
-                                      ? {
-                                        activity: {
-                                            __typename: previousResult.activity.__typename,
-                                            edges: [...previousResult.activity.edges, ...newEdges],
-                                            pageInfo
-                                          }
-                                        }
-                                      : previousResult;
-                                  }
-                                })}
+                              hasMore={false}
                               loader={
                                 <div className="uk-padding-small" style={{ backgroundColor: '#fff' }}>
                                   <MyLoader />
@@ -448,9 +406,9 @@ export default class Profile extends React.Component<Props> {
                               // tslint:disable-next-line:jsx-curly-spacing
                               }
                             >
-                              {activity.edges.map((article) => (
-                                <div key={article.node.id}>
-                                    <ArticleItem article={article.node} />
+                              {userCommunities.map((community) => (
+                                <div key={community.id}>
+                                  <ServerIndexItem community={community} />
                                 </div>
                               ))}
                             </InfiniteScroll>
@@ -467,3 +425,5 @@ export default class Profile extends React.Component<Props> {
     );
   }
 }
+
+export default withCurrentUser(Profile);

@@ -277,7 +277,7 @@ export const ME = gql`
  * @description check if current user article
  */
 export const GET_USER_BY_USERNAME = gql`
-  query getUserByUsername($username: String!) {
+  query getUserByUsername($username: String!, $myUsername: String) {
     getUserByUsername(username: $username) {
       ...userFragment
       connections{
@@ -291,15 +291,50 @@ export const GET_USER_BY_USERNAME = gql`
         title
         body
       }
-      isFollowing: followers(where: {username: $username}){
+      isFollowing: followers(where: {username: $myUsername}){
         id
         username
       }
-      isFollower: following(where: {username: $username}){
+      isFollower: following(where: {username: $myUsername}){
         id
         username
       }
-      isConnected: connections(where: {username: $username}){
+      isConnected: connections(where: {username: $myUsername}){
+        id
+        username
+      }
+    }
+  }
+  ${USER_FRAGMENT}
+`;
+
+/**
+ * @description check if current user article
+ */
+export const GET_CONNECTIONS = gql`
+  query getConnections($myUsername: String) {
+    getConnections {
+      ...userFragment
+      connections{
+        username
+        id
+      }
+      avatar
+      headerImage
+      articles{
+        id
+        title
+        body
+      }
+      isFollowing: followers(where: {username: $myUsername}){
+        id
+        username
+      }
+      isFollower: following(where: {username: $myUsername}){
+        id
+        username
+      }
+      isConnected: connections(where: {username: $myUsername}){
         id
         username
       }

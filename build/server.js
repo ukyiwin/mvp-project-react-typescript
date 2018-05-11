@@ -22,7 +22,7 @@ module.exports =
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "cfebf374a3843915e9e1"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "4768b500235b23660551"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -17810,7 +17810,6 @@ class Notification extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Profile; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var Components_ArticleItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Components/ArticleItem */ "./src/Components/ArticleItem/index.tsx");
@@ -17822,21 +17821,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var Components_SeoMaker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! Components/SeoMaker */ "./src/Components/SeoMaker/index.tsx");
 /* harmony import */ var Components_ArticleList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! Components/ArticleList */ "./src/Components/ArticleList/index.tsx");
 /* harmony import */ var Components_AppViewWrapper__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! Components/AppViewWrapper */ "./src/Components/AppViewWrapper/index.tsx");
-/* harmony import */ var Components_Titlebar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! Components/Titlebar */ "./src/Components/Titlebar/index.tsx");
-/* harmony import */ var Components_Link__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! Components/Link */ "./src/Components/Link/index.tsx");
-/* harmony import */ var Components_Profile__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! Components/Profile */ "./src/Components/Profile/index.tsx");
-/* harmony import */ var Components_Upsell__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! Components/Upsell */ "./src/Components/Upsell/index.tsx");
-/* harmony import */ var Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! Components/SegmentedControl */ "./src/Components/SegmentedControl/index.tsx");
-/* harmony import */ var Components_Profile_coverPhoto__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! Components/Profile/coverPhoto */ "./src/Components/Profile/coverPhoto.tsx");
-/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./style */ "./src/Containers/Profile/style.ts");
-/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./style.scss */ "./src/Containers/Profile/style.scss");
-/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var Components_MoreViews_style__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! Components/MoreViews/style */ "./src/Components/MoreViews/style.ts");
-/* harmony import */ var link__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! link */ "./src/link.ts");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../constants */ "./src/constants.ts");
-/* harmony import */ var Components_EmptyStates__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! Components/EmptyStates */ "./src/Components/EmptyStates/index.tsx");
-/* harmony import */ var Graphql_Mutation_user__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! Graphql/Mutation/user */ "./src/Graphql/Mutation/user.ts");
-
+/* harmony import */ var Components_Link__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! Components/Link */ "./src/Components/Link/index.tsx");
+/* harmony import */ var Components_Profile__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! Components/Profile */ "./src/Components/Profile/index.tsx");
+/* harmony import */ var Components_Upsell__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! Components/Upsell */ "./src/Components/Upsell/index.tsx");
+/* harmony import */ var Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! Components/SegmentedControl */ "./src/Components/SegmentedControl/index.tsx");
+/* harmony import */ var Components_Profile_coverPhoto__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! Components/Profile/coverPhoto */ "./src/Components/Profile/coverPhoto.tsx");
+/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./style */ "./src/Containers/Profile/style.ts");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./style.scss */ "./src/Containers/Profile/style.scss");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var Components_MoreViews_style__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! Components/MoreViews/style */ "./src/Components/MoreViews/style.ts");
+/* harmony import */ var Components_EmptyStates__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! Components/EmptyStates */ "./src/Components/EmptyStates/index.tsx");
+/* harmony import */ var Graphql_Mutation_user__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! Graphql/Mutation/user */ "./src/Graphql/Mutation/user.ts");
+/* harmony import */ var Graphql_Query_Community__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! Graphql/Query/Community */ "./src/Graphql/Query/Community/index.ts");
+/* harmony import */ var Components_Community_CommunitySidebar_serverName__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! Components/Community/CommunitySidebar/serverName */ "./src/Components/Community/CommunitySidebar/serverName.tsx");
+/* harmony import */ var Utils_withCurrentUser__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! Utils/withCurrentUser */ "./src/Utils/withCurrentUser.tsx");
+/* harmony import */ var Components_PersonItem__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! Components/PersonItem */ "./src/Components/PersonItem/index.tsx");
 
 
 
@@ -17849,6 +17848,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // import Search from './components/search';
+
+
 
 
 
@@ -17894,13 +17895,13 @@ class Profile extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         if (currentUser && user.id !== currentUser.id) {
             if (isConnected.length < 1) {
                 if (isFollowing.length < 1) {
-                    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Mutation"], { mutation: Graphql_Mutation_user__WEBPACK_IMPORTED_MODULE_20__["FOLLOW_USER"], update: (cache, { data: { followUser } }) => {
+                    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Mutation"], { mutation: Graphql_Mutation_user__WEBPACK_IMPORTED_MODULE_17__["FOLLOW_USER"], update: (cache, { data: { followUser } }) => {
                             const { getUserByUsername } = cache.readQuery({ query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["GET_USER_BY_USERNAME"] });
                             cache.writeQuery({
                                 query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["GET_USER_BY_USERNAME"],
                                 data: { getUserByUsername: followUser }
                             });
-                        } }, (followUser, { loading, error }) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_MoreViews_style__WEBPACK_IMPORTED_MODULE_16__["LoginButton"], { onClick: () => {
+                        } }, (followUser, { loading, error }) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_MoreViews_style__WEBPACK_IMPORTED_MODULE_15__["LoginButton"], { onClick: () => {
                             followUser({
                                 variables: {
                                     username: user.username
@@ -17917,13 +17918,13 @@ class Profile extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                         } }, "Follow"))));
                 }
                 else {
-                    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Mutation"], { mutation: Graphql_Mutation_user__WEBPACK_IMPORTED_MODULE_20__["UN_FOLLOW_USER"], update: (cache, { data: { unFollowUser } }) => {
+                    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Mutation"], { mutation: Graphql_Mutation_user__WEBPACK_IMPORTED_MODULE_17__["UN_FOLLOW_USER"], update: (cache, { data: { unFollowUser } }) => {
                             const { getUserByUsername } = cache.readQuery({ query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["GET_USER_BY_USERNAME"] });
                             cache.writeQuery({
                                 query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["GET_USER_BY_USERNAME"],
                                 data: { getUserByUsername: unFollowUser }
                             });
-                        } }, (unFollowUser, { loading, error }) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_MoreViews_style__WEBPACK_IMPORTED_MODULE_16__["LoginButton"], { isMember: true, onClick: () => {
+                        } }, (unFollowUser, { loading, error }) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_MoreViews_style__WEBPACK_IMPORTED_MODULE_15__["LoginButton"], { isMember: true, onClick: () => {
                             unFollowUser({
                                 variables: {
                                     username: user.username
@@ -17941,8 +17942,8 @@ class Profile extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                 }
             }
             else {
-                return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Link__WEBPACK_IMPORTED_MODULE_9__["default"], { to: `/conversation/${user.username}` },
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_MoreViews_style__WEBPACK_IMPORTED_MODULE_16__["LoginButton"], null,
+                return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Link__WEBPACK_IMPORTED_MODULE_8__["default"], { to: `/conversation/${user.username}` },
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_MoreViews_style__WEBPACK_IMPORTED_MODULE_15__["LoginButton"], null,
                         "Message ",
                         user.username)));
             }
@@ -17950,45 +17951,44 @@ class Profile extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }
     render() {
         const { username, hasNoThreads, selectedView, hasThreads } = this.state;
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["GET_USER_BY_USERNAME"], variables: { username } }, ({ loading, error, data }) => {
+        const { currentUser } = this.props;
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["GET_USER_BY_USERNAME"], variables: { username, myUsername: currentUser.username } }, ({ loading, error, data }) => {
             if (loading) {
                 return null;
             }
             if (error) {
                 return `Error!: ${error}`;
             }
-            const currentUser = link__WEBPACK_IMPORTED_MODULE_17__["cookies"].get(_constants__WEBPACK_IMPORTED_MODULE_18__["CURRENT_USER"]);
             const user = data.getUserByUsername;
             const { username } = user;
             return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_AppViewWrapper__WEBPACK_IMPORTED_MODULE_7__["default"], { "data-cy": "user-view" },
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SeoMaker__WEBPACK_IMPORTED_MODULE_5__["default"], { title: user.firstname + ' ' + user.lastname }),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Titlebar__WEBPACK_IMPORTED_MODULE_8__["default"], { title: data.firstname + ' ' + data.lastname, subtitle: 'Posts By', provideBack: true, backRoute: '/', noComposer: true }),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_14__["Grid"], { style: { backgroundColor: '#000' } },
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Profile_coverPhoto__WEBPACK_IMPORTED_MODULE_13__["CoverPhoto"], { src: user.headerImage ? user.headerImage : '', style: { backgroundColor: '#fff' } }),
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_14__["Meta"], { style: { backgroundColor: '#fff' } },
-                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Profile__WEBPACK_IMPORTED_MODULE_10__["UserProfile"], { user: user, username: username, profileSize: "full" }),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_13__["Grid"], null,
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Profile_coverPhoto__WEBPACK_IMPORTED_MODULE_12__["CoverPhoto"], { src: user.headerImage ? user.headerImage : '', style: { backgroundColor: '#fff' } }),
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_13__["Meta"], { style: { backgroundColor: '#fff' } },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Profile__WEBPACK_IMPORTED_MODULE_9__["UserProfile"], { user: user, username: username, profileSize: "full" }),
                         this.renderButtons(currentUser, user, user.isFollowing, user.isConnected),
-                        currentUser && user.id !== currentUser.id && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Link__WEBPACK_IMPORTED_MODULE_9__["default"], { to: `/conversation/${user.username}` },
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_MoreViews_style__WEBPACK_IMPORTED_MODULE_16__["LoginButton"], null,
+                        currentUser && user.id !== currentUser.id && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Link__WEBPACK_IMPORTED_MODULE_8__["default"], { to: `/conversation/${user.username}` },
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_MoreViews_style__WEBPACK_IMPORTED_MODULE_15__["LoginButton"], null,
                                 "Message ",
                                 user.username))),
                         currentUser &&
-                            user.id === currentUser.id && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Link__WEBPACK_IMPORTED_MODULE_9__["default"], { to: `/n/${username}/settings` },
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_MoreViews_style__WEBPACK_IMPORTED_MODULE_16__["LoginButton"], { isMember: true }, "Edit Profile")))),
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_14__["Content"], { style: { backgroundColor: '#000' } },
-                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_12__["SegmentedControl"], { style: { margin: '0 0 0 0', paddingTop: 16, backgroundColor: '#fff' } },
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_12__["DesktopSegment"], { segmentLabel: "article", onClick: () => this.handleSegmentClick('article'), selected: selectedView === 'article' },
+                            user.id === currentUser.id && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Link__WEBPACK_IMPORTED_MODULE_8__["default"], { to: `/n/${username}/settings` },
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_MoreViews_style__WEBPACK_IMPORTED_MODULE_15__["LoginButton"], { isMember: true }, "Edit Profile")))),
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_style__WEBPACK_IMPORTED_MODULE_13__["Content"], null,
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_11__["SegmentedControl"], { style: { margin: '0 0 0 0', paddingTop: 16, backgroundColor: '#fff' } },
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_11__["DesktopSegment"], { segmentLabel: "article", onClick: () => this.handleSegmentClick('article'), selected: selectedView === 'article' },
                                 user.articles ? user.articles.length : '',
                                 "  Articles"),
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_12__["DesktopSegment"], { segmentLabel: "connections", onClick: () => this.handleSegmentClick('connections'), selected: selectedView === 'connections' },
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_11__["DesktopSegment"], { segmentLabel: "connections", onClick: () => this.handleSegmentClick('connections'), selected: selectedView === 'connections' },
                                 user.connectTo ? user.connectTo.length : '',
                                 " Connections"),
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_12__["DesktopSegment"], { segmentLabel: "community", onClick: () => this.handleSegmentClick('community'), selected: selectedView === 'community' }, "Community"),
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_12__["MobileSegment"], { segmentLabel: "article", onClick: () => this.handleSegmentClick('article'), selected: selectedView === 'article' }, "Articles"),
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_12__["MobileSegment"], { segmentLabel: "connections", onClick: () => this.handleSegmentClick('connections'), selected: selectedView === 'connections' },
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_11__["DesktopSegment"], { segmentLabel: "community", onClick: () => this.handleSegmentClick('community'), selected: selectedView === 'community' }, "Community"),
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_11__["MobileSegment"], { segmentLabel: "article", onClick: () => this.handleSegmentClick('article'), selected: selectedView === 'article' }, "Articles"),
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_11__["MobileSegment"], { segmentLabel: "connections", onClick: () => this.handleSegmentClick('connections'), selected: selectedView === 'connections' },
                                 user.connectTo ? user.connectTo.length : '',
                                 " Connections"),
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_12__["MobileSegment"], { segmentLabel: "community", onClick: () => this.handleSegmentClick('community'), selected: selectedView === 'community' }, "Community")),
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_SegmentedControl__WEBPACK_IMPORTED_MODULE_11__["MobileSegment"], { segmentLabel: "community", onClick: () => this.handleSegmentClick('community'), selected: selectedView === 'community' }, "Community")),
                         selectedView === 'article' && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#e1eaf1' } },
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["ACTIVITY"], variables: { username: user.username } }, ({ loading, error, data: { activity }, fetchMore, networkStatus, refetch }) => {
                                 if (loading) {
@@ -18003,10 +18003,10 @@ class Profile extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleList__WEBPACK_IMPORTED_MODULE_6__["MyLoader"], null))));
                                 }
                                 if (error) {
-                                    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_EmptyStates__WEBPACK_IMPORTED_MODULE_19__["ErrorComponent"], null);
+                                    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_EmptyStates__WEBPACK_IMPORTED_MODULE_16__["ErrorComponent"], null);
                                 }
                                 if (activity.edges.length < 1) {
-                                    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Upsell__WEBPACK_IMPORTED_MODULE_11__["NullState"], { bg: "null", heading: 'User has not published an article yet' }));
+                                    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Upsell__WEBPACK_IMPORTED_MODULE_10__["NullState"], { bg: "null", heading: 'User has not published an article yet' }));
                                 }
                                 return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_infinite_scroller__WEBPACK_IMPORTED_MODULE_2___default.a, { pageStart: 0, hasMore: activity.pageInfo.hasNextPage, loadMore: () => fetchMore({
                                         variables: {
@@ -18031,7 +18031,7 @@ class Profile extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleItem__WEBPACK_IMPORTED_MODULE_1__["default"], { article: article.node }))))));
                             }))),
                         selectedView === 'connections' && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#e1eaf1' } },
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["ACTIVITY"], variables: { username: user.username } }, ({ loading, error, data: { activity }, fetchMore, networkStatus, refetch }) => {
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["GET_CONNECTIONS"], variables: { myUsername: currentUser.username } }, ({ loading, error, data: { getConnections }, fetchMore, networkStatus, refetch }) => {
                                 if (loading) {
                                     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
@@ -18044,35 +18044,17 @@ class Profile extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleList__WEBPACK_IMPORTED_MODULE_6__["MyLoader"], null))));
                                 }
                                 if (error) {
-                                    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_EmptyStates__WEBPACK_IMPORTED_MODULE_19__["ErrorComponent"], null);
+                                    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_EmptyStates__WEBPACK_IMPORTED_MODULE_16__["ErrorComponent"], null);
                                 }
-                                if (activity.edges.length < 1) {
-                                    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Upsell__WEBPACK_IMPORTED_MODULE_11__["NullState"], { bg: "null", heading: 'No connection yet' }));
+                                if (getConnections.length < 1) {
+                                    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Upsell__WEBPACK_IMPORTED_MODULE_10__["NullState"], { bg: "null", heading: 'No connection yet' }));
                                 }
-                                return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_infinite_scroller__WEBPACK_IMPORTED_MODULE_2___default.a, { pageStart: 0, hasMore: activity.pageInfo.hasNextPage, loadMore: () => fetchMore({
-                                        variables: {
-                                            username: user.username,
-                                            cursor: activity.pageInfo.endCursor
-                                        },
-                                        updateQuery: (previousResult, { fetchMoreResult }) => {
-                                            const newEdges = fetchMoreResult.activity.edges;
-                                            const pageInfo = fetchMoreResult.activity.pageInfo;
-                                            return newEdges.length
-                                                ? {
-                                                    activity: {
-                                                        __typename: previousResult.activity.__typename,
-                                                        edges: [...previousResult.activity.edges, ...newEdges],
-                                                        pageInfo
-                                                    }
-                                                }
-                                                : previousResult;
-                                        }
-                                    }), loader: react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
-                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleList__WEBPACK_IMPORTED_MODULE_6__["MyLoader"], null)) }, activity.edges.map((article) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { key: article.node.id },
-                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleItem__WEBPACK_IMPORTED_MODULE_1__["default"], { article: article.node }))))));
+                                return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_infinite_scroller__WEBPACK_IMPORTED_MODULE_2___default.a, { pageStart: 0, hasMore: false, loader: react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
+                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleList__WEBPACK_IMPORTED_MODULE_6__["MyLoader"], null)) }, getConnections.map((person) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { key: person.id },
+                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_PersonItem__WEBPACK_IMPORTED_MODULE_21__["default"], { name: person.username }))))));
                             }))),
                         selectedView === 'community' && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#e1eaf1' } },
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["ACTIVITY"], variables: { username: user.username } }, ({ loading, error, data: { activity }, fetchMore, networkStatus, refetch }) => {
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query_Community__WEBPACK_IMPORTED_MODULE_18__["USER_COMMUNITIES"], variables: { username: user.username, myUsername: currentUser.username } }, ({ loading, error, data: { userCommunities }, fetchMore, networkStatus, refetch }) => {
                                 if (loading) {
                                     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
@@ -18085,36 +18067,19 @@ class Profile extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleList__WEBPACK_IMPORTED_MODULE_6__["MyLoader"], null))));
                                 }
                                 if (error) {
-                                    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_EmptyStates__WEBPACK_IMPORTED_MODULE_19__["ErrorComponent"], null);
+                                    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_EmptyStates__WEBPACK_IMPORTED_MODULE_16__["ErrorComponent"], null);
                                 }
-                                if (activity.edges.length < 1) {
-                                    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Upsell__WEBPACK_IMPORTED_MODULE_11__["NullState"], { bg: "null", heading: 'User has not join a community yet' }));
+                                if (userCommunities.length < 1) {
+                                    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Upsell__WEBPACK_IMPORTED_MODULE_10__["NullState"], { bg: "null", heading: 'User has not join a community yet' }));
                                 }
-                                return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_infinite_scroller__WEBPACK_IMPORTED_MODULE_2___default.a, { pageStart: 0, hasMore: activity.pageInfo.hasNextPage, loadMore: () => fetchMore({
-                                        variables: {
-                                            username: user.username,
-                                            cursor: activity.pageInfo.endCursor
-                                        },
-                                        updateQuery: (previousResult, { fetchMoreResult }) => {
-                                            const newEdges = fetchMoreResult.activity.edges;
-                                            const pageInfo = fetchMoreResult.activity.pageInfo;
-                                            return newEdges.length
-                                                ? {
-                                                    activity: {
-                                                        __typename: previousResult.activity.__typename,
-                                                        edges: [...previousResult.activity.edges, ...newEdges],
-                                                        pageInfo
-                                                    }
-                                                }
-                                                : previousResult;
-                                        }
-                                    }), loader: react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
-                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleList__WEBPACK_IMPORTED_MODULE_6__["MyLoader"], null)) }, activity.edges.map((article) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { key: article.node.id },
-                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleItem__WEBPACK_IMPORTED_MODULE_1__["default"], { article: article.node }))))));
+                                return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_infinite_scroller__WEBPACK_IMPORTED_MODULE_2___default.a, { pageStart: 0, hasMore: false, loader: react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
+                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleList__WEBPACK_IMPORTED_MODULE_6__["MyLoader"], null)) }, userCommunities.map((community) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { key: community.id },
+                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Community_CommunitySidebar_serverName__WEBPACK_IMPORTED_MODULE_19__["default"], { community: community }))))));
                             })))))));
         }));
     }
 }
+/* harmony default export */ __webpack_exports__["default"] = (Object(Utils_withCurrentUser__WEBPACK_IMPORTED_MODULE_20__["withCurrentUser"])(Profile));
 
 
 /***/ }),
@@ -20709,12 +20674,13 @@ const UPLOAD_PHOTO = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
 /*!**********************************************!*\
   !*** ./src/Graphql/Query/Community/index.ts ***!
   \**********************************************/
-/*! exports provided: MY_COMMUNITIES, GET_COMMUNITY, GET_PARTICIPANTS, GET_COMMUNITY_BY_SLUG, SEARCH_COMMUNITY, GET_COMMUNITY_CHANNELS, GET_COMMUNITY_CHANNELS_BY_SLUG, GET_DIRECT_MESSAGES_BY_SENDER, COMMUNITY_EXIST */
+/*! exports provided: MY_COMMUNITIES, USER_COMMUNITIES, GET_COMMUNITY, GET_PARTICIPANTS, GET_COMMUNITY_BY_SLUG, SEARCH_COMMUNITY, GET_COMMUNITY_CHANNELS, GET_COMMUNITY_CHANNELS_BY_SLUG, GET_DIRECT_MESSAGES_BY_SENDER, COMMUNITY_EXIST */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MY_COMMUNITIES", function() { return MY_COMMUNITIES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "USER_COMMUNITIES", function() { return USER_COMMUNITIES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_COMMUNITY", function() { return GET_COMMUNITY; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_PARTICIPANTS", function() { return GET_PARTICIPANTS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_COMMUNITY_BY_SLUG", function() { return GET_COMMUNITY_BY_SLUG; });
@@ -20789,6 +20755,49 @@ const MY_COMMUNITIES = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
         id
       }
       isBarned: blockedUsers(where: {username: $username}){
+        id
+      }
+    }
+  }
+`;
+const USER_COMMUNITIES = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
+  query userCommunities($username: String!, $myUsername: String){
+    userCommunities{
+      id
+      createdAt
+      updatedAt
+      title
+      channels{
+        id
+        createdAt
+        title
+      }
+      description
+      author{
+        id
+        username
+        firstname
+        lastname
+        avatar
+      }
+      avatar
+      slug
+      isPrivate
+      participants{
+        id
+        username
+      }
+      moderators{
+        id
+        username
+      }
+      joined: participants(where: {username: $myUsername}){
+        id
+      }
+      isAdmin: moderators(where: {username: $myUsername}){
+        id
+      }
+      isBarned: blockedUsers(where: {username: $myUsername}){
         id
       }
     }
@@ -21130,7 +21139,7 @@ const COMMUNITY_EXIST = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
 /*!************************************!*\
   !*** ./src/Graphql/Query/index.ts ***!
   \************************************/
-/*! exports provided: SIGNUP_USER, LOGIN_USER, USER_EXIST, ARTICLES, GET_ARTICLES_BY_INTEREST, SEARCH_ARTICLE, DRAFTS, PUBLISHED, SAVED, GET_ARTICLE_BY_ID, GET_ARTICLE_BY_SLUG, ME, GET_USER_BY_USERNAME, SEARCH_USER, ALL_COUNTRIES, ALL_DEPARTMENTS, GET_LIBRARY, ALL_INSTITUTION, ALL_INTEREST, ALL_CHAT, GET_MESSAGES, GET_ALL_MY_CHANNEL, GET_COMMENTS, ACTIVITY, GET_ARTICLES_BY_USERNAME, GET_RECOMMENDED_CON_BY_INT, GET_SUGGESTED_CONNECTIONS, GET_SIMILAR_ARTICLES, GET_SUGGESTED_ARTICLES, NOTIFICATION, GET_DIRECT_USERS, GET_MESSAGES_BY_SLUG */
+/*! exports provided: SIGNUP_USER, LOGIN_USER, USER_EXIST, ARTICLES, GET_ARTICLES_BY_INTEREST, SEARCH_ARTICLE, DRAFTS, PUBLISHED, SAVED, GET_ARTICLE_BY_ID, GET_ARTICLE_BY_SLUG, ME, GET_USER_BY_USERNAME, GET_CONNECTIONS, SEARCH_USER, ALL_COUNTRIES, ALL_DEPARTMENTS, GET_LIBRARY, ALL_INSTITUTION, ALL_INTEREST, ALL_CHAT, GET_MESSAGES, GET_ALL_MY_CHANNEL, GET_COMMENTS, ACTIVITY, GET_ARTICLES_BY_USERNAME, GET_RECOMMENDED_CON_BY_INT, GET_SUGGESTED_CONNECTIONS, GET_SIMILAR_ARTICLES, GET_SUGGESTED_ARTICLES, NOTIFICATION, GET_DIRECT_USERS, GET_MESSAGES_BY_SLUG */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21148,6 +21157,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_ARTICLE_BY_SLUG", function() { return GET_ARTICLE_BY_SLUG; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ME", function() { return ME; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_USER_BY_USERNAME", function() { return GET_USER_BY_USERNAME; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_CONNECTIONS", function() { return GET_CONNECTIONS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SEARCH_USER", function() { return SEARCH_USER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ALL_COUNTRIES", function() { return ALL_COUNTRIES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ALL_DEPARTMENTS", function() { return ALL_DEPARTMENTS; });
@@ -21437,7 +21447,7 @@ const ME = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
  * @description check if current user article
  */
 const GET_USER_BY_USERNAME = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
-  query getUserByUsername($username: String!) {
+  query getUserByUsername($username: String!, $myUsername: String) {
     getUserByUsername(username: $username) {
       ...userFragment
       connections{
@@ -21451,15 +21461,49 @@ const GET_USER_BY_USERNAME = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a 
         title
         body
       }
-      isFollowing: followers(where: {username: $username}){
+      isFollowing: followers(where: {username: $myUsername}){
         id
         username
       }
-      isFollower: following(where: {username: $username}){
+      isFollower: following(where: {username: $myUsername}){
         id
         username
       }
-      isConnected: connections(where: {username: $username}){
+      isConnected: connections(where: {username: $myUsername}){
+        id
+        username
+      }
+    }
+  }
+  ${Graphql_Fragment__WEBPACK_IMPORTED_MODULE_1__["USER_FRAGMENT"]}
+`;
+/**
+ * @description check if current user article
+ */
+const GET_CONNECTIONS = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
+  query getConnections($myUsername: String) {
+    getConnections {
+      ...userFragment
+      connections{
+        username
+        id
+      }
+      avatar
+      headerImage
+      articles{
+        id
+        title
+        body
+      }
+      isFollowing: followers(where: {username: $myUsername}){
+        id
+        username
+      }
+      isFollower: following(where: {username: $myUsername}){
+        id
+        username
+      }
+      isConnected: connections(where: {username: $myUsername}){
         id
         username
       }
