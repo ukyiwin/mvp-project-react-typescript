@@ -113,6 +113,16 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+.un-community--box{
+  display: flex;
+  height: inherit;
+  width: inherit;
+}
+
+.un-chat-detail--box{
+  display: flex;
+}
+
 #body-wrapper {
   min-height: 100%;
   position: relative;

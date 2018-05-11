@@ -1,7 +1,7 @@
 .input-box {
   background-color: ivory;
   bottom: 0;
-  width: inherit;
+  width: 74vw;
   position: absolute; 
   margin: auto;
 }
@@ -54,14 +54,4 @@
   -moz-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-}
-
-.un-community--box{
-  display: flex;
-  height: inherit;
-  width: inherit;
-}
-
-.un-chat-detail--box{
-  display: flex;
 }
