@@ -1,10 +1,11 @@
 import * as React from 'react';
-import Avatar from 'Components/Avatar';
+import Avatar from 'Components/Avatar/avatar';
 import FollowButton from 'Components/FollowButton';
 
 interface Props {
     url: string;
     name: string;
+    user: any;
 }
 
 // tslint:disable-next-line:typedef
@@ -19,18 +20,28 @@ class PersonItem extends React.Component<Props> {
   }
 
   render() {
-    const { name, url } = this.props;
+    const { name, url, user } = this.props;
     return (
-        <div className="tile tile-centered px-2">
+        <div className="card uk-flex uk-flex-stretch">
           <div className="tile-icon">
-            <Avatar url={url} size={40} presence={false} />
+            <Avatar
+              user={user}
+              size={40}
+              onlineSize={'large'}
+              src={user.avatar ? user.avatar : ''}
+              noLink
+              style={{
+                boxShadow: '0 0 0 2px #fff',
+                marginRight: '0',
+              }}
+            />
           </div>
           <div className="tile-content">
-            <div className="tile-title">{name}</div>
-            <div className="tile-subtitle text-gray">I like to eat alot everyday with</div>
+            <div className="tile-title">{user.firstname} {user.lastname}</div>
+            <div className="tile-subtitle text-gray">{user.bio ? user.bio : user.username}</div>
           </div>
           <div className="tile-action">
-            <FollowButton liked={false} small={true} followClick={() => this.connectTo()} unFollowClick={() => this.disConnectTo()}/>
+            <Link to={`/n/${user.username}`}>See</Link>
           </div>
         </div>
     );
@@ -38,3 +49,5 @@ class PersonItem extends React.Component<Props> {
 }
 
 export default PersonItem;
+
+// <FollowButton liked={false} small={true} followClick={() => this.connectTo()} unFollowClick={() => this.disConnectTo()}/>

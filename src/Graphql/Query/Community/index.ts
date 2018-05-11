@@ -72,7 +72,7 @@ export const MY_COMMUNITIES = gql`
 
 export const USER_COMMUNITIES = gql`
   query userCommunities($username: String!, $myUsername: String){
-    userCommunities{
+    userCommunities(username: $username){
       id
       createdAt
       updatedAt

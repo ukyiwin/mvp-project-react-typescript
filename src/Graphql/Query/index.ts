@@ -313,7 +313,7 @@ export const GET_USER_BY_USERNAME = gql`
  */
 export const USER_CONNECTIONS = gql`
   query userConnections($username: String!, $myUsername: String) {
-    getConnections($username: String!) {
+    userConnections(username: $username) {
       ...userFragment
       connections{
         username

@@ -22,7 +22,7 @@ module.exports =
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "4eed7b44f6e52d95471c"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "9debd7e71f3c987baf8f"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1348,6 +1348,28 @@ class ArticleItem extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         this.setState({ saved });
         this.setState({ user });
     }
+    renderImage(small, article) {
+        if (small) {
+            return null;
+        }
+        else {
+            if (article.headerImage) {
+                return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "image" },
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { "data-uk-lightbox": "animation: fade; video-autoplay: true;", className: "uk-inline-clip uk-transition-toggle" },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { className: "uk-inline", href: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg" },
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("img", { src: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg", className: "img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque", alt: "...", style: { maxHeight: 280 } })))));
+            }
+            if (article.photo) {
+                return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "image" },
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { "data-uk-lightbox": "animation: fade; video-autoplay: true;", className: "uk-inline-clip uk-transition-toggle" },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { className: "uk-inline", href: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg" },
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("img", { src: "https://s3.envato.com/files/233580557/02_sign_up_step_1.jpg", className: "img-responsive uk-width-1-1 uk-transition-scale-up uk-transition-opaque", alt: "...", style: { maxHeight: 280 } })))));
+            }
+            else {
+                return null;
+            }
+        }
+    }
     render() {
         const { article } = this.props;
         const { author } = article;
@@ -1357,6 +1379,7 @@ class ArticleItem extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                 backgroundColor: '#fff',
             } },
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "" },
+                this.renderImage(this.props.small, article),
                 this.props.small ? null : (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-remove-bottom uk-padding-small" },
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-grid-small uk-flex", "uk-grid": true },
                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-auto" },
@@ -9867,9 +9890,7 @@ class NotificationItem extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var Components_Avatar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Components/Avatar */ "./src/Components/Avatar/index.tsx");
-/* harmony import */ var Components_FollowButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! Components/FollowButton */ "./src/Components/FollowButton/index.tsx");
-
+/* harmony import */ var Components_Avatar_avatar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Components/Avatar/avatar */ "./src/Components/Avatar/avatar.tsx");
 
 
 // tslint:disable-next-line:typedef
@@ -9884,18 +9905,25 @@ class PersonItem extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         };
     }
     render() {
-        const { name, url } = this.props;
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile tile-centered px-2" },
+        const { name, url, user } = this.props;
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "card uk-flex uk-flex-stretch" },
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-icon" },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Avatar__WEBPACK_IMPORTED_MODULE_1__["default"], { url: url, size: 40, presence: false })),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Avatar_avatar__WEBPACK_IMPORTED_MODULE_1__["default"], { user: user, size: 40, onlineSize: 'large', src: user.avatar ? user.avatar : '', noLink: true, style: {
+                        boxShadow: '0 0 0 2px #fff',
+                        marginRight: '0',
+                    } })),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-content" },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-title" }, name),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-subtitle text-gray" }, "I like to eat alot everyday with")),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-title" },
+                    user.firstname,
+                    " ",
+                    user.lastname),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-subtitle text-gray" }, user.bio ? user.bio : user.username)),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-action" },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_FollowButton__WEBPACK_IMPORTED_MODULE_2__["default"], { liked: false, small: true, followClick: () => this.connectTo(), unFollowClick: () => this.disConnectTo() }))));
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Link, { to: `/n/${user.username}` }, "See"))));
     }
 }
 /* harmony default export */ __webpack_exports__["default"] = (PersonItem);
+// <FollowButton liked={false} small={true} followClick={() => this.connectTo()} unFollowClick={() => this.disConnectTo()}/>
 
 
 /***/ }),
@@ -18031,7 +18059,7 @@ class Profile extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleItem__WEBPACK_IMPORTED_MODULE_1__["default"], { article: article.node }))))));
                             }))),
                         selectedView === 'connections' && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#e1eaf1' } },
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["USER_CONNECTIONS"], variables: { myUsername: currentUser.username } }, ({ loading, error, data: { userConnections }, fetchMore, networkStatus, refetch }) => {
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["USER_CONNECTIONS"], variables: { username, myUsername: currentUser.username } }, ({ loading, error, data: { userConnections }, fetchMore, networkStatus, refetch }) => {
                                 if (loading) {
                                     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
@@ -18051,10 +18079,10 @@ class Profile extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                 }
                                 return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_infinite_scroller__WEBPACK_IMPORTED_MODULE_2___default.a, { pageStart: 0, hasMore: false, loader: react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleList__WEBPACK_IMPORTED_MODULE_6__["MyLoader"], null)) }, userConnections.map((person) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { key: person.id },
-                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_PersonItem__WEBPACK_IMPORTED_MODULE_21__["default"], { name: person.username }))))));
+                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_PersonItem__WEBPACK_IMPORTED_MODULE_21__["default"], { name: person.username, user: person }))))));
                             }))),
                         selectedView === 'community' && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#e1eaf1' } },
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query_Community__WEBPACK_IMPORTED_MODULE_18__["USER_COMMUNITIES"], variables: { username: user.username, myUsername: currentUser.username } }, ({ loading, error, data: { userCommunities }, fetchMore, networkStatus, refetch }) => {
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query_Community__WEBPACK_IMPORTED_MODULE_18__["USER_COMMUNITIES"], variables: { username, myUsername: currentUser.username } }, ({ loading, error, data: { userCommunities }, fetchMore, networkStatus, refetch }) => {
                                 if (loading) {
                                     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
@@ -20762,7 +20790,7 @@ const MY_COMMUNITIES = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
 `;
 const USER_COMMUNITIES = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
   query userCommunities($username: String!, $myUsername: String){
-    userCommunities{
+    userCommunities(username: $username){
       id
       createdAt
       updatedAt
@@ -21482,7 +21510,7 @@ const GET_USER_BY_USERNAME = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a 
  */
 const USER_CONNECTIONS = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
   query userConnections($username: String!, $myUsername: String) {
-    getConnections($username: String!) {
+    userConnections(username: $username) {
       ...userFragment
       connections{
         username

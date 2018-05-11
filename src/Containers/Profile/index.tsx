@@ -320,7 +320,7 @@ class Profile extends React.Component<Props> {
   
                 {selectedView === 'connections' &&  (
                     <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
-                      <Query query={USER_CONNECTIONS} variables={{ myUsername: currentUser.username }} >
+                      <Query query={USER_CONNECTIONS} variables={{ username, myUsername: currentUser.username }} >
                       {({ loading, error, data: { userConnections }, fetchMore, networkStatus, refetch }) => {
                         if (loading) {
                           return (
@@ -356,7 +356,7 @@ class Profile extends React.Component<Props> {
                             >
                               {userConnections.map((person) => (
                                 <div key={person.id}>
-                                    <PersonItem name={person.username} />
+                                    <PersonItem name={person.username} user={person} />
                                 </div>
                               ))}
                             </InfiniteScroll>
@@ -371,7 +371,7 @@ class Profile extends React.Component<Props> {
                     <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
                       <Query
                         query={USER_COMMUNITIES}
-                        variables={{ username: user.username, myUsername: currentUser.username }}
+                        variables={{ username, myUsername: currentUser.username }}
                       >
                       {({ loading, error, data: { userCommunities }, fetchMore, networkStatus, refetch }) => {
                         if (loading) {
