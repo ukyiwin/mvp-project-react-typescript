@@ -22,7 +22,7 @@ module.exports =
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "9debd7e71f3c987baf8f"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "fa429fa8e839741aa1e7"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -22809,7 +22809,7 @@ const errorLink = Object(apollo_link_error__WEBPACK_IMPORTED_MODULE_2__["onError
     if (networkError)
         console.log(`[Network error]: ${networkError}`);
 });
-const httpLink = new apollo_link_batch_http__WEBPACK_IMPORTED_MODULE_10__["BatchHttpLink"]({ uri: 'http://localhost:4000', fetch: (node_fetch__WEBPACK_IMPORTED_MODULE_9___default()) });
+const httpLink = new apollo_link_batch_http__WEBPACK_IMPORTED_MODULE_10__["BatchHttpLink"]({ uri: 'https://uniserver.herokuapp.com', fetch: (node_fetch__WEBPACK_IMPORTED_MODULE_9___default()) });
 const middlewareLink = new apollo_link__WEBPACK_IMPORTED_MODULE_0__["ApolloLink"]((operation, forward) => {
     // get the authentication token from local storage if it exists
     const authToken = cookies.get(AUTH_TOKEN);
