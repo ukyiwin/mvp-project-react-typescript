@@ -311,9 +311,9 @@ export const GET_USER_BY_USERNAME = gql`
 /**
  * @description check if current user article
  */
-export const GET_CONNECTIONS = gql`
-  query getConnections($myUsername: String) {
-    getConnections {
+export const USER_CONNECTIONS = gql`
+  query userConnections($username: String!, $myUsername: String) {
+    getConnections($username: String!) {
       ...userFragment
       connections{
         username

@@ -22,7 +22,7 @@ module.exports =
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "4768b500235b23660551"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "4eed7b44f6e52d95471c"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -18031,7 +18031,7 @@ class Profile extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleItem__WEBPACK_IMPORTED_MODULE_1__["default"], { article: article.node }))))));
                             }))),
                         selectedView === 'connections' && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#e1eaf1' } },
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["GET_CONNECTIONS"], variables: { myUsername: currentUser.username } }, ({ loading, error, data: { getConnections }, fetchMore, networkStatus, refetch }) => {
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["USER_CONNECTIONS"], variables: { myUsername: currentUser.username } }, ({ loading, error, data: { userConnections }, fetchMore, networkStatus, refetch }) => {
                                 if (loading) {
                                     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
@@ -18046,11 +18046,11 @@ class Profile extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                 if (error) {
                                     return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_EmptyStates__WEBPACK_IMPORTED_MODULE_16__["ErrorComponent"], null);
                                 }
-                                if (getConnections.length < 1) {
+                                if (userConnections.length < 1) {
                                     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Upsell__WEBPACK_IMPORTED_MODULE_10__["NullState"], { bg: "null", heading: 'No connection yet' }));
                                 }
                                 return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_infinite_scroller__WEBPACK_IMPORTED_MODULE_2___default.a, { pageStart: 0, hasMore: false, loader: react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
-                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleList__WEBPACK_IMPORTED_MODULE_6__["MyLoader"], null)) }, getConnections.map((person) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { key: person.id },
+                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleList__WEBPACK_IMPORTED_MODULE_6__["MyLoader"], null)) }, userConnections.map((person) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { key: person.id },
                                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_PersonItem__WEBPACK_IMPORTED_MODULE_21__["default"], { name: person.username }))))));
                             }))),
                         selectedView === 'community' && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#e1eaf1' } },
@@ -21139,7 +21139,7 @@ const COMMUNITY_EXIST = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
 /*!************************************!*\
   !*** ./src/Graphql/Query/index.ts ***!
   \************************************/
-/*! exports provided: SIGNUP_USER, LOGIN_USER, USER_EXIST, ARTICLES, GET_ARTICLES_BY_INTEREST, SEARCH_ARTICLE, DRAFTS, PUBLISHED, SAVED, GET_ARTICLE_BY_ID, GET_ARTICLE_BY_SLUG, ME, GET_USER_BY_USERNAME, GET_CONNECTIONS, SEARCH_USER, ALL_COUNTRIES, ALL_DEPARTMENTS, GET_LIBRARY, ALL_INSTITUTION, ALL_INTEREST, ALL_CHAT, GET_MESSAGES, GET_ALL_MY_CHANNEL, GET_COMMENTS, ACTIVITY, GET_ARTICLES_BY_USERNAME, GET_RECOMMENDED_CON_BY_INT, GET_SUGGESTED_CONNECTIONS, GET_SIMILAR_ARTICLES, GET_SUGGESTED_ARTICLES, NOTIFICATION, GET_DIRECT_USERS, GET_MESSAGES_BY_SLUG */
+/*! exports provided: SIGNUP_USER, LOGIN_USER, USER_EXIST, ARTICLES, GET_ARTICLES_BY_INTEREST, SEARCH_ARTICLE, DRAFTS, PUBLISHED, SAVED, GET_ARTICLE_BY_ID, GET_ARTICLE_BY_SLUG, ME, GET_USER_BY_USERNAME, USER_CONNECTIONS, SEARCH_USER, ALL_COUNTRIES, ALL_DEPARTMENTS, GET_LIBRARY, ALL_INSTITUTION, ALL_INTEREST, ALL_CHAT, GET_MESSAGES, GET_ALL_MY_CHANNEL, GET_COMMENTS, ACTIVITY, GET_ARTICLES_BY_USERNAME, GET_RECOMMENDED_CON_BY_INT, GET_SUGGESTED_CONNECTIONS, GET_SIMILAR_ARTICLES, GET_SUGGESTED_ARTICLES, NOTIFICATION, GET_DIRECT_USERS, GET_MESSAGES_BY_SLUG */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21157,7 +21157,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_ARTICLE_BY_SLUG", function() { return GET_ARTICLE_BY_SLUG; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ME", function() { return ME; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_USER_BY_USERNAME", function() { return GET_USER_BY_USERNAME; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_CONNECTIONS", function() { return GET_CONNECTIONS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "USER_CONNECTIONS", function() { return USER_CONNECTIONS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SEARCH_USER", function() { return SEARCH_USER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ALL_COUNTRIES", function() { return ALL_COUNTRIES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ALL_DEPARTMENTS", function() { return ALL_DEPARTMENTS; });
@@ -21480,9 +21480,9 @@ const GET_USER_BY_USERNAME = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a 
 /**
  * @description check if current user article
  */
-const GET_CONNECTIONS = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
-  query getConnections($myUsername: String) {
-    getConnections {
+const USER_CONNECTIONS = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
+  query userConnections($username: String!, $myUsername: String) {
+    getConnections($username: String!) {
       ...userFragment
       connections{
         username

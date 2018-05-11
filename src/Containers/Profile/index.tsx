@@ -5,7 +5,7 @@ import ArticleItem from 'Components/ArticleItem';
 import InfiniteScroll from 'react-infinite-scroller';
 import Avatar from 'Components/Avatar';
 import { compose, graphql, withApollo, QueryProps, Query, Mutation } from 'react-apollo';
-import { ME, GET_USER_BY_USERNAME, GET_CONNECTIONS, ACTIVITY } from 'Graphql/Query';
+import { ME, GET_USER_BY_USERNAME, USER_CONNECTIONS, ACTIVITY } from 'Graphql/Query';
 import { User } from 'CustomTypings/schema';
 import SeoMaker from 'Components/SeoMaker';
 import ArticleList, { MyLoader } from 'Components/ArticleList';
@@ -320,8 +320,8 @@ class Profile extends React.Component<Props> {
   
                 {selectedView === 'connections' &&  (
                     <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
-                      <Query query={GET_CONNECTIONS} variables={{ myUsername: currentUser.username }} >
-                      {({ loading, error, data: { getConnections }, fetchMore, networkStatus, refetch }) => {
+                      <Query query={USER_CONNECTIONS} variables={{ myUsername: currentUser.username }} >
+                      {({ loading, error, data: { userConnections }, fetchMore, networkStatus, refetch }) => {
                         if (loading) {
                           return (
                             <div className="uk-width-1-1 uk-padding-small" style={{ backgroundColor: '#fff' }}>
@@ -337,7 +337,7 @@ class Profile extends React.Component<Props> {
                           return <ErrorComponent />;
                         }
 
-                        if (getConnections.length < 1) {
+                        if (userConnections.length < 1) {
                           return (
                             <NullState bg="null" heading={'No connection yet'} />
                           );
@@ -354,7 +354,7 @@ class Profile extends React.Component<Props> {
                               // tslint:disable-next-line:jsx-curly-spacing
                               }
                             >
-                              {getConnections.map((person) => (
+                              {userConnections.map((person) => (
                                 <div key={person.id}>
                                     <PersonItem name={person.username} />
                                 </div>
