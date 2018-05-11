@@ -320,7 +320,7 @@ class Profile extends React.Component<Props> {
   
                 {selectedView === 'connections' &&  (
                     <div className="uk-width-1-1 uk-padding-small" style={{backgroundColor: '#e1eaf1'}}>
-                      <Query query={USER_CONNECTIONS} variables={{ myUsername: currentUser.username }} >
+                      <Query query={USER_CONNECTIONS} variables={{ username, myUsername: currentUser.username }} >
                       {({ loading, error, data: { userConnections }, fetchMore, networkStatus, refetch }) => {
                         if (loading) {
                           return (

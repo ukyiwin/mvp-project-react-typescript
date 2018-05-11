@@ -22,7 +22,7 @@ module.exports =
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "63e84426a405b0aef2e4"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "98da18c4560714933c3b"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -18031,7 +18031,7 @@ class Profile extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleItem__WEBPACK_IMPORTED_MODULE_1__["default"], { article: article.node }))))));
                             }))),
                         selectedView === 'connections' && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#e1eaf1' } },
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["USER_CONNECTIONS"], variables: { myUsername: currentUser.username } }, ({ loading, error, data: { userConnections }, fetchMore, networkStatus, refetch }) => {
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query__WEBPACK_IMPORTED_MODULE_4__["USER_CONNECTIONS"], variables: { username, myUsername: currentUser.username } }, ({ loading, error, data: { userConnections }, fetchMore, networkStatus, refetch }) => {
                                 if (loading) {
                                     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
@@ -21482,7 +21482,7 @@ const GET_USER_BY_USERNAME = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a 
  */
 const USER_CONNECTIONS = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
   query userConnections($username: String!, $myUsername: String) {
-    getConnections(username: $username) {
+    userConnections(username: $username) {
       ...userFragment
       connections{
         username
