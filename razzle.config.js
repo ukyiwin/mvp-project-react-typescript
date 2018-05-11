@@ -198,9 +198,9 @@ module.exports = {
       config.plugins.push(
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new webpack.IgnorePlugin(/moment/, /react-kronos/),
-        /*new ExtractTextPlugin({
+        new ExtractTextPlugin({
           filename: 'styles/[name].[contenthash].css'
-        }),*/
+        }),
         new webpack.ProvidePlugin({
           $: 'jquery',
           jQuery: 'jquery',
@@ -228,9 +228,9 @@ module.exports = {
           new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
           new webpack.IgnorePlugin(/moment/, /react-kronos/),
           new Visualizer(),
-          /*new ExtractTextPlugin({
+          new ExtractTextPlugin({
             filename: 'styles/[name].[contenthash].css'
-          }),*/
+          }),
           new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
