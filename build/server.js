@@ -22,7 +22,7 @@ module.exports =
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "98da18c4560714933c3b"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "5ac164539f2b9776e7fb"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -9868,8 +9868,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var Components_Avatar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Components/Avatar */ "./src/Components/Avatar/index.tsx");
-/* harmony import */ var Components_FollowButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! Components/FollowButton */ "./src/Components/FollowButton/index.tsx");
-
 
 
 // tslint:disable-next-line:typedef
@@ -9884,18 +9882,22 @@ class PersonItem extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         };
     }
     render() {
-        const { name, url } = this.props;
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile tile-centered px-2" },
+        const { name, url, user } = this.props;
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "card uk-flex uk-flex-stretch" },
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-icon" },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Avatar__WEBPACK_IMPORTED_MODULE_1__["default"], { url: url, size: 40, presence: false })),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_Avatar__WEBPACK_IMPORTED_MODULE_1__["default"], { url: user.avatar, size: 40, presence: false })),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-content" },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-title" }, name),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-subtitle text-gray" }, "I like to eat alot everyday with")),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-title" },
+                    user.firstname,
+                    " ",
+                    user.lastname),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-subtitle text-gray" }, user.bio ? user.bio : user.username)),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "tile-action" },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_FollowButton__WEBPACK_IMPORTED_MODULE_2__["default"], { liked: false, small: true, followClick: () => this.connectTo(), unFollowClick: () => this.disConnectTo() }))));
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Link, { to: `/n/${user.username}` }, "See"))));
     }
 }
 /* harmony default export */ __webpack_exports__["default"] = (PersonItem);
+// <FollowButton liked={false} small={true} followClick={() => this.connectTo()} unFollowClick={() => this.disConnectTo()}/>
 
 
 /***/ }),
@@ -18051,10 +18053,10 @@ class Profile extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                 }
                                 return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_infinite_scroller__WEBPACK_IMPORTED_MODULE_2___default.a, { pageStart: 0, hasMore: false, loader: react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-small", style: { backgroundColor: '#fff' } },
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_ArticleList__WEBPACK_IMPORTED_MODULE_6__["MyLoader"], null)) }, userConnections.map((person) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { key: person.id },
-                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_PersonItem__WEBPACK_IMPORTED_MODULE_21__["default"], { name: person.username }))))));
+                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Components_PersonItem__WEBPACK_IMPORTED_MODULE_21__["default"], { name: person.username, user: person }))))));
                             }))),
                         selectedView === 'community' && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#e1eaf1' } },
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query_Community__WEBPACK_IMPORTED_MODULE_18__["USER_COMMUNITIES"], variables: { username: user.username, myUsername: currentUser.username } }, ({ loading, error, data: { userCommunities }, fetchMore, networkStatus, refetch }) => {
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["Query"], { query: Graphql_Query_Community__WEBPACK_IMPORTED_MODULE_18__["USER_COMMUNITIES"], variables: { username, myUsername: currentUser.username } }, ({ loading, error, data: { userCommunities }, fetchMore, networkStatus, refetch }) => {
                                 if (loading) {
                                     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-1-1 uk-padding-small", style: { backgroundColor: '#fff' } },
                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
@@ -20762,7 +20764,7 @@ const MY_COMMUNITIES = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
 `;
 const USER_COMMUNITIES = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a `
   query userCommunities($username: String!, $myUsername: String){
-    userCommunities{
+    userCommunities(username: $username){
       id
       createdAt
       updatedAt
