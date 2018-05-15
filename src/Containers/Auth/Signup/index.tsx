@@ -112,9 +112,7 @@ class Signup extends React.Component<RouteComponentProps<any> & Props & ChildPro
 
     getErrors = ({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
-        graphQLErrors.map(({ message, location, path }) => {
-          return message;
-        });
+        return graphQLErrors;
       }
       // tslint:disable-next-line:curly
       if (networkError) return networkError;

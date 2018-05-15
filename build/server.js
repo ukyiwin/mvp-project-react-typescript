@@ -22,7 +22,7 @@ module.exports =
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "fa429fa8e839741aa1e7"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "5684e8a022400321c80a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1379,7 +1379,6 @@ class ArticleItem extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                 backgroundColor: '#fff',
             } },
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "" },
-                this.renderImage(this.props.small, article),
                 this.props.small ? null : (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-padding-remove-bottom uk-padding-small" },
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-grid-small uk-flex", "uk-grid": true },
                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "uk-width-auto" },
@@ -13757,7 +13756,7 @@ class App extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
             else if (data.me.completedProfile === 3) {
                 this.props.history.push('/profile/complete');
             }
-            if (data.me.avata) {
+            if (data.me.avatar) {
                 if (data.me.avata.url) {
                     this.setState({ avatar: data.me.avata.url });
                 }
@@ -14478,6 +14477,7 @@ class FinishSignup extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                         this.setState({ current: 2, loading: true });
                         finishSignup().then((res) => {
                             this.setState({ current: 3, loading: true });
+                            this.props.history.push('/');
                         }).catch((err) => {
                             this.setState({ current: 1, loading: false });
                             console.log(err);
@@ -14599,9 +14599,7 @@ class Signup extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         };
         this.getErrors = ({ graphQLErrors, networkError }) => {
             if (graphQLErrors) {
-                graphQLErrors.map(({ message, location, path }) => {
-                    return message;
-                });
+                return graphQLErrors;
             }
             // tslint:disable-next-line:curly
             if (networkError)
