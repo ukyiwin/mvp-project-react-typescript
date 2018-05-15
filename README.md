@@ -16,7 +16,6 @@ Project uses a number of open source projects to work properly:
 * [Webpack] - build system
 * [Apollo Client] - GraphQL client for apollo
 
-
 ### Installation
 
 Project requires [Node.js](https://nodejs.org/) v4+ to run.
