@@ -257,7 +257,7 @@ class ArticleItem extends React.Component<Props> {
                     <div className="uk-padding-remove-bottom uk-padding-small">
                         <div className="uk-grid-small uk-flex" uk-grid={true}>
                             <div className="uk-width-auto">
-                                <Avatar
+                              <Avatar
                                   user={author}
                                   size={40}
                                   radius={64}
@@ -270,11 +270,11 @@ class ArticleItem extends React.Component<Props> {
                                     flex: '0 0 64px',
                                     marginRight: '0',
                                   }}
-                                />
+                              />
                             </div>
                             <div className="uk-width-auto">
                                 <PopoverLink link={article.id} user={author}>
-                                    {author.firstname} {author.lastname}
+                                  {author.firstname} {author.lastname}
                                 </PopoverLink>
                                 <p className="uk-text-meta uk-margin-remove-top">
                                     <time dateTime={article.createdAt}>
