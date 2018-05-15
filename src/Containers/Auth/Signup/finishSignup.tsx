@@ -109,6 +109,7 @@ class FinishSignup extends React.Component<RouteComponentProps<any> & Props, Sta
                         this.setState({current: 2, loading: true});
                         finishSignup().then((res) => {
                           this.setState({current: 3, loading: true });
+                          this.props.history.push('/');
                         }).catch((err) => {
                           this.setState({current: 1, loading: false});
                           console.log(err);

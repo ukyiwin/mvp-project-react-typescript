@@ -253,7 +253,6 @@ class ArticleItem extends React.Component<Props> {
               }}
             >
               <div className="">
-                {this.renderImage(this.props.small, article)} 
                 {this.props.small ? null : (
                     <div className="uk-padding-remove-bottom uk-padding-small">
                         <div className="uk-grid-small uk-flex" uk-grid={true}>
@@ -288,8 +287,8 @@ class ArticleItem extends React.Component<Props> {
                     </div>
                 )}
                 <div
-                    className="card-body uk-padding-remove-vertical simple-link"
-                    style={{ paddingTop: this.props.small ? 0 : 6, borderBottom: 1 }}
+                  className="card-body uk-padding-remove-vertical simple-link"
+                  style={{ paddingTop: this.props.small ? 0 : 6, borderBottom: 1 }}
                 >
                     <Link to={`/article/${article.slug ? article.slug : article.id}`} className="simple-link">
                         <h5

@@ -277,7 +277,7 @@ class App extends React.Component<Props & ChildProps<Response & Props>, State> {
                   this.props.history.push('/profile/complete');
                 }
 
-                if (data.me.avata) {
+                if (data.me.avatar) {
                   if (data.me.avata.url) {
                     this.setState({ avatar: data.me.avata.url });
                   }
